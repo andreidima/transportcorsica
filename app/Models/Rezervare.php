@@ -19,11 +19,11 @@ class Rezervare extends Model
 
     public function oras_plecare_nume()
     {
-        return $this->belongsTo('App\Oras', 'oras_plecare');
+        return $this->belongsTo('App\Models\Oras', 'oras_plecare');
     }
 
     public function oras_sosire_nume()
     {
-        return $this->belongsTo('App\Oras', 'oras_sosire');
+        return $this->belongsTo('App\Models\Oras', 'oras_sosire');
     }
 }

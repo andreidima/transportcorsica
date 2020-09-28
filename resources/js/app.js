@@ -56,7 +56,6 @@ if (document.querySelector('#adauga-rezervare')) {
 
 
             nr_adulti: nrAdultiVechi,
-            nr_copii: nrCopiiVechi,
 
             pret_adult: 0,
             pret_copil: 0,
@@ -65,8 +64,7 @@ if (document.querySelector('#adauga-rezervare')) {
             pret_adult_cu_reducere_10_procente: 0,
             pret_copil_cu_reducere_10_procente: 0,
 
-            pret_total: pretTotal,
-            pret_total_cu_reducere_10_procente: pretTotal,
+            pret_total: '',
 
             tur_retur: turReturVechi,
 
@@ -74,11 +72,12 @@ if (document.querySelector('#adauga-rezervare')) {
 
         created: function () {
             this.setTaraPlecare()
-            this.getJudetePlecare()
+            this.getJudetePlecareInitial()
             this.getOrasePlecare()
-            this.getJudeteSosire()
+            this.getJudeteSosireInitial()
             this.getOraseSosire()
             this.setPreturi()
+            this.getPretTotal()
         },
         methods: {
             setTaraPlecare() {
@@ -88,15 +87,15 @@ if (document.querySelector('#adauga-rezervare')) {
                     this.tara_plecare = 'Franta';
                 } 
             },
-            getOrasePlecareInitial: function () {
+            getJudetePlecareInitial: function () {
                 axios.get('/orase_rezervari', {
                     params: {
-                        request: 'orase_plecare',
-                        traseu: this.traseu,
+                        request: 'judete_plecare',
+                        tara: this.tara_plecare,
                     }
                 })
                     .then(function (response) {
-                        app1.orase_plecare = response.data.raspuns;
+                        app1.judete_plecare = response.data.raspuns;
                     });
             },
             getJudetePlecare: function () {
@@ -107,8 +106,8 @@ if (document.querySelector('#adauga-rezervare')) {
                     }
                 })
                     .then(function (response) {
-                        // app1.orase_plecare = '';
-                        // app1.oras_plecare = 0;
+                        app1.orase_plecare = '';
+                        app1.oras_plecare = 0;
 
                         app1.judete_plecare = response.data.raspuns;
                     });
@@ -127,6 +126,17 @@ if (document.querySelector('#adauga-rezervare')) {
                         app1.orase_plecare = response.data.raspuns;
                     });
             },
+            getJudeteSosireInitial: function () {
+                axios.get('/orase_rezervari', {
+                    params: {
+                        request: 'judete_sosire',
+                        tara: this.tara_plecare,
+                    }
+                })
+                    .then(function (response) {
+                        app1.judete_sosire = response.data.raspuns;
+                    });
+            },
             getJudeteSosire: function () {
                 axios.get('/orase_rezervari', {
                     params: {
@@ -135,12 +145,11 @@ if (document.querySelector('#adauga-rezervare')) {
                     }
                 })
                     .then(function (response) {
-                        // app1.orase_sosire = '';
-                        // app1.oras_sosire = 0;
+                        app1.orase_sosire = '';
+                        app1.oras_sosire = 0;
 
                         app1.judete_sosire = response.data.raspuns;
                     });
-                // this.getOraseSosire();
             },
             getOraseSosireInitial: function () {
                 axios.get('/orase_rezervari', {
@@ -168,9 +177,9 @@ if (document.querySelector('#adauga-rezervare')) {
                     });
             },
             setPreturi() {
-                if (this.tur_retur == "false") {
+                if (this.tur_retur == false) {
                     this.pret_adult = 120;
-                } else if (this.tur_retur == "true") {
+                } else if (this.tur_retur == true) {
                     this.pret_adult = 200;
                 }
             },
@@ -179,9 +188,9 @@ if (document.querySelector('#adauga-rezervare')) {
                 if (!isNaN(this.nr_adulti) && (this.nr_adulti > 0)) {
                     this.pret_total = this.pret_total + this.pret_adult * this.nr_adulti
                 }
-                if (!isNaN(this.nr_copii) && (this.nr_copii > 0)) {
-                    this.pret_total = this.pret_total + this.pret_copil * this.nr_copii
-                }
+                // if (!isNaN(this.nr_copii) && (this.nr_copii > 0)) {
+                //     this.pret_total = this.pret_total + this.pret_copil * this.nr_copii
+                // }
             },
         }
     });

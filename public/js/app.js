@@ -94717,24 +94717,23 @@ if (document.querySelector('#adauga-rezervare')) {
       oras_sosire: orasSosireVechi,
       orase_sosire: '',
       nr_adulti: nrAdultiVechi,
-      nr_copii: nrCopiiVechi,
       pret_adult: 0,
       pret_copil: 0,
       pret_animal_mic: 0,
       pret_animal_mare: 0,
       pret_adult_cu_reducere_10_procente: 0,
       pret_copil_cu_reducere_10_procente: 0,
-      pret_total: pretTotal,
-      pret_total_cu_reducere_10_procente: pretTotal,
+      pret_total: '',
       tur_retur: turReturVechi
     },
     created: function created() {
       this.setTaraPlecare();
-      this.getJudetePlecare();
+      this.getJudetePlecareInitial();
       this.getOrasePlecare();
-      this.getJudeteSosire();
+      this.getJudeteSosireInitial();
       this.getOraseSosire();
       this.setPreturi();
+      this.getPretTotal();
     },
     methods: {
       setTaraPlecare: function setTaraPlecare() {
@@ -94744,14 +94743,14 @@ if (document.querySelector('#adauga-rezervare')) {
           this.tara_plecare = 'Franta';
         }
       },
-      getOrasePlecareInitial: function getOrasePlecareInitial() {
+      getJudetePlecareInitial: function getJudetePlecareInitial() {
         axios.get('/orase_rezervari', {
           params: {
-            request: 'orase_plecare',
-            traseu: this.traseu
+            request: 'judete_plecare',
+            tara: this.tara_plecare
           }
         }).then(function (response) {
-          _app.orase_plecare = response.data.raspuns;
+          _app.judete_plecare = response.data.raspuns;
         });
       },
       getJudetePlecare: function getJudetePlecare() {
@@ -94761,8 +94760,8 @@ if (document.querySelector('#adauga-rezervare')) {
             tara: this.tara_plecare
           }
         }).then(function (response) {
-          // app1.orase_plecare = '';
-          // app1.oras_plecare = 0;
+          _app.orase_plecare = '';
+          _app.oras_plecare = 0;
           _app.judete_plecare = response.data.raspuns;
         });
       },
@@ -94778,6 +94777,16 @@ if (document.querySelector('#adauga-rezervare')) {
           _app.orase_plecare = response.data.raspuns;
         });
       },
+      getJudeteSosireInitial: function getJudeteSosireInitial() {
+        axios.get('/orase_rezervari', {
+          params: {
+            request: 'judete_sosire',
+            tara: this.tara_plecare
+          }
+        }).then(function (response) {
+          _app.judete_sosire = response.data.raspuns;
+        });
+      },
       getJudeteSosire: function getJudeteSosire() {
         axios.get('/orase_rezervari', {
           params: {
@@ -94785,10 +94794,10 @@ if (document.querySelector('#adauga-rezervare')) {
             tara: this.tara_plecare
           }
         }).then(function (response) {
-          // app1.orase_sosire = '';
-          // app1.oras_sosire = 0;
+          _app.orase_sosire = '';
+          _app.oras_sosire = 0;
           _app.judete_sosire = response.data.raspuns;
-        }); // this.getOraseSosire();
+        });
       },
       getOraseSosireInitial: function getOraseSosireInitial() {
         axios.get('/orase_rezervari', {
@@ -94813,9 +94822,9 @@ if (document.querySelector('#adauga-rezervare')) {
         });
       },
       setPreturi: function setPreturi() {
-        if (this.tur_retur == "false") {
+        if (this.tur_retur == false) {
           this.pret_adult = 120;
-        } else if (this.tur_retur == "true") {
+        } else if (this.tur_retur == true) {
           this.pret_adult = 200;
         }
       },
@@ -94824,11 +94833,10 @@ if (document.querySelector('#adauga-rezervare')) {
 
         if (!isNaN(this.nr_adulti) && this.nr_adulti > 0) {
           this.pret_total = this.pret_total + this.pret_adult * this.nr_adulti;
-        }
+        } // if (!isNaN(this.nr_copii) && (this.nr_copii > 0)) {
+        //     this.pret_total = this.pret_total + this.pret_copil * this.nr_copii
+        // }
 
-        if (!isNaN(this.nr_copii) && this.nr_copii > 0) {
-          this.pret_total = this.pret_total + this.pret_copil * this.nr_copii;
-        }
       }
     }
   });
@@ -95106,8 +95114,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\laragon\www\transport-franta-corsica\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! D:\laragon\www\transport-franta-corsica\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! E:\laragon\www\transportcorsica\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! E:\laragon\www\transportcorsica\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

@@ -24,10 +24,10 @@ Route::redirect('/', 'adauga-rezervare-pasul-1');
 // Rute pentru rezervare facuta de guest
 Route::get('/adauga-rezervare-pasul-1', [App\Http\Controllers\RezervareController::class, 'adaugaRezervarePasul1']);
 Route::post('/adauga-rezervare-pasul-1', [App\Http\Controllers\RezervareController::class, 'postadaugaRezervarePasul1']);
-Route::get('/adauga-rezervare-pasul-2', 'RezervareController@adaugaRezervarePasul2');
-Route::post('/adauga-rezervare-pasul-2', 'RezervareController@postAdaugaRezervarePasul2');
-Route::get('/adauga-rezervare-pasul-3', 'RezervareController@adaugaRezervarePasul3');
-Route::get('/bilet-rezervat/{view_type}', 'RezervareController@pdfExportGuest');
+Route::get('/adauga-rezervare-pasul-2', [App\Http\Controllers\RezervareController::class, 'adaugaRezervarePasul2']);
+Route::post('/adauga-rezervare-pasul-2', [App\Http\Controllers\RezervareController::class, 'postAdaugaRezervarePasul2']);
+Route::get('/adauga-rezervare-pasul-3', [App\Http\Controllers\RezervareController::class, 'adaugaRezervarePasul3']);
+Route::get('/bilet-rezervat/{view_type}', [App\Http\Controllers\RezervareController::class, 'pdfExportGuest']);
 
 // Extras date cu Axios
 Route::get('/orase_rezervari', [App\Http\Controllers\RezervareController::class, 'orase_rezervari']);

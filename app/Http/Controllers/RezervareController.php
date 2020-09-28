@@ -140,13 +140,15 @@ class RezervareController extends Controller
         return request()->validate(
             [
                 // 'cursa_id' =>['nullable', 'numeric', 'max:999'],
+                'tip_calatorie' => ['required'],
                 'traseu' => ['required'],
                 'oras_plecare' => ['required', 'integer'],
                 'oras_sosire' => ['required', 'integer'],
                 'tur_retur' => [''],
                 // 'statie_id' => ['nullable', 'numeric', 'max:999'],
                 // 'statie_imbarcare' => ['nullable'],
-                'nr_adulti' => ['required', 'integer', 'between:1,100'],
+                'nr_adulti' => ['required_if:tip_calatorie,Calatori', 'integer', 'between:1,100'],
+                'descriere_colet' => ['required_if:tip_calatorie,Colete', 'max:2000'],
                 // 'nr_copii' => ['nullable', 'integer', 'between:0,100'],
                 // 'data_plecare' => [''],
                 'data_plecare' => ['required_if:traseu,Romania-Corsica', 'required_if:tur_retur,true'],
@@ -187,7 +189,7 @@ class RezervareController extends Controller
                 'telefon' => ['required', 'regex:/^[0-9 ]+$/', 'max: 100'],
                 'email' => ['nullable', 'email', 'max:100'],
                 // 'pret_total' => ['nullable', 'numeric', 'max:999999'],
-                'adresa' => ['max:2000'],
+                'pasageri' => ['max:2000'],
                 'observatii' => ['max:2000'],
 
                 // 'plata_online' => [''],
@@ -253,64 +255,21 @@ class RezervareController extends Controller
     public function postAdaugaRezervarePasul1(Request $request)
     {
         $this->validateRequest($request);
-        dd($request->request);
         $request->session()->forget('rezervare');
         $rezervare = Rezervare::make($this->validateRequest($request));
-
-        //Animalele nu mai sunt folosite, sunt setate doar ca sa nu genereze erori mai departe in logic aplicatiei
-        $rezervare->nr_animale_mici = 0;
-        $rezervare->nr_animale_mari = 0;
 
         //Schimbare tur_retur din "true or false" din vue, in "0 or 1" pentru baza de date
         ($rezervare->tur_retur === "true") ? ($rezervare->tur_retur = 1) : ($rezervare->tur_retur = 0);
 
-        // dd($rezervare);
-
         // calcularea pretului total
-        if ($rezervare->traseu == 1) {
-            $oras = DB::table('orase')
-                ->where('id', $rezervare->oras_sosire)
-                ->first();
-        } elseif ($rezervare->traseu == 2) {
-            $oras = DB::table('orase')
-                ->where('id', $rezervare->oras_plecare)
-                ->first();
+        if ($rezervare->tur_retur === 0) {
+            $rezervare->pret_total = $rezervare->nr_adulti * 120;
+        } elseif ($rezervare->tur_retur === 1) {
+            $rezervare->pret_total = $rezervare->nr_adulti * 200;
         }
-        // elseif ($rezervare->traseu == 3){
-        //     $oras = DB::table('orase')
-        //         ->where('id', $rezervare->oras_plecare)
-        //         ->first();
-        // }
-
-        $tarife = DB::table('tarife')
-            ->where([
-                ['traseu_id', $oras->traseu],
-                ['tur_retur', $rezervare->tur_retur]
-            ])
-            ->first();
-        // dd($rezervare, $oras, $tarife);
-
-        //Calcularea preturilor rezervarii
-        $rezervare->pret_total = $tarife->adult * $rezervare->nr_adulti +
-            $tarife->copil * $rezervare->nr_copii +
-            $tarife->animal_mic * $rezervare->nr_animale_mici +
-            $tarife->animal_mare * $rezervare->nr_animale_mari;
-
-        //Calcularea preturilor rezervarii cu aplicarea reducerii de 10%
-        // $rezervare->pret_total = floor((string) ($tarife->adult * 90)) / 100 * $rezervare->nr_adulti +
-        //     floor((string) ($tarife->copil * 90)) / 100 * $rezervare->nr_copii +
-        //     $tarife->animal_mic * $rezervare->nr_animale_mici +
-        //     $tarife->animal_mare * $rezervare->nr_animale_mari; 
-
-
-        // $rezervare->pret_total_cu_reducere_10_procente = floor((string) ($tarife->adult * 90)) / 100 * $rezervare->nr_adulti +
-        //                         floor((string) ($tarife->copil * 90)) / 100 * $rezervare->nr_copii +
-        //                         ($tarife->animal_mic) * $rezervare->nr_animale_mici +
-        //                         ($tarife->animal_mare) * $rezervare->nr_animale_mari;
 
         $request->session()->put('rezervare', $rezervare);
-        $request->session()->put('tarife', $tarife);
-        // dd($rezervare, $tarife);
+        // dd($rezervare, $request);
         return redirect('/adauga-rezervare-pasul-2');
     }
 
@@ -322,19 +281,8 @@ class RezervareController extends Controller
     public function adaugaRezervarePasul2(Request $request)
     {
         $rezervare = $request->session()->get('rezervare');
-        $tarife = $request->session()->get('tarife');
-
-
-        // dd($rezervare, $tarife);
-
-        // $tarife = DB::table('tarife')
-        //     ->where([
-        //         ['traseu_id', $rezervare->traseu],
-        //         ['tur_retur', ($rezervare->tur_retur=='true' ? 1 : 0)]
-        //     ])
-        //     ->first();
-
-        return view('rezervari.guest-create/adauga-rezervare-pasul-2', compact('rezervare', 'tarife'));
+        // dd($rezervare);
+        return view('rezervari.guest-create/adauga-rezervare-pasul-2', compact('rezervare'));
     }
 
     /**
