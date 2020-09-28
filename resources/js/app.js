@@ -1,0 +1,188 @@
+/**
+ * First we will load all of this project's JavaScript dependencies which
+ * includes Vue and other libraries. It is a great starting point when
+ * building robust, powerful web applications using Vue and Laravel.
+ */
+
+require('./bootstrap');
+
+window.Vue = require('vue');
+
+/**
+ * The following block of code may be used to automatically register your
+ * Vue components. It will recursively scan this directory for the Vue
+ * components and automatically register them with their "basename".
+ *
+ * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
+ */
+
+// const files = require.context('./', true, /\.vue$/i)
+// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
+
+Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+Vue.component('vue2-datepicker-plecare', require('./components/DatePickerPlecare.vue').default);
+Vue.component('vue2-datepicker-intoarcere', require('./components/DatePickerIntoarcere.vue').default);
+
+/**
+ * Next, we will create a fresh Vue application instance and attach it to
+ * the page. Then, you may begin adding components to this application
+ * or customize the JavaScript scaffolding to fit your unique needs.
+ */
+
+if (document.querySelector('#app1')) {
+    const app1 = new Vue({
+        el: '#app1',
+    });
+}
+
+if (document.querySelector('#adauga-rezervare')) {
+    const app1 = new Vue({
+        el: '#adauga-rezervare',
+        data: {
+            nume: [[]],
+            buletin: [[]],
+            tip_calatorie: tipCalatorieVeche,
+            traseu: traseuVechi,
+            active: "active",
+            tara_plecare: '',
+            judet_plecare: judetPlecareVechi,
+            judete_plecare: '',
+            oras_plecare: orasPlecareVechi,
+            orase_plecare: '',
+            judet_sosire: judetSosireVechi,
+            judete_sosire: '',
+            oras_sosire: orasSosireVechi,
+            orase_sosire: '',
+
+
+            nr_adulti: nrAdultiVechi,
+            nr_copii: nrCopiiVechi,
+
+            pret_adult: 0,
+            pret_copil: 0,
+            pret_animal_mic: 0,
+            pret_animal_mare: 0,
+            pret_adult_cu_reducere_10_procente: 0,
+            pret_copil_cu_reducere_10_procente: 0,
+
+            pret_total: pretTotal,
+            pret_total_cu_reducere_10_procente: pretTotal,
+
+            tur_retur: turReturVechi,
+
+        },
+
+        created: function () {
+            this.setTaraPlecare()
+            this.getJudetePlecare()
+            this.getOrasePlecare()
+            this.getJudeteSosire()
+            this.getOraseSosire()
+            this.setPreturi()
+        },
+        methods: {
+            setTaraPlecare() {
+                if (this.traseu == 'Romania-Corsica') {
+                    this.tara_plecare = 'Romania';
+                } else if (this.traseu == 'Corsica-Romania') {
+                    this.tara_plecare = 'Franta';
+                } 
+            },
+            getOrasePlecareInitial: function () {
+                axios.get('/orase_rezervari', {
+                    params: {
+                        request: 'orase_plecare',
+                        traseu: this.traseu,
+                    }
+                })
+                    .then(function (response) {
+                        app1.orase_plecare = response.data.raspuns;
+                    });
+            },
+            getJudetePlecare: function () {
+                axios.get('/orase_rezervari', {
+                    params: {
+                        request: 'judete_plecare',
+                        tara: this.tara_plecare,
+                    }
+                })
+                    .then(function (response) {
+                        // app1.orase_plecare = '';
+                        // app1.oras_plecare = 0;
+
+                        app1.judete_plecare = response.data.raspuns;
+                    });
+            },
+            getOrasePlecare: function () {
+                axios.get('/orase_rezervari', {
+                    params: {
+                        request: 'orase_plecare',
+                        judet: this.judet_plecare,
+                    }
+                })
+                    .then(function (response) {
+                        // app1.orase_plecare = '';
+                        // app1.oras_plecare = 0;
+
+                        app1.orase_plecare = response.data.raspuns;
+                    });
+            },
+            getJudeteSosire: function () {
+                axios.get('/orase_rezervari', {
+                    params: {
+                        request: 'judete_sosire',
+                        tara: this.tara_plecare,
+                    }
+                })
+                    .then(function (response) {
+                        // app1.orase_sosire = '';
+                        // app1.oras_sosire = 0;
+
+                        app1.judete_sosire = response.data.raspuns;
+                    });
+                // this.getOraseSosire();
+            },
+            getOraseSosireInitial: function () {
+                axios.get('/orase_rezervari', {
+                    params: {
+                        request: 'orase_sosire',
+                        traseu: this.traseu,
+                    }
+                })
+                    .then(function (response) {
+                        app1.orase_sosire = response.data.raspuns;
+                    });
+            },
+            getOraseSosire: function () {
+                axios.get('/orase_rezervari', {
+                    params: {
+                        request: 'orase_sosire',
+                        judet: this.judet_sosire,
+                    }
+                })
+                    .then(function (response) {
+                        // app1.orase_plecare = '';
+                        // app1.oras_plecare = 0;
+
+                        app1.orase_sosire = response.data.raspuns;
+                    });
+            },
+            setPreturi() {
+                if (this.tur_retur == "false") {
+                    this.pret_adult = 120;
+                } else if (this.tur_retur == "true") {
+                    this.pret_adult = 200;
+                }
+            },
+            getPretTotal() {
+                this.pret_total = 0;
+                if (!isNaN(this.nr_adulti) && (this.nr_adulti > 0)) {
+                    this.pret_total = this.pret_total + this.pret_adult * this.nr_adulti
+                }
+                if (!isNaN(this.nr_copii) && (this.nr_copii > 0)) {
+                    this.pret_total = this.pret_total + this.pret_copil * this.nr_copii
+                }
+            },
+        }
+    });
+}
