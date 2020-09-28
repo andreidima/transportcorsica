@@ -160,15 +160,17 @@
                                         @csrf    
                                         <div class="row">   
                                             <div class="col-lg-12 d-flex justify-content-center mb-4">  
-                                                <button type="submit" class="btn btn-primary btn-lg mr-2 rounded-pill border border-white" style="border-width:3px !important;">
+                                                <button type="submit" value="cu_plata"
+                                                    class="btn btn-primary btn-lg mr-2 rounded-pill border border-white" style="border-width:3px !important;">
                                                     Plătește rezervarea
                                                     <img src="{{ asset('images/banner-no-operators.jpg') }}" height="49" class="mr-3 bg-white rounded-pill border border-white">
                                                 </button>                                                
                                                 {{-- <img src="{{ asset('images/banner-no-operators.jpg') }}" height="49" class="mr-3 bg-white rounded-pill border border-white"> --}}
                                             </div>
                                             <div class="col-lg-12 d-flex justify-content-center mb-0">  
-                                                <button type="submit" class="btn btn-primary btn-lg mr-4 rounded-pill border border-white" style="border-width:3px !important;">
-                                                    Salvează rezervarea și plătește la șofer.
+                                                <button type="submit" value="fara_plata"
+                                                    class="btn btn-primary btn-lg mr-4 rounded-pill border border-white" style="border-width:3px !important;">
+                                                    Salvează rezervarea și plătește la șofer
                                                 </button>
                                             </div>
                                         </div>

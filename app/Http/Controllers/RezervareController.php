@@ -296,20 +296,7 @@ class RezervareController extends Controller
         $rezervare = $request->session()->get('rezervare');
         $rezervare->created_at = \Carbon\Carbon::now();
 
-        $tarife = $request->session()->get('tarife');
-
-        //Calcularea preturilor rezervarii
-        // $rezervare->pret_total = $tarife->adult * $rezervare->nr_adulti +
-        //                         $tarife->copil * $rezervare->nr_copii +
-        //                         $tarife->animal_mic * $rezervare->nr_animale_mici +
-        //                         $tarife->animal_mare * $rezervare->nr_animale_mari;    
-
-        //Calcularea preturilor rezervarii cu aplicarea reducerii de 10%
-        // $rezervare->pret_total = floor((string) ($tarife->adult * 90)) / 100 * $rezervare->nr_adulti +
-        //                         floor((string) ($tarife->copil * 90)) / 100 * $rezervare->nr_copii +
-        //                         $tarife->animal_mic * $rezervare->nr_animale_mici +
-        //                         $tarife->animal_mare * $rezervare->nr_animale_mari;             
-
+               
         // Verificare rezervare duplicat
         $request_verificare_duplicate = new Request([
             'nume' => $request->session()->get('rezervare.nume'),
@@ -329,9 +316,23 @@ class RezervareController extends Controller
 
         //Schimbare tur_retur din "true or false" din vue, in "0 or 1" pentru baza de date
         // ($rezervare->tur_retur === "true") ? ($rezervare->tur_retur = 1) : ($rezervare->tur_retur = 0);
-
+        
         $rezervare_array = $rezervare->toArray();
-        $plata_online = $rezervare_array['plata_online'];
+        unset(
+            $rezervare_array['tip_calatorie'], 
+            $rezervare_array['traseu'],
+            $rezervare_array['tur_retur'],
+            $rezervare_array['oras_plecare_nume'],
+            $rezervare_array['oras_sosire_nume'],
+            $rezervare_array['acord_de_confidentialitate'],
+            $rezervare_array['termeni_si_conditii'],
+            $rezervare_array['sdf'],
+            $rezervare_array['wer']
+        );
+        dd($rezervare_array);
+        $rezervare_tur = $rezervare->toArray();
+        $rezervare_retur = $rezervare->toArray();
+        
         unset($rezervare_array['traseu'], $rezervare_array['oras_plecare_nume'], $rezervare_array['oras_sosire_nume'],
         $rezervare_array['plata_online'], $rezervare_array['acord_de_confidentialitate'], $rezervare_array['termeni_si_conditii']);
 
@@ -353,28 +354,28 @@ class RezervareController extends Controller
             if (stripos($rezervare->nume, 'fara email') !== false) {
                 // nu se trimite email
             } else {
-                \Mail::to('adima@validsoftware.ro')->send(
-                    new CreareRezervare($rezervare, $tarife)
-                );
+                // \Mail::to('adima@validsoftware.ro')->send(
+                //     new CreareRezervare($rezervare, $tarife)
+                // );
             }
         } else {
-            \Mail::to('alsimy_mond_travel@yahoo.com')->send(
-                new CreareRezervare($rezervare, $tarife)
-            );
+            // \Mail::to('alsimy_mond_travel@yahoo.com')->send(
+            //     new CreareRezervare($rezervare, $tarife)
+            // );
         }
 
         //Trimitere catre plata
-        if ($plata_online == 1) {
-            if (stripos($rezervare->nume, 'Andrei Dima Test') !== false) {
-                if (stripos($rezervare->nume, 'fara plata') !== false) {
-                    return redirect('/adauga-rezervare-pasul-3');
-                } else {
-                    return redirect('/trimitere-catre-plata');
-                }
-            } else {
-                return redirect('/trimitere-catre-plata');
-            }
-        }
+        // if ($plata_online == 1) {
+        //     if (stripos($rezervare->nume, 'Andrei Dima Test') !== false) {
+        //         if (stripos($rezervare->nume, 'fara plata') !== false) {
+        //             return redirect('/adauga-rezervare-pasul-3');
+        //         } else {
+        //             return redirect('/trimitere-catre-plata');
+        //         }
+        //     } else {
+        //         return redirect('/trimitere-catre-plata');
+        //     }
+        // }
     }
 
     /**

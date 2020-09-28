@@ -56,7 +56,8 @@
                                         </label>
                                     </div>
                                 </div>
-                                <div v-cloak v-if="tip_calatorie" class="form-row mb-4 d-flex justify-content-center">
+                            <div v-cloak v-if="tip_calatorie">
+                                <div class="form-row mb-4 d-flex justify-content-center">
                                         <script type="application/javascript"> 
                                             traseuVechi={!! json_encode(old('traseu', "")) !!} 
                                         </script>
@@ -83,20 +84,6 @@
                                                     </span>
                                         </label>
                                     </div>
-                                    {{-- <div class="custom-control custom-switch col-lg-3 text-center d-flex justify-content-end align-items-center">
-                                        <script type="application/javascript"> 
-                                            turReturVechi={!! json_encode(old('tur_retur', false)) !!}
-                                        </script>
-                                        <input type="hidden" name="tur_retur" value="false" />
-                                        <input type="checkbox" class="custom-control-input custom-control-lg" id="customSwitch1" 
-                                        name="tur_retur" v-model="tur_retur" value="true" required
-                                        {{ old('tur_retur') == 'true' ? 'checked' : '' }}
-                                        @change='setPreturi();'
-                                        >
-                                        <label class="custom-control-label" for="customSwitch1">TUR - RETUR</label>                                        
-                                    </div> --}}
-                                {{-- </div>
-                                <div class="form-row mb-2 justify-content-center">  --}}
                                     <div class="custom-control custom-switch col-lg-12 text-center py-1">
                                         @if (old('tur_retur') === 'true')
                                             <script type="application/javascript"> 
@@ -117,7 +104,8 @@
                                         >
                                         <label class="custom-control-label" for="customSwitch1">TUR - RETUR</label>                                        
                                     </div>
-
+                                </div>
+                            </div>
 
 
                     {{-- <div v-if="tur_retur">               
@@ -132,8 +120,7 @@
             :id="type.id" > --}}
                             {{-- <label >@{{judet_plecare.judet}}</label> --}}
 
-
-                                </div>       
+      
                                 <div v-cloak v-if="traseu">                        
                                     <div class="row mb-2">
                                         <div class="col-lg-6">
