@@ -349,6 +349,11 @@
                                         </div> 
                                     </div>
                                 </div> 
+                                <div class="form-row mb-3 px-2 py-2 justify-content-center align-items-center">
+                                    <div v-if="tur_retur" class="form-group col-lg-12 justify-content-center align-items-end text-center">
+                                        Data de intoarcere trebuie sa fie la maxim 15 zile de la data de plecare.
+                                    </div>
+                                </div>
                                 <div class="form-row mb-3 px-2 py-2 justify-content-between align-items-center border rounded">                                    
                                     <div class="form-group col-lg-4">  
                                         <label for="nume" class="mb-0">Nume Client:*</label>                                      

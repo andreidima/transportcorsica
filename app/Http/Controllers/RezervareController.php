@@ -141,32 +141,29 @@ class RezervareController extends Controller
             [
                 // 'cursa_id' =>['nullable', 'numeric', 'max:999'],
                 'traseu' => ['required'],
-                'oras_plecare' => ['required', 'integer', 'max:999'],
-                'oras_sosire' => ['required', 'integer', 'max:999'],
+                'oras_plecare' => ['required', 'integer'],
+                'oras_sosire' => ['required', 'integer'],
                 'tur_retur' => [''],
                 // 'statie_id' => ['nullable', 'numeric', 'max:999'],
                 // 'statie_imbarcare' => ['nullable'],
                 'nr_adulti' => ['required', 'integer', 'between:1,100'],
                 // 'nr_copii' => ['nullable', 'integer', 'between:0,100'],
                 // 'data_plecare' => [''],
-                'data_plecare' => ['required_if:traseu,1', 'required_if:tur_retur,true'],
+                'data_plecare' => ['required_if:traseu,Romania-Corsica', 'required_if:tur_retur,true'],
                 'data_intoarcere' => [
                     // 'basil',
                     'required_if:tur_retur,true',
-                    'required_unless:traseu,1',
+                    'required_unless:traseu,Romania-Corsica',
                     // 'after:data_plecare', 
                     'max:50',
                     function ($attribute, $value, $fail) use ($request) {
                         $data_plecare = \Carbon\Carbon::parse($request->data_plecare);
                         $data_intoarcere = \Carbon\Carbon::parse($request->data_intoarcere);
-                        // dd($data_plecare, $data_intoarcere, $request->traseu, $request->tur_retur);
-                        if (($request->traseu == 1) && ($request->tur_retur == true) && ($data_plecare > $data_intoarcere)) {
-                            // dd($request->traseu);
+                        if (($request->traseu == 'Romania-Corsica') && ($request->tur_retur == true) && ($data_plecare > $data_intoarcere)) {
                             $fail('Data de intoarcere trebuie sa fie mai mare decât data de plecare.');
-                        } elseif (($request->traseu == 2) && ($request->tur_retur == true) && ($data_plecare < $data_intoarcere)) {
-                            // dd($request->traseu);
+                        } elseif (($request->traseu == 'Corsica-Romania') && ($request->tur_retur == true) && ($data_plecare < $data_intoarcere)) {
                             $fail('Data de intoarcere trebuie sa fie mai mare decât data de plecare.');
-                        } elseif (($request->tur_retur == true) && ($data_plecare->diffInDays($data_intoarcere) > 30)) {
+                        } elseif (($request->tur_retur == true) && ($data_plecare->diffInDays($data_intoarcere) > 15)) {
                             $fail('Data de intoarcere trebuie sa fie la maxim 30 de zile de la data de plecare.');
                         }
                     },
@@ -175,20 +172,20 @@ class RezervareController extends Controller
                 'nume' => ($request->_method === "PATCH") ?
                     [
                         'required', 'max:200',
-                        Rule::unique('rezervari')->ignore($rezervari->id)->where(function ($query) use ($rezervari, $request) {
-                            return $query->where('telefon', $request->telefon)
-                                ->where('data_cursa', $request->data_cursa);
-                        }),
+                        // Rule::unique('rezervari')->ignore($rezervari->id)->where(function ($query) use ($rezervari, $request) {
+                        //     return $query->where('telefon', $request->telefon)
+                        //         ->where('data_cursa', $request->data_cursa);
+                        // }),
                     ]
                     : [
                         'required', 'max:200',
-                        Rule::unique('rezervari')->where(function ($query) use ($rezervari, $request) {
-                            return $query->where('telefon', $request->telefon)
-                                ->where('data_plecare', $request->data_plecare);
-                        }),
+                        // Rule::unique('rezervari')->where(function ($query) use ($rezervari, $request) {
+                        //     return $query->where('telefon', $request->telefon)
+                        //         ->where('data_plecare', $request->data_plecare);
+                        // }),
                     ],
                 'telefon' => ['required', 'regex:/^[0-9 ]+$/', 'max: 100'],
-                'email' => ['required', 'email', 'max:100'],
+                'email' => ['nullable', 'email', 'max:100'],
                 // 'pret_total' => ['nullable', 'numeric', 'max:999999'],
                 'adresa' => ['max:2000'],
                 'observatii' => ['max:2000'],
