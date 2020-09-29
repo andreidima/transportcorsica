@@ -6,6 +6,7 @@ use App\Models\Rezervare;
 use App\Models\Oras;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use DB;
 
 class RezervareController extends Controller
 {
@@ -189,8 +190,9 @@ class RezervareController extends Controller
                 'telefon' => ['required', 'regex:/^[0-9 ]+$/', 'max: 100'],
                 'email' => ['nullable', 'email', 'max:100'],
                 // 'pret_total' => ['nullable', 'numeric', 'max:999999'],
-                'pasageri' => ['max:2000'],
+                'adresa' => ['max:2000'],
                 'observatii' => ['max:2000'],
+                'pasageri' => ['max:2000'],
 
                 // 'plata_online' => [''],
                 // 'adresa' => ['required_if:plata_online,true', 'nullable', 'max:99'],
@@ -307,48 +309,76 @@ class RezervareController extends Controller
         $this->validate(
             $request_verificare_duplicate,
             [
-                'nume' => ['required', 'max:100', 'unique:rezervari,nume,NULL,id,telefon,' . $request_verificare_duplicate->telefon . ',data_plecare,' . $request_verificare_duplicate->data_plecare]
+                'nume' => ['required', 'max:100', 'unique:rezervari,nume,NULL,id,telefon,' . $request_verificare_duplicate->telefon . ',data_cursa,' . $request_verificare_duplicate->data_plecare]
             ],
             [
                 'nume.unique' => 'Această Rezervare este deja înregistrată.'
             ]
         );
-
-        //Schimbare tur_retur din "true or false" din vue, in "0 or 1" pentru baza de date
-        // ($rezervare->tur_retur === "true") ? ($rezervare->tur_retur = 1) : ($rezervare->tur_retur = 0);
         
-        $rezervare_array = $rezervare->toArray();
-        unset(
-            $rezervare_array['tip_calatorie'], 
-            $rezervare_array['traseu'],
-            $rezervare_array['tur_retur'],
-            $rezervare_array['oras_plecare_nume'],
-            $rezervare_array['oras_sosire_nume'],
-            $rezervare_array['acord_de_confidentialitate'],
-            $rezervare_array['termeni_si_conditii'],
-            $rezervare_array['sdf'],
-            $rezervare_array['wer']
+        // $rezervare_array = $rezervare->toArray();
+        // unset(
+        //     $rezervare_array['tip_calatorie'], 
+        //     $rezervare_array['traseu'],
+        //     $rezervare_array['tur_retur'],
+        //     $rezervare_array['data_plecare'],
+        //     $rezervare_array['data_intoarcere'],
+        //     $rezervare_array['oras_plecare_nume'],
+        //     $rezervare_array['oras_sosire_nume'],
+        //     $rezervare_array['acord_de_confidentialitate'],
+        //     $rezervare_array['termeni_si_conditii']
+        // );
+
+        $rezervare_unset = clone $rezervare;
+        unset($rezervare_unset->tip_calatorie,
+            $rezervare_unset->traseu,
+            $rezervare_unset->tur_retur,
+            $rezervare_unset->data_plecare,
+            $rezervare_unset->data_intoarcere,
+            $rezervare_unset->oras_plecare_nume,
+            $rezervare_unset->oras_sosire_nume,
+            $rezervare_unset->acord_de_confidentialitate,
+            $rezervare_unset->termeni_si_conditii
         );
-        dd($rezervare_array);
-        $rezervare_tur = $rezervare->toArray();
-        $rezervare_retur = $rezervare->toArray();
         
-        unset($rezervare_array['traseu'], $rezervare_array['oras_plecare_nume'], $rezervare_array['oras_sosire_nume'],
-        $rezervare_array['plata_online'], $rezervare_array['acord_de_confidentialitate'], $rezervare_array['termeni_si_conditii']);
+        $rezervare_tur = $rezervare_unset;
+        $rezervare_retur = $rezervare_unset;
 
-        //Inserarea rezervarii in baza de date
-        $id = DB::table('rezervari')->insertGetId($rezervare_array);
+        $rezervare_tur->data_cursa = $rezervare->data_plecare;
+        $rezervare_retur->data_cursa = $rezervare->data_intoarcere;
+        $rezervare_retur->pret_total = 0;
 
-        // $id = $rezervari->save->insertGetId;
+        if ($rezervare->tur_retur === 0) {
+            //Inserarea rezervarii in baza de date
+            // $id_tur = DB::table('rezervari')->insertGetId($rezervare_tur);
+            $rezervare_tur->save();
 
-        $rezervare->id = $id;
+            $request->session()->put('rezervare_tur', $rezervare_tur);
 
-        $rezervare->tabel = 'rezervari';
-        $rezervare->currency = 'EUR';
-        $rezervare->return_url = 'https://aplicatie.alsimymondtravel.ro/adauga-rezervare-pasul-3';
+            //Trimitere sms
+            // $this->trimiteSms($rezervare_tur);
+        } else {
+            //Inserarea rezervarilor in baza de date
+            // $id_retur = DB::table('rezervari')->insertGetId($rezervare_tur);
+            $rezervare_tur->save();
+            $rezervare_retur->save();
 
-        $request->session()->put('rezervare', $rezervare);
+            //Trimitere sms
+            // $this->trimiteSms($rezervare_tur);
+            // $this->trimiteSms($rezervare_retur);
 
+            $rezervare_tur->tur_retur = $rezervare_retur->id;
+            $rezervare_tur->update();
+
+            $rezervare_retur->tur_retur = $rezervare_tur->id;
+            $rezervare_retur->update();
+
+            $request->session()->put('rezervare_tur', $rezervare_tur);
+            $request->session()->put('rezervare_retur', $rezervare_retur);
+        }
+
+        return redirect('/adauga-rezervare-pasul-3');
+        
         // Trimitere email
         if (stripos($rezervare->nume, 'Andrei Dima Test') !== false) {
             if (stripos($rezervare->nume, 'fara email') !== false) {
@@ -364,18 +394,27 @@ class RezervareController extends Controller
             // );
         }
 
-        //Trimitere catre plata
-        // if ($plata_online == 1) {
-        //     if (stripos($rezervare->nume, 'Andrei Dima Test') !== false) {
-        //         if (stripos($rezervare->nume, 'fara plata') !== false) {
-        //             return redirect('/adauga-rezervare-pasul-3');
-        //         } else {
-        //             return redirect('/trimitere-catre-plata');
-        //         }
-        //     } else {
-        //         return redirect('/trimitere-catre-plata');
-        //     }
-        // }
+        // Cu sau fara plata online
+        switch ($request->input('action')) {
+            case 'cu_plata_online':        
+                // if (stripos($rezervare->nume, 'Andrei Dima Test') !== false) {
+                //     if (stripos($rezervare->nume, 'fara plata') !== false) {
+                //         return redirect('/adauga-rezervare-pasul-3');
+                //     } else {
+                //         return redirect('/trimitere-catre-plata');
+                //     }
+                // } else {
+                //     $rezervare->tabel = 'rezervari';
+                //     $rezervare->currency = 'EUR';
+                //     $rezervare->return_url = 'https://aplicatie.alsimymondtravel.ro/adauga-rezervare-pasul-3';
+
+                //     return redirect('/trimitere-catre-plata');
+                // }
+            break;
+            case 'fara_plata_online':
+                return redirect('/adauga-rezervare-pasul-3');
+            break; 
+        }
     }
 
     /**
@@ -385,26 +424,26 @@ class RezervareController extends Controller
      */
     public function adaugaRezervarePasul3(Request $request)
     {
-        if ($request->has('orderId')) {
-            $plata_online = \App\PlataOnline::where('order_id', $request->orderId)->latest()->first();
-            $rezervare = \App\Rezervare::where('id', $plata_online->rezervare_id)->first();
+        // if ($request->has('orderId')) {
+        //     $plata_online = \App\PlataOnline::where('order_id', $request->orderId)->latest()->first();
+        //     $rezervare = \App\Rezervare::where('id', $plata_online->rezervare_id)->first();
 
-            $request->session()->put('plata_online', $plata_online);
-            $request->session()->forget('rezervare');
-            $request->session()->put('rezervare_id', $rezervare->id);
+        //     $request->session()->put('plata_online', $plata_online);
+        //     $request->session()->forget('rezervare');
+        //     $request->session()->put('rezervare_id', $rezervare->id);
 
-            // dd($rezervare, $rezervare->ora->ora);
+        //     return view('rezervari.guest-create/adauga-rezervare-pasul-3', compact('rezervare', 'plata_online'));
+        // } else {
+        //     $rezervare = $request->session()->get('rezervare');
 
-            return view('rezervari.guest-create/adauga-rezervare-pasul-3', compact('rezervare', 'plata_online'));
-        } else {
-            $rezervare = $request->session()->get('rezervare');
+        //     return view('rezervari.guest-create/adauga-rezervare-pasul-3', compact('rezervare'));
+        // }
 
-            return view('rezervari.guest-create/adauga-rezervare-pasul-3', compact('rezervare'));
-        }
-
-        // $request->session()->forget('rezervare');
-        // $request->session()->flush();
-        // dd (session()); 
+        $rezervare_tur = $request->session()->get('rezervare_tur');
+        // if ($rezervare_tur->tur_retur){
+            $rezervare_retur = $request->session()->get('rezervare_retur');
+        // }
+        dd($rezervare_tur, $rezervare_retur);
     }
 
     public function pdfExportGuest(Request $request)
