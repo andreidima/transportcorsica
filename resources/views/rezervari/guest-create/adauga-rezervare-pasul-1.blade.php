@@ -37,7 +37,7 @@
                                         <label class="btn btn-sm btn-success col-lg-6 border" v-bind:class="[tip_calatorie=='Calatori' ? active : '']">
                                             <input type="radio" class="btn-group-toggle" name="tip_calatorie" id="tip_calatorie1" autocomplete="off"
                                                 v-model="tip_calatorie" value="Calatori"
-                                                v-on:change="setTaraPlecare();getJudetePlecare();getJudeteSosire()"
+                                                v-on:change="setTaraPlecare();getJudetePlecareInitial();getJudeteSosireInitial();setPreturi();"
                                                 >
                                                     <i class="fas fa-users" style="font-size: 2em;"></i>
                                                     <span style="font-size: 2em;">
@@ -47,7 +47,7 @@
                                         <label class="btn btn-sm btn-success col-lg-6 border" v-bind:class="[tip_calatorie=='Colete' ? active : '']">
                                             <input type="radio" class="btn-group-toggle" name="tip_calatorie" id="tip_calatorie2" autocomplete="off"
                                                 v-model="tip_calatorie" value="Colete"
-                                                v-on:change="setTaraPlecare();getJudetePlecare();getJudeteSosire();setPreturi();"
+                                                v-on:change="setTaraPlecare();getJudetePlecareInitial();getJudeteSosireInitial();setPreturi();"
                                                 >
                                                     <i class="fas fa-box" style="font-size: 2em;"></i>
                                                     <span style="font-size: 2em;">
@@ -234,8 +234,8 @@
                                             </div> 
                                             <div v-if="traseu === 'Corsica-Romania'">
                                                 <vue2-datepicker-intoarcere
-                                                    data-veche="{{ old('data_intoarcere') == '' ? '' : old('data_intoarcere') }}"
-                                                    nume-camp-db="data_intoarcere"
+                                                    data-veche="{{ old('data_plecare') == '' ? '' : old('data_plecare') }}"
+                                                    nume-camp-db="data_plecare"
                                                     :latime="{ width: '125px' }"
                                                     tip="date"
                                                     value-type="YYYY-MM-DD"
@@ -261,8 +261,8 @@
                                             </div>
                                             <div v-if="traseu === 'Corsica-Romania'"> 
                                                 <vue2-datepicker-plecare
-                                                    data-veche="{{ old('data_plecare') == '' ? '' : old('data_plecare') }}"
-                                                    nume-camp-db="data_plecare"
+                                                    data-veche="{{ old('data_intoarcere') == '' ? '' : old('data_intoarcere') }}"
+                                                    nume-camp-db="data_intoarcere"
                                                     :latime="{ width: '125px' }"
                                                     tip="date"
                                                     value-type="YYYY-MM-DD"

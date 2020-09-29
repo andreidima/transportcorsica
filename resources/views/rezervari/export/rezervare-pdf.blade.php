@@ -69,12 +69,12 @@
                 <table style="margin:20px 0 20px 0">
                     <tr style="">
                         <td style="border-width:0px; padding:0rem; margin:0rem; width:40%">
-                            <img src="{{ asset('images/Alsimy Mond Travel Galati - logo.png') }}" width="300px">
+                            <img src="{{ asset('images/logo.png') }}" width="300px">
                         </td>
                         <td style="border-width:0px; padding:0rem; margin:0rem; width:60%; text-align:center; font-size:16px">
                             BILET REZERVAT
                             <br>
-                            Cod bilet: RO{{ $rezervare->id }}
+                            Cod bilet: RO{{ $rezervare_tur->id }}
                         </td>
                     </tr>
                 </table>
@@ -84,40 +84,35 @@
                 <tr style="text-align:center; font-weight:bold;">
                     <td colspan="3" style="border-width:0px; padding:0rem;">
                         <h3 style="background-color:#e7d790; color:black; margin:0px 0px 5px 0px; padding:5px 0px;">
-                        Informatii Calator
+                        Informatii Client
                         </h3>
                     </td>
                 </tr>
                 <tr>
                     <td width="35%" style="">
-                        Calator: 
+                        Client: 
                         <br>
-                        <b>{{ $rezervare->nume }}</b>
+                        <b>{{ $rezervare_tur->nume }}</b>
                     </td>
                     <td width="25%" style="text-align:center;">
                         Telefon: 
                         <br>
-                        <b>{{ $rezervare->telefon }}</b>
+                        <b>{{ $rezervare_tur->telefon }}</b>
                     </td>
                     <td width="40%" style="text-align:right;">
                         E-mail: 
                         <br>
-                        <b>{{ $rezervare->email }}</b>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="3">                        
-                        Adresa: {{ $rezervare->adresa }}
+                        <b>{{ $rezervare_tur->email }}</b>
                     </td>
                 </tr>
                 <tr>
                     <td colspan="3">                    
-                        Animale de companie: {{ $rezervare->animale_companie }}
+                        Pasageri: {{ $rezervare_tur->pasageri }}
                     </td>
                 </tr>
                 <tr>
                     <td colspan="3">                    
-                        Observatii: {{ $rezervare->observatii }}
+                        Observatii: {{ $rezervare_tur->observatii }}
                     </td>
                 </tr>
             </table>
@@ -134,12 +129,12 @@
                     <td style="">
                         Data de plecare: 
                         <br>
-                        <b>{{ \Carbon\Carbon::parse($rezervare->data_plecare)->isoFormat('D.MM.YYYY') }}</b>
+                        <b>{{ \Carbon\Carbon::parse($rezervare_tur->data_cursa)->isoFormat('DD.MM.YYYY') }}</b>
                     </td>
                     <td style="">
                         Oraș plecare:
                         <br>
-                        <b>{{ $rezervare->oras_plecare_nume->nume }}</b>
+                        <b>{{ $rezervare_tur->oras_plecare_nume->oras }}</b>
                     </td>
                     <td>
                         <img src="{{ asset('images/sageata dreapta.jpg') }}" width="50px">
@@ -147,7 +142,7 @@
                     <td style="">
                         Oraș sosire:
                         <br>
-                        <b>{{ $rezervare->oras_sosire_nume->nume }}</b>
+                        <b>{{ $rezervare_tur->oras_sosire_nume->oras }}</b>
                     </td>
                 </tr>
                 <tr>
@@ -155,18 +150,18 @@
                         &nbsp;
                     </td>
                 </tr>
-                @if (($rezervare->tur_retur === "true") || ($rezervare->tur_retur === 1))
+                @if ($rezervare_retur)
 
                     <tr>
                         <td style="">
                             Data de întoarcere: 
                             <br>
-                            <b>{{ \Carbon\Carbon::parse($rezervare->data_intoarcere)->isoFormat('D.MM.YYYY') }}</b>
+                            <b>{{ \Carbon\Carbon::parse($rezervare_retur->data_cursa)->isoFormat('DD.MM.YYYY') }}</b>
                         </td>
                         <td style="">
                             Oraș sosire:
                             <br>
-                            <b>{{ $rezervare->oras_plecare_nume->nume }}</b>
+                            <b>{{ $rezervare_retur->oras_plecare_nume->oras }}</b>
                         </td>
                         <td>
                         <img src="{{ asset('images/sageata stanga.jpg') }}" width="50px">
@@ -174,7 +169,7 @@
                         <td style="">
                             Oraș plecare:
                             <br>
-                            <b>{{ $rezervare->oras_sosire_nume->nume }}</b>
+                            <b>{{ $rezervare_retur->oras_sosire_nume->oras }}</b>
                         </td>
                     </tr>
                 @endif
@@ -189,29 +184,18 @@
                     </td>
                 </tr>
                 <tr>
+                    @if ($rezervare_tur->nr_adulti > 0)
                     <td>
-                        Număr adulți: {{ $rezervare->nr_adulti }} * {{ $tarife->adult }}Euro = {{ $rezervare->nr_adulti * $tarife->adult}}Euro
-                                        {{-- - 10% =
-                                        {{ $rezervare->nr_adulti * floor((string) ($tarife->adult * 90)) / 100}}Euro --}}
-                        @if ($rezervare->nr_copii > 0)
-                            <br>
-                            Număr copii: {{ $rezervare->nr_copii }} * {{ $tarife->copil }}Euro = {{ $rezervare->nr_copii * $tarife->copil}}Euro
-                                            {{-- - 10% =
-                                            {{ $rezervare->nr_copii * floor((string) ($tarife->copil * 90)) / 100}}Euro --}}
-                        @endif
-                        @if ($rezervare->nr_animale_mici > 0)
-                            <br>
-                            Număr animale de companie de talie mică, mai mici de 10 kg: {{ $rezervare->nr_animale_mici }} * {{ $tarife->animal_mic }}Euro = {{ $rezervare->nr_animale_mici * $tarife->animal_mic}}Euro
-                        @endif
-                        @if ($rezervare->nr_animale_mari > 0)
-                            <br>
-                            Număr animale de companie de talie mare, mai mari de 10 kg: {{ $rezervare->nr_animale_mari }} * {{ $tarife->animal_mare }}Euro = {{ $rezervare->nr_animale_mari * $tarife->animal_mare}}Euro
-                        @endif
+                        Număr adulți: {{ $rezervare_tur->nr_adulti }}
                         <br>
-                        <br>
-                        <b>Preț total: {{ $rezervare->pret_total }}Euro</b>
+                        <b>Preț total: {{ $rezervare_tur->pret_total }}Euro</b>
 
                     </td>
+                    @else
+                    <td>
+                        Descriere colet: {{ $rezervare_tur->descriere_colet }}
+                    </td>
+                    @endif
                 </tr>                
             </table>
                             
@@ -225,24 +209,17 @@
                 </tr>
                 <tr>
                     <td>
-                        Document de călătorie:<b> {{ $rezervare->document_de_calatorie }} </b>
+                        Document de călătorie:<b> {{ $rezervare_tur->document_de_calatorie }} </b>
                         <br>
-                        Data expirării documentului:
-                            <b>
-                                @if ($rezervare->expirare_document !== null)
-                                    {{ \Carbon\Carbon::parse($rezervare->expirare_document)->isoFormat('D.MM.YYYY') }}    
-                                @endif 
-                            </b>
+                        Seria buletin / pașaport:<b> {{ $rezervare_tur->serie_document }} </b>
                         <br>
-                        Seria buletin / pașaport:<b> {{ $rezervare->serie_document }} </b>
-                        <br>
-                        Cnp:<b> {{ $rezervare->cnp }} </b>
+                        Cnp:<b> {{ $rezervare_tur->cnp }} </b>
                         <br>
                     </td>
                 </tr>                
             </table>
             
-            * IN PRETUL BILETULUI AVETI INCLUS 40 KG PTR BAGAJUL DVS , CE DEPASESTE SE TAXEAZA CU 1 EURO / KG !!!
+            {{-- * IN PRETUL BILETULUI AVETI INCLUS 40 KG PTR BAGAJUL DVS , CE DEPASESTE SE TAXEAZA CU 1 EURO / KG !!!
             <br><br>
             Ptr rezervari făcute cu mai puțin de 24 ore înainte de plecare sunați la nr de telefon: <b>0755106508</b> sau <b>0742296938</b>
             <br>
@@ -250,7 +227,7 @@
                 / 
                 <a href="mailto:alsimy.mond.travel@gmail.com">alsimy.mond.travel@gmail.com</a>
             <br>
-            FACTURA FISCALA O VEȚI PRIMI PE E-MAIL
+            FACTURA FISCALA O VEȚI PRIMI PE E-MAIL --}}
     </div>
 </body>
 

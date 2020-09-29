@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\RezervareController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -22,23 +24,20 @@ Route::get('/rezervare-client', function () {
 Route::redirect('/', 'adauga-rezervare-pasul-1');
 
 // Rute pentru rezervare facuta de guest
-Route::get('/adauga-rezervare-pasul-1', [App\Http\Controllers\RezervareController::class, 'adaugaRezervarePasul1']);
-Route::post('/adauga-rezervare-pasul-1', [App\Http\Controllers\RezervareController::class, 'postadaugaRezervarePasul1']);
-Route::get('/adauga-rezervare-pasul-2', [App\Http\Controllers\RezervareController::class, 'adaugaRezervarePasul2']);
-Route::post('/adauga-rezervare-pasul-2', [App\Http\Controllers\RezervareController::class, 'postAdaugaRezervarePasul2']);
-Route::get('/adauga-rezervare-pasul-3', [App\Http\Controllers\RezervareController::class, 'adaugaRezervarePasul3']);
-Route::get('/bilet-rezervat/{view_type}', [App\Http\Controllers\RezervareController::class, 'pdfExportGuest']);
+Route::get('/adauga-rezervare-pasul-1', [RezervareController::class, 'adaugaRezervarePasul1']);
+Route::post('/adauga-rezervare-pasul-1', [RezervareController::class, 'postadaugaRezervarePasul1']);
+Route::get('/adauga-rezervare-pasul-2', [RezervareController::class, 'adaugaRezervarePasul2']);
+Route::post('/adauga-rezervare-pasul-2', [RezervareController::class, 'postAdaugaRezervarePasul2']);
+Route::get('/adauga-rezervare-pasul-3', [RezervareController::class, 'adaugaRezervarePasul3']);
+Route::get('/bilet-rezervat/{view_type}', [RezervareController::class, 'pdfExportGuest']);
 
 // Extras date cu Axios
-Route::get('/orase_rezervari', [App\Http\Controllers\RezervareController::class, 'orase_rezervari']);
+Route::get('/orase_rezervari', [RezervareController::class, 'orase_rezervari']);
 
 
-Route::get('/teste', function () {
-    $raspuns = \App\Models\Oras::select('id', 'oras', 'tara')
-        ->where('tara', 'Romania')
-        // ->orderBy('oras')
-        ->get();
-    dd($raspuns);
+Route::group(['middleware' => 'auth'], function () {
+    Route::redirect('/', 'rezervari');
+    Route::redirect('/home', 'rezervari');
+
+        Route::resource('rezervari', RezervareController::class,  ['parameters' => ['rezervari' => 'rezervare']]);
 });
-
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

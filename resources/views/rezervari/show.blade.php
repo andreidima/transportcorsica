@@ -1,186 +1,125 @@
 @extends ('layouts.app')
 
 @section('content')   
-    <div class="container card">
-        <div class="row card-header">
-                <h4 class="mb-0"><a href="{{ route('rezervari.index') }}"><i class="fas fa-list-ul mr-1"></i>Rezervari</a> / {{ $rezervari->nume }}</h4>
-        </div>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            <div class="shadow-lg" style="border-radius: 40px 40px 40px 40px;">
+                <div class="border border-secondary p-2" style="border-radius: 40px 40px 0px 0px; background-color:#e66800">
+                    <h6 class="ml-4 my-0" style="color:white"><i class="fas fa-address-card mr-1"></i>Rezervări / {{ $rezervare->nume }}</h6>
+                </div>
 
-        <div class="card-body d-flex">
+                <div class="card-body py-2" 
+                    style="
+                        /* color:ivory;  */
+                        background-color:crimson; 
+                        border-radius: 0px 0px 40px 40px
+                    "
+                >
 
-            @if (session()->has('status'))
-            <div class="alert alert-success">
-                {{ session('status') }}
-            </div>
-            @endif
+                        <div class="row mb-0 d-flex justify-content-center border-radius: 0px 0px 40px 40px">
+                            <div class="col-lg-12 p-4 mb-0">
+                                <div class="row mb-3 d-flex justify-content-center">
+                                    <div class="col-lg-11 px-0 border rounded-lg">
+                                        <h5 class="bg-warning p-1 m-0 text-center">
+                                            Informații călătorie
+                                        </h5>
+                                    </div>
+                                    <div class="col-lg-11 p-4 mb-4 bg-white border rounded-lg">
+                                        <div class="row text-center">
+                                            <div class="col-lg-3">
+                                                Data de plecare:
+                                                <br>
+                                                <span class="badge badge-primary" style="font-size:1.1em">
+                                                    {{ \Carbon\Carbon::parse($rezervare->data_cursa)->isoFormat('DD.MM.YYYY') }}
+                                                </span>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                Oraș plecare:
+                                                <br>
+                                                <span class="badge badge-primary" style="font-size:1.1em">
+                                                    {{ $rezervare->oras_plecare_nume->oras }}
+                                                </span>
+                                            </div>
+                                            <div class="col-lg-1 pt-1 text-primary">
+                                                    <i class="fas fa-long-arrow-alt-right fa-4x"></i>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                Oraș sosire:
+                                                <br>
+                                                <span class="badge badge-primary" style="font-size:1.1em">
+                                                    {{ $rezervare->oras_sosire_nume->oras }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @if ($rezervare->nr_adulti)
+                                    <div class="col-lg-11 px-0 border rounded-lg">
+                                        <h5 class="bg-warning p-1 m-0 text-center">
+                                            Informații pasageri
+                                        </h5>
+                                    </div>
+                                    <div class="col-lg-11 px-4 py-2 bg-white border rounded-lg">
+                                        Număr pasageri: 
+                                        <span class="badge badge-primary" style="font-size:1em">{{ $rezervare->nr_adulti }}</span>
+                                        {{-- * {{ $tarife->adult }}€ = {{ $rezervare->nr_adulti * $tarife->adult}}€ --}}
+                                    </div>
+                                    <div class="col-lg-11 px-4 py-2 mb-4 bg-white border rounded-lg">
+                                        Preț total: <span class="badge badge-primary" style="font-size:1em">{{ $rezervare->pret_total }}€</span>
+                                    </div>                                
+                                @else
+                                    <div class="col-lg-11 px-0 border rounded-lg">
+                                        <h5 class="bg-warning p-1 m-0 text-center">
+                                            Informații colet
+                                        </h5>
+                                    </div>
+                                    <div class="col-lg-11 px-4 py-2 mb-4 bg-white border rounded-lg">
+                                        {{ $rezervare->descriere_colet }}</span>
+                                    </div>
+                                @endif
+                                    <div class="col-lg-11 px-0 border rounded-lg">
+                                        <h5 class="bg-warning p-1 m-0 text-center">
+                                            Informații client
+                                        </h5>
+                                    </div>
+                                    <div class="col-lg-11 px-4 py-2 mb-4 bg-white border rounded-lg">
+                                        Nume: <span class="badge badge-primary" style="font-size:1.1em">{{ $rezervare->nume }}</span>
+                                        <br>
+                                        Telefon: <b>{{ $rezervare->telefon }}</b>
+                                        <br>
+                                        Email: <b>{{ $rezervare->email }}</b>
+                                        <br>
+                                        Pasageri: {{ $rezervare->pasageri }}
+                                        <br>
+                                        Observații: {{ $rezervare->observatii }}
+                                    </div>
 
-            <div class="table-responsive col-md-5 mx-auto">
-                <table class="table table-striped table-hover table-dark table-sm" style="background-color:#008282"> 
-                    <tr>
-                        <td>
-                            Nume
-                        </td>
-                        <td>
-                            {{ $rezervari->nume }}
-                        </td>
-                    </tr>
-                    </tr>
-                        <td>
-                            Telefon
-                        </td>
-                        <td>
-                            {{ $rezervari->telefon }}
-                        </td>
-                    </tr>
-                    </tr>
-                        <td>
-                            Email
-                        </td>
-                        <td>
-                            {{ $rezervari->email }}
-                        </td>
-                    </tr>
-                    </tr>
-                        <td>
-                            Adresa
-                        </td>
-                        <td>
-                            {{ $rezervari->adresa }}
-                        </td>
-                    </tr>
-                    </tr>
-                        <td>
-                            Observatii
-                        </td>
-                        <td>
-                            {{ $rezervari->observatii }}
-                        </td>
-                    </tr>
-                    </tr>
-                        <td>
-                            Document de călătorie
-                        </td>
-                        <td>
-                            {{ $rezervari->document_de_calatorie }}
-                        </td>
-                    </tr>
-                    </tr>
-                        <td>
-                            <small> Data expirării documentului</small>
-                        </td>
-                        <td>
-                            {{ \Carbon\Carbon::parse($rezervari->expirare_document)->isoFormat('D.MM.YYYY') }}
-                        </td>
-                    </tr>
-                    </tr>
-                        <td>
-                            Seria buletin / pașaport
-                        </td>
-                        <td>
-                            {{ $rezervari->serie_document }}
-                        </td>
-                    </tr>
-                    </tr>
-                        <td>
-                            Cnp
-                        </td>
-                        <td>
-                            {{ $rezervari->cnp }}
-                        </td>
-                    </tr>
-                    </tr>
-                        <td>
-                            Data rezervarii
-                        </td>
-                        <td>
-                            {{ \Carbon\Carbon::parse($rezervari->created_at)->isoFormat('D.MM.YYYY') }}
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <div class="table-responsive col-md-3 mx-auto">
-                <table class="table table-striped table-hover table-dark table-sm" style="background-color:#008282"> 
-                    <tr>
-                        <td>
-                            Oras plecare
-                        </td>
-                        <td>
-                            {{ $rezervari->oras_plecare_nume->nume }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Oras sosire
-                        </td>
-                        <td>
-                            {{ $rezervari->oras_sosire_nume->nume }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Tur - retur
-                        </td>
-                        <td>
-                            {{ $rezervari->tur_retur ? 'DA' : 'NU' }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Data_plecare
-                        </td>
-                        <td>
-                            {{ \Carbon\Carbon::parse($rezervari->data_plecare)->isoFormat('D.MM.YYYY') }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Data_intoarcere
-                        </td>
-                        <td>
-                            {{ \Carbon\Carbon::parse($rezervari->data_intoarcere)->isoFormat('D.MM.YYYY') }}
-                        </td>
-                    </tr>
-                        <td>
-                            Nr. adulți
-                        </td>
-                        <td>
-                            {{ $rezervari->nr_adulti }}
-                        </td>
-                    </tr>
-                    </tr>
-                        <td>
-                            Nr. copii
-                        </td>
-                        <td>
-                            {{ $rezervari->nr_copii }}
-                        </td>
-                    </tr>
-                    {{-- </tr>
-                        <td>
-                            Nr. animale mici
-                        </td>
-                        <td>
-                            {{ $rezervari->nr_animale_mici }}
-                        </td>
-                    </tr>
-                    </tr>
-                        <td>
-                            Nr. animale mari
-                        </td>
-                        <td>
-                            {{ $rezervari->nr_animale_mari }}
-                        </td>
-                    </tr> --}}
-                    </tr>
-                        <td>
-                            Preț total
-                        </td>
-                        <td>
-                            {{ $rezervari->pret_total }}
-                        </td>
-                    </tr>
-                </table>
+                                    <div class="col-lg-11 px-0 border rounded-lg">
+                                        <h5 class="bg-warning p-1 m-0 text-center">
+                                            Date pentru facturare
+                                        </h5>
+                                    </div>
+                                    <div class="col-lg-11 px-4 py-2 mb-2 bg-white border rounded-lg">
+                                        Document de călătorie: {{ $rezervare->document_de_calatorie }}
+                                        <br>
+                                        {{-- Data expirării documentului: 
+                                            @if ($rezervare->expirare_document !== null)
+                                                {{ \Carbon\Carbon::parse($rezervare->expirare_document)->isoFormat('DD.MM.YYYY') }}    
+                                            @endif                                        
+                                        <br> --}}
+                                        Seria buletin / pașaport:: {{ $rezervare->serie_document }}
+                                        <br>
+                                        Cnp: {{ $rezervare->cnp }}
+                                    </div>
+
+                                </div>  
+                                
+
+                            </div>
+                        </div>
+                </div>
             </div>
         </div>
     </div>
+</div>
 @endsection

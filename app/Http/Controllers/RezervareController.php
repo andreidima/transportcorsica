@@ -17,7 +17,15 @@ class RezervareController extends Controller
      */
     public function index()
     {
-        //
+        $search_nume = \Request::get('search_nume');
+        $rezervari = Rezervare::
+            when($search_nume, function ($query, $search_nume) {
+                return $query->where('nume', 'like', '%' . $search_nume . '%');
+            })
+            ->latest()
+            ->simplePaginate(25);
+
+        return view('rezervari.index', compact('rezervari', 'search_nume'));
     }
 
     /**
@@ -49,7 +57,7 @@ class RezervareController extends Controller
      */
     public function show(Rezervare $rezervare)
     {
-        //
+        return view('rezervari.show', compact('rezervare'));
     }
 
     /**
@@ -152,22 +160,29 @@ class RezervareController extends Controller
                 'descriere_colet' => ['required_if:tip_calatorie,Colete', 'max:2000'],
                 // 'nr_copii' => ['nullable', 'integer', 'between:0,100'],
                 // 'data_plecare' => [''],
-                'data_plecare' => ['required_if:traseu,Romania-Corsica', 'required_if:tur_retur,true'],
+                'data_plecare' => [
+                    // 'required_if:traseu,Romania-Corsica', 
+                    // 'required_if:tur_retur,true'
+                    'required'
+                ],
                 'data_intoarcere' => [
                     // 'basil',
                     'required_if:tur_retur,true',
-                    'required_unless:traseu,Romania-Corsica',
-                    // 'after:data_plecare', 
+                    // 'required_unless:traseu,Romania-Corsica',
+                    'after:data_plecare', 
                     'max:50',
                     function ($attribute, $value, $fail) use ($request) {
                         $data_plecare = \Carbon\Carbon::parse($request->data_plecare);
                         $data_intoarcere = \Carbon\Carbon::parse($request->data_intoarcere);
-                        if (($request->traseu == 'Romania-Corsica') && ($request->tur_retur == true) && ($data_plecare > $data_intoarcere)) {
-                            $fail('Data de intoarcere trebuie sa fie mai mare decât data de plecare.');
-                        } elseif (($request->traseu == 'Corsica-Romania') && ($request->tur_retur == true) && ($data_plecare < $data_intoarcere)) {
-                            $fail('Data de intoarcere trebuie sa fie mai mare decât data de plecare.');
-                        } elseif (($request->tur_retur == true) && ($data_plecare->diffInDays($data_intoarcere) > 15)) {
-                            $fail('Data de intoarcere trebuie sa fie la maxim 30 de zile de la data de plecare.');
+                        // if (($request->traseu == 'Romania-Corsica') && ($request->tur_retur == true) && ($data_plecare > $data_intoarcere)) {
+                        //     $fail('Data de intoarcere trebuie sa fie mai mare decât data de plecare.');
+                        // } elseif (($request->traseu == 'Corsica-Romania') && ($request->tur_retur == true) && ($data_plecare < $data_intoarcere)) {
+                        //     $fail('Data de intoarcere trebuie sa fie mai mare decât data de plecare.');
+                        // } elseif (($request->tur_retur == true) && ($data_plecare->diffInDays($data_intoarcere) > 15)) {
+                        //     $fail('Data de intoarcere trebuie sa fie la maxim 30 de zile de la data de plecare.');
+                        // }
+                        if (($request->tur_retur == true) && ($data_plecare->diffInDays($data_intoarcere) > 15)) {
+                            $fail('Data de intoarcere trebuie sa fie la maxim 15 zile de la data de plecare.');
                         }
                     },
                 ],
@@ -211,6 +226,9 @@ class RezervareController extends Controller
                 'nume.unique' => 'Această Rezervare este deja înregistrată.',
                 'data_plecare.required_if' => 'Câmpul data plecare este necesar.',
                 'data_intoarcere.required_unless' => 'Câmpul data plecare este necesar.',
+                'nr_adulti.required_if' => 'Câmpul Nr. Pasageri este necesar.',
+                'nr_adulti.integer' => 'Câmpul Nr. Pasageri trebuie să conțină un număr.',
+                'nr_adulti.between' => 'Câmpul Nr. Pasageri trebuie să fie între 1 și 100.',
                 // 'adresa.required_if' => 'Câmpul Adresa este obligatoriu dacă este selectată plata cu card'
             ]
         );
@@ -341,8 +359,8 @@ class RezervareController extends Controller
             $rezervare_unset->termeni_si_conditii
         );
         
-        $rezervare_tur = $rezervare_unset;
-        $rezervare_retur = $rezervare_unset;
+        $rezervare_tur = clone $rezervare_unset;
+        $rezervare_retur = clone $rezervare_unset;
 
         $rezervare_tur->data_cursa = $rezervare->data_plecare;
         $rezervare_retur->data_cursa = $rezervare->data_intoarcere;
@@ -440,35 +458,37 @@ class RezervareController extends Controller
         // }
 
         $rezervare_tur = $request->session()->get('rezervare_tur');
-        // if ($rezervare_tur->tur_retur){
+
+        if (!$rezervare_tur->tur_retur){
+            return view('rezervari.guest-create/adauga-rezervare-pasul-3', compact('rezervare_tur'));
+        } else {
             $rezervare_retur = $request->session()->get('rezervare_retur');
-        // }
-        dd($rezervare_tur, $rezervare_retur);
+            return view('rezervari.guest-create/adauga-rezervare-pasul-3', compact('rezervare_tur', 'rezervare_retur'));
+        }
     }
 
     public function pdfExportGuest(Request $request)
     {
-        if (Session::has('plata_online')) {
-            $rezervare = \App\Rezervare::where('id', $request->session()->get('rezervare_id'))->first();
+        // if (Session::has('plata_online')) {
+        //     $rezervare = \App\Rezervare::where('id', $request->session()->get('rezervare_id'))->first();
+        // } else {
+        //     $rezervare = $request->session()->get('rezervare');
+        // }
+
+        $rezervare_tur = $request->session()->get('rezervare_tur');
+
+        if (!$rezervare_tur->tur_retur){
+            $rezervare_retur = null;
         } else {
-            $rezervare = $request->session()->get('rezervare');
+            $rezervare_retur = $request->session()->get('rezervare_retur');
         }
 
-        $tarife = $request->session()->get('tarife');
-
-        // $tarife = DB::table('tarife')
-        //     ->where([
-        //         ['traseu_id', $rezervari->traseu],
-        //         ['tur_retur', ($rezervari->tur_retur == 'true' ? 1 : 0)]
-        //     ])
-        //     ->first();
-
         if ($request->view_type === 'rezervare-html') {
-            return view('rezervari.export.rezervare-pdf', compact('rezervare', 'tarife'));
+            return view('rezervari.export.rezervare-pdf', compact('rezervare_tur', 'rezervare_retur'));
         } elseif ($request->view_type === 'rezervare-pdf') {
-            $pdf = \PDF::loadView('rezervari.export.rezervare-pdf', compact('rezervare', 'tarife'))
+            $pdf = \PDF::loadView('rezervari.export.rezervare-pdf', compact('rezervare_tur', 'rezervare_retur'))
                 ->setPaper('a4');
-            return $pdf->download('Rezervare ' . $rezervare->nume . '.pdf');
+            return $pdf->download('Rezervare ' . $rezervare_tur->nume . '.pdf');
         }
     }
 }

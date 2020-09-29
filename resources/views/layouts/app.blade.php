@@ -24,10 +24,11 @@
 <body>
     <div id="app">
         @auth
-            <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+            <nav class="navbar navbar-expand-md navbar-dark shadow py-0" style="background-color:darkcyan">
                 <div class="container">
-                    <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'Laravel') }}
+                    <a class="navbar-brand mr-4" href="{{ url('/') }}">
+                        {{ config('app.name', 'Transport Corsica') }}
+                        {{-- <img src="{{ asset('images/logo.png') }}" height="40" class="border border-dark rounded-pill mr-4"> --}}
                     </a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                         <span class="navbar-toggler-icon"></span>
@@ -36,14 +37,28 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <!-- Left Side Of Navbar -->
                         <ul class="navbar-nav mr-auto">
+                            <li class="nav-item active mr-4">
+                                <a class="nav-link" href="{{ route('rezervari.index') }}">
+                                    <i class="fas fa-address-card mr-1"></i>Rezervări
+                                </a>
+                            </li>
+                            <li class="nav-item active mr-4 dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-book mr-1"></i>Raport
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="#">Raport Tur</a>
+                                    <a class="dropdown-item" href="#">Raport Retur</a>
+                                </div>
+                            </li>
 
                         </ul>
 
                         <!-- Right Side Of Navbar -->
-                        <ul class="navbar-nav ml-auto">
+                        <ul class="navbar-nav ml-auto text-white">
                             <!-- Authentication Links -->
                             @guest
-                                <li class="nav-item">
+                                <li class="nav-item active">
                                     <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                                 </li>
                                 @if (Route::has('register'))
@@ -52,7 +67,7 @@
                                     </li>
                                 @endif
                             @else
-                                <li class="nav-item dropdown">
+                                <li class="nav-item active dropdown">
                                     <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                         {{ Auth::user()->name }}
                                     </a>
