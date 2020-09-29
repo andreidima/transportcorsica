@@ -128,6 +128,10 @@
                                                 <div class="col-lg-12">
                                                     Plecare din:*
                                                 </div>
+                                            <div v-if="judete_plecare[0].judet === 'Corsica'">
+                                                @{{judet_plecare.judet}}
+                                                asdasd
+                                            </div>
                                                 <div class="form-group col-lg-6">                                        
                                                     {{-- <label for="judet_plecare" class="mb-0">Județ:<span class="text-white">*</span></label>   --}}
                                                     <script type="application/javascript"> 
@@ -139,8 +143,17 @@
                                                         @change='getOrasePlecare();'
                                                         >                                                
                                                         <option
+                                                            {{-- v-if="judete_plecare[0].judet === 'Corsica'"
+                                                            :value="Corsica" --}}
+                                                            :selected="true"
+                                                            >
+                                                            Corsica
+                                                        </option>
+                                                        <option 
+                                                            {{-- v-else --}}
                                                             v-for='judet_plecare in judete_plecare'
-                                                            :value='judet_plecare.judet'                  
+                                                            :value='judet_plecare.judet' 
+                                                            :selected="option == 'Corsica'"                 
                                                             >
                                                                 @{{judet_plecare.judet}}
                                                         </option>                                                

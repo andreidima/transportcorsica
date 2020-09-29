@@ -94709,11 +94709,11 @@ if (document.querySelector('#adauga-rezervare')) {
       active: "active",
       tara_plecare: '',
       judet_plecare: judetPlecareVechi,
-      judete_plecare: '',
+      judete_plecare: null,
       oras_plecare: orasPlecareVechi,
       orase_plecare: '',
       judet_sosire: judetSosireVechi,
-      judete_sosire: '',
+      judete_sosire: null,
       oras_sosire: orasSosireVechi,
       orase_sosire: '',
       nr_adulti: nrAdultiVechi,
@@ -94738,8 +94738,8 @@ if (document.querySelector('#adauga-rezervare')) {
     methods: {
       setTaraPlecare: function setTaraPlecare() {
         if (this.traseu == 'Romania-Corsica') {
-          this.tara_plecare = 'Romania';
-        } else if (this.traseu == 'Corsica-Romania') {
+          this.tara_plecare = 'Romania'; // } else if (this.traseu == 'Corsica-Romania') {
+        } else {
           this.tara_plecare = 'Franta';
         }
       },
@@ -95114,8 +95114,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! E:\laragon\www\transportcorsica\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! E:\laragon\www\transportcorsica\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! D:\laragon\www\transport-franta-corsica\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! D:\laragon\www\transport-franta-corsica\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

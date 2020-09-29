@@ -46,11 +46,11 @@ if (document.querySelector('#adauga-rezervare')) {
             active: "active",
             tara_plecare: '',
             judet_plecare: judetPlecareVechi,
-            judete_plecare: '',
+            judete_plecare: null,
             oras_plecare: orasPlecareVechi,
             orase_plecare: '',
             judet_sosire: judetSosireVechi,
-            judete_sosire: '',
+            judete_sosire: null,
             oras_sosire: orasSosireVechi,
             orase_sosire: '',
 
@@ -83,7 +83,8 @@ if (document.querySelector('#adauga-rezervare')) {
             setTaraPlecare() {
                 if (this.traseu == 'Romania-Corsica') {
                     this.tara_plecare = 'Romania';
-                } else if (this.traseu == 'Corsica-Romania') {
+                // } else if (this.traseu == 'Corsica-Romania') {
+                } else{
                     this.tara_plecare = 'Franta';
                 } 
             },
