@@ -36,8 +36,8 @@ Route::get('/orase_rezervari', [RezervareController::class, 'orase_rezervari']);
 
 
 Route::group(['middleware' => 'auth'], function () {
-    Route::redirect('/', 'rezervari');
-    Route::redirect('/home', 'rezervari');
+    // Route::redirect('/', 'rezervari');
+    // Route::redirect('/home', 'rezervari');
 
         Route::resource('rezervari', RezervareController::class,  ['parameters' => ['rezervari' => 'rezervare']]);
 });
