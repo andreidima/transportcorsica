@@ -20,6 +20,9 @@
                     "
                     id="adauga-rezervare"
                 >
+                @php
+                    phpinfo();
+                @endphp
                     <form  class="needs-validation" novalidate method="POST" action="/adauga-rezervare-pasul-1">
                         @csrf
 
