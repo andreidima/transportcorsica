@@ -21,6 +21,7 @@ Auth::routes(['register' => false, 'password.request' => false, 'reset' => false
 Route::get('/rezervare-client', function () {
     return view('rezervare-client');
 });
+
 Route::redirect('/', 'adauga-rezervare-pasul-1');
 
 // Rute pentru rezervare facuta de guest
@@ -36,6 +37,5 @@ Route::get('/orase_rezervari', [RezervareController::class, 'orase_rezervari']);
 
 
 Route::group(['middleware' => 'auth'], function () {
-
         Route::resource('rezervari', RezervareController::class,  ['parameters' => ['rezervari' => 'rezervare']]);
 });

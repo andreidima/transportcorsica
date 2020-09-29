@@ -364,6 +364,8 @@ class RezervareController extends Controller
 
         $rezervare_tur->data_cursa = $rezervare->data_plecare;
         $rezervare_retur->data_cursa = $rezervare->data_intoarcere;
+        $rezervare_retur->oras_plecare = $rezervare_tur->oras_sosire;
+        $rezervare_retur->oras_sosire = $rezervare_tur->oras_plecare;
         $rezervare_retur->pret_total = 0;
 
         if ($rezervare->tur_retur === 0) {
