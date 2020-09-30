@@ -94751,13 +94751,10 @@ if (document.querySelector('#adauga-rezervare')) {
           }
         }).then(function (response) {
           _app.judete_plecare = response.data.raspuns;
-        });
-
-        if (this.judete_plecare) {
-          if (this.judete_plecare.includes("Corsica")) {
-            _app.judet_plecare = "Corsica"; // this.getOrasePlecare();
-          }
-        }
+        }); // if (this.traseu == 'Corsica-Romania') {
+        //     app1.judet_plecare = "Corsica";
+        //     app1.getOrasePlecare();
+        // }
       },
       getJudetePlecare: function getJudetePlecare() {
         axios.get('/orase_rezervari', {
@@ -94769,13 +94766,10 @@ if (document.querySelector('#adauga-rezervare')) {
           _app.orase_plecare = '';
           _app.oras_plecare = 0;
           _app.judete_plecare = response.data.raspuns;
-        });
-
-        if (this.judete_plecare) {
-          if (this.judete_plecare.includes("Corsica")) {
-            _app.judet_plecare = "Corsica"; // this.getOrasePlecare();
-          }
-        }
+        }); // if (this.traseu === 'Corsica-Romania') {
+        //     app1.judet_plecare = "Corsica";
+        //     app1.getOrasePlecare();
+        // }
       },
       getOrasePlecare: function getOrasePlecare() {
         axios.get('/orase_rezervari', {
@@ -94797,7 +94791,10 @@ if (document.querySelector('#adauga-rezervare')) {
           }
         }).then(function (response) {
           _app.judete_sosire = response.data.raspuns;
-        });
+        }); // if (this.traseu == 'Romania-Corsica') {
+        //     app1.judet_sosire = "Corsica";
+        //     app1.getOraseSosire();
+        // }
       },
       getJudeteSosire: function getJudeteSosire() {
         axios.get('/orase_rezervari', {
@@ -94809,7 +94806,10 @@ if (document.querySelector('#adauga-rezervare')) {
           _app.orase_sosire = '';
           _app.oras_sosire = 0;
           _app.judete_sosire = response.data.raspuns;
-        });
+        }); // if (this.traseu === 'Romania-Corsica') {
+        //     app1.judet_sosire = "Corsica";
+        //     app1.getOraseSosire();
+        // }
       },
       getOraseSosireInitial: function getOraseSosireInitial() {
         axios.get('/orase_rezervari', {
@@ -94828,8 +94828,8 @@ if (document.querySelector('#adauga-rezervare')) {
             judet: this.judet_sosire
           }
         }).then(function (response) {
-          // app1.orase_plecare = '';
-          // app1.oras_plecare = 0;
+          _app.orase_sosire = ''; // app1.oras_plecare = 0;
+
           _app.orase_sosire = response.data.raspuns;
         });
       },
@@ -95126,8 +95126,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\laragon\www\transport-franta-corsica\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! D:\laragon\www\transport-franta-corsica\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! E:\laragon\www\transportcorsica\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! E:\laragon\www\transportcorsica\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

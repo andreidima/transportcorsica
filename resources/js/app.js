@@ -99,12 +99,10 @@ if (document.querySelector('#adauga-rezervare')) {
                         app1.judete_plecare = response.data.raspuns;
                     });
 
-                if (this.judete_plecare) {
-                    if (this.judete_plecare.includes("Corsica")) {
-                        app1.judet_plecare = "Corsica";
-                        // this.getOrasePlecare();
-                    }
-                }
+                // if (this.traseu == 'Corsica-Romania') {
+                //     app1.judet_plecare = "Corsica";
+                //     app1.getOrasePlecare();
+                // }
             },
             getJudetePlecare: function () {
                 axios.get('/orase_rezervari', {
@@ -120,12 +118,10 @@ if (document.querySelector('#adauga-rezervare')) {
                         app1.judete_plecare = response.data.raspuns;
                     });
 
-                if (this.judete_plecare) {
-                    if (this.judete_plecare.includes("Corsica")) {
-                        app1.judet_plecare = "Corsica";
-                        // this.getOrasePlecare();
-                    }
-                }
+                // if (this.traseu === 'Corsica-Romania') {
+                //     app1.judet_plecare = "Corsica";
+                //     app1.getOrasePlecare();
+                // }
             },
             getOrasePlecare: function () {
                 axios.get('/orase_rezervari', {
@@ -151,6 +147,11 @@ if (document.querySelector('#adauga-rezervare')) {
                     .then(function (response) {
                         app1.judete_sosire = response.data.raspuns;
                     });
+
+                // if (this.traseu == 'Romania-Corsica') {
+                //     app1.judet_sosire = "Corsica";
+                //     app1.getOraseSosire();
+                // }
             },
             getJudeteSosire: function () {
                 axios.get('/orase_rezervari', {
@@ -165,6 +166,11 @@ if (document.querySelector('#adauga-rezervare')) {
 
                         app1.judete_sosire = response.data.raspuns;
                     });
+
+                // if (this.traseu === 'Romania-Corsica') {
+                //     app1.judet_sosire = "Corsica";
+                //     app1.getOraseSosire();
+                // }
             },
             getOraseSosireInitial: function () {
                 axios.get('/orase_rezervari', {
@@ -185,7 +191,7 @@ if (document.querySelector('#adauga-rezervare')) {
                     }
                 })
                     .then(function (response) {
-                        // app1.orase_plecare = '';
+                        app1.orase_sosire = '';
                         // app1.oras_plecare = 0;
 
                         app1.orase_sosire = response.data.raspuns;

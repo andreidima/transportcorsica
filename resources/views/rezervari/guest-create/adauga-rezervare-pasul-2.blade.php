@@ -5,8 +5,9 @@
     <div class="row justify-content-center">
         <div class="col-lg-8">
             <div class="shadow-lg bg-white" style="border-radius: 40px 40px 40px 40px;">
-                <div class="border border-danger p-2 d-flex justify-content-between align-items-end" style="border-radius: 40px 40px 0px 0px;">                     
-                    <h3 class="ml-3" style="color:brown"><i class="fas fa-ticket-alt fa-lg mr-1"></i>Verificare bilet</h3>
+                <div class="p-2 d-flex justify-content-between align-items-end" 
+                    style="border-radius: 40px 40px 0px 0px; border:2px solid darkcyan">                     
+                    <h3 class="ml-3" style="color:darkcyan"><i class="fas fa-ticket-alt fa-lg mr-1"></i>Verificare bilet</h3>
                     <img src="{{ asset('images/logo.png') }}" height="70" class="mr-3">
                 </div>
                 
@@ -15,7 +16,7 @@
                 <div class="card-body py-2" 
                     style="
                         /* color:ivory;  */
-                        background-color:crimson; 
+                        background-color:darkcyan; 
                         border-radius: 0px 0px 40px 40px
                     "
                 >
@@ -101,18 +102,18 @@
                                     <div class="col-lg-11 px-4 py-2 mb-4 bg-white border rounded-lg">
                                         Preț total: <span class="badge badge-primary" style="font-size:1em">{{ $rezervare->pret_total }}€</span>
                                     </div>                                
-                                @elseif ($rezervare->tip_calatorie === "Colete")
+                                @elseif ($rezervare->tip_calatorie === "Bagaje")
                                     <div class="col-lg-11 px-0 border rounded-lg">
                                         <h5 class="bg-warning p-1 m-0 text-center">
-                                            Informații colet
+                                            Informații bagaj
                                         </h5>
                                     </div>
                                     <div class="col-lg-11 px-4 py-2 bg-white border rounded-lg">
-                                        {{ $rezervare->descriere_colet }}</span>
+                                        {{ $rezervare->bagaje_descriere }}</span>
                                         {{-- * {{ $tarife->adult }}€ = {{ $rezervare->nr_adulti * $tarife->adult}}€ --}}
                                     </div>
                                     <div class="col-lg-11 px-4 py-2 mb-4 bg-white border rounded-lg">
-                                        Preț total: <span class="badge badge-primary" style="font-size:1em">{{ $rezervare->pret_total }}€</span>
+                                        Catitate: <span class="badge badge-primary" style="font-size:1em">{{ $rezervare->bagaje_kg }} Kg</span>
                                     </div>
                                 @endif
                                     <div class="col-lg-11 px-0 border rounded-lg">

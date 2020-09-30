@@ -5,14 +5,14 @@
     <div class="row justify-content-center">
         <div class="col-md-7">
             <div class="shadow-lg" style="border-radius: 40px 40px 40px 40px;">
-                <div class="border border-secondary p-2" style="border-radius: 40px 40px 0px 0px; background-color:#e66800">
+                <div class="border border-secondary p-2" style="border-radius: 40px 40px 0px 0px; background-color:lightseagreen">
                     <h6 class="ml-4 my-0" style="color:white"><i class="fas fa-address-card mr-1"></i>Rezervări / {{ $rezervare->nume }}</h6>
                 </div>
 
                 <div class="card-body py-2" 
                     style="
                         /* color:ivory;  */
-                        background-color:crimson; 
+                        background-color:darkcyan; 
                         border-radius: 0px 0px 40px 40px
                     "
                 >
@@ -73,8 +73,12 @@
                                             Informații colet
                                         </h5>
                                     </div>
+                                    <div class="col-lg-11 px-4 py-2 bg-white border rounded-lg">
+                                        {{ $rezervare->bagaje_descriere }}</span>
+                                        {{-- * {{ $tarife->adult }}€ = {{ $rezervare->nr_adulti * $tarife->adult}}€ --}}
+                                    </div>
                                     <div class="col-lg-11 px-4 py-2 mb-4 bg-white border rounded-lg">
-                                        {{ $rezervare->descriere_colet }}</span>
+                                        Catitate: <span class="badge badge-primary" style="font-size:1em">{{ $rezervare->bagaje_kg }} Kg</span>
                                     </div>
                                 @endif
                                     <div class="col-lg-11 px-0 border rounded-lg">

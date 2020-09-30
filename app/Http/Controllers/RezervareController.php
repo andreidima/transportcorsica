@@ -157,7 +157,12 @@ class RezervareController extends Controller
                 // 'statie_id' => ['nullable', 'numeric', 'max:999'],
                 // 'statie_imbarcare' => ['nullable'],
                 'nr_adulti' => ['required_if:tip_calatorie,Calatori', 'integer', 'between:1,100'],
-                'descriere_colet' => ['required_if:tip_calatorie,Colete', 'max:2000'],
+                // 'pasageri.nume' => ['required_if:tip_calatorie,Calatori', 'min:nr_adulti+1'],
+                'pasageri.nume.*' => ['filled', 'max:100'],
+                // "bagaje_kg" => "required_if:tip_calatorie,Bagaje|regex:/^\d+(\.\d{1,2})?$/",
+                'bagaje_kg' => ['required_if:tip_calatorie,Bagaje', 'numeric'],
+                'bagaje_descriere' => ['required_if:tip_calatorie,Bagaje', 'max:2000'],
+                'pret' => ['nullable', 'numeric', 'between:-0, 99999.99'],
                 // 'nr_copii' => ['nullable', 'integer', 'between:0,100'],
                 // 'data_plecare' => [''],
                 'data_plecare' => [
@@ -207,7 +212,7 @@ class RezervareController extends Controller
                 // 'pret_total' => ['nullable', 'numeric', 'max:999999'],
                 'adresa' => ['max:2000'],
                 'observatii' => ['max:2000'],
-                'pasageri' => ['max:2000'],
+                // 'pasageri' => ['max:2000'],
 
                 // 'plata_online' => [''],
                 // 'adresa' => ['required_if:plata_online,true', 'nullable', 'max:99'],
@@ -274,9 +279,11 @@ class RezervareController extends Controller
      */
     public function postAdaugaRezervarePasul1(Request $request)
     {
+        // dd($request->request);
         $this->validateRequest($request);
         $request->session()->forget('rezervare');
         $rezervare = Rezervare::make($this->validateRequest($request));
+        dd($request->request);
 
         //Schimbare tur_retur din "true or false" din vue, in "0 or 1" pentru baza de date
         ($rezervare->tur_retur === "true") ? ($rezervare->tur_retur = 1) : ($rezervare->tur_retur = 0);

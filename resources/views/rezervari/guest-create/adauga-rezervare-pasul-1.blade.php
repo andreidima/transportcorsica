@@ -5,8 +5,9 @@
     <div class="row justify-content-center">
         <div class="col-md-9">
             <div class="shadow-lg bg-white" style="border-radius: 40px 40px 40px 40px;">
-                <div class="border border-danger p-2 d-flex justify-content-between align-items-end" style="border-radius: 40px 40px 0px 0px;">                     
-                    <h3 class="ml-3" style="color:brown"><i class="fas fa-ticket-alt fa-lg mr-1"></i>Rezervare bilet</h3>
+                <div class="p-2 d-flex justify-content-between align-items-end" 
+                    style="border-radius: 40px 40px 0px 0px; border:2px solid darkcyan">                     
+                    <h3 class="ml-3" style="color:darkcyan"><i class="fas fa-ticket-alt fa-lg mr-1"></i>Rezervare bilet</h3>
                     <img src="{{ asset('images/logo.png') }}" height="70" class="mr-3">
                 </div>
                 
@@ -14,8 +15,8 @@
 
                 <div class="card-body py-2" 
                     style="
-                        color:ivory; 
-                        background-color:crimson; 
+                        color:white; 
+                        background-color:darkcyan; 
                         border-radius: 0px 0px 40px 40px
                     "
                     id="adauga-rezervare"
@@ -44,14 +45,14 @@
                                                         Transport Călători
                                                     </span>
                                         </label>
-                                        <label class="btn btn-sm btn-success col-lg-6 border" v-bind:class="[tip_calatorie=='Colete' ? active : '']">
+                                        <label class="btn btn-sm btn-success col-lg-6 border" v-bind:class="[tip_calatorie=='Bagaje' ? active : '']">
                                             <input type="radio" class="btn-group-toggle" name="tip_calatorie" id="tip_calatorie2" autocomplete="off"
-                                                v-model="tip_calatorie" value="Colete"
+                                                v-model="tip_calatorie" value="Bagaje"
                                                 v-on:change="setTaraPlecare();getJudetePlecareInitial();getJudeteSosireInitial();setPreturi();"
                                                 >
                                                     <i class="fas fa-box" style="font-size: 2em;"></i>
                                                     <span style="font-size: 2em;">
-                                                        Transport Colete
+                                                        Transport Bagaje
                                                     </span>
                                         </label>
                                     </div>
@@ -108,17 +109,17 @@
                             </div>
 
 
-                    {{-- <div v-if="tur_retur">               
-                        <span  v-for="index in nr_adulti" :key="index">
-                            <input type="text" class="form-control" name="pasageri[nume][]" v-model="nume[index-1]"><br/>
-                            <input type="text" class="form-control" name="pasageri[buletin][]" v-model="buletin[index-1]"><br/>
-                        </span>
-                    </div> --}}
+                    {{-- <div v-if="tur_retur">                --}}
+                        {{-- <span  v-for="index in nr_adulti" :key="index">
+                            <input type="text" class="form-control" name="pasagerit[nume][]" v-model="nume[index-1]"><br/>
+                            <input type="text" class="form-control" name="pasagerit[buletin][]" v-model="buletin[index-1]"><br/>
+                        </span> --}}
+                    {{-- </div> --}}
 
             {{-- :value="type.tags"
             :key="type.index" 
             :id="type.id" > --}}
-                            {{-- <label >@{{judet_plecare.judet}}</label> --}}
+                            <label >@{{judet_plecare.judet}}</label>
 
       
                                 <div v-cloak v-if="traseu">                        
@@ -128,10 +129,6 @@
                                                 <div class="col-lg-12">
                                                     Plecare din:*
                                                 </div>
-                                            <div v-if="judete_plecare[0].judet === 'Corsica'">
-                                                @{{judet_plecare.judet}}
-                                                asdasd
-                                            </div>
                                                 <div class="form-group col-lg-6">                                        
                                                     {{-- <label for="judet_plecare" class="mb-0">Județ:<span class="text-white">*</span></label>   --}}
                                                     <script type="application/javascript"> 
@@ -141,29 +138,16 @@
                                                         name="judet_plecare"
                                                         v-model="judet_plecare"
                                                         @change='getOrasePlecare();'
-                                                        >                                                
-                                                        {{-- <option
-                                                            v-if="judete_plecare[0].judet === 'Corsica'"
-                                                            :value="Corsica"
-                                                            :selected="true"
-                                                            >
-                                                            Corsica
-                                                        </option> --}}
+                                                        >          
                                                         <option disabled value="">Selectează o opțiune</option>
                                                         <option 
                                                             v-for='judet_plecare in judete_plecare'
-                                                            :value='judet_plecare.judet' 
-                                                            selected="judet_plecare.judet === 'Corsica' ? true : false"                 
+                                                            :value='judet_plecare.judet'                 
                                                             >
                                                                 @{{judet_plecare.judet}}
                                                         </option>                                                
                                                     </select>
                                                 </div>
-                                            <div v-if="judete_plecare[0].judet === 'Corsica'">
-                                                {{-- <script type="application/javascript"> 
-                                                    judetPlecareVechi='Corsica' 
-                                                </script> --}}
-                                            </div>
                                                 <div class="form-group col-lg-6">   
                                                     {{-- <label for="oras_plecare" class="mb-0">Oraș:<span class="text-white">*</span></label>  --}}
                                                     <script type="application/javascript"> 
@@ -229,7 +213,7 @@
                                         </div>
                                     </div>
                                     <div class="form-row mb-4 px-2 py-2 d-flex justify-content-center align-items-center border rounded"
-                                        style="background-color:darkcyan;"
+                                        style="background-color:lightseagreen; color:white"
                                     >
                                         <div class="form-group col-lg-12 mb-2 d-flex justify-content-center border-bottom">
                                                 <h5 class="mb-1">Plecare în călătorie:</h5>
@@ -299,7 +283,7 @@
                                         </div>
                                     </div> 
                                     <div v-if="tip_calatorie === 'Calatori'" class="form-row mb-4 px-2 pt-2 d-flex justify-content-center align-items-center border rounded"
-                                        style="background-color:darkcyan;"
+                                        style="background-color:lightseagreen; color:white"
                                     >
                                         <div class="form-group col-lg-12 mb-2 d-flex justify-content-center border-bottom">
                                                 <h5 class="mb-1">Pasageri și costuri:</h5>
@@ -364,24 +348,67 @@
                                                     Euro
                                                 </label>
                                             </div>
-                                        </div>                             
-                                        <div class="form-group col-lg-12 mb-2 justify-content-center"> 
+                                        </div>   
+                                        <div class="form-group col-lg-12 justify-content-end m-0"> 
+                                                @php
+                                                    $nr_pasager = 1;
+                                                @endphp   
+                                            <div v-for="index in nr_adulti" :key="index">
+                                                @php
+                                                    $nr_pasager = $nr_pasager + 1;
+                                                @endphp
+                                                <div class="form-row">
+                                                    <div class="col-lg-2">
+                                                        <input type="text" class="form-control" name="pasageri[nume][]" v-model="nume[index-1]"><br/>
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                        <input type="text" class="form-control" name="pasageri[buletin][]" v-model="buletin[index-1]"><br/>
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                        {{ $nr_pasager }}
+                                                    </div>
+
+                                                @php
+                                                    $nr_pasager = $nr_pasager + 1;
+                                                @endphp
+                                                </div>
+                                            </div>     
+                                        </div>                    
+                                        {{-- <div class="form-group col-lg-12 mb-2 justify-content-center"> 
                                             <label for="pasageri" class="mb-0">Pasageri(numele si seria de buletin pentru fiecare pasager):*</label>
                                             <textarea class="form-control {{ $errors->has('pasageri') ? 'is-invalid' : '' }}" 
                                                 name="pasageri" id="pasageri" rows="2">{{ old('pasageri') }}</textarea>
-                                        </div> 
+                                        </div>  --}}
                                     </div>  
-                                    <div v-else class="form-row mb-4 px-2 pt-2 d-flex justify-content-center align-items-center border rounded"
-                                        style="background-color:darkcyan;">                              
-                                        <div class="form-group col-lg-12 mb-3 justify-content-center"> 
-                                            <label for="descriere_colet" class="mb-0">Descriere colet:*</label>
-                                            <textarea class="form-control {{ $errors->has('descriere_colet') ? 'is-invalid' : '' }}" 
-                                                name="descriere_colet" id="descriere_colet" rows="2">{{ old('descriere_colet') }}</textarea>
+                                    <div v-else class="form-row mb-4 px-2 py-3 d-flex justify-content-center align-items-center border rounded"
+                                        style="background-color:lightseagreen; color:white"
+                                    >                       
+                                        <div class="form-group col-lg-12 mb-0 d-flex"> 
+                                            <label for="bagaje_kg" class="col-form-label mb-0 mr-2">Cantitate:* </label>
+                                            <div class="px-0" style="width:100px">
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control form-control-sm {{ $errors->has('bagaje_kg') ? 'is-invalid' : '' }}" 
+                                                    name="bagaje_kg"
+                                                    placeholder="Ex: 2.5" 
+                                                    value="{{ old('bagaje_kg') }}"
+                                                >
+                                            </div>
+                                            <label id="" class="col-form-label pl-1 align-bottom">
+                                                Kg
+                                            </label>
+                                        </div>                             
+                                        <div class="form-group col-lg-12 mb-0 justify-content-center"> 
+                                            <label for="bagaje_descriere" class="mb-0">Descriere bagaj:*</label>
+                                            <textarea class="form-control {{ $errors->has('bagaje_descriere') ? 'is-invalid' : '' }}" 
+                                                name="bagaje_descriere" id="bagaje_descriere" rows="2">{{ old('bagaje_descriere') }}</textarea>
                                         </div> 
                                     </div>
-                                    <div class="form-row mb-4 px-2 py-2 justify-content-between align-items-center border rounded">                                    
+                                    <div class="form-row mb-4 px-2 py-2 justify-content-between align-items-center border rounded"
+                                        style="background-color:lightseagreen; color:white"
+                                    >                                    
                                         <div class="form-group col-lg-4">  
-                                            <label for="nume" class="mb-0">Nume Client:*</label>                                      
+                                            <label for="nume" class="mb-0">Nume și prenume Client:*</label>                                      
                                             <input 
                                                 type="text" 
                                                 class="form-control form-control-sm {{ $errors->has('nume') ? 'is-invalid' : '' }}" 
@@ -404,7 +431,7 @@
                                             <label for="nume" class="mb-0">Email:</label>                                        
                                             <input 
                                                 type="text" 
-                                                class="form-control form-control-sm {{ $errors->has('nume') ? 'is-invalid' : '' }}" 
+                                                class="form-control form-control-sm {{ $errors->has('email') ? 'is-invalid' : '' }}" 
                                                 name="email" 
                                                 placeholder="" 
                                                 value="{{ old('email') }}"
@@ -416,7 +443,9 @@
                                                 name="observatii" id="observatii" rows="2">{{ old('observatii') }}</textarea>
                                         </div> 
                                     </div>                              
-                                    <div class="form-row mb-4 px-2 pt-2 d-flex justify-content-between align-items-center border rounded" style="background-color:darkcyan">
+                                    <div class="form-row mb-4 px-2 pt-2 d-flex justify-content-between align-items-center border rounded" 
+                                        style="background-color:lightseagreen; color:white"
+                                    >
                                         <div class="form-group col-lg-12 mb-2 d-flex justify-content-center border-bottom">
                                                 <h5 class="mb-1">Date pentru facturare:</h5>
                                         </div>
@@ -478,7 +507,11 @@
                                                 <label class="form-check-label" for="acord_de_confidentialitate">
                                                     Sunt de acord cu colectarea și prelucrarea datelor cu caracter personal - 
                                                     <a href="#" target="_blank">
-                                                        <span class="badge badge-primary border border-dark">nota de informare</span>
+                                                        <span class="badge badge-primary border border-dark"
+                                                            style="background-color:yellow; color:black"
+                                                        >
+                                                            nota de informare
+                                                        </span>
                                                     </a>
                                                 </label>  
                                             </div>

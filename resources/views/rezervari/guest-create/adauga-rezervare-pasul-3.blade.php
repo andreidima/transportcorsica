@@ -5,8 +5,9 @@
     <div class="row justify-content-center">
         <div class="col-lg-8">
             <div class="shadow-lg bg-white" style="border-radius: 40px 40px 40px 40px;">
-                <div class="border border-danger p-2 d-flex justify-content-between align-items-end" style="border-radius: 40px 40px 0px 0px;">                     
-                    <h3 class="ml-3" style="color:brown"><i class="fas fa-ticket-alt fa-lg mr-1"></i>Rezervare finalizată</h3>
+                <div class="p-2 d-flex justify-content-between align-items-end" 
+                    style="border-radius: 40px 40px 0px 0px; border:2px solid darkcyan">                    
+                    <h3 class="ml-3" style="color:darkcyan"><i class="fas fa-ticket-alt fa-lg mr-1"></i>Rezervare finalizată</h3>
                     <img src="{{ asset('images/logo.png') }}" height="70" class="mr-3">
                 </div>
                 
@@ -15,7 +16,7 @@
                 <div class="card-body py-2" 
                     style="
                         /* color:ivory;  */
-                        background-color:crimson; 
+                        background-color:darkcyan; 
                         border-radius: 0px 0px 40px 40px
                     "
                 >   

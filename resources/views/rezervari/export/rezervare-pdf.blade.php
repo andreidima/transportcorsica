@@ -193,7 +193,9 @@
                     </td>
                     @else
                     <td>
-                        Descriere colet: {{ $rezervare_tur->descriere_colet }}
+                        Descriere bagaj: {{ $rezervare_tur->bagaje_descriere }}
+                        <br>
+                        <b>Cantitate: {{ $rezervare_tur->bagaje_kg }}Kg</b>
                     </td>
                     @endif
                 </tr>                
