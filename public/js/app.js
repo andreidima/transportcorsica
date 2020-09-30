@@ -94752,6 +94752,12 @@ if (document.querySelector('#adauga-rezervare')) {
         }).then(function (response) {
           _app.judete_plecare = response.data.raspuns;
         });
+
+        if (this.judete_plecare) {
+          if (this.judete_plecare.includes("Corsica")) {
+            _app.judet_plecare = "Corsica"; // this.getOrasePlecare();
+          }
+        }
       },
       getJudetePlecare: function getJudetePlecare() {
         axios.get('/orase_rezervari', {
@@ -94764,6 +94770,12 @@ if (document.querySelector('#adauga-rezervare')) {
           _app.oras_plecare = 0;
           _app.judete_plecare = response.data.raspuns;
         });
+
+        if (this.judete_plecare) {
+          if (this.judete_plecare.includes("Corsica")) {
+            _app.judet_plecare = "Corsica"; // this.getOrasePlecare();
+          }
+        }
       },
       getOrasePlecare: function getOrasePlecare() {
         axios.get('/orase_rezervari', {

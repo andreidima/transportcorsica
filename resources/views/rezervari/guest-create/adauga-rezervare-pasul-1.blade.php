@@ -142,23 +142,28 @@
                                                         v-model="judet_plecare"
                                                         @change='getOrasePlecare();'
                                                         >                                                
-                                                        <option
-                                                            {{-- v-if="judete_plecare[0].judet === 'Corsica'"
-                                                            :value="Corsica" --}}
+                                                        {{-- <option
+                                                            v-if="judete_plecare[0].judet === 'Corsica'"
+                                                            :value="Corsica"
                                                             :selected="true"
                                                             >
                                                             Corsica
-                                                        </option>
+                                                        </option> --}}
+                                                        <option disabled value="">Selectează o opțiune</option>
                                                         <option 
-                                                            {{-- v-else --}}
                                                             v-for='judet_plecare in judete_plecare'
                                                             :value='judet_plecare.judet' 
-                                                            :selected="option == 'Corsica'"                 
+                                                            selected="judet_plecare.judet === 'Corsica' ? true : false"                 
                                                             >
                                                                 @{{judet_plecare.judet}}
                                                         </option>                                                
                                                     </select>
                                                 </div>
+                                            <div v-if="judete_plecare[0].judet === 'Corsica'">
+                                                {{-- <script type="application/javascript"> 
+                                                    judetPlecareVechi='Corsica' 
+                                                </script> --}}
+                                            </div>
                                                 <div class="form-group col-lg-6">   
                                                     {{-- <label for="oras_plecare" class="mb-0">Oraș:<span class="text-white">*</span></label>  --}}
                                                     <script type="application/javascript"> 
@@ -168,7 +173,8 @@
                                                         name="oras_plecare"
                                                         v-model="oras_plecare"
                                                         {{-- @change='getPreturi();getPretTotal()' --}}
-                                                        >                                                
+                                                        >      
+                                                        <option disabled value="">Selectează o opțiune</option>                                          
                                                         <option
                                                             v-for='oras_plecare in orase_plecare'
                                                             :value='oras_plecare.id'                  
@@ -194,6 +200,7 @@
                                                         v-model="judet_sosire"                          
                                                         @change='getOraseSosire();'
                                                     >
+                                                            <option disabled value="">Selectează o opțiune</option>
                                                             <option v-for='judet_sosire in judete_sosire'                                
                                                             :value='judet_sosire.judet'                                       
                                                             >@{{judet_sosire.judet}}</option>
@@ -208,7 +215,8 @@
                                                             name="oras_sosire"
                                                             v-model="oras_sosire"
                                                             {{-- @change='getPreturi();getPretTotal()' --}}
-                                                            >                                                
+                                                            >       
+                                                            <option disabled value="">Selectează o opțiune</option>                                         
                                                             <option
                                                                 v-for='oras_sosire in orase_sosire'
                                                                 :value='oras_sosire.id'                  
