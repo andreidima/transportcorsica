@@ -22,9 +22,10 @@ Route::get('/rezervare-client', function () {
     return view('rezervare-client');
 });
 
-Route::redirect('/', 'adauga-rezervare-pasul-1');
+Route::redirect('/', 'adauga-rezervare-noua');
 
 // Rute pentru rezervare facuta de guest
+Route::any('/adauga-rezervare-noua', [RezervareController::class, 'adaugaRezervareNoua']);
 Route::get('/adauga-rezervare-pasul-1', [RezervareController::class, 'adaugaRezervarePasul1']);
 Route::post('/adauga-rezervare-pasul-1', [RezervareController::class, 'postadaugaRezervarePasul1']);
 Route::get('/adauga-rezervare-pasul-2', [RezervareController::class, 'adaugaRezervarePasul2']);

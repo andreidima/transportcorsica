@@ -26,4 +26,9 @@ class Rezervare extends Model
     {
         return $this->belongsTo('App\Models\Oras', 'oras_sosire');
     }
+
+    public function pasageri()
+    {
+        return $this->has('App\Models\Pasager', 'rezervare_id');
+    }
 }

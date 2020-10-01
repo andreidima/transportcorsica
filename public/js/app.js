@@ -94703,8 +94703,12 @@ if (document.querySelector('#adauga-rezervare')) {
     el: '#adauga-rezervare',
     data: {
       // nume: [[]],
-      buletin: [[]],
+      // buletin: [[]],
       nume: numeVechi,
+      buletin: buletinVechi,
+      data_nastere: dataNastereVechi,
+      localitate_nastere: localitateNastereVechi,
+      localitate_domiciliu: localitateDomiciliuVechi,
       tip_calatorie: tipCalatorieVeche,
       traseu: traseuVechi,
       active: "active",
@@ -94765,6 +94769,7 @@ if (document.querySelector('#adauga-rezervare')) {
           }
         }).then(function (response) {
           _app.orase_plecare = '';
+          _app.judet_plecare = 0;
           _app.oras_plecare = 0;
           _app.judete_plecare = response.data.raspuns;
         }); // if (this.traseu === 'Corsica-Romania') {
@@ -94805,6 +94810,7 @@ if (document.querySelector('#adauga-rezervare')) {
           }
         }).then(function (response) {
           _app.orase_sosire = '';
+          _app.judet_sosire = 0;
           _app.oras_sosire = 0;
           _app.judete_sosire = response.data.raspuns;
         }); // if (this.traseu === 'Romania-Corsica') {
@@ -95127,8 +95133,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\laragon\www\transport-franta-corsica\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! D:\laragon\www\transport-franta-corsica\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! E:\laragon\www\transportcorsica\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! E:\laragon\www\transportcorsica\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

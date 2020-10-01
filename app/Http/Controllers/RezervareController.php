@@ -151,7 +151,9 @@ class RezervareController extends Controller
                 // 'cursa_id' =>['nullable', 'numeric', 'max:999'],
                 'tip_calatorie' => ['required'],
                 'traseu' => ['required'],
+                'judet_plecare' => [''],
                 'oras_plecare' => ['required', 'integer'],
+                'judet_sosire' => [''],
                 'oras_sosire' => ['required', 'integer'],
                 'tur_retur' => [''],
                 // 'statie_id' => ['nullable', 'numeric', 'max:999'],
@@ -159,10 +161,14 @@ class RezervareController extends Controller
                 'nr_adulti' => ['required_if:tip_calatorie,Calatori', 'integer', 'between:1,100'],
                 // 'pasageri.nume' => ['required_if:tip_calatorie,Calatori', 'min:nr_adulti+1'],
                 'pasageri.nume.*' => ['filled', 'max:100'],
+                'pasageri.buletin.*' => ['filled', 'max:100'],
+                'pasageri.data_nastere.*' => ['filled', 'max:100'],
+                'pasageri.localitate_nastere.*' => ['filled', 'max:100'],
+                'pasageri.localitate_domiciliu.*' => ['filled', 'max:100'],
                 // "bagaje_kg" => "required_if:tip_calatorie,Bagaje|regex:/^\d+(\.\d{1,2})?$/",
                 'bagaje_kg' => ['required_if:tip_calatorie,Bagaje', 'numeric'],
                 'bagaje_descriere' => ['required_if:tip_calatorie,Bagaje', 'max:2000'],
-                'pret' => ['nullable', 'numeric', 'between:-0, 99999.99'],
+                // 'pret' => ['nullable', 'numeric', 'between:-0, 99999.99'],
                 // 'nr_copii' => ['nullable', 'integer', 'between:0,100'],
                 // 'data_plecare' => [''],
                 'data_plecare' => [
@@ -217,10 +223,10 @@ class RezervareController extends Controller
                 // 'plata_online' => [''],
                 // 'adresa' => ['required_if:plata_online,true', 'nullable', 'max:99'],
 
-                'document_de_calatorie' => ['', 'max:20'],
-                'expirare_document' => ['', 'max:50'],
-                'serie_document' => ['', 'max:20'],
-                'cnp' => ['', 'max:20'],
+                'document_de_calatorie' => ['', 'max:100'],
+                'expirare_document' => ['', 'max:100'],
+                'serie_document' => ['', 'max:100'],
+                'cnp' => ['', 'max:100'],
                 'acord_de_confidentialitate' => ['required'],
                 'termeni_si_conditii' => ['required'],
                 // 'oferta' => [''],
@@ -266,10 +272,25 @@ class RezervareController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function adaugaRezervareNoua(Request $request)
+    {
+        $rezervare = $request->session()->forget('rezervare');
+        return redirect('/adauga-rezervare-pasul-1');
+    }
+
+
+    //
+    // Functii pentru Multi Page Form pentru Clienti
+    //
+    /**
+     * Show the step 1 Form for creating a new 'rezervare'.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function adaugaRezervarePasul1(Request $request)
     {
-        dd($request);
-        return view('rezervari.guest-create/adauga-rezervare-pasul-1');
+        $rezervare = $request->session()->get('rezervare');
+        return view('rezervari.guest-create/adauga-rezervare-pasul-1', compact('rezervare'));
     }
 
     /**
@@ -280,25 +301,24 @@ class RezervareController extends Controller
      */
     public function postAdaugaRezervarePasul1(Request $request)
     {
-        // dd($request->request);
-        $this->validateRequest($request);
-        $request->session()->forget('rezervare');
-        $rezervare = Rezervare::make($this->validateRequest($request));
-        // dd($request->request);
+        if(empty($request->session()->get('rezervare'))){
+            $rezervare = new Rezervare();
+            $rezervare->fill($this->validateRequest($request));
+        }else{
+            $rezervare = $request->session()->get('rezervare');
+            $rezervare->fill($this->validateRequest($request));
+        }
 
-        //Schimbare tur_retur din "true or false" din vue, in "0 or 1" pentru baza de date
-        ($rezervare->tur_retur === "true") ? ($rezervare->tur_retur = 1) : ($rezervare->tur_retur = 0);
-
-        // calcularea pretului total
-        if ($rezervare->tur_retur === 0) {
+        // Recalcularea pretului total pentru siguranta
+        if ($rezervare->tur_retur === "false") {
             $rezervare->pret_total = $rezervare->nr_adulti * 120;
-        } elseif ($rezervare->tur_retur === 1) {
+        } elseif ($rezervare->tur_retur === "true") {
             $rezervare->pret_total = $rezervare->nr_adulti * 200;
         }
 
         $request->session()->put('rezervare', $rezervare);
-        // dd($rezervare, $request);
-        return redirect('/adauga-rezervare-pasul-2')->withInput();
+
+        return redirect('/adauga-rezervare-pasul-2');
     }
 
     /**
@@ -309,20 +329,7 @@ class RezervareController extends Controller
     public function adaugaRezervarePasul2(Request $request)
     {
         $rezervare = $request->session()->get('rezervare');
-        // dd($rezervare, $request);
         return view('rezervari.guest-create/adauga-rezervare-pasul-2', compact('rezervare'));
-    }
-
-    /**
-     * Revenire la pasul 1 pentru corectarea datelor
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function modificaRezervarePasul1(Request $request)
-    {
-        // $rezervare = $request->session()->get('rezervare');
-        dd($request);
-        return redirect('rezervari.guest-create/adauga-rezervare-pasul-1')->withInput();
     }
 
     /**

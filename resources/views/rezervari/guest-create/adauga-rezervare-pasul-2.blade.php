@@ -95,12 +95,33 @@
                                         </h5>
                                     </div>
                                     <div class="col-lg-11 px-4 py-2 bg-white border rounded-lg">
-                                        Număr pasageri: 
-                                        <span class="badge badge-primary" style="font-size:1em">{{ $rezervare->nr_adulti }}</span>
-                                        {{-- * {{ $tarife->adult }}€ = {{ $rezervare->nr_adulti * $tarife->adult}}€ --}}
+                                        <div class="row justify-content-center">
+                                            <div class="col-lg-4">
+                                                Număr pasageri: 
+                                                <span class="badge badge-primary" style="font-size:1em">{{ $rezervare->nr_adulti }}</span>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                Preț total: 
+                                                <span class="badge badge-primary" style="font-size:1em">{{ $rezervare->pret_total }}€</span>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="col-lg-11 px-4 py-2 mb-4 bg-white border rounded-lg">
-                                        Preț total: <span class="badge badge-primary" style="font-size:1em">{{ $rezervare->pret_total }}€</span>
+                                        <div class="row justify-content-between">
+                                            @for ($i = 1 ; $i <= $rezervare->nr_adulti ; $i++)
+                                                <div class="col-lg-5 m-2" style="border-bottom: solid 1px #005757">
+                                                    Nume: <span class="badge badge-primary" style="font-size:1.1em">{{ $rezervare->pasageri['nume'][$i] }}</span>
+                                                    <br>
+                                                    Seria și nr. buletin: {{ $rezervare->pasageri['buletin'][$i] }}
+                                                    <br>
+                                                    Data nașterii: {{ $rezervare->pasageri['data_nastere'][$i] }}
+                                                    <br>
+                                                    Localitate naștere: {{ $rezervare->pasageri['localitate_nastere'][$i] }}
+                                                    <br>
+                                                    Localitate domiciliu: {{ $rezervare->pasageri['localitate_domiciliu'][$i] }}
+                                                </div>
+                                            @endfor
+                                        </div>
                                     </div>                                
                                 @elseif ($rezervare->tip_calatorie === "Bagaje")
                                     <div class="col-lg-11 px-0 border rounded-lg">
@@ -175,14 +196,10 @@
                                                 </button>
                                             </div>
                                             <div class="col-lg-12 d-flex justify-content-center">  
-                                                <button type="submit" name="action" value="modifica_rezervare"
-                                                    class="btn btn-warning btn-lg mr-4 rounded-pill border border-white" style="border-width:3px !important;">
-                                                    Modifică rezervarea
-                                                </button>
-                                                {{-- <a class="btn btn-warning btn-lg rounded-pill border border-white mr-2" style="border-width:3px !important;" 
+                                                <a class="btn btn-warning btn-lg rounded-pill border border-white mr-2" style="border-width:3px !important;" 
                                                 href="/adauga-rezervare-pasul-1"
                                                 role="button">
-                                                    Modifică rezervarea --}}
+                                                    Modifică rezervarea
                                                 <a class="btn btn-secondary btn-lg rounded-pill border border-white" style="border-width:3px !important;" 
                                                 href="https://transportcorsica.ro/"
                                                 role="button">

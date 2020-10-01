@@ -29,7 +29,7 @@
                                 
                                 <div class="form-row mb-4 d-flex justify-content-center">
                                         <script type="application/javascript"> 
-                                            tipCalatorieVeche={!! json_encode(old('tip_calatorie', "")) !!} 
+                                            tipCalatorieVeche={!! json_encode(old('tip_calatorie', ($rezervare->tip_calatorie ?? ''))) !!} 
                                         </script>
                                     <div class="col-lg-10 pl-3">
                                         Selectează tip cursă:
@@ -60,7 +60,7 @@
                             <div v-cloak v-if="tip_calatorie">
                                 <div class="form-row mb-4 d-flex justify-content-center">
                                         <script type="application/javascript"> 
-                                            traseuVechi={!! json_encode(old('traseu', "")) !!} 
+                                            traseuVechi={!! json_encode(old('traseu', ($rezervare->traseu?? ''))) !!} 
                                         </script>
                                     <div class="col-lg-7 pl-3">
                                         Selectează traseu:
@@ -86,7 +86,7 @@
                                         </label>
                                     </div>
                                     <div class="custom-control custom-switch col-lg-12 text-center py-1">
-                                        @if (old('tur_retur') === 'true')
+                                        @if (old('tur_retur', ($rezervare->tur_retur ?? '')) === 'true')
                                             <script type="application/javascript"> 
                                                 turReturVechi=true
                                             </script>
@@ -119,8 +119,6 @@
             {{-- :value="type.tags"
             :key="type.index" 
             :id="type.id" > --}}
-                            <label >@{{judet_plecare.judet}}</label>
-
       
                                 <div v-cloak v-if="traseu">                        
                                     <div class="row mb-2">
@@ -129,10 +127,9 @@
                                                 <div class="col-lg-12">
                                                     Plecare din:*
                                                 </div>
-                                                <div class="form-group col-lg-6">                                        
-                                                    {{-- <label for="judet_plecare" class="mb-0">Județ:<span class="text-white">*</span></label>   --}}
+                                                <div class="form-group col-lg-6"> 
                                                     <script type="application/javascript"> 
-                                                        judetPlecareVechi={!! json_encode(old('judet_plecare', "0")) !!} 
+                                                        judetPlecareVechi={!! json_encode(old('judet_plecare', ($rezervare->judet_plecare ?? '0'))) !!} 
                                                     </script>
                                                     <select class="custom-select-sm custom-select {{ $errors->has('judet_plecare') ? 'is-invalid' : '' }}"
                                                         name="judet_plecare"
@@ -151,7 +148,7 @@
                                                 <div class="form-group col-lg-6">   
                                                     {{-- <label for="oras_plecare" class="mb-0">Oraș:<span class="text-white">*</span></label>  --}}
                                                     <script type="application/javascript"> 
-                                                        orasPlecareVechi={!! json_encode(old('oras_plecare', "0")) !!} 
+                                                        orasPlecareVechi={!! json_encode(old('oras_plecare', ($rezervare->oras_plecare ?? '0'))) !!} 
                                                     </script>
                                                     <select class="custom-select-sm custom-select {{ $errors->has('oras_plecare') ? 'is-invalid' : '' }}"
                                                         name="oras_plecare"
@@ -177,7 +174,7 @@
                                                 <div class="form-group col-lg-6"> 
                                                     {{-- <label for="judet_plecare" class="mb-0">Județ:<span class="text-white">*</span></label>   --}}
                                                     <script type="application/javascript"> 
-                                                        judetSosireVechi={!! json_encode(old('judet_sosire', "0")) !!}
+                                                        judetSosireVechi={!! json_encode(old('judet_sosire', ($rezervare->judet_sosire ?? '0'))) !!}
                                                     </script>        
                                                     <select class="custom-select-sm custom-select {{ $errors->has('judet_sosire') ? 'is-invalid' : '' }}"
                                                         name="judet_sosire"
@@ -193,7 +190,7 @@
                                                 <div class="form-group col-lg-6">   
                                                     {{-- <label for="oras_plecare" class="mb-0">Oraș:<span class="text-white">*</span></label>     --}}
                                                     <script type="application/javascript"> 
-                                                        orasSosireVechi={!! json_encode(old('oras_sosire', "0")) !!} 
+                                                        orasSosireVechi={!! json_encode(old('oras_sosire', ($rezervare->oras_sosire ?? '0'))) !!} 
                                                     </script>
                                                         <select class="custom-select-sm custom-select {{ $errors->has('oras_sosire') ? 'is-invalid' : '' }}"
                                                             name="oras_sosire"
@@ -223,11 +220,11 @@
                                             <br>
                                             Plecarile din Corsica au loc săptămânal, vinerea, la ora 18:00, din Corsica.
                                         </div>
-                                        <div class="form-group col-lg-4 mb-0 d-flex justify-content-center align-items-end">
+                                        <div class="form-group col-lg-4 mb-2 d-flex justify-content-center align-items-end">
                                             <label for="data_plecare" class="mb-0 mr-2">Dată plecare:*</label>
                                             <div v-if="traseu === 'Romania-Corsica'" class=""> 
                                                 <vue2-datepicker-plecare
-                                                    data-veche="{{ old('data_plecare') == '' ? '' : old('data_plecare') }}"
+                                                    data-veche="{{ old('data_plecare', ($rezervare->data_plecare ?? '')) }}"
                                                     nume-camp-db="data_plecare"
                                                     :latime="{ width: '125px' }"
                                                     tip="date"
@@ -239,7 +236,7 @@
                                             </div> 
                                             <div v-if="traseu === 'Corsica-Romania'">
                                                 <vue2-datepicker-intoarcere
-                                                    data-veche="{{ old('data_plecare') == '' ? '' : old('data_plecare') }}"
+                                                    data-veche="{{ old('data_plecare', ($rezervare->data_plecare ?? '')) }}"
                                                     nume-camp-db="data_plecare"
                                                     :latime="{ width: '125px' }"
                                                     tip="date"
@@ -254,7 +251,7 @@
                                             <label for="data_intoarcere" class="mb-0 mr-2">Dată întoarcere:*</label>
                                             <div v-if="traseu === 'Romania-Corsica'">
                                                 <vue2-datepicker-intoarcere
-                                                    data-veche="{{ old('data_intoarcere') == '' ? '' : old('data_intoarcere') }}"
+                                                    data-veche="{{ old('data_intoarcere', ($rezervare->data_intoarcere) ?? '') }}"
                                                     nume-camp-db="data_intoarcere"
                                                     :latime="{ width: '125px' }"
                                                     tip="date"
@@ -266,7 +263,7 @@
                                             </div>
                                             <div v-if="traseu === 'Corsica-Romania'"> 
                                                 <vue2-datepicker-plecare
-                                                    data-veche="{{ old('data_intoarcere') == '' ? '' : old('data_intoarcere') }}"
+                                                    data-veche="{{ old('data_intoarcere', ($rezervare->data_intoarcere ?? '')) }}"
                                                     nume-camp-db="data_intoarcere"
                                                     :latime="{ width: '125px' }"
                                                     tip="date"
@@ -288,7 +285,7 @@
                                         <div class="form-group col-lg-12 mb-2 d-flex justify-content-center border-bottom">
                                                 <h5 class="mb-1">Pasageri și costuri:</h5>
                                         </div>
-                                        <div class="form-group col-lg-4 mb-2 d-flex">
+                                        <div class="form-group col-lg-4 mb-4 d-flex">
                                             <label for="pret_adult" class="col-form-label mb-0 mr-2">Preț per pasager: </label>
                                             <div class="px-0" style="width:50px">
                                                 <input 
@@ -297,7 +294,7 @@
                                                     name="pret_adult"
                                                     v-model="pret_adult" 
                                                     {{-- value="{{ old('pret_adult') }}" --}}
-                                                    value="{{ 120 }}"
+                                                    {{-- value="{{ 120 }}" --}}
                                                     required
                                                     disabled>
                                             </div>
@@ -305,35 +302,39 @@
                                                 Euro
                                             </label>
                                         </div>
-                                        <div class="form-group col-lg-4  justify-content-center m-0 d-flex">
-                                                
-                                            <label for="nr_adulti" class="col-form-label mb-0 mr-2">Nr. pasageri:*</label>
+                                        <div class="form-group col-lg-4 justify-content-center mb-4 d-flex">
+
+                                            {{-- <div class="col-lg-6 px-0 d-flex align-self-center">                                                  --}}
+                                                <label for="nr_adulti" class="col-form-label mb-0 mr-2">Nr. pasageri:*</label>
+                                            {{-- </div> --}}
                                             
-                                            <div class="col-lg-6 px-0 d-flex align-self-center">  
-                                                <button type="button" class="btn m-0 p-0"
+                                            {{-- <div class="col-lg-6 px-0 d-flex align-self-center">   --}}
+                                                <button type="button" class="btn m-0 p-0 mb-1"
                                                     v-on:click="nr_adulti -= 1;getPretTotal()"
                                                     >
                                                     <i class="far fa-minus-square bg-danger text-white fa-2x"></i>
                                                 </button>  
                                                 <script type="application/javascript"> 
-                                                    nrAdultiVechi={!! json_encode(old('nr_adulti', '0'), JSON_NUMERIC_CHECK) !!}
-                                                </script>                                    
-                                                <input 
-                                                    type="text" 
-                                                    class="form-control form-control-sm {{ $errors->has('nr_adulti') ? 'is-invalid' : '' }}" 
-                                                    name="nr_adulti"
-                                                    v-model="nr_adulti" 
-                                                    value="{{ old('nr_adulti') }}"
-                                                    required
-                                                    readonly>
-                                                <button type="button" class="btn m-0 p-0" 
+                                                    nrAdultiVechi={!! json_encode(old('nr_adulti', ($rezervare->nr_adulti ?? '0')), JSON_NUMERIC_CHECK) !!}
+                                                </script>  
+                                                <div class="px-0" style="width:80px">                                  
+                                                    <input 
+                                                        type="text" 
+                                                        class="form-control form-control-sm {{ $errors->has('nr_adulti') ? 'is-invalid' : '' }}" 
+                                                        name="nr_adulti"
+                                                        v-model="nr_adulti" 
+                                                        {{-- value="{{ old('nr_adulti') }}" --}}
+                                                        required
+                                                        readonly>
+                                                </div>
+                                                <button type="button" class="btn m-0 p-0 mb-1" 
                                                     v-on:click="nr_adulti += 1;getPretTotal()">
                                                     <i class="far fa-plus-square bg-success text-white fa-2x">
                                                     </i>
                                                 </button>  
-                                            </div>
+                                            {{-- </div> --}}
                                         </div>
-                                        <div class="form-group col-lg-4 justify-content-end m-0 d-flex">
+                                        <div class="form-group col-lg-4 justify-content-end mb-4 d-flex">
                                             <label for="pret_total" class="col-form-label mb-0 mr-2">Preț total:</label>
                                             <div class="px-0 d-flex" style="width:100px">
                                                 <input 
@@ -341,7 +342,7 @@
                                                     class="form-control form-control-sm {{ $errors->has('pret_total') ? 'is-invalid' : '' }}" 
                                                     name="pret_total"
                                                     v-model="pret_total" 
-                                                    value="{{ old('pret_total') }}"
+                                                    {{-- value="{{ old('pret_total') }}" --}}
                                                     required
                                                     disabled>
                                                 <label id="" class="col-form-label pl-1 align-bottom">
@@ -351,39 +352,58 @@
                                         </div>   
                                         <div class="form-group col-lg-12 justify-content-end m-0">  
                                                 <script type="application/javascript"> 
-                                                    numeVechi={!! json_encode(old('pasageri.nume', [])) !!}
-                                                </script>  
-                                                @php
-                                                    $nr_pasager = 1;
-                                                @endphp   
+                                                    numeVechi={!! json_encode(old('pasageri.nume', ($rezervare->pasageri['nume'] ?? []))) !!}
+                                                    buletinVechi={!! json_encode(old('pasageri.buletin', ($rezervare->pasageri['buletin'] ?? []))) !!}
+                                                    dataNastereVechi={!! json_encode(old('pasageri.data_nastere', ($rezervare->pasageri['data_nastere'] ?? []))) !!}
+                                                    localitateNastereVechi={!! json_encode(old('pasageri.localitate_nastere', ($rezervare->pasageri['localitate_nastere'] ?? []))) !!}
+                                                    localitateDomiciliuVechi={!! json_encode(old('pasageri.localitate_domiciliu', ($rezervare->pasageri['localitate_domiciliu'] ?? []))) !!}
+                                                </script>    
                                             <div v-for="index in nr_adulti" :key="index">
-                                                @php
-                                                    $nr_pasager = $nr_pasager + 1;
-                                                @endphp
-                                                <div class="form-row">
-                                                    <div class="col-lg-2">
-                                                        <input type="text" class="form-control" name="pasageri[nume][]" v-model="nume[index-1]"><br/
-                                                        {{-- value="{{ old('pasageri[nume][1]') }}" --}}
-                                                        >
+                                                <div class="form-row align-items-center mb-2" style="background-color:#005757; border-radius: 10px 10px 10px 10px;">
+                                                    <div class="form-group col-lg-2 mb-0 pb-0">
+                                                        Pasager @{{ index }}:
+                                                    </div>
+                                                    <div class="form-group col-lg-2">
+                                                        <label for="pasageri_nume" class="col-form-label col-form-label-sm mb-0 py-0 mr-2">Nume:</label>
+                                                        <input type="text"
+                                                            class="form-control form-control-sm"
+                                                            :name="'pasageri[nume][' + index + ']'" 
+                                                            v-model="nume[index]">
+                                                    </div>
+                                                    <div class="form-group col-lg-2">
+                                                        <label for="pasageri_buletin" class="col-form-label col-form-label-sm mb-0 py-0 mr-2">Seria si nr. buletin:</label>
+                                                        <input type="text" 
+                                                            class="form-control form-control-sm"
+                                                            :name="'pasageri[buletin][' + index + ']'"
+                                                            v-model="buletin[index]">
+                                                    </div>
+                                                    <div class="form-group col-lg-2">
+                                                        <label for="pasageri_data_nastere" class="col-form-label col-form-label-sm mb-0 py-0 mr-2">Data nașterii:</label>
+                                                        <input type="text" 
+                                                            class="form-control form-control-sm"
+                                                            placeholder="Ex: 01/01/2020"
+                                                            :name="'pasageri[data_nastere][' + index + ']'"
+                                                            v-model="data_nastere[index]">
+                                                    </div>
+                                                    <div class="form-group col-lg-2">
+                                                        <label for="pasageri_licalitate_nastere" class="col-form-label col-form-label-sm mb-0 py-0 mr-2">Localitate naștere:</label>
+                                                        <input type="text" 
+                                                            class="form-control form-control-sm"
+                                                            :name="'pasageri[localitate_nastere][' + index + ']'"
+                                                            v-model="localitate_nastere[index]">
+                                                    </div>
+                                                    <div class="form-group col-lg-2">
+                                                        <label for="pasageri_localitate_domiciliu" class="col-form-label col-form-label-sm mb-0 py-0 mr-2">Localitate domiciliu:</label>
+                                                        <input type="text" 
+                                                            class="form-control form-control-sm"
+                                                            :name="'pasageri[localitate_domiciliu][' + index + ']'"
+                                                            v-model="localitate_domiciliu[index]">
                                                     </div>
                                                     <div class="col-lg-2">
-                                                        <input type="text" class="form-control" name="pasageri[buletin][]" v-model="buletin[index]"><br/>
                                                     </div>
-                                                    <div class="col-lg-2">
-                                                        {{ $nr_pasager }}
-                                                        @{{ index }}
-                                                        {{ old('pasageri.nume.1') }}
-                                                    </div>
-
-                                                @php
-                                                    $nr_pasager = $nr_pasager + 1;
-                                                @endphp
                                                 </div>
                                             </div>     
-                                        </div>      
-                                                        @php
-                                                            // dd(old('pasageri.nume'))
-                                                        @endphp              
+                                        </div>                  
                                         {{-- <div class="form-group col-lg-12 mb-2 justify-content-center"> 
                                             <label for="pasageri" class="mb-0">Pasageri(numele si seria de buletin pentru fiecare pasager):*</label>
                                             <textarea class="form-control {{ $errors->has('pasageri') ? 'is-invalid' : '' }}" 
@@ -401,7 +421,7 @@
                                                     class="form-control form-control-sm {{ $errors->has('bagaje_kg') ? 'is-invalid' : '' }}" 
                                                     name="bagaje_kg"
                                                     placeholder="Ex: 2.5" 
-                                                    value="{{ old('bagaje_kg') }}"
+                                                    value="{{ old('bagaje_kg', ($rezervare->bagaje_kg ?? '')) }}"
                                                 >
                                             </div>
                                             <label id="" class="col-form-label pl-1 align-bottom">
@@ -411,7 +431,7 @@
                                         <div class="form-group col-lg-12 mb-0 justify-content-center"> 
                                             <label for="bagaje_descriere" class="mb-0">Descriere bagaj:*</label>
                                             <textarea class="form-control {{ $errors->has('bagaje_descriere') ? 'is-invalid' : '' }}" 
-                                                name="bagaje_descriere" id="bagaje_descriere" rows="2">{{ old('bagaje_descriere') }}</textarea>
+                                                name="bagaje_descriere" id="bagaje_descriere" rows="2">{{ old('bagaje_descriere', ($rezervare->bagaje_descriere ?? '')) }}</textarea>
                                         </div> 
                                     </div>
                                     <div class="form-row mb-4 px-2 py-2 justify-content-between align-items-center border rounded"
@@ -424,7 +444,7 @@
                                                 class="form-control form-control-sm {{ $errors->has('nume') ? 'is-invalid' : '' }}" 
                                                 name="nume" 
                                                 placeholder="" 
-                                                value="{{ old('nume') }}"
+                                                value="{{ old('nume', ($rezervare->nume ?? '')) }}"
                                                 required> 
                                         </div>                                   
                                         <div class="form-group col-lg-4">   
@@ -434,7 +454,7 @@
                                                 class="form-control form-control-sm {{ $errors->has('nume') ? 'is-invalid' : '' }}" 
                                                 name="telefon" 
                                                 placeholder="" 
-                                                value="{{ old('telefon') }}"
+                                                value="{{ old('telefon', ($rezervare->telefon ?? '')) }}"
                                                 required> 
                                         </div>                                
                                         <div class="form-group col-lg-4">  
@@ -444,13 +464,13 @@
                                                 class="form-control form-control-sm {{ $errors->has('email') ? 'is-invalid' : '' }}" 
                                                 name="email" 
                                                 placeholder="" 
-                                                value="{{ old('email') }}"
+                                                value="{{ old('email', ($rezervare->email ?? '')) }}"
                                                 required> 
                                         </div>                                  
                                         <div class="form-group col-lg-12 mb-1 justify-content-center"> 
                                             <label for="observatii" class="mb-0">Observații:</label>
                                             <textarea class="form-control {{ $errors->has('observatii') ? 'is-invalid' : '' }}" 
-                                                name="observatii" id="observatii" rows="2">{{ old('observatii') }}</textarea>
+                                                name="observatii" id="observatii" rows="2">{{ old('observatii', ($rezervare->observatii ?? '')) }}</textarea>
                                         </div> 
                                     </div>                              
                                     <div class="form-row mb-4 px-2 pt-2 d-flex justify-content-between align-items-center border rounded" 
@@ -469,7 +489,7 @@
                                                 class="form-control form-control-sm {{ $errors->has('document_de_calatorie') ? 'is-invalid' : '' }}" 
                                                 name="document_de_calatorie" 
                                                 placeholder="" 
-                                                value="{{ old('document_de_calatorie') }}"
+                                                value="{{ old('document_de_calatorie', ($rezervare->document_de_calatorie ?? '')) }}"
                                                 required> 
                                         </div>
                                         {{-- <div class="form-group col-lg-3 mb-2">
@@ -489,7 +509,7 @@
                                                 class="form-control form-control-sm {{ $errors->has('serie_document') ? 'is-invalid' : '' }}" 
                                                 name="serie_document" 
                                                 placeholder="" 
-                                                value="{{ old('serie_document') }}"
+                                                value="{{ old('serie_document', ($rezervare->serie_document ?? '')) }}"
                                                 required> 
                                         </div>
                                         <div class="form-group col-lg-3 mb-2">
@@ -499,7 +519,7 @@
                                                 class="form-control form-control-sm {{ $errors->has('cnp') ? 'is-invalid' : '' }}" 
                                                 name="cnp" 
                                                 placeholder="" 
-                                                value="{{ old('cnp') }}"
+                                                value="{{ old('cnp', ($rezervare->cnp ?? '')) }}"
                                                 required> 
                                         </div>
                                     </div>  
@@ -513,7 +533,7 @@
                                             <label for="" class="mr-4">Acord de confidențialitate:</label>
                                             <div class="form-check">
                                                 <input type="checkbox" class="form-check-input" name="acord_de_confidentialitate" value="1" required
-                                                {{ old('acord_de_confidentialitate') == '1' ? 'checked' : '' }}>
+                                                {{ old('acord_de_confidentialitate', ($rezervare->acord_de_confidentialitate ?? "0")) === "1" ? 'checked' : '' }}>
                                                 <label class="form-check-label" for="acord_de_confidentialitate">
                                                     Sunt de acord cu colectarea și prelucrarea datelor cu caracter personal - 
                                                     <a href="#" target="_blank">
@@ -532,7 +552,7 @@
                                             <label for="" class="mr-4">Termeni și condiții:</label>
                                             <div class="form-check">
                                                 <input type="checkbox" class="form-check-input" name="termeni_si_conditii" value="1" required
-                                                {{ old('termeni_si_conditii') == '1' ? 'checked' : '' }}>
+                                                {{ old('termeni_si_conditii', ($rezervare->termeni_si_conditii ?? "0")) === "1" ? 'checked' : '' }}>
                                                 <label class="form-check-label" for="termeni_si_conditii">Sunt de acord cu condițiile de transport persoane</label> 
                                             </div>
                                         </div>

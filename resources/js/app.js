@@ -40,8 +40,12 @@ if (document.querySelector('#adauga-rezervare')) {
         el: '#adauga-rezervare',
         data: {
             // nume: [[]],
-            buletin: [[]],
+            // buletin: [[]],
             nume: numeVechi,
+            buletin: buletinVechi,
+            data_nastere: dataNastereVechi,
+            localitate_nastere: localitateNastereVechi,
+            localitate_domiciliu: localitateDomiciliuVechi,
             tip_calatorie: tipCalatorieVeche,
             traseu: traseuVechi,
             active: "active",
@@ -114,6 +118,7 @@ if (document.querySelector('#adauga-rezervare')) {
                 })
                     .then(function (response) {
                         app1.orase_plecare = '';
+                        app1.judet_plecare = 0;
                         app1.oras_plecare = 0;
 
                         app1.judete_plecare = response.data.raspuns;
@@ -163,6 +168,7 @@ if (document.querySelector('#adauga-rezervare')) {
                 })
                     .then(function (response) {
                         app1.orase_sosire = '';
+                        app1.judet_sosire = 0;
                         app1.oras_sosire = 0;
 
                         app1.judete_sosire = response.data.raspuns;
