@@ -39,8 +39,9 @@ if (document.querySelector('#adauga-rezervare')) {
     const app1 = new Vue({
         el: '#adauga-rezervare',
         data: {
-            nume: [[]],
+            // nume: [[]],
             buletin: [[]],
+            nume: numeVechi,
             tip_calatorie: tipCalatorieVeche,
             traseu: traseuVechi,
             active: "active",

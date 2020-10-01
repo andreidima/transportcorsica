@@ -94702,8 +94702,9 @@ if (document.querySelector('#adauga-rezervare')) {
   var _app = new Vue({
     el: '#adauga-rezervare',
     data: {
-      nume: [[]],
+      // nume: [[]],
       buletin: [[]],
+      nume: numeVechi,
       tip_calatorie: tipCalatorieVeche,
       traseu: traseuVechi,
       active: "active",
@@ -95126,8 +95127,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! E:\laragon\www\transportcorsica\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! E:\laragon\www\transportcorsica\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! D:\laragon\www\transport-franta-corsica\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! D:\laragon\www\transport-franta-corsica\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

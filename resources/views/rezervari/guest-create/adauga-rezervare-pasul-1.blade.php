@@ -349,7 +349,10 @@
                                                 </label>
                                             </div>
                                         </div>   
-                                        <div class="form-group col-lg-12 justify-content-end m-0"> 
+                                        <div class="form-group col-lg-12 justify-content-end m-0">  
+                                                <script type="application/javascript"> 
+                                                    numeVechi={!! json_encode(old('pasageri.nume', [])) !!}
+                                                </script>  
                                                 @php
                                                     $nr_pasager = 1;
                                                 @endphp   
@@ -359,13 +362,17 @@
                                                 @endphp
                                                 <div class="form-row">
                                                     <div class="col-lg-2">
-                                                        <input type="text" class="form-control" name="pasageri[nume][]" v-model="nume[index-1]"><br/>
+                                                        <input type="text" class="form-control" name="pasageri[nume][]" v-model="nume[index-1]"><br/
+                                                        {{-- value="{{ old('pasageri[nume][1]') }}" --}}
+                                                        >
                                                     </div>
                                                     <div class="col-lg-2">
-                                                        <input type="text" class="form-control" name="pasageri[buletin][]" v-model="buletin[index-1]"><br/>
+                                                        <input type="text" class="form-control" name="pasageri[buletin][]" v-model="buletin[index]"><br/>
                                                     </div>
                                                     <div class="col-lg-2">
                                                         {{ $nr_pasager }}
+                                                        @{{ index }}
+                                                        {{ old('pasageri.nume.1') }}
                                                     </div>
 
                                                 @php
@@ -373,7 +380,10 @@
                                                 @endphp
                                                 </div>
                                             </div>     
-                                        </div>                    
+                                        </div>      
+                                                        @php
+                                                            // dd(old('pasageri.nume'))
+                                                        @endphp              
                                         {{-- <div class="form-group col-lg-12 mb-2 justify-content-center"> 
                                             <label for="pasageri" class="mb-0">Pasageri(numele si seria de buletin pentru fiecare pasager):*</label>
                                             <textarea class="form-control {{ $errors->has('pasageri') ? 'is-invalid' : '' }}" 

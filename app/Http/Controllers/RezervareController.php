@@ -268,6 +268,7 @@ class RezervareController extends Controller
      */
     public function adaugaRezervarePasul1(Request $request)
     {
+        dd($request);
         return view('rezervari.guest-create/adauga-rezervare-pasul-1');
     }
 
@@ -283,7 +284,7 @@ class RezervareController extends Controller
         $this->validateRequest($request);
         $request->session()->forget('rezervare');
         $rezervare = Rezervare::make($this->validateRequest($request));
-        dd($request->request);
+        // dd($request->request);
 
         //Schimbare tur_retur din "true or false" din vue, in "0 or 1" pentru baza de date
         ($rezervare->tur_retur === "true") ? ($rezervare->tur_retur = 1) : ($rezervare->tur_retur = 0);
@@ -297,7 +298,7 @@ class RezervareController extends Controller
 
         $request->session()->put('rezervare', $rezervare);
         // dd($rezervare, $request);
-        return redirect('/adauga-rezervare-pasul-2');
+        return redirect('/adauga-rezervare-pasul-2')->withInput();
     }
 
     /**
@@ -308,8 +309,20 @@ class RezervareController extends Controller
     public function adaugaRezervarePasul2(Request $request)
     {
         $rezervare = $request->session()->get('rezervare');
-        // dd($rezervare);
+        // dd($rezervare, $request);
         return view('rezervari.guest-create/adauga-rezervare-pasul-2', compact('rezervare'));
+    }
+
+    /**
+     * Revenire la pasul 1 pentru corectarea datelor
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function modificaRezervarePasul1(Request $request)
+    {
+        // $rezervare = $request->session()->get('rezervare');
+        dd($request);
+        return redirect('rezervari.guest-create/adauga-rezervare-pasul-1')->withInput();
     }
 
     /**
@@ -320,6 +333,13 @@ class RezervareController extends Controller
      */
     public function postAdaugaRezervarePasul2(Request $request)
     {
+        // Revenire la pasul 1 pentru modificare rezervare
+        // dd($request->input('action'));
+        if ($request->input('action') == 'modifica_rezervare'){
+            // dd('here');
+                return redirect('/adauga-rezervare-pasul-1')->withInput();
+        }
+
         $rezervare = $request->session()->get('rezervare');
         $rezervare->created_at = \Carbon\Carbon::now();
 
@@ -440,6 +460,8 @@ class RezervareController extends Controller
             break;
             case 'fara_plata_online':
                 return redirect('/adauga-rezervare-pasul-3');
+            case 'modificare_rezervare':
+                return redirect('/adauga-rezervare-pasul-1');
             break; 
         }
     }
