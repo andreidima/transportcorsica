@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Rezervare;
 use App\Models\Oras;
+use App\Models\Pasager;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use DB;
@@ -201,17 +202,17 @@ class RezervareController extends Controller
                 'nume' => ($request->_method === "PATCH") ?
                     [
                         'required', 'max:200',
-                        // Rule::unique('rezervari')->ignore($rezervari->id)->where(function ($query) use ($rezervari, $request) {
-                        //     return $query->where('telefon', $request->telefon)
-                        //         ->where('data_cursa', $request->data_cursa);
-                        // }),
+                        Rule::unique('rezervari')->ignore($rezervari->id)->where(function ($query) use ($rezervari, $request) {
+                            return $query->where('telefon', $request->telefon)
+                                ->where('data_cursa', $request->data_cursa);
+                        }),
                     ]
                     : [
                         'required', 'max:200',
-                        // Rule::unique('rezervari')->where(function ($query) use ($rezervari, $request) {
-                        //     return $query->where('telefon', $request->telefon)
-                        //         ->where('data_plecare', $request->data_plecare);
-                        // }),
+                        Rule::unique('rezervari')->where(function ($query) use ($rezervari, $request) {
+                            return $query->where('telefon', $request->telefon)
+                                ->where('data_cursa', $request->data_plecare);
+                        }),
                     ],
                 'telefon' => ['required', 'regex:/^[0-9 ]+$/', 'max: 100'],
                 'email' => ['nullable', 'email', 'max:100'],
@@ -340,16 +341,9 @@ class RezervareController extends Controller
      */
     public function postAdaugaRezervarePasul2(Request $request)
     {
-        // Revenire la pasul 1 pentru modificare rezervare
-        // dd($request->input('action'));
-        if ($request->input('action') == 'modifica_rezervare'){
-            // dd('here');
-                return redirect('/adauga-rezervare-pasul-1')->withInput();
-        }
-
         $rezervare = $request->session()->get('rezervare');
+        // dd($rezervare);
         $rezervare->created_at = \Carbon\Carbon::now();
-
                
         // Verificare rezervare duplicat
         $request_verificare_duplicate = new Request([
@@ -387,8 +381,11 @@ class RezervareController extends Controller
             $rezervare_unset->tur_retur,
             $rezervare_unset->data_plecare,
             $rezervare_unset->data_intoarcere,
+            $rezervare_unset->judet_plecare,
+            $rezervare_unset->judet_sosire,
             $rezervare_unset->oras_plecare_nume,
             $rezervare_unset->oras_sosire_nume,
+            $rezervare_unset->pasageri,
             $rezervare_unset->acord_de_confidentialitate,
             $rezervare_unset->termeni_si_conditii
         );
@@ -402,7 +399,7 @@ class RezervareController extends Controller
         $rezervare_retur->oras_sosire = $rezervare_tur->oras_plecare;
         $rezervare_retur->pret_total = 0;
 
-        if ($rezervare->tur_retur === 0) {
+        if ($rezervare->tur_retur === 'false') {
             //Inserarea rezervarii in baza de date
             // $id_tur = DB::table('rezervari')->insertGetId($rezervare_tur);
             $rezervare_tur->save();
@@ -421,18 +418,35 @@ class RezervareController extends Controller
             // $this->trimiteSms($rezervare_tur);
             // $this->trimiteSms($rezervare_retur);
 
-            $rezervare_tur->tur_retur = $rezervare_retur->id;
+            $rezervare_tur->retur = $rezervare_retur->id;
             $rezervare_tur->update();
 
-            $rezervare_retur->tur_retur = $rezervare_tur->id;
+            $rezervare_retur->tur = $rezervare_tur->id;
             $rezervare_retur->update();
 
-            $request->session()->put('rezervare_tur', $rezervare_tur);
-            $request->session()->put('rezervare_retur', $rezervare_retur);
         }
 
-        return redirect('/adauga-rezervare-pasul-3');
-        
+        // salvare pasageri si atasare la rezervari
+        for ($i = 1; $i <= $rezervare->nr_adulti; $i++) {
+            $pasager = new Pasager;
+            $pasager->nume = $rezervare->pasageri['nume'][$i];
+            $pasager->buletin = $rezervare->pasageri['buletin'][$i];
+            $pasager->data_nastere = $rezervare->pasageri['data_nastere'][$i];
+            $pasager->localitate_nastere = $rezervare->pasageri['localitate_nastere'][$i];
+            $pasager->localitate_domiciliu = $rezervare->pasageri['localitate_domiciliu'][$i];
+            $pasager->save();
+
+            if ($rezervare->tur_retur === 'false') {
+                $rezervare_tur->pasageri()->attach($pasager->id);
+            }else{
+                $rezervare_tur->pasageri()->attach($pasager->id);
+                $rezervare_retur->pasageri()->attach($pasager->id);
+            }
+        }
+        $rezervare_tur = Rezervare::
+        $request->session()->put('rezervare_tur', $rezervare_tur);
+        $request->session()->put('rezervare_retur', $rezervare_retur);
+
         // Trimitere email
         if (stripos($rezervare->nume, 'Andrei Dima Test') !== false) {
             if (stripos($rezervare->nume, 'fara email') !== false) {
@@ -450,7 +464,7 @@ class RezervareController extends Controller
 
         // Cu sau fara plata online
         switch ($request->input('action')) {
-            case 'cu_plata_online':        
+            case 'cu_plata_online':
                 // if (stripos($rezervare->nume, 'Andrei Dima Test') !== false) {
                 //     if (stripos($rezervare->nume, 'fara plata') !== false) {
                 //         return redirect('/adauga-rezervare-pasul-3');
@@ -464,6 +478,7 @@ class RezervareController extends Controller
 
                 //     return redirect('/trimitere-catre-plata');
                 // }
+                return redirect('/adauga-rezervare-pasul-3');
             break;
             case 'fara_plata_online':
                 return redirect('/adauga-rezervare-pasul-3');
