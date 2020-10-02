@@ -443,7 +443,7 @@ class RezervareController extends Controller
                 $rezervare_retur->pasageri()->attach($pasager->id);
             }
         }
-        $rezervare_tur = Rezervare::
+        // $rezervare_tur = Rezervare::
         $request->session()->put('rezervare_tur', $rezervare_tur);
         $request->session()->put('rezervare_retur', $rezervare_retur);
 
