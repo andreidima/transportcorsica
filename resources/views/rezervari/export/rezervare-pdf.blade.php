@@ -84,7 +84,7 @@
                 <tr style="text-align:center; font-weight:bold;">
                     <td colspan="3" style="border-width:0px; padding:0rem;">
                         <h3 style="background-color:#e7d790; color:black; margin:0px 0px 5px 0px; padding:5px 0px;">
-                        Informatii Client
+                        Informații Client
                         </h3>
                     </td>
                 </tr>
@@ -105,23 +105,25 @@
                         <b>{{ $rezervare_tur->email }}</b>
                     </td>
                 </tr>
+                @isset ($rezervare_tur->observatii)
                 <tr>
-                    <td colspan="3">                    
-                        Pasageri: {{ $rezervare_tur->pasageri }}
+                    <td colspan="3" style="height: 10px">
+
                     </td>
                 </tr>
                 <tr>
                     <td colspan="3">                    
-                        Observatii: {{ $rezervare_tur->observatii }}
+                        Observații: {{ $rezervare_tur->observatii }}
                     </td>
                 </tr>
+                @endisset
             </table>
 
             <table style="margin-bottom:40px">    
                 <tr style="text-align:center; font-weight:bold;">
                     <td colspan="5" style="padding:0rem;">
                         <h3 style="background-color:#e7d790; color:black; margin:10px 0px 5px 0px; padding:5px 0px">
-                        Informatii Rezervare bilet
+                        Informații Rezervare bilet
                         </h3>
                     </td>
                 </tr>
@@ -177,33 +179,74 @@
                             
             <table style="margin-bottom:20px">
                 <tr style="text-align:center; font-weight:bold;">
-                    <td colspan="6" style="border-width:0px; padding:0rem;">
+                    <td colspan="5" style="border-width:0px; padding:0rem;">
                         <h3 style="background-color:#e7d790; color:black; margin:10px 0px 5px 0px; padding:5px 0px">
-                        Calatorie | Tarif
+                        Călătorie | Tarif
                         </h3>
                     </td>
                 </tr>
-                <tr>
                     @if ($rezervare_tur->nr_adulti > 0)
-                    <td>
-                        Număr adulți: {{ $rezervare_tur->nr_adulti }}
-                        <br>
-                        <b>Preț total: {{ $rezervare_tur->pret_total }}Euro</b>
-
-                    </td>
+                        <tr>
+                            <td colspan="5" style="text-align: center">
+                                <span style="margin-right:50px">
+                                    Pasageri: <b>{{ $rezervare_tur->nr_adulti }}</b>
+                                </span>
+                                <span>
+                                    Preț total: <b>{{ $rezervare_tur->pret_total }}Euro</b>
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="border: solid 1px gray">
+                                Nume:
+                            </td>
+                            <td style="border: solid 1px gray">
+                                Buletin
+                            </td>
+                            <td style="border: solid 1px gray">
+                                Data naștere
+                            </td>
+                            <td style="border: solid 1px gray">
+                                Localitate naștere
+                            </td>
+                            <td style="border: solid 1px gray">
+                                Localitate domiciliu
+                            </td>
+                        </tr>
+                        @foreach ($rezervare_tur->pasageri as $pasager)
+                        <tr>
+                            <td style="border: solid 1px gray">
+                                {{ $pasager->nume }}
+                            </td>
+                            <td style="border: solid 1px gray">
+                                {{ $pasager->buletin }}
+                            </td>
+                            <td style="border: solid 1px gray">
+                                {{ $pasager->data_nastere }}
+                            </td>
+                            <td style="border: solid 1px gray">
+                                {{ $pasager->localitate_nastere }}
+                            </td>
+                            <td style="border: solid 1px gray">
+                                {{ $pasager->localitate_domiciliu }}
+                            </td>
+                        </tr> 
+                        @endforeach      
+                        </tr>
                     @else
-                    <td>
-                        Descriere bagaj: {{ $rezervare_tur->bagaje_descriere }}
-                        <br>
-                        <b>Cantitate: {{ $rezervare_tur->bagaje_kg }}Kg</b>
-                    </td>
-                    @endif
-                </tr>                
+                        <tr>
+                            <td colspan="5">
+                                Descriere bagaj: {{ $rezervare_tur->bagaje_descriere }}
+                                <br>
+                                <b>Cantitate: {{ $rezervare_tur->bagaje_kg }}Kg</b>
+                            </td>
+                        </tr>
+                    @endif              
             </table>
                             
             <table style="margin-bottom:20px">
                 <tr style="text-align:center; font-weight:bold;">
-                    <td colspan="6" style="border-width:0px; padding:0rem;">
+                    <td colspan="" style="border-width:0px; padding:0rem;">
                         <h3 style="background-color:#e7d790; color:black; margin:10px 0px 5px 0px; padding:5px 0px">
                         Date pentru facturare
                         </h3>

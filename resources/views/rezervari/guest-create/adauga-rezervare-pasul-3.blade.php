@@ -24,9 +24,9 @@
                         <div class="row mb-0 d-flex justify-content-center border-radius: 0px 0px 40px 40px">
                             <div class="col-lg-12 p-4 mb-0">
                                 <div class="row mb-3 d-flex justify-content-center">
-                                    @php
+                                    {{-- @php
                                         dd($rezervare_tur);
-                                    @endphp
+                                    @endphp --}}
                                     @isset ($rezervare_tur)
                                         <div class="col-lg-11 px-0 border rounded-lg">
                                             <h5 class="bg-warning p-1 m-0 text-center">

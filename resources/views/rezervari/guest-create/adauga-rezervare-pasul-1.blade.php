@@ -216,9 +216,16 @@
                                                 <h5 class="mb-1">Plecare în călătorie:</h5>
                                         </div>
                                         <div class="form-group col-lg-12 border-left border-warning" style="border-width:5px !important">
-                                            Plecarile din România au loc săptămânal, miercurea, la ora 20:00, din Focșani.
+                                            Plecarile din România au loc săptămânal, miercurea, la ora 21:00, din Focșani.
                                             <br>
-                                            Plecarile din Corsica au loc săptămânal, vinerea, la ora 18:00, din Corsica.
+                                            Plecarile din Corsica au loc săptămânal, sâmbăta, în funcție de plecările navelor și de locația dumneavoastră .
+                                            <br>
+                                            Pentru informații complete, vă rugăm să citiți 
+                                                        <span class="badge badge-primary border border-dark"
+                                                            style="background-color:yellow; color:black"
+                                                        >
+                                                            Termeni și condiții
+                                                        </span>
                                         </div>
                                         <div class="form-group col-lg-4 mb-2 d-flex justify-content-center align-items-end">
                                             <label for="data_plecare" class="mb-0 mr-2">Dată plecare:*</label>
@@ -243,11 +250,11 @@
                                                     value-type="YYYY-MM-DD"
                                                     format="DD-MM-YYYY"
                                                     not-before-date="{{ \Carbon\Carbon::today() }}"
-                                                    :doar-ziua="5"
+                                                    :doar-ziua="6"
                                                 ></vue2-datepicker-intoarcere> 
                                             </div>
                                         </div>
-                                        <div v-if="tur_retur" class="form-group col-lg-4 mb-0 d-flex justify-content-center align-items-end">
+                                        <div v-if="tur_retur" class="form-group col-lg-4 mb-2 d-flex justify-content-center align-items-end">
                                             <label for="data_intoarcere" class="mb-0 mr-2">Dată întoarcere:*</label>
                                             <div v-if="traseu === 'Romania-Corsica'">
                                                 <vue2-datepicker-intoarcere
@@ -258,7 +265,7 @@
                                                     value-type="YYYY-MM-DD"
                                                     format="DD-MM-YYYY"
                                                     not-before-date="{{ \Carbon\Carbon::today() }}"
-                                                    :doar-ziua="5"
+                                                    :doar-ziua="6"
                                                 ></vue2-datepicker-intoarcere> 
                                             </div>
                                             <div v-if="traseu === 'Corsica-Romania'"> 
