@@ -8,19 +8,23 @@
                     <a href="{{ route('rezervari.index') }}"><i class="fas fa-address-card mr-1"></i>Rezervări</a>
                 </h4>
             </div> 
-            <div class="col-lg-6" id="">
+            <div class="col-lg-6" id="app1">
                 <form class="needs-validation" novalidate method="GET" action="{{ route('rezervari.index') }}">
                     @csrf                    
                     <div class="row input-group custom-search-form justify-content-center">
-                        {{-- <div class="col-md-4 px-1">
-                            <input type="text" class="form-control form-control-sm border rounded-pill mb-1 py-0" 
-                            id="search_numar" name="search_numar" placeholder="Număr fișă" autofocus
-                                    value="{{ $search_numar }}">
-                        </div> --}}
                         <div class="col-md-4 px-1">
                             <input type="text" class="form-control form-control-sm border rounded-pill mb-1 py-0" 
                             id="search_nume" name="search_nume" placeholder="Client"
                                     value="{{ $search_nume }}">
+                        </div>
+                        <div class="col-md-4 px-1">
+                            <label for="search_data" class="mb-0 align-self-center mr-1">Data:</label>
+                            <vue2-datepicker
+                                data-veche="{{ $search_data }}"
+                                nume-camp-db="search_data"
+                                tip="date"
+                                latime="100"
+                            ></vue2-datepicker>
                         </div>
                         <div class="col-md-4 px-1">
                             <button class="btn btn-sm btn-primary col-md-12 border border-dark rounded-pill" type="submit">

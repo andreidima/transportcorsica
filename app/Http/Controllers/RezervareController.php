@@ -19,14 +19,19 @@ class RezervareController extends Controller
     public function index()
     {
         $search_nume = \Request::get('search_nume');
+        $search_data = \Request::get('search_data');
+
         $rezervari = Rezervare::
             when($search_nume, function ($query, $search_nume) {
                 return $query->where('nume', 'like', '%' . $search_nume . '%');
             })
+            ->when($search_data, function ($query, $search_data) {
+                return $query->whereDate('data_cursa', '=', $search_data);
+            })
             ->latest()
             ->simplePaginate(25);
 
-        return view('rezervari.index', compact('rezervari', 'search_nume'));
+        return view('rezervari.index', compact('rezervari', 'search_nume', 'search_data'));
     }
 
     /**
