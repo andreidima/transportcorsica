@@ -357,32 +357,47 @@
                                                 </label>
                                             </div>
                                         </div>   
+                                        {{-- @php
+                                            $flattened = \Illuminate\Support\Arr::flatten($rezervare->pasageri['nume']);
+                                            $buletin_flattened = \Illuminate\Support\Arr::flatten(old('pasageri.buletin', ($rezervare->pasageri['buletin'] ?? [])))
+                                            dd($rezervare->pasageri['nume'], $flattened);
+                                            dd(old('pasageri.nume'), ($rezervare->pasageri['nume'] ?? ''));
+                                        @endphp --}}
+                                        {{-- {{ old('pasageri.nume') ? old('pasageri.nume')->toArray() : '' }} --}}
+                                        {{-- {{ $rezervare->pasageri['nume']->toArray() }} --}}
                                         <div class="form-group col-lg-12 justify-content-end m-0">  
                                                 <script type="application/javascript"> 
-                                                    numeVechi={!! json_encode(old('pasageri.nume', ($rezervare->pasageri['nume'] ?? []))) !!}
-                                                    buletinVechi={!! json_encode(old('pasageri.buletin', ($rezervare->pasageri['buletin'] ?? []))) !!}
-                                                    dataNastereVechi={!! json_encode(old('pasageri.data_nastere', ($rezervare->pasageri['data_nastere'] ?? []))) !!}
-                                                    localitateNastereVechi={!! json_encode(old('pasageri.localitate_nastere', ($rezervare->pasageri['localitate_nastere'] ?? []))) !!}
-                                                    localitateDomiciliuVechi={!! json_encode(old('pasageri.localitate_domiciliu', ($rezervare->pasageri['localitate_domiciliu'] ?? []))) !!}
+                                                    numeVechi={!! json_encode(\Illuminate\Support\Arr::flatten(old('pasageri.nume', ($rezervare->pasageri['nume'] ?? [])))) !!}
+                                                    buletinVechi={!! json_encode(\Illuminate\Support\Arr::flatten(old('pasageri.buletin', ($rezervare->pasageri['buletin'] ?? [])))) !!}
+                                                    
+                                                    dataNastereVechi={!! json_encode(\Illuminate\Support\Arr::flatten(old('pasageri.data_nastere', ($rezervare->pasageri['data_nastere'] ?? [])))) !!}
+                                                    localitateNastereVechi={!! json_encode(\Illuminate\Support\Arr::flatten(old('pasageri.localitate_nastere', ($rezervare->pasageri['localitate_nastere'] ?? [])))) !!}
+                                                    localitateDomiciliuVechi={!! json_encode(\Illuminate\Support\Arr::flatten(old('pasageri.localitate_domiciliu', ($rezervare->pasageri['localitate_domiciliu'] ?? [])))) !!}
                                                 </script>    
                                             <div v-for="index in nr_adulti" :key="index">
                                                 <div class="form-row align-items-center mb-2" style="background-color:#005757; border-radius: 10px 10px 10px 10px;">
                                                     <div class="form-group col-lg-2 mb-0 pb-0">
                                                         Pasager @{{ index }}:
+                                                        <br>
+                                                        <button  type="button" class="btn m-0 p-0 mb-1" @click="stergePasager(index-1)">
+                                                            <span class="px-1" style="background-color:red; color:white; border-radius:20px">
+                                                                Șterge pasagerul
+                                                            </span>
+                                                        </button>
                                                     </div>
                                                     <div class="form-group col-lg-2">
                                                         <label for="pasageri_nume" class="col-form-label col-form-label-sm mb-0 py-0 mr-2">Nume:</label>
                                                         <input type="text"
                                                             class="form-control form-control-sm"
                                                             :name="'pasageri[nume][' + index + ']'" 
-                                                            v-model="nume[index]">
+                                                            v-model="nume[index-1]">
                                                     </div>
                                                     <div class="form-group col-lg-2">
                                                         <label for="pasageri_buletin" class="col-form-label col-form-label-sm mb-0 py-0 mr-2">Seria si nr. buletin:</label>
                                                         <input type="text" 
                                                             class="form-control form-control-sm"
                                                             :name="'pasageri[buletin][' + index + ']'"
-                                                            v-model="buletin[index]">
+                                                            v-model="buletin[index-1]">
                                                     </div>
                                                     <div class="form-group col-lg-2">
                                                         <label for="pasageri_data_nastere" class="col-form-label col-form-label-sm mb-0 py-0 mr-2">Data nașterii:</label>
@@ -390,21 +405,21 @@
                                                             class="form-control form-control-sm"
                                                             placeholder="Ex: 01/01/2020"
                                                             :name="'pasageri[data_nastere][' + index + ']'"
-                                                            v-model="data_nastere[index]">
+                                                            v-model="data_nastere[index-1]">
                                                     </div>
                                                     <div class="form-group col-lg-2">
                                                         <label for="pasageri_licalitate_nastere" class="col-form-label col-form-label-sm mb-0 py-0 mr-2">Localitate naștere:</label>
                                                         <input type="text" 
                                                             class="form-control form-control-sm"
                                                             :name="'pasageri[localitate_nastere][' + index + ']'"
-                                                            v-model="localitate_nastere[index]">
+                                                            v-model="localitate_nastere[index-1]">
                                                     </div>
                                                     <div class="form-group col-lg-2">
                                                         <label for="pasageri_localitate_domiciliu" class="col-form-label col-form-label-sm mb-0 py-0 mr-2">Localitate domiciliu:</label>
                                                         <input type="text" 
                                                             class="form-control form-control-sm"
                                                             :name="'pasageri[localitate_domiciliu][' + index + ']'"
-                                                            v-model="localitate_domiciliu[index]">
+                                                            v-model="localitate_domiciliu[index-1]">
                                                     </div>
                                                     <div class="col-lg-2">
                                                     </div>

@@ -74,7 +74,21 @@ class RezervareController extends Controller
      */
     public function edit(Rezervare $rezervare)
     {
-        //
+        $rezervare->nr_adulti ? $rezervare->tip_calatorie = "Calatori" : $rezervare->tip_calatorie = "Bagaje";
+        // unset($rezervare_unset->tip_calatorie,
+        // $rezervare_unset->traseu,
+        // $rezervare_unset->tur_retur,
+        // $rezervare_unset->data_plecare,
+        // $rezervare_unset->data_intoarcere,
+        // $rezervare_unset->judet_plecare,
+        // $rezervare_unset->judet_sosire,
+        // $rezervare_unset->oras_plecare_nume,
+        // $rezervare_unset->oras_sosire_nume,
+        // $rezervare_unset->pasageri,
+        // $rezervare_unset->acord_de_confidentialitate,
+        // $rezervare_unset->termeni_si_conditii);
+        // $rezervare->
+        return view('rezervari.guest-create/adauga-rezervare-pasul-1', compact('rezervare'));
     }
 
     /**
@@ -97,7 +111,17 @@ class RezervareController extends Controller
      */
     public function destroy(Rezervare $rezervare)
     {
-        //
+        // stergere pasageri - daca nu mai sunt alte rezervari (tur, retur) continand acesti pasageri 
+        foreach ($rezervare->pasageri as $pasager) {
+            if ($pasager->rezervari->count() < 2) {
+                $pasager->delete();
+            }
+        }
+
+        $rezervare->pasageri()->detach();
+        $rezervare->delete();
+
+        return redirect('/rezervari')->with('status', 'Rezervarea pentru clientul "' . $rezervare->nume . '" a fost ștearsă cu succes!');
     }
 
 
@@ -387,8 +411,7 @@ class RezervareController extends Controller
                 $rezervare_unset->bagaje_descriere
             );
         }else{
-            unset($rezervare_unset->nr_adulti,
-            );
+            unset($rezervare_unset->nr_adulti);
             $rezervare_unset->pret_total = 0;
         }
 

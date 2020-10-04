@@ -3,35 +3,42 @@
 @section('content')   
 <div class="container card" style="border-radius: 40px 40px 40px 40px;">
         <div class="row card-header justify-content-between py-1" style="border-radius: 40px 40px 0px 0px;">
-            <div class="col-lg-3 align-self-center">
+            <div class="col-lg-3 align-self-center mb-2">
                 <h4 class=" mb-0">
                     <a href="{{ route('rezervari.index') }}"><i class="fas fa-address-card mr-1"></i>Rezervări</a>
                 </h4>
             </div> 
-            <div class="col-lg-6" id="app1">
+            <div class="col-lg-8" id="app1">
                 <form class="needs-validation" novalidate method="GET" action="{{ route('rezervari.index') }}">
                     @csrf                    
                     <div class="row input-group custom-search-form justify-content-center">
-                        <div class="col-md-4 px-1">
-                            <input type="text" class="form-control form-control-sm border rounded-pill mb-1 py-0" 
+                        <div class="col-md-3 mb-2 px-1 d-flex align-items-center">
+                            <input type="text" class="form-control form-control-sm border rounded-pill mb-0 py-0" 
                             id="search_nume" name="search_nume" placeholder="Client"
                                     value="{{ $search_nume }}">
                         </div>
-                        <div class="col-md-4 px-1">
+                        <div class="col-md-3 mb-2 px-1 d-flex align-items-center">
                             <label for="search_data" class="mb-0 align-self-center mr-1">Data:</label>
                             <vue2-datepicker
                                 data-veche="{{ $search_data }}"
                                 nume-camp-db="search_data"
+                                :latime="{ width: '125px' }"
                                 tip="date"
-                                latime="100"
+                                value-type="YYYY-MM-DD"
+                                format="DD-MM-YYYY"
+                                {{-- not-before-date="{{ \Carbon\Carbon::today() }}" --}}
+                                :doar-ziua-a="3"
+                                :doar-ziua-b="6"
                             ></vue2-datepicker>
                         </div>
-                        <div class="col-md-4 px-1">
+                    {{-- </div>
+                    <div class="row input-group custom-search-form justify-content-center"> --}}
+                        <div class="col-md-3 mb-2 px-1 d-flex align-items-center">
                             <button class="btn btn-sm btn-primary col-md-12 border border-dark rounded-pill" type="submit">
                                 <i class="fas fa-search text-white mr-1"></i>Caută
                             </button>
                         </div>
-                        <div class="col-md-4 px-1">
+                        <div class="col-md-3 mb-2 px-1 d-flex align-items-center">
                             <a class="btn btn-sm bg-secondary text-white col-md-12 border border-dark rounded-pill" href="{{ route('rezervari.index') }}" role="button">
                                 <i class="far fa-trash-alt text-white mr-1"></i>Resetează căutarea
                             </a>
@@ -113,43 +120,43 @@
                                         >
                                             <span class="badge badge-success">Vizualizează</span>
                                         </a> 
-                                        {{-- <a href="{{ $service_fisa->path() }}/modifica"
+                                        <a href="{{ $rezervare->path() }}/modifica"
                                             class="flex mr-1"    
                                         >
                                             <span class="badge badge-primary">Modifică</span>
-                                        </a>      --}}
-                                        {{-- <div style="" class="">
+                                        </a>     
+                                        <div style="" class="">
                                             <a 
                                                 href="#" 
                                                 data-toggle="modal" 
-                                                data-target="#stergeFișa{{ $service_fisa->id }}"
-                                                title="Șterge Fișa"
+                                                data-target="#stergeRezervare{{ $rezervare->id }}"
+                                                title="Șterge Rezervare"
                                                 >
                                                 <span class="badge badge-danger">Șterge</span>
                                             </a>
-                                                <div class="modal fade text-dark" id="stergeFișa{{ $service_fisa->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal fade text-dark" id="stergeRezervare{{ $rezervare->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
                                                         <div class="modal-header bg-danger">
-                                                            <h5 class="modal-title text-white" id="exampleModalLabel">Fișa: <b>{{ $service_fisa->nr_fisa }}</b></h5>
+                                                            <h5 class="modal-title text-white" id="exampleModalLabel">Rezervare: <b>{{ $rezervare->nume }}</b></h5>
                                                             <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
                                                             </button>
                                                         </div>
                                                         <div class="modal-body" style="text-align:left;">
-                                                            Ești sigur ca vrei să ștergi Fișa?
+                                                            Ești sigur ca vrei să ștergi Rezervarea?
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Renunță</button>
                                                             
-                                                            <form method="POST" action="{{ $service_fisa->path() }}">
+                                                            <form method="POST" action="{{ $rezervare->path() }}">
                                                                 @method('DELETE')  
                                                                 @csrf   
                                                                 <button 
                                                                     type="submit" 
                                                                     class="btn btn-danger"  
                                                                     >
-                                                                    Șterge Fișa
+                                                                    Șterge Rezervarea
                                                                 </button>                    
                                                             </form>
                                                         
@@ -157,7 +164,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                        </div>  --}}
+                                        </div> 
                                     </div>
                                 </td>
                             </tr>                                          

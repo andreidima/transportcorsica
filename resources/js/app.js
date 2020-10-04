@@ -20,6 +20,7 @@ window.Vue = require('vue');
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+Vue.component('vue2-datepicker', require('./components/DatePicker.vue').default);
 Vue.component('vue2-datepicker-plecare', require('./components/DatePickerPlecare.vue').default);
 Vue.component('vue2-datepicker-intoarcere', require('./components/DatePickerIntoarcere.vue').default);
 
@@ -220,6 +221,15 @@ if (document.querySelector('#adauga-rezervare')) {
                 //     this.pret_total = this.pret_total + this.pret_copil * this.nr_copii
                 // }
             },
+            stergePasager: function (index) {
+                // this.nume.splice(index,1);
+                this.$delete(this.nume, index);
+                this.$delete(this.buletin, index);
+                this.$delete(this.data_nastere, index);
+                this.$delete(this.localitate_nastere, index);
+                this.$delete(this.localitate_domiciliu, index);
+                this.nr_adulti--;
+            }
         }
     });
 }

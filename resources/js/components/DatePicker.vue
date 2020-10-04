@@ -15,7 +15,8 @@ export default {
     'latime', 
     'notBeforeDate', 
     'notAfterDate', 
-    'doarZiua',
+    'doarZiuaA',
+    'doarZiuaB',
     'minuteStep', 
     'hours'],
   computed: {
@@ -56,22 +57,21 @@ export default {
         if (typeof this.notBeforeDate !== 'undefined'){
           const notBefore = new Date(this.notBeforeDate);
           notBefore.setHours(0, 0, 0, 0);
-
-          // selectare doar o zi din saptamana
-          if (typeof this.doarZiua !== 'undefined'){
-            const dateDay = date.getDay()
-            return ((date.getTime() < notBefore.getTime())
-              || (dateDay !== this.doarZiua));
-          }
-
           return (date.getTime() < notBefore.getTime());
         }
+
         // selectare date doar pana la un moment dat
         if (typeof this.notAfterDate !== 'undefined'){
           const notAfter = new Date(this.notAfterDate);
           notAfter.setHours(0, 0, 0, 0);
 
           return (date.getTime() > notAfter.getTime());
+        }
+
+        // selectare doar 2 zile din saptamana
+        if ((typeof this.doarZiuaA !== 'undefined') && (typeof this.doarZiuaB !== 'undefined')){
+          const dateDay = date.getDay()
+          return ((dateDay !== this.doarZiuaA) && (dateDay !== this.doarZiuaB));
         }
       },
     },

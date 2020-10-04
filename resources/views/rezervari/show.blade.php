@@ -60,17 +60,46 @@
                                         </h5>
                                     </div>
                                     <div class="col-lg-11 px-4 py-2 bg-white border rounded-lg">
-                                        Număr pasageri: 
-                                        <span class="badge badge-primary" style="font-size:1em">{{ $rezervare->nr_adulti }}</span>
-                                        {{-- * {{ $tarife->adult }}€ = {{ $rezervare->nr_adulti * $tarife->adult}}€ --}}
+                                        <div class="row justify-content-center">
+                                            <div class="col-lg-4">
+                                                Număr pasageri: 
+                                                <span class="badge badge-primary" style="font-size:1em">{{ $rezervare->nr_adulti }}</span>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                Preț total: 
+                                                <span class="badge badge-primary" style="font-size:1em">{{ $rezervare->pret_total }}€</span>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="col-lg-11 px-4 py-2 mb-4 bg-white border rounded-lg">
-                                        Preț total: <span class="badge badge-primary" style="font-size:1em">{{ $rezervare->pret_total }}€</span>
-                                    </div>                                
-                                @else
+                                        <div class="row justify-content-between">
+                                            @foreach ($rezervare->pasageri as $pasager)
+                                                <div class="col-lg-5 m-2" style="border-bottom: solid 1px #005757">
+                                                    Nume: <span class="badge badge-primary" style="font-size:1.1em">{{ $pasager->nume }}</span>
+                                                    <br>
+                                                    Seria și nr. buletin: {{ $pasager->buletin }}
+                                                    <br>
+                                                    Data nașterii: {{ $pasager->data_nastere }}
+                                                    <br>
+                                                    Localitate naștere: {{ $pasager->localitate_nastere }}
+                                                    <br>
+                                                    Localitate domiciliu: {{ $pasager->localitate_domiciliu }}
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>        
+                                    {{-- @php
+                                        if(App\Models\Pasager::find(1)->rezervari->count()){
+                                            dd('dada');
+                                        }
+                                        else {
+                                            dd('nunu');
+                                        }
+                                    @endphp                         --}}
+                                @elseif ($rezervare->tip_calatorie === "Bagaje")
                                     <div class="col-lg-11 px-0 border rounded-lg">
                                         <h5 class="bg-warning p-1 m-0 text-center">
-                                            Informații colet
+                                            Informații bagaj
                                         </h5>
                                     </div>
                                     <div class="col-lg-11 px-4 py-2 bg-white border rounded-lg">
@@ -92,8 +121,6 @@
                                         Telefon: <b>{{ $rezervare->telefon }}</b>
                                         <br>
                                         Email: <b>{{ $rezervare->email }}</b>
-                                        <br>
-                                        Pasageri: {{ $rezervare->pasageri }}
                                         <br>
                                         Observații: {{ $rezervare->observatii }}
                                     </div>

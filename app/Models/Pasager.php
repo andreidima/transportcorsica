@@ -16,4 +16,9 @@ class Pasager extends Model
     {
         return "/pasageri/{$this->id}";
     }
+
+    public function rezervari()
+    {
+        return $this->belongsToMany('App\Models\Rezervare', 'pasageri_rezervari', 'pasager_id', 'rezervare_id');
+    }
 }
