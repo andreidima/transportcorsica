@@ -21,8 +21,15 @@
                     "
                     id="adauga-rezervare"
                 >
+
+                @if (isset($tip_operatie) && ($tip_operatie === "modificare"))
+                    <form  class="needs-validation" novalidate method="POST" action="{{ $rezervare->path() }}">
+                        @csrf
+                        @method('PATCH')
+                @else
                     <form  class="needs-validation" novalidate method="POST" action="/adauga-rezervare-pasul-1">
                         @csrf
+                @endif
 
                         <div class="form-row mb-0 d-flex justify-content-center border-radius: 0px 0px 40px 40px">
                             <div class="form-group col-lg-12 px-2 mb-0">
@@ -578,12 +585,22 @@
                                                 <label class="form-check-label" for="termeni_si_conditii">Sunt de acord cu condițiile de transport persoane</label> 
                                             </div>
                                         </div>
-                                    </div>  
+                                    </div>   
+                                @if (isset($tip_operatie) && ($tip_operatie === "modificare"))
+                                    @method('PATCH')
+
+                                    <div class="form-row mb-1 px-2 justify-content-center align-items-center">                                    
+                                        <div class="col-lg-8 d-flex justify-content-center">  
+                                            <button type="submit" class="btn btn-lg btn-warning btn-block mr-4">Modifică Rezervarea</button>  
+                                        </div>
+                                    </div>
+                                @else
                                     <div class="form-row mb-1 px-2 justify-content-center align-items-center">                                    
                                         <div class="col-lg-8 d-flex justify-content-center">  
                                             <button type="submit" class="btn btn-lg btn-warning btn-block mr-4">Verifică Rezervarea</button>  
                                         </div>
                                     </div>
+                                @endif
                                 </div>
                             </div>
                         </div>

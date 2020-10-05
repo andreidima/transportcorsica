@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\RezervareController;
+use App\Http\Controllers\RaportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,5 +39,7 @@ Route::get('/orase_rezervari', [RezervareController::class, 'orase_rezervari']);
 
 
 Route::group(['middleware' => 'auth'], function () {
-        Route::resource('rezervari', RezervareController::class,  ['parameters' => ['rezervari' => 'rezervare']]);
+    Route::resource('rezervari', RezervareController::class,  ['parameters' => ['rezervari' => 'rezervare']]);
+    
+    Route::any('/rapoarte', [RaportController::class, 'rapoarte']);
 });

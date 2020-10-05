@@ -213,7 +213,7 @@
                                 Localitate domiciliu
                             </td>
                         </tr>
-                        @foreach ($rezervare_tur->pasageri as $pasager)
+                        @foreach ($rezervare_tur->pasageri_relation as $pasager)
                         <tr>
                             <td style="border: solid 1px gray">
                                 {{ $pasager->nume }}

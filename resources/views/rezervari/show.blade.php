@@ -73,7 +73,7 @@
                                     </div>
                                     <div class="col-lg-11 px-4 py-2 mb-4 bg-white border rounded-lg">
                                         <div class="row justify-content-between">
-                                            @foreach ($rezervare->pasageri as $pasager)
+                                            @foreach ($rezervare->pasageri_relation as $pasager)
                                                 <div class="col-lg-5 m-2" style="border-bottom: solid 1px #005757">
                                                     Nume: <span class="badge badge-primary" style="font-size:1.1em">{{ $pasager->nume }}</span>
                                                     <br>
@@ -96,7 +96,7 @@
                                             dd('nunu');
                                         }
                                     @endphp                         --}}
-                                @elseif ($rezervare->tip_calatorie === "Bagaje")
+                                @else
                                     <div class="col-lg-11 px-0 border rounded-lg">
                                         <h5 class="bg-warning p-1 m-0 text-center">
                                             Informații bagaj

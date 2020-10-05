@@ -27,7 +27,7 @@ class Rezervare extends Model
         return $this->belongsTo('App\Models\Oras', 'oras_sosire');
     }
 
-    public function pasageri()
+    public function pasageri_relation()
     {
         return $this->belongsToMany('App\Models\Pasager', 'pasageri_rezervari', 'rezervare_id', 'pasager_id');
     }

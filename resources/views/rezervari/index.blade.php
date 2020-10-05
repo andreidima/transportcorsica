@@ -69,7 +69,7 @@
                             <th>Oraș sosire</th>
                             <th class="text-center">Tur retur</th>
                             <th>Data cursă</th>
-                            <th>Pret</th>
+                            {{-- <th>Pret</th> --}}
                             <th class="text-center">Plătit</th>                         
                             <th class="text-center">Acțiuni</th>
                         </tr>
@@ -98,14 +98,14 @@
                                     {{ $rezervare->oras_sosire_nume->oras ?? ''}}
                                 </td>
                                 <td class="text-center">
-                                    {{ $rezervare->tur_retur ? 'DA' : 'NU' }}
+                                    {{ ($rezervare->tur || $rezervare->retur) ? 'DA' : 'NU' }}
                                 </td>
                                 <td>
                                     {{ \Carbon\Carbon::parse($rezervare->data_cursa)->isoFormat('DD.MM.YYYY') }}
                                 </td>
-                                <td>
+                                {{-- <td>
                                     {{ $rezervare->pret_total }}
-                                </td>
+                                </td> --}}
                                 <td class="text-center">
                                     @if(isset($rezervare->plata_efectuata))
                                         <span class="text-success">DA</span>
