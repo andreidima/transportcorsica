@@ -52,47 +52,68 @@
 
             @include('errors')
             
-            @for ($i = 0 ; $i < 5; $i ++)
-            @if *
             <div class="table-responsive rounded mb-2">
                 <table class="table table-striped table-hover table-sm rounded"> 
                     <thead class="text-white rounded" style="background-color:#e66800;">
                         <tr class="" style="padding:2rem">
                             <th>Nume</th>
-                            <th>Telefon</th>
-                            <th>Nr. pers.</th>
+                            <th class="text-center">Traseu</th>
                             <th>Oraș plecare</th>
                             <th>Oraș sosire</th>
+                            <th class="text-center">Nr. pers.</th>
                         </tr>
                     </thead>
-                    <tbody>               
-                        @forelse ($rezervari->where('raport_traseu_initial', $i) as $rezervare) 
-                            <tr>      
-                                <td>
-                                    <a href="{{ $rezervare->path() }}">  
-                                        <b>{{ $rezervare->nume }}</b>
-                                    </a>
-                                </td>
-                                <td>
-                                    {{ $rezervare->telefon }}
-                                </td>
-                                <td>
-                                    {{ $rezervare->nr_adulti + $rezervare->nr_copii }}
-                                </td>
-                                <td>
-                                    {{ $rezervare->oras_plecare_nume->oras ?? ''}}
-                                </td>
-                                <td>
-                                    {{ $rezervare->oras_sosire_nume->oras ?? ''}}
-                                </td>
-                            </tr>                                          
-                        @empty
-                            {{-- <div>Nu s-au gasit rezervări în baza de date. Încearcă alte date de căutare</div> --}}
-                        @endforelse
+                    <tbody> 
+                        {{-- @php
+                            dd(App\Models\Oras::select('traseu')->get());
+                        @endphp --}}
+                        @foreach (App\Models\Oras::select('traseu')->where('tara', 'Romania')->distinct()->orderBy('traseu')->get() as $oras)
+                            @if ($rezervari->where('oras_plecare_nume.traseu', $oras->traseu)->count())              
+                                @forelse ($rezervari->where('oras_plecare_nume.traseu', $oras->traseu) as $rezervare) 
+                                    <tr>      
+                                        <td>
+                                            <a href="{{ $rezervare->path() }}">  
+                                                <b>{{ $rezervare->nume }}</b>
+                                            </a>
+                                        </td>
+                                        <td class="text-center">
+                                            {{ $rezervare->oras_plecare_nume->traseu ?? ''}}
+                                        </td>
+                                        <td>
+                                            {{ $rezervare->oras_plecare_nume->oras ?? ''}}
+                                        </td>
+                                        <td>
+                                            {{ $rezervare->oras_sosire_nume->oras ?? ''}}
+                                        </td>
+                                        <td class="text-center">
+                                            {{ $rezervare->nr_adulti + $rezervare->nr_copii }}
+                                        </td>
+                                    </tr>                                          
+                                @empty
+                                    {{-- <div>Nu s-au gasit rezervări în baza de date. Încearcă alte date de căutare</div> --}}
+                                @endforelse
+                                    <tr>
+                                        <td colspan="4" class="text-right">
+                                            <b>
+                                                Total
+                                            </b>
+                                        </td>
+                                        <td class="text-center">
+                                            <b>
+                                                {{ $rezervari->where('oras_plecare_nume.traseu', $oras->traseu)->sum('nr_adulti') }}
+                                            </b>
+                                        </td>
+                                    </tr>
+                                    <tr class="bg-dark">
+                                        <td colspan="5">
+                                            <p></p>
+                                        </td>
+                                    </tr>
+                            @endif
+                        @endforeach
                         </tbody>
                 </table>
             </div>
-            @endfor
 
 
 

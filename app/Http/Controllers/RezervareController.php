@@ -23,8 +23,8 @@ class RezervareController extends Controller
         $search_nume = \Request::get('search_nume');
         $search_data = \Request::get('search_data');
 
-        $rezervari = Rezervare::
-            when($search_nume, function ($query, $search_nume) {
+        $rezervari = Rezervare::with('oras_plecare_nume', 'oras_sosire_nume')
+            ->when($search_nume, function ($query, $search_nume) {
                 return $query->where('nume', 'like', '%' . $search_nume . '%');
             })
             ->when($search_data, function ($query, $search_data) {
@@ -561,11 +561,11 @@ class RezervareController extends Controller
         $rezervare_retur = clone $rezervare_unset;
 
         $rezervare_tur->data_cursa = $rezervare->data_plecare;
-        $rezervare_tur->raport_traseu_initial = Oras::find($rezervare_tur->oras_plecare)->traseu;
+        // $rezervare_tur->raport_traseu_initial = Oras::find($rezervare_tur->oras_plecare)->traseu;
         $rezervare_retur->data_cursa = $rezervare->data_intoarcere;
         $rezervare_retur->oras_plecare = $rezervare_tur->oras_sosire;
         $rezervare_retur->oras_sosire = $rezervare_tur->oras_plecare;
-        $rezervare_retur->raport_traseu_initial = Oras::find($rezervare_retur->oras_plecare)->traseu;
+        // $rezervare_retur->raport_traseu_initial = Oras::find($rezervare_retur->oras_plecare)->traseu;
         $rezervare_retur->pret_total = 0;
 
         if ($rezervare->tur_retur === 'false') {

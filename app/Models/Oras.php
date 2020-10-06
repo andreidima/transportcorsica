@@ -14,6 +14,6 @@ class Oras extends Model
 
     public function path()
     {
-        return "/rezervari/{$this->id}";
+        return "/orase/{$this->id}";
     }
 }
