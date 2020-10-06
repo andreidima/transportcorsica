@@ -124,15 +124,16 @@ class RezervareController extends Controller
         $rezervare_tur = (!$rezervare->tur) ? $rezervare : Rezervare::find($rezervare->tur);
         $rezervare_retur = Rezervare::find($rezervare->retur);
 
-        // Stergerea pasagerilor si adaugarea lor din nou
-        foreach ($rezervare_tur->pasageri_relation as $pasager) {
-                $pasager->delete();
-        }
-        $rezervare_tur->pasageri_relation()->detach();
-        $rezervare_retur ? $rezervare_retur->pasageri_relation()->detach() : '';
+        // // Stergerea pasagerilor si adaugarea lor din nou
+        // foreach ($rezervare_tur->pasageri_relation as $pasager) {
+        //         $pasager->delete();
+        // }
+        // $rezervare_tur->pasageri_relation()->detach();
+        // $rezervare_retur ? $rezervare_retur->pasageri_relation()->detach() : '';
         
-        // dd($request->request, $rezervare_tur, $rezervare_retur, $rezervare);
+        // // dd($request->request, $rezervare_tur, $rezervare_retur, $rezervare);
 
+        $rezervare_tur->traseu_raport = ($rezervare_tur->oras_plecare != $request->oras_plecare) ? Oras::find($request->oras_plecare)->traseu : $rezervare_tur->traseu_raport;
         $rezervare_tur->oras_plecare = $request->oras_plecare;
         $rezervare_tur->oras_sosire = $request->oras_sosire;
         $rezervare_tur->data_cursa = $request->data_plecare;
@@ -146,6 +147,7 @@ class RezervareController extends Controller
         $rezervare_tur->updated_at = \Carbon\Carbon::now();
 
         if ($rezervare_retur){
+            $rezervare_retur->traseu_raport = ($rezervare_retur->oras_plecare != $request->oras_sosire) ? Oras::find($request->oras_sosire)->traseu : $rezervare_retur->traseu_raport;
             $rezervare_retur->oras_plecare = $request->oras_sosire;
             $rezervare_retur->oras_sosire = $request->oras_plecare;
             $rezervare_retur->data_cursa = $request->data_intoarcere;
@@ -561,11 +563,11 @@ class RezervareController extends Controller
         $rezervare_retur = clone $rezervare_unset;
 
         $rezervare_tur->data_cursa = $rezervare->data_plecare;
-        // $rezervare_tur->raport_traseu_initial = Oras::find($rezervare_tur->oras_plecare)->traseu;
+        $rezervare_tur->traseu_raport = Oras::find($rezervare_tur->oras_plecare)->traseu;
         $rezervare_retur->data_cursa = $rezervare->data_intoarcere;
         $rezervare_retur->oras_plecare = $rezervare_tur->oras_sosire;
         $rezervare_retur->oras_sosire = $rezervare_tur->oras_plecare;
-        // $rezervare_retur->raport_traseu_initial = Oras::find($rezervare_retur->oras_plecare)->traseu;
+        $rezervare_retur->traseu_raport = Oras::find($rezervare_retur->oras_plecare)->traseu;
         $rezervare_retur->pret_total = 0;
 
         if ($rezervare->tur_retur === 'false') {
