@@ -293,6 +293,27 @@
                                             Data de intoarcere trebuie sa fie la maxim 15 zile de la data de plecare.
                                         </div>
                                     </div> 
+                                    <div class="form-row mb-4 px-2 py-2 d-flex justify-content-center align-items-center border rounded"
+                                        style="background-color:lightseagreen; color:white"
+                                    >
+                                        <div class="form-group col-lg-12 mb-2 d-flex justify-content-center border-bottom">
+                                                <h5 class="mb-1">Bilet la navă:</h5>
+                                        </div>
+                                        <div class="form-group col-lg-12 justify-content-center text-center" style="">
+                                            <div class="form-check form-check-inline mr-4">
+                                                <input class="form-check-input" type="radio" name="bilet_nava" id="bilet_nava1" value="da">
+                                                <label class="form-check-label" for="bilet_nava1">
+                                                    Doresc bilet la navă
+                                                </label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="bilet_nava" id="bilet_nava2" value="nu">
+                                                <label class="form-check-label" for="bilet_nava2">
+                                                    Nu doresc bilet la navă
+                                                </label>
+                                            </div>                                            
+                                        </div>                                        
+                                    </div> 
                                     <div v-if="tip_calatorie === 'Calatori'" class="form-row mb-4 px-2 pt-2 d-flex justify-content-center align-items-center border rounded"
                                         style="background-color:lightseagreen; color:white"
                                     >

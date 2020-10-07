@@ -124,12 +124,12 @@ class RezervareController extends Controller
         $rezervare_tur = (!$rezervare->tur) ? $rezervare : Rezervare::find($rezervare->tur);
         $rezervare_retur = Rezervare::find($rezervare->retur);
 
-        // // Stergerea pasagerilor si adaugarea lor din nou
-        // foreach ($rezervare_tur->pasageri_relation as $pasager) {
-        //         $pasager->delete();
-        // }
-        // $rezervare_tur->pasageri_relation()->detach();
-        // $rezervare_retur ? $rezervare_retur->pasageri_relation()->detach() : '';
+        // Stergerea pasagerilor si adaugarea lor din nou
+        foreach ($rezervare_tur->pasageri_relation as $pasager) {
+                $pasager->delete();
+        }
+        $rezervare_tur->pasageri_relation()->detach();
+        $rezervare_retur ? $rezervare_retur->pasageri_relation()->detach() : '';
         
         // // dd($request->request, $rezervare_tur, $rezervare_retur, $rezervare);
 
