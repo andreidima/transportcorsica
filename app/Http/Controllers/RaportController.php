@@ -26,7 +26,8 @@ class RaportController extends Controller
                 'orase_plecare.ordine as oras_plecare_ordine',
                 'orase_sosire.tara as oras_sosire_tara',
                 'orase_sosire.oras as oras_sosire_nume',
-                'orase_sosire.traseu as oras_sosire_traseu'
+                'orase_sosire.traseu as oras_sosire_traseu',
+                'orase_sosire.ordine as oras_sosire_ordine',
             )
             // ->when($search_data, function ($query, $search_data) {
             //     return $query->whereDate('data_cursa', '=', $search_data);

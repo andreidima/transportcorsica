@@ -93,16 +93,13 @@
                         <thead class="text-white rounded" style="background-color:#e66800;">
                             <tr>
                                 <th colspan="5" class="text-center" style="font-size: 20px">
-                                    {{ $rezervare_pe_tara->first()->oras_plecare_tara }}
-                                    -
-                                    {{ $rezervare_pe_tara->first()->oras_sosire_tara }}
+                                    Liste {{ $rezervare_pe_tara->first()->oras_plecare_tara }}
                                 </th>
                             </tr>
                             <tr class="" style="padding:2rem">
                                 <th>Nume</th>
                                 <th class="text-center">Traseu inițial</th>
                                 <th>Oraș plecare</th>
-                                <th>Oraș plecare ordine</th>
                                 <th>Oraș sosire</th>
                                 <th class="text-center">Nr. pers.</th>
                             </tr>
@@ -144,13 +141,104 @@
                                             {{ $rezervare->oras_plecare_traseu ?? ''}}
                                         </td>
                                         <td>
-                                            {{ $rezervare->oras_plecare_nume ?? ''}}
-                                        </td>
-                                        <td>
-                                            {{ $rezervare->oras_plecare_ordine ?? ''}}
+                                            {{ $rezervare->oras_plecare_nume ?? ''}} ({{ $rezervare->oras_plecare_ordine ?? ''}})
                                         </td>
                                         <td>
                                             {{ $rezervare->oras_sosire_nume ?? ''}}
+                                        </td>
+                                        <td class="text-center">
+                                            {{ $rezervare->nr_adulti }}
+                                        </td>
+                                    </tr>                                          
+                                @empty
+                                @endforelse
+                                    <tr>
+                                        <td colspan="4" class="text-right">
+                                            <b>
+                                                Total
+                                            </b>
+                                        </td>
+                                        <td class="text-center">
+                                            <b>
+                                                {{ $rezervari_pe_trasee->sum('nr_adulti') }}
+                                            </b>
+                                        </td>
+                                    </tr>
+                                    {{-- <tr>
+                                        <td colspan="5" class="text-center">
+                                            <a class="btn btn-sm bg-success text-white border border-dark rounded-pill" href="/rapoarte/extrage-pdf/{{ $rezervari_pe_trasee }}" role="button">
+                                                <i class="fas fa-file-pdf text-white mr-1"></i>Raport PDF
+                                            </a>
+                                        </td>
+                                    </tr> --}}
+                                    <tr class="bg-dark">
+                                        <td colspan="5">
+                                            <p></p>
+                                        </td>
+                                    </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @endforeach
+
+            
+            
+            @foreach ($rezervari->groupBy('oras_sosire_tara') as $rezervare_pe_tara)
+
+                <div class="table-responsive rounded mb-2">
+                    <table class="table table-striped table-hover table-sm rounded"> 
+                        <thead class="text-white rounded" style="background-color:#e66800;">
+                            <tr>
+                                <th colspan="5" class="text-center" style="font-size: 20px">
+                                    Liste {{ $rezervare_pe_tara->first()->oras_sosire_tara }}
+                                </th>
+                            </tr>
+                            <tr class="" style="padding:2rem">
+                                <th>Nume</th>
+                                <th class="text-center">Traseu inițial</th>
+                                <th>Oraș sosire</th>
+                                <th class="text-center">Nr. pers.</th>
+                            </tr>
+                        </thead>
+                        <tbody> 
+                            @foreach ($rezervare_pe_tara->where('oras_sosire_tara', 'Franta')->sortBy('oras_sosire_traseu')->groupBy('oras_sosire_traseu') as $rezervari_pe_trasee)
+                                    <tr>
+                                        <td colspan="2" style="background-color:lightslategrey">
+
+                                        </td>
+                                        <td colspan="" class="text-white text-center" style="background-color:lightslategrey">
+                                            <b>
+                                                Traseu {{$rezervari_pe_trasee->first()->oras_sosire_traseu}}
+                                            </b>
+                                        </td>
+                                        <td colspan="2" class="text-right" style="background-color:lightslategrey">
+                                            <div class="align-right">
+                                                <form class="needs-validation" novalidate method="POST" action="/rapoarte/extrage-rezervari/raport-pdf">
+                                                    @csrf
+
+                                                        @foreach ($rezervari_pe_trasee as $rezervare)
+                                                            <input type="hidden" name="rezervari[]" value="{{ $rezervare->id }}">
+                                                        @endforeach
+                                                        <button type="submit" class="btn btn-sm bg-success text-white border border-light rounded-pill">
+                                                            <i class="fas fa-file-pdf text-white mr-1"></i>Raport PDF
+                                                        </button> 
+                                                </form>
+                                            </b>
+                                        </td>
+                                    </tr>             
+                                @forelse ($rezervari_pe_trasee->sortBy('oras_sosire_ordine') as $rezervare) 
+                                    <tr>      
+                                        <td>
+                                            <a href="{{ $rezervare->path() }}">  
+                                                <b>{{ $rezervare->nume }}</b>
+                                            </a>
+                                        </td>
+                                        <td class="text-center">
+                                            {{ $rezervare->oras_sosire_traseu ?? ''}}
+                                        </td>
+                                        <td>
+                                            {{ $rezervare->oras_sosire_nume ?? ''}} ({{ $rezervare->oras_sosire_ordine ?? ''}})
                                         </td>
                                         <td class="text-center">
                                             {{ $rezervare->nr_adulti }}
