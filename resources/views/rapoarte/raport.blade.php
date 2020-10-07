@@ -48,7 +48,7 @@
                         {{-- <div class="col-md-12 mb-2 px-1 d-flex align-items-center justify-content-center">
                             <div class="row"> --}}
                                 <div class="col-lg-6 px-0 mb-2 d-flex align-items-center">
-                                    <label class="mb-0">Mută rezervările din traseul:</label> 
+                                    <label class="mb-0">Mută rezervările traseu inițial:</label> 
                                     <input type="text" class="form-control form-control-sm border rounded-pill mb-0 py-0 mx-2 {{ $errors->has('traseu_vechi') ? 'is-invalid' : '' }}" 
                                         id="traseu_vechi" name="traseu_vechi" placeholder=""
                                             style="width:50px"
@@ -102,6 +102,7 @@
                                 <th>Nume</th>
                                 <th class="text-center">Traseu inițial</th>
                                 <th>Oraș plecare</th>
+                                <th>Oraș plecare ordine</th>
                                 <th>Oraș sosire</th>
                                 <th class="text-center">Nr. pers.</th>
                             </tr>
@@ -144,6 +145,9 @@
                                         </td>
                                         <td>
                                             {{ $rezervare->oras_plecare_nume ?? ''}}
+                                        </td>
+                                        <td>
+                                            {{ $rezervare->oras_plecare_ordine ?? ''}}
                                         </td>
                                         <td>
                                             {{ $rezervare->oras_sosire_nume ?? ''}}

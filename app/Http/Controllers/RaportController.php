@@ -23,6 +23,7 @@ class RaportController extends Controller
                 'orase_plecare.tara as oras_plecare_tara',
                 'orase_plecare.oras as oras_plecare_nume',
                 'orase_plecare.traseu as oras_plecare_traseu',
+                'orase_plecare.ordine as oras_plecare_ordine',
                 'orase_sosire.tara as oras_sosire_tara',
                 'orase_sosire.oras as oras_sosire_nume',
                 'orase_sosire.traseu as oras_sosire_traseu'
@@ -36,7 +37,8 @@ class RaportController extends Controller
             ->whereDate('data_cursa', '=', $search_data)
             // ->latest()
             ->orderBy('traseu_raport')
-            ->orderBy('oras_plecare_traseu')
+            // ->orderBy('oras_plecare_traseu')
+            ->orderBy('oras_plecare_ordine')
             ->get();
 
         // dd($rezervari);

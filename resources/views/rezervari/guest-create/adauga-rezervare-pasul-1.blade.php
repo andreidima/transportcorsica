@@ -7,7 +7,7 @@
             <div class="shadow-lg bg-white" style="border-radius: 40px 40px 40px 40px;">
                 <div class="p-2 d-flex justify-content-between align-items-end" 
                     style="border-radius: 40px 40px 0px 0px; border:2px solid darkcyan">                     
-                    <h3 class="ml-3" style="color:darkcyan"><i class="fas fa-ticket-alt fa-lg mr-1"></i>Rezervare bilet</h3>
+                    <h3 class="ml-3" style="color:darkcyan"><i class="fas fa-ticket-alt fa-lg mr-1"></i>Rezervare bilet călătorie</h3>
                     <img src="{{ asset('images/logo.png') }}" height="70" class="mr-3">
                 </div>
                 
@@ -222,16 +222,23 @@
                                         <div class="form-group col-lg-12 mb-2 d-flex justify-content-center border-bottom">
                                                 <h5 class="mb-1">Plecare în călătorie:</h5>
                                         </div>
-                                        <div class="form-group col-lg-12 border-left border-warning" style="border-width:5px !important">
+                                        <div class="form-group col-lg-12 border-left border-primary" style="border-width:5px !important">
                                             Plecarile din România au loc săptămânal, miercurea, la ora 21:00, din Focșani.
                                             <br>
                                             Plecarile din Corsica au loc săptămânal, sâmbăta, în funcție de plecările navelor și de locația dumneavoastră .
-                                            <br>
+                                        </div>
+                                        <div class="form-group col-lg-12 border-left border-warning" style="border-width:5px !important">
                                             Pentru informații complete, vă rugăm să citiți 
                                                         <span class="badge badge-primary border border-dark"
-                                                            style="background-color:yellow; color:black"
+                                                            style="background-color:red; color:white"
                                                         >
                                                             Termeni și condiții
+                                                        </span>
+                                            sau apelați telefon
+                                                        <span class="badge badge-primary border border-dark"
+                                                            style="background-color:blue; color:white"
+                                                        >
+                                                            <a href="tel:+40761329420" style="color:white"> +40 761 329 420</a>
                                                         </span>
                                         </div>
                                         <div class="form-group col-lg-4 mb-2 d-flex justify-content-center align-items-end">
@@ -300,14 +307,16 @@
                                                 <h5 class="mb-1">Bilet la navă:</h5>
                                         </div>
                                         <div class="form-group col-lg-12 justify-content-center text-center" style="">
-                                            <div class="form-check form-check-inline mr-4">
-                                                <input class="form-check-input" type="radio" name="bilet_nava" id="bilet_nava1" value="da">
+                                            <div class="form-check form-check-inline mr-4 {{ $errors->has('bilet_nava') ? 'is-invalid' : '' }}">
+                                                <input class="form-check-input" type="radio" name="bilet_nava" id="bilet_nava1" value="1"
+                                                {{ old('bilet_nava', ($rezervare->bilet_nava ?? '')) == "1" ? 'checked' : '' }}>
                                                 <label class="form-check-label" for="bilet_nava1">
                                                     Doresc bilet la navă
                                                 </label>
                                             </div>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="radio" name="bilet_nava" id="bilet_nava2" value="nu">
+                                            <div class="form-check form-check-inline {{ $errors->has('bilet_nava') ? 'is-invalid' : '' }}">
+                                                <input class="form-check-input" type="radio" name="bilet_nava" id="bilet_nava2" value="0"
+                                                {{ old('bilet_nava', ($rezervare->bilet_nava ?? '')) == "0" ? 'checked' : '' }}>
                                                 <label class="form-check-label" for="bilet_nava2">
                                                     Nu doresc bilet la navă
                                                 </label>
@@ -533,14 +542,26 @@
                                                 <span>*Completați aceste câmpuri doar dacă doriți factură.</h5>
                                         </div>
                                         <div class="form-group col-lg-3 mb-2">
-                                            <label for="document_de_calatorie" class="mb-0">Document de călătorie:</label>                                        
-                                            <input 
+                                            <label for="document_de_calatorie" class="mb-0">Document de călătorie:</label> 
+                                                <select class="custom-select-sm custom-select {{ $errors->has('document_de_calatorie') ? 'is-invalid' : '' }}"
+                                                    name="document_de_calatorie">      
+                                                    <option selected value="">Selectează o opțiune</option>                                          
+                                                    <option value='Carte de identitate' 
+                                                        {{ old('document_de_calatorie', ($rezervare->document_de_calatorie ?? '')) === "Carte de identitate" ? 'selected' : '' }}>
+                                                        Carte de identitate
+                                                    </option>                                 
+                                                    <option value='Pașaport'
+                                                        {{ old('document_de_calatorie', ($rezervare->document_de_calatorie ?? '')) === "Pașaport" ? 'selected' : '' }}>
+                                                        Pașaport
+                                                    </option>                                                 
+                                                </select>                                       
+                                            {{-- <input 
                                                 type="text" 
                                                 class="form-control form-control-sm {{ $errors->has('document_de_calatorie') ? 'is-invalid' : '' }}" 
                                                 name="document_de_calatorie" 
                                                 placeholder="" 
                                                 value="{{ old('document_de_calatorie', ($rezervare->document_de_calatorie ?? '')) }}"
-                                                required> 
+                                                required>  --}}
                                         </div>
                                         {{-- <div class="form-group col-lg-3 mb-2">
                                             <label for="expirare_document" class="mb-0"><small> Data expirării documentului:</small></label>
@@ -575,7 +596,8 @@
                                     </div>  
                                     <div class="form-row px-2 py-2 justify-content-between">                                  
                                         <div class="form-group col-lg-12 border-left border-info" style="border-width:5px !important">
-                                            * IN PRETUL BILETULUI AVETI INCLUS 40 KG PTR BAGAJUL DVS , CE DEPASESTE SE TAXEAZA CU 1 EURO / KG !!!
+                                            * În prețul biletului aveți inclus 50 kg ptr bagajul dvs. Excedentul se tarifează cu 1 Euro / kg.
+                                            {{-- * IN PRETUL BILETULUI AVETI INCLUS 40 KG PTR BAGAJUL DVS , CE DEPASESTE SE TAXEAZA CU 1 EURO / KG !!! --}}
                                         </div>
                                     </div>
                                     <div class="form-row px-2 py-2 justify-content-between">                                
@@ -585,7 +607,7 @@
                                                 <input type="checkbox" class="form-check-input" name="acord_de_confidentialitate" value="1" required
                                                 {{ old('acord_de_confidentialitate', ($rezervare->acord_de_confidentialitate ?? "0")) === "1" ? 'checked' : '' }}>
                                                 <label class="form-check-label" for="acord_de_confidentialitate">
-                                                    Sunt de acord cu colectarea și prelucrarea datelor cu caracter personal - 
+                                                    *Sunt de acord cu colectarea și prelucrarea datelor cu caracter personal - 
                                                     <a href="#" target="_blank">
                                                         <span class="badge badge-primary border border-dark"
                                                             style="background-color:yellow; color:black"
@@ -603,10 +625,23 @@
                                             <div class="form-check">
                                                 <input type="checkbox" class="form-check-input" name="termeni_si_conditii" value="1" required
                                                 {{ old('termeni_si_conditii', ($rezervare->termeni_si_conditii ?? "0")) === "1" ? 'checked' : '' }}>
-                                                <label class="form-check-label" for="termeni_si_conditii">Sunt de acord cu condițiile de transport persoane</label> 
+                                                <label class="form-check-label" for="termeni_si_conditii">*Sunt de acord cu condițiile generale de transport persoane.</label> 
                                             </div>
                                         </div>
-                                    </div>   
+                                    </div> 
+                                    <div class="form-row px-2 py-2 justify-content-between">                                
+                                        <div class="form-group col-lg-12 border-left border-warning" style="border-width:5px !important">
+                                            <label for="" class="mr-4">Newsletter:</label>
+                                            <input type="hidden" name="acord_newsletter" value="0" />
+                                            <div class="form-check">
+                                                <input type="checkbox" class="form-check-input" name="acord_newsletter" value="1"
+                                                {{ old('acord_newsletter', ($rezervare->acord_newsletter ?? "0")) == "1" ? 'checked' : '' }}>
+                                                <label class="form-check-label" for="acord_newsletter">
+                                                    Abonează-te la newsletter pentru a primi cele mai bune oferte!
+                                                </label>  
+                                            </div>
+                                        </div>  
+                                    </div>  
                                 @if (isset($tip_operatie) && ($tip_operatie === "modificare"))
                                     @method('PATCH')
 

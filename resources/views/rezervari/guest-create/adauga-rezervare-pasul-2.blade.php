@@ -7,7 +7,7 @@
             <div class="shadow-lg bg-white" style="border-radius: 40px 40px 40px 40px;">
                 <div class="p-2 d-flex justify-content-between align-items-end" 
                     style="border-radius: 40px 40px 0px 0px; border:2px solid darkcyan">                     
-                    <h3 class="ml-3" style="color:darkcyan"><i class="fas fa-ticket-alt fa-lg mr-1"></i>Verificare bilet</h3>
+                    <h3 class="ml-3" style="color:darkcyan"><i class="fas fa-ticket-alt fa-lg mr-1"></i>Verificare bilet călătorie</h3>
                     <img src="{{ asset('images/logo.png') }}" height="70" class="mr-3">
                 </div>
                 
@@ -25,7 +25,7 @@
                             <div class="col-lg-12 p-4 mb-0">
                                 <div class="row mb-3 d-flex justify-content-center">
                                     <div class="col-lg-11 px-0 border rounded-lg">
-                                        <h5 class="bg-warning p-1 m-0 text-center">
+                                        <h5 class="bg-success text-white p-1 m-0 text-center">
                                             Informații călătorie
                                         </h5>
                                     </div>
@@ -90,7 +90,7 @@
                                     </div>
                                 @if ($rezervare->tip_calatorie === "Calatori")
                                     <div class="col-lg-11 px-0 border rounded-lg">
-                                        <h5 class="bg-warning p-1 m-0 text-center">
+                                        <h5 class="bg-success text-white p-1 m-0 text-center">
                                             Informații pasageri
                                         </h5>
                                     </div>
@@ -125,7 +125,7 @@
                                     </div>                                
                                 @elseif ($rezervare->tip_calatorie === "Bagaje")
                                     <div class="col-lg-11 px-0 border rounded-lg">
-                                        <h5 class="bg-warning p-1 m-0 text-center">
+                                        <h5 class="bg-success text-white p-1 m-0 text-center">
                                             Informații bagaj
                                         </h5>
                                     </div>
@@ -138,7 +138,7 @@
                                     </div>
                                 @endif
                                     <div class="col-lg-11 px-0 border rounded-lg">
-                                        <h5 class="bg-warning p-1 m-0 text-center">
+                                        <h5 class="bg-success text-white p-1 m-0 text-center">
                                             Informații client
                                         </h5>
                                     </div>
@@ -155,7 +155,7 @@
                                     </div>
 
                                     <div class="col-lg-11 px-0 border rounded-lg">
-                                        <h5 class="bg-warning p-1 m-0 text-center">
+                                        <h5 class="bg-success text-white p-1 m-0 text-center">
                                             Date pentru facturare
                                         </h5>
                                     </div>

@@ -137,6 +137,7 @@ class RezervareController extends Controller
         $rezervare_tur->oras_plecare = $request->oras_plecare;
         $rezervare_tur->oras_sosire = $request->oras_sosire;
         $rezervare_tur->data_cursa = $request->data_plecare;
+        $rezervare_tur->bilet_nava = $request->bilet_nava;
         $rezervare_tur->nume = $request->nume;
         $rezervare_tur->telefon = $request->telefon;
         $rezervare_tur->email = $request->email;
@@ -144,6 +145,7 @@ class RezervareController extends Controller
         $rezervare_tur->document_de_calatorie = $request->document_de_calatorie;
         $rezervare_tur->serie_document = $request->serie_document;
         $rezervare_tur->cnp = $request->cnp;
+        $rezervare_tur->acord_newsletter = $request->acord_newsletter;
         $rezervare_tur->updated_at = \Carbon\Carbon::now();
 
         if ($rezervare_retur){
@@ -151,6 +153,7 @@ class RezervareController extends Controller
             $rezervare_retur->oras_plecare = $request->oras_sosire;
             $rezervare_retur->oras_sosire = $request->oras_plecare;
             $rezervare_retur->data_cursa = $request->data_intoarcere;
+            $rezervare_retur->bilet_nava = $request->bilet_nava;
             $rezervare_retur->nume = $request->nume;
             $rezervare_retur->telefon = $request->telefon;
             $rezervare_retur->email = $request->email;
@@ -158,6 +161,7 @@ class RezervareController extends Controller
             $rezervare_retur->document_de_calatorie = $request->document_de_calatorie;
             $rezervare_retur->serie_document = $request->serie_document;
             $rezervare_retur->cnp = $request->cnp;
+            $rezervare_retur->acord_newsletter = $request->acord_newsletter;
             $rezervare_retur->updated_at = \Carbon\Carbon::now();
         }
         
@@ -329,15 +333,16 @@ class RezervareController extends Controller
                 'judet_sosire' => [''],
                 'oras_sosire' => ['required', 'integer'],
                 'tur_retur' => [''],
+                'bilet_nava' => ['required'],
                 // 'statie_id' => ['nullable', 'numeric', 'max:999'],
                 // 'statie_imbarcare' => ['nullable'],
                 'nr_adulti' => ['required_if:tip_calatorie,Calatori', 'integer', 'between:1,100'],
                 // 'pasageri.nume' => ['required_if:tip_calatorie,Calatori', 'min:nr_adulti+1'],
-                'pasageri.nume.*' => ['filled', 'max:100'],
-                'pasageri.buletin.*' => ['filled', 'max:100'],
-                'pasageri.data_nastere.*' => ['filled', 'max:100'],
-                'pasageri.localitate_nastere.*' => ['filled', 'max:100'],
-                'pasageri.localitate_domiciliu.*' => ['filled', 'max:100'],
+                'pasageri.nume.*' => ['required', 'max:100'],
+                'pasageri.buletin.*' => ['nullable', 'max:100'],
+                'pasageri.data_nastere.*' => ['required', 'max:100'],
+                'pasageri.localitate_nastere.*' => ['required', 'max:100'],
+                'pasageri.localitate_domiciliu.*' => ['nullable', 'max:100'],
                 // "bagaje_kg" => "required_if:tip_calatorie,Bagaje|regex:/^\d+(\.\d{1,2})?$/",
                 'bagaje_kg' => ['required_if:tip_calatorie,Bagaje', 'numeric'],
                 'bagaje_descriere' => ['required_if:tip_calatorie,Bagaje', 'max:2000'],
@@ -402,6 +407,7 @@ class RezervareController extends Controller
                 'cnp' => ['', 'max:100'],
                 'acord_de_confidentialitate' => ['required'],
                 'termeni_si_conditii' => ['required'],
+                'acord_newsletter' => [''],
                 // 'oferta' => [''],
             ],
             [
