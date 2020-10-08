@@ -55,7 +55,7 @@
                                             value="{{ old('traseu_vechi') }}">
                                 </div>
                                 <div class="col-lg-3 px-0 mb-2 d-flex align-items-center">
-                                    în traseul:
+                                    în lista:
                                     <input type="text" class="form-control form-control-sm border rounded-pill mb-0 py-0 mx-2 {{ $errors->has('traseu_nou') ? 'is-invalid' : '' }}" 
                                         id="traseu_nou" name="traseu_nou" placeholder=""
                                             style="width:50px"
@@ -92,7 +92,7 @@
                     <table class="table table-striped table-hover table-sm rounded"> 
                         <thead class="text-white rounded" style="background-color:#e66800;">
                             <tr>
-                                <th colspan="5" class="text-center" style="font-size: 20px">
+                                <th colspan="4" class="text-center" style="font-size: 20px">
                                     Liste {{ $rezervare_pe_tara->first()->oras_plecare_tara }}
                                 </th>
                             </tr>
@@ -100,22 +100,18 @@
                                 <th>Nume</th>
                                 <th class="text-center">Traseu inițial</th>
                                 <th>Oraș plecare</th>
-                                <th>Oraș sosire</th>
                                 <th class="text-center">Nr. pers.</th>
                             </tr>
                         </thead>
                         <tbody> 
                             @foreach ($rezervare_pe_tara->where('oras_plecare_tara', 'Romania')->groupBy('traseu_raport') as $rezervari_pe_trasee)
                                     <tr>
-                                        <td colspan="2" style="background-color:lightslategrey">
-
-                                        </td>
-                                        <td colspan="" class="text-white text-center" style="background-color:lightslategrey">
+                                        <td colspan="3" class="text-white" style="background-color:lightslategrey">
                                             <b>
-                                                Traseu {{$rezervari_pe_trasee->first()->traseu_raport}}
+                                                Lista {{$rezervari_pe_trasee->first()->traseu_raport}}
                                             </b>
                                         </td>
-                                        <td colspan="2" class="text-right" style="background-color:lightslategrey">
+                                        <td colspan="1" class="text-right" style="background-color:lightslategrey">
                                             <div class="align-right">
                                                 <form class="needs-validation" novalidate method="POST" action="/rapoarte/extrage-rezervari/raport-pdf">
                                                     @csrf
@@ -143,9 +139,6 @@
                                         <td>
                                             {{ $rezervare->oras_plecare_nume ?? ''}} ({{ $rezervare->oras_plecare_ordine ?? ''}})
                                         </td>
-                                        <td>
-                                            {{ $rezervare->oras_sosire_nume ?? ''}}
-                                        </td>
                                         <td class="text-center">
                                             {{ $rezervare->nr_adulti }}
                                         </td>
@@ -153,7 +146,7 @@
                                 @empty
                                 @endforelse
                                     <tr>
-                                        <td colspan="4" class="text-right">
+                                        <td colspan="3" class="text-right">
                                             <b>
                                                 Total
                                             </b>
@@ -190,7 +183,7 @@
                     <table class="table table-striped table-hover table-sm rounded"> 
                         <thead class="text-white rounded" style="background-color:#e66800;">
                             <tr>
-                                <th colspan="5" class="text-center" style="font-size: 20px">
+                                <th colspan="4" class="text-center" style="font-size: 20px">
                                     Liste {{ $rezervare_pe_tara->first()->oras_sosire_tara }}
                                 </th>
                             </tr>
@@ -204,15 +197,12 @@
                         <tbody> 
                             @foreach ($rezervare_pe_tara->where('oras_sosire_tara', 'Franta')->sortBy('oras_sosire_traseu')->groupBy('oras_sosire_traseu') as $rezervari_pe_trasee)
                                     <tr>
-                                        <td colspan="2" style="background-color:lightslategrey">
-
-                                        </td>
-                                        <td colspan="" class="text-white text-center" style="background-color:lightslategrey">
+                                        <td colspan="3" class="text-white" style="background-color:lightslategrey">
                                             <b>
-                                                Traseu {{$rezervari_pe_trasee->first()->oras_sosire_traseu}}
+                                                Lista {{$rezervari_pe_trasee->first()->oras_sosire_traseu}}
                                             </b>
                                         </td>
-                                        <td colspan="2" class="text-right" style="background-color:lightslategrey">
+                                        <td colspan="1" class="text-right" style="background-color:lightslategrey">
                                             <div class="align-right">
                                                 <form class="needs-validation" novalidate method="POST" action="/rapoarte/extrage-rezervari/raport-pdf">
                                                     @csrf
@@ -247,7 +237,7 @@
                                 @empty
                                 @endforelse
                                     <tr>
-                                        <td colspan="4" class="text-right">
+                                        <td colspan="3" class="text-right">
                                             <b>
                                                 Total
                                             </b>
