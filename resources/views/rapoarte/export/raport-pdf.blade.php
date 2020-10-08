@@ -55,92 +55,171 @@
 </head>
 
 <body> 
-                    <div style="border:dashed #999;
-                        width:690px; 
-                        min-height:600px;            
-                        padding: 15px 10px 15px 10px;
-                        margin:0px 0px;
-                            -moz-border-radius: 10px;
-                            -webkit-border-radius: 10px;
-                            border-radius: 10px;">
-                        <table style="">
-                            <tr style="">
-                                <td style="border-width:0px; padding:0rem; width:30%">
-                                        <img src="{{ asset('images/logo.png') }}" width="150px">
-                                </td>
-                                <td style="border-width:0px; padding:0rem; width:40%; font-size:16px; text-align:center">
-                                    {{ $rezervari->first()->oras_plecare_tara }}
-                                    -
-                                    {{ $rezervari->first()->oras_sosire_tara }}
-                                </td>
-                                <td style="border-width:0px; padding:0rem; width:30%; font-size:16px; text-align:right">
-                                    Traseu {{ $rezervari->first()->oras_plecare_traseu }}
-                                    <br>
-                                    {{\Carbon\Carbon::parse($rezervari->first()->data_cursa)->isoFormat('DD.MM.YYYY')}}
+    @switch($tip_lista)
+        @case ("lista_plecare")
+            <div style="border:dashed #999;
+                width:690px; 
+                min-height:600px;            
+                padding: 15px 10px 15px 10px;
+                margin:0px 0px;
+                    -moz-border-radius: 10px;
+                    -webkit-border-radius: 10px;
+                    border-radius: 10px;">
+                <table style="">
+                    <tr style="">
+                        <td style="border-width:0px; padding:0rem; width:30%">
+                                <img src="{{ asset('images/logo.png') }}" width="150px">
+                        </td>
+                        <td style="border-width:0px; padding:0rem; width:40%; font-size:16px; text-align:center">
+                            Listă plecare
+                            {{ $rezervari->first()->oras_plecare_tara }}
+                        </td>
+                        <td style="border-width:0px; padding:0rem; width:30%; font-size:16px; text-align:right">
+                            {{-- Traseu {{ $rezervari->first()->oras_plecare_traseu }}
+                            <br> --}}
+                            {{\Carbon\Carbon::parse($rezervari->first()->data_cursa)->isoFormat('DD.MM.YYYY')}}
 
-                                </td>
-                            </tr>
-                        </table>
+                        </td>
+                    </tr>
+                </table>
 
-                        <br><br><br>
+                <br><br><br>
 
 
-                        <table style="">
-                            <tr style="background-color:#e7d790;">
-                                <th>Nr. crt.</th>
-                                <th>Nume si prenume</th>
-                                <th>Telefon</th>
-                                <th>Plecare</th>
-                                <th>Sosire</th>
-                                <th>Preț</th>
-                                <th>Nr. pers</th>
-                            </tr>
-                        @forelse ($rezervari as $rezervare)
-                            <tr>
-                                <td style="text-align:center">
-                                    {{ $loop->iteration }}
-                                </td>
-                                <td>
-                                    {{ $rezervare->nume }}
-                                </td>
-                                <td>
-                                    {{ $rezervare->telefon }}
-                                </td>
-                                <td>
-                                    {{ $rezervare->oras_plecare_nume }}
-                                </td>
-                                <td>
-                                    {{ $rezervare->oras_sosire_nume }}
-                                </td>
-                                <td style="text-align:center">
-                                    {{ $rezervare->pret_total }}
-                                </td>
-                                <td style="text-align:center">
-                                    {{ $rezervare->nr_adulti }}
-                                </td>
-                            </tr>
-                        @empty
-                        @endforelse
-                            <tr>
-                                <td colspan="5" style="text-align:right">
-                                    <b>Total</b>
-                                </td>
-                                <td style="text-align:center">
-                                    <b>{{ $rezervari->sum('pret_total') }}</b>
-                                </td>
-                                <td style="text-align:center">
-                                    <b>{{ $rezervari->sum('nr_adulti') }}</b>
-                                </td>
-                            </tr>
-                        
-                            
-                            
-                            
-                            
-                            
-                            
-                        </table>
-                    </div>
+                <table style="">
+                    <tr style="background-color:#e7d790;">
+                        <th>Nr. crt.</th>
+                        <th>Plecare</th>
+                        <th>Nume si prenume</th>
+                        <th>Telefon</th>
+                        <th>Destinație</th>
+                        <th>Preț</th>
+                        <th>Nr. pers</th>
+                    </tr>
+                @forelse ($rezervari as $rezervare)
+                    <tr>
+                        <td style="text-align:center">
+                            {{ $loop->iteration }}
+                        </td>
+                        <td>
+                            {{ $rezervare->oras_plecare_nume }}
+                        </td>
+                        <td>
+                            {{ $rezervare->nume }}
+                        </td>
+                        <td>
+                            {{ $rezervare->telefon }}
+                        </td>
+                        <td>
+                            {{ $rezervare->oras_sosire_nume }}
+                        </td>
+                        <td style="text-align:center">
+                            {{ $rezervare->pret_total }}
+                        </td>
+                        <td style="text-align:center">
+                            {{ $rezervare->nr_adulti }}
+                        </td>
+                    </tr>
+                @empty
+                @endforelse
+                    <tr>
+                        <td colspan="5" style="text-align:right">
+                            <b>Total</b>
+                        </td>
+                        <td style="text-align:center">
+                            <b>{{ $rezervari->sum('pret_total') }}</b>
+                        </td>
+                        <td style="text-align:center">
+                            <b>{{ $rezervari->sum('nr_adulti') }}</b>
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+        @break
+        @case ("lista_sosire")
+            <div style="border:dashed #999;
+                width:690px; 
+                min-height:600px;            
+                padding: 15px 10px 15px 10px;
+                margin:0px 0px;
+                    -moz-border-radius: 10px;
+                    -webkit-border-radius: 10px;
+                    border-radius: 10px;">
+                <table style="">
+                    <tr style="">
+                        <td style="border-width:0px; padding:0rem; width:30%">
+                                <img src="{{ asset('images/logo.png') }}" width="150px">
+                        </td>
+                        <td style="border-width:0px; padding:0rem; width:40%; font-size:16px; text-align:center">
+                            Listă sosire
+                            {{ $rezervari->first()->oras_sosire_tara }}
+                        </td>
+                        <td style="border-width:0px; padding:0rem; width:30%; font-size:16px; text-align:right">
+                            {{-- Traseu {{ $rezervari->first()->oras_plecare_traseu }}
+                            <br> --}}
+                            {{\Carbon\Carbon::parse($rezervari->first()->data_cursa)->isoFormat('DD.MM.YYYY')}}
+
+                        </td>
+                    </tr>
+                </table>
+
+                <br><br><br>
+
+
+                <table style="">
+                    <tr style="background-color:#e7d790;">
+                        <th>Nr. crt.</th>
+                        <th>Plecare</th>
+                        <th>Nume si prenume</th>
+                        <th>Telefon</th>
+                        <th>Destinație</th>
+                        <th>Preț</th>
+                        <th>Nr. pers</th>
+                    </tr>
+                @forelse ($rezervari as $rezervare)
+                    <tr>
+                        <td style="text-align:center">
+                            {{ $loop->iteration }}
+                        </td>
+                        <td>
+                            {{ $rezervare->oras_plecare_nume }}
+                        </td>
+                        <td>
+                            {{ $rezervare->nume }}
+                        </td>
+                        <td>
+                            {{ $rezervare->telefon }}
+                        </td>
+                        <td>
+                            {{ $rezervare->oras_sosire_nume }}
+                        </td>
+                        <td style="text-align:center">
+                            {{ $rezervare->pret_total }}
+                        </td>
+                        <td style="text-align:center">
+                            {{ $rezervare->nr_adulti }}
+                        </td>
+                    </tr>
+                @empty
+                @endforelse
+                    <tr>
+                        <td colspan="5" style="text-align:right">
+                            <b>Total</b>
+                        </td>
+                        <td style="text-align:center">
+                            <b>{{ $rezervari->sum('pret_total') }}</b>
+                        </td>
+                        <td style="text-align:center">
+                            <b>{{ $rezervari->sum('nr_adulti') }}</b>
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+        @break
+    @endswitch
+
 
 </body>
 

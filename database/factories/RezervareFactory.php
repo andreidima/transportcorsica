@@ -22,6 +22,7 @@ class RezervareFactory extends Factory
     public function definition()
     {
         $oras_plecare = \App\Models\Oras::all()->where('tara', 'Romania')->random()->id;
+        $oras_sosire = \App\Models\Oras::all()->where('tara', 'Franta')->random()->id;
         // $raport_traseu_initial = \App\Models\Oras::find($oras_plecare)->id;
         $nr_adulti = $this->faker->numberBetween(1 ,4);
 
@@ -30,9 +31,10 @@ class RezervareFactory extends Factory
             'telefon' => $this->faker->phoneNumber,
             'nr_adulti' => $nr_adulti,
             'oras_plecare' => $oras_plecare,
-            'oras_sosire' => \App\Models\Oras::all()->where('tara', 'Franta')->random()->id,
+            'oras_sosire' => $oras_sosire,
             'pret_total' => $nr_adulti * 120,
-            'traseu_raport' => \App\Models\Oras::find($oras_plecare)->traseu,
+            'lista_plecare' => \App\Models\Oras::find($oras_plecare)->traseu,
+            'lista_sosire' => \App\Models\Oras::find($oras_sosire)->traseu,
             'data_cursa' => '2020-10-28'
         ];
     }
