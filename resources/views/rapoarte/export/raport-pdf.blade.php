@@ -51,6 +51,8 @@
             border-style: inset;
             border-width: 0.5px;
         } 
+
+        /* tr:nth-child(even) {background-color:lightgray;} */
     </style>
 </head>
 
@@ -87,8 +89,8 @@
 
 
                 <table style="">
-                    <tr style="background-color:#e7d790;">
-                        <th>Nr. crt.</th>
+                    <tr style="background-color:#302700; color:#ffffff">
+                        <th>Nr crt</th>
                         <th>Plecare</th>
                         <th>Nume si prenume</th>
                         <th>Telefon</th>
@@ -97,12 +99,12 @@
                         <th>Nr. pers</th>
                     </tr>
                 @forelse ($rezervari as $rezervare)
-                    <tr>
-                        <td style="text-align:center">
+                    <tr style="background-color:#e7d790; color:black">
+                        <td style="text-align:center; border-bottom:0rem">
                             {{ $loop->iteration }}
                         </td>
                         <td>
-                            {{ $rezervare->oras_plecare_nume }}
+                            <b>{{ $rezervare->oras_plecare_nume }}</b>
                         </td>
                         <td>
                             {{ $rezervare->nume }}
@@ -120,6 +122,26 @@
                             {{ $rezervare->nr_adulti }}
                         </td>
                     </tr>
+                    <tr>
+                        <td style="border-top:0rem; border-bottom:0rem"></td>
+                        <td colspan="6" style="border-left:0rem">
+                            Pasageri:
+                    @forelse ($rezervare->pasageri_relation as $pasager)
+                        {{ $pasager->nume }},
+                    @empty
+                    @endforelse
+                            </div>
+                        </td>
+                    </tr>
+                    @if ($rezervare->observatii)
+                    <tr>
+                        <td style="border-top:0rem; border-bottom:0rem"></td>
+                        <td colspan="6">
+                            Observații: {{ $rezervare->observatii }}
+                        </td>
+                    </tr>
+                    @endif
+                        
                 @empty
                 @endforelse
                     <tr>

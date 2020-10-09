@@ -94,7 +94,7 @@ class RaportController extends Controller
         $rezervari = Rezervare::
             join('orase as orase_plecare', 'rezervari.oras_plecare', '=', 'orase_plecare.id')
             ->join('orase as orase_sosire', 'rezervari.oras_sosire', '=', 'orase_sosire.id')
-            // // with('oras_plecare_nume', 'oras_sosire_nume')
+            ->with('pasageri_relation')
             ->select(
                 'rezervari.*', 
                 'orase_plecare.tara as oras_plecare_tara',
@@ -114,7 +114,7 @@ class RaportController extends Controller
 
         $tip_lista = $request->tip_lista;
 
-        if ($request->view_type === 'raport-pdf') {
+        if ($request->view_type === 'raport-html') {
             return view('rapoarte.export.raport-pdf', compact('rezervari', 'tip_lista'));
         } elseif ($request->view_type === 'raport-pdf') {
             $pdf = \PDF::loadView('rapoarte.export.raport-pdf', compact('rezervari', 'tip_lista'))

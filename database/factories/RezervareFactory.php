@@ -35,7 +35,8 @@ class RezervareFactory extends Factory
             'pret_total' => $nr_adulti * 120,
             'lista_plecare' => \App\Models\Oras::find($oras_plecare)->traseu,
             'lista_sosire' => \App\Models\Oras::find($oras_sosire)->traseu,
-            'data_cursa' => '2020-10-28'
+            'data_cursa' => '2020-10-28',
+            'observatii' => $this->faker->boolean($chanceOfGettingTrue = 80) ? null : $this->faker->text($maxNbChars = 500)  
         ];
     }
 }
