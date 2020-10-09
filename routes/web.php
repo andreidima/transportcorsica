@@ -44,4 +44,5 @@ Route::group(['middleware' => 'auth'], function () {
     Route::any('/rapoarte', [RaportController::class, 'rapoarte'])->name('rapoarte');
     Route::post('/rapoarte/muta-rezervari', [RaportController::class, 'mutaRezervari']);
     Route::post('/rapoarte/extrage-rezervari/{view_type}', [RaportController::class, 'extrageRezervari']);
+    Route::post('/rapoarte/excel-nava/{view_type}', [RaportController::class, 'excelNava']);
 });

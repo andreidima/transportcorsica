@@ -6,6 +6,11 @@ use Illuminate\Http\Request;
 
 use App\Models\Rezervare;
 
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
+use Illuminate\Support\Facades\Storage;
+
 class RaportController extends Controller
 {
     public function rapoarte(){
@@ -114,17 +119,113 @@ class RaportController extends Controller
 
         $tip_lista = $request->tip_lista;
 
-        if ($request->view_type === 'raport-html') {
-            return view('rapoarte.export.raport-pdf', compact('rezervari', 'tip_lista'));
-        } elseif ($request->view_type === 'raport-pdf') {
-            $pdf = \PDF::loadView('rapoarte.export.raport-pdf', compact('rezervari', 'tip_lista'))
-                ->setPaper('a4');
-                    // return $pdf->stream('Rezervare ' . $rezervari->nume . '.pdf');
-                    return $pdf->download('Raport ' . 
-                        ($tip_lista === "lista_plecare" ? 'lista plecare ' : 'lista sosire ') . 
-                        \Carbon\Carbon::parse($rezervari->first()->data_cursa)->isoFormat('DD.MM.YYYY') . 
-                        '.pdf');
+        switch ($request->input('action')) {
+            case 'lista_sofer':
+                switch($request->view_type) {
+                    case 'raport-html':
+                        return view('rapoarte.export.raport-pdf', compact('rezervari', 'tip_lista'));
+                        break;
+                    case 'raport-pdf':
+                        $pdf = \PDF::loadView('rapoarte.export.raport-pdf', compact('rezervari', 'tip_lista'))
+                            ->setPaper('a4');
+                            // return $pdf->stream('Rezervare ' . $rezervari->nume . '.pdf');
+                            return $pdf->download('Raport ' . 
+                                ($tip_lista === "lista_plecare" ? 'lista plecare ' : 'lista sosire ') . 
+                                \Carbon\Carbon::parse($rezervari->first()->data_cursa)->isoFormat('DD.MM.YYYY') . 
+                                '.pdf');
+                        break;
+                }
+                break;
+            case 'excel_nava':
+                $spreadsheet = new Spreadsheet();
+                $sheet = $spreadsheet->getActiveSheet();
+                $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(20);
+                $sheet->setCellValue('A1', 'Nume');
+                $sheet->setCellValue('B1', 'Buletin');
+                $sheet->setCellValue('C1', 'Data de naștere');
+                $sheet->setCellValue('D1', 'Localitate naștere');
+                $sheet->setCellValue('E1', 'Localitate domiciliu');
+
+                $nr_celula = 2;
+                foreach ($rezervari as $rezervare){
+                    foreach ($rezervare->pasageri_relation as $pasager){                    
+                    $sheet->setCellValue('A' . ($nr_celula), $pasager->nume);             
+                    $sheet->setCellValue('B' . ($nr_celula), $pasager->buletin);             
+                    $sheet->setCellValue('C' . ($nr_celula), $pasager->data_nastere);             
+                    $sheet->setCellValue('D' . ($nr_celula), $pasager->localitate_nastere);             
+                    $sheet->setCellValue('E' . ($nr_celula), $pasager->localitate_domiciliu);
+                    $nr_celula++;
+                    }
+                }
+
+                
+                try {
+                    Storage::makeDirectory('fisiere_temporare');
+                    $writer = new Xlsx($spreadsheet);
+                    $writer->save(storage_path(
+                        'app/fisiere_temporare/' .
+                        'Lista Nava' . '.xlsx'
+                    ));
+                } catch (Exception $e) { }
+
+                return response()->download(storage_path(
+                    'app/fisiere_temporare/' .
+                    'Lista Nava' . '.xlsx'
+                ));
+
+                break;
+
         }
+
+        return back();
+    
+    }
+
+    public function excelNava(Request $request){
+        // cautarea rezervarilor dupa array-ul de id-uri primit din request
+        $rezervari = Rezervare::
+            join('orase as orase_plecare', 'rezervari.oras_plecare', '=', 'orase_plecare.id')
+            ->join('orase as orase_sosire', 'rezervari.oras_sosire', '=', 'orase_sosire.id')
+            ->with('pasageri_relation')
+            ->select(
+                'rezervari.*', 
+                'orase_plecare.tara as oras_plecare_tara',
+                'orase_plecare.oras as oras_plecare_nume',
+                'orase_plecare.traseu as oras_plecare_traseu',
+                'orase_sosire.tara as oras_sosire_tara',
+                'orase_sosire.oras as oras_sosire_nume',
+                'orase_sosire.traseu as oras_sosire_traseu'
+            )
+            ->find($request->rezervari);
+        
+        // asezare rezervarilor in aceeasi ordine ca id-urile primite din request
+        $ids = $request->rezervari;
+        $rezervari = $rezervari->sortBy(function($model) use ($ids) {
+            return array_search($model->getKey(), $ids);
+        });
+
+        $tip_lista = $request->tip_lista;
+
+        dd('here');
+
+        $spreadsheet = new \PhpOffice\PhpWord\Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('A1', 'Hello World !');
+
+        $writer = new Xlsx($spreadsheet);
+        $writer->save('hello world.xlsx');
+
+        // if ($request->view_type === 'raport-html') {
+        //     return view('rapoarte.export.raport-pdf', compact('rezervari', 'tip_lista'));
+        // } elseif ($request->view_type === 'raport-pdf') {
+        //     $pdf = \PDF::loadView('rapoarte.export.raport-pdf', compact('rezervari', 'tip_lista'))
+        //         ->setPaper('a4');
+        //             // return $pdf->stream('Rezervare ' . $rezervari->nume . '.pdf');
+        //             return $pdf->download('Raport ' . 
+        //                 ($tip_lista === "lista_plecare" ? 'lista plecare ' : 'lista sosire ') . 
+        //                 \Carbon\Carbon::parse($rezervari->first()->data_cursa)->isoFormat('DD.MM.YYYY') . 
+        //                 '.pdf');
+        // }
     
     }
 }

@@ -120,11 +120,14 @@
                                                             @endforeach
                                                         @endforeach
                                                             <input type="hidden" name="tip_lista" value="lista_plecare">  
-                                                        <button type="submit" class="btn btn-sm bg-success text-white border border-light rounded-pill">
+                                                        <button type="submit" name="action" value="lista_sofer" class="btn btn-sm bg-success text-white border border-light rounded-pill">
                                                             <i class="fas fa-file-pdf text-white mr-1"></i>Raport PDF
                                                         </button> 
+                                                        <button type="submit" name="action" value="excel_nava" class="btn btn-sm bg-success text-white border border-light rounded-pill">
+                                                            <i class="fas fa-file-pdf text-white mr-1"></i>Raport Navă
+                                                        </button>
                                                 </form>
-                                            </b>
+                                            </div>
                                         </td>
                                     </tr>             
                                 @forelse ($rezervari_pe_trasee->sortByDesc('oras_plecare_traseu')->groupBy('oras_plecare_traseu') as $rezervari_pe_trasee_pe_traseu_initial) 
@@ -259,7 +262,7 @@
                                                             <i class="fas fa-file-pdf text-white mr-1"></i>Raport PDF
                                                         </button> 
                                                 </form>
-                                            </b>
+                                            </div>
                                         </td>
                                     </tr>  
                                 @forelse ($rezervari_pe_trasee->sortBy('oras_sosire_traseu')->groupBy('oras_sosire_traseu') as $rezervari_pe_trasee_pe_traseu_initial) 
