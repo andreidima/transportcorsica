@@ -161,19 +161,22 @@ class RaportController extends Controller
                 $sheet = $spreadsheet->getActiveSheet();
                 $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(20);
                 $sheet->setCellValue('A1', 'Nume');
-                $sheet->setCellValue('B1', 'Buletin');
-                $sheet->setCellValue('C1', 'Data de naștere');
-                $sheet->setCellValue('D1', 'Localitate naștere');
-                $sheet->setCellValue('E1', 'Localitate domiciliu');
+                $sheet->setCellValue('B1', 'Prenume');
+                $sheet->setCellValue('C1', 'Buletin');
+                $sheet->setCellValue('D1', 'Data de naștere');
+                $sheet->setCellValue('E1', 'Localitate naștere');
+                $sheet->setCellValue('F1', 'Localitate domiciliu');
 
+                // dd($rezervari, $rezervari->where('bilet_nava', 1));
                 $nr_celula = 2;
-                foreach ($rezervari as $rezervare){
-                    foreach ($rezervare->pasageri_relation as $pasager){                    
-                    $sheet->setCellValue('A' . ($nr_celula), $pasager->nume);             
-                    $sheet->setCellValue('B' . ($nr_celula), $pasager->buletin);             
-                    $sheet->setCellValue('C' . ($nr_celula), $pasager->data_nastere);             
-                    $sheet->setCellValue('D' . ($nr_celula), $pasager->localitate_nastere);             
-                    $sheet->setCellValue('E' . ($nr_celula), $pasager->localitate_domiciliu);
+                foreach ($rezervari->where('bilet_nava', 1) as $rezervare){
+                    foreach ($rezervare->pasageri_relation as $pasager){         
+                    $sheet->setCellValue('A' . ($nr_celula), strtok($pasager->nume, " "));
+                    $sheet->setCellValue('B' . ($nr_celula), $pasager->nume);           
+                    $sheet->setCellValue('C' . ($nr_celula), $pasager->buletin);             
+                    $sheet->setCellValue('D' . ($nr_celula), $pasager->data_nastere);             
+                    $sheet->setCellValue('E' . ($nr_celula), $pasager->localitate_nastere);             
+                    $sheet->setCellValue('F' . ($nr_celula), $pasager->localitate_domiciliu);
                     $nr_celula++;
                     }
                 }

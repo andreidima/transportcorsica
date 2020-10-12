@@ -21,10 +21,10 @@ class RezervareFactory extends Factory
      */
     public function definition()
     {
-        // $oras_plecare = \App\Models\Oras::all()->where('tara', 'Romania')->random()->id;
-        // $oras_sosire = \App\Models\Oras::all()->where('tara', 'Corsica')->random()->id;
-        $oras_plecare = \App\Models\Oras::all()->where('tara', 'Corsica')->random()->id;
-        $oras_sosire = \App\Models\Oras::all()->where('tara', 'Romania')->random()->id;
+        $oras_plecare = \App\Models\Oras::all()->where('tara', 'Romania')->random()->id;
+        $oras_sosire = \App\Models\Oras::all()->where('tara', 'Corsica')->random()->id;
+        // $oras_plecare = \App\Models\Oras::all()->where('tara', 'Corsica')->random()->id;
+        // $oras_sosire = \App\Models\Oras::all()->where('tara', 'Romania')->random()->id;
         $nr_adulti = $this->faker->numberBetween(1 ,4);
 
         return [
@@ -34,9 +34,10 @@ class RezervareFactory extends Factory
             'oras_plecare' => $oras_plecare,
             'oras_sosire' => $oras_sosire,
             'pret_total' => $nr_adulti * 120,
+            'bilet_nava' => $this->faker->boolean($chanceOfGettingTrue = 80) ? 1 : 0,
             'lista_plecare' => \App\Models\Oras::find($oras_plecare)->traseu,
             'lista_sosire' => \App\Models\Oras::find($oras_sosire)->traseu,
-            'data_cursa' => '2020-10-31',
+            'data_cursa' => '2020-10-28',
             'observatii' => $this->faker->boolean($chanceOfGettingTrue = 80) ? null : $this->faker->text($maxNbChars = 500)
         ];
     }

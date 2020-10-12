@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
         // \App\Models\User::factory(10)->create();
         // \App\Models\Rezervare::factory(20)->create();
         // \App\Models\Pasager::factory(5)->create();
-        \App\Models\Rezervare::factory(50)->create()->each(function($rezervare) {
+        \App\Models\Rezervare::factory(5)->create()->each(function($rezervare) {
             $rezervare->pasageri_relation()->attach(\App\Models\Pasager::factory(rand(1, 5))->create());
         });
     }
