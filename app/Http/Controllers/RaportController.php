@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Storage;
 
 class RaportController extends Controller
 {
-    public function rapoarte(){
+    public function rapoarte(Request $request){
         // $search_data = \Request::get('search_data');
         $search_data = \Request::get('search_data') ? \Request::get('search_data') : \Carbon\Carbon::today();
         // $search_data ?
@@ -49,49 +49,69 @@ class RaportController extends Controller
 
         // dd($rezervari);
 
-
-        return view('rapoarte.raport', compact('rezervari', 'search_data'));
+        $view_type = $request->view_type;
+        return view('rapoarte.raport', compact('rezervari', 'search_data', 'view_type'));
     }
 
 
     public function mutaRezervari(Request $request){
-        // $request->validate(
-        //     [
-        //         'traseu_vechi' => ['required', 'numeric'],
-        //         'traseu_nou' => ['required', 'numeric'],
-        //         'data_traseu' => ['required']
-        //     ],
-        // );
-
-        // $rezervari = Rezervare::
-        //     join('orase as orase_plecare', 'rezervari.oras_plecare', '=', 'orase_plecare.id')
-        //     ->join('orase as orase_sosire', 'rezervari.oras_sosire', '=', 'orase_sosire.id')
-        //     ->select(
-        //         'rezervari.*', 
-        //         'orase_plecare.traseu as oras_plecare_traseu'
-        //     )
-            // ->whereDate('data_cursa', '=', $request->data_traseu);
-            // ->where('orase_plecare.traseu', $request->traseu_vechi)
-            // ->update(['traseu_raport' => $request->traseu_nou]);
-
-        // return redirect()->route('rapoarte', ['search_data' => $request->data_traseu]);
         $request->validate(
             [
-                'lista_noua' => ['required', 'numeric']
+                'traseu' => ['required', 'numeric'],
+                'lista' => ['required', 'numeric'],
+                'data_cursa' => ['required']
             ],
         );
 
-        if($request->tip_lista === "lista_plecare"){
-            $rezervari = Rezervare::whereIn('id', $request->rezervari)
-                ->update(['lista_plecare' => $request->lista_noua]);
-        } elseif ($request->tip_lista === "lista_sosire"){
-            $rezervari = Rezervare::whereIn('id', $request->rezervari)
-                ->update(['lista_sosire' => $request->lista_noua]);
-        }
-        
-            // dd($rezervari);
+        if ($request->tip_lista === "lista_plecare") {
+            $rezervari = Rezervare::
+                join('orase as orase_plecare', 'rezervari.oras_plecare', '=', 'orase_plecare.id')
+                // ->join('orase as orase_sosire', 'rezervari.oras_sosire', '=', 'orase_sosire.id')
+                // ->select(
+                //     'rezervari.*', 
+                //     'orase_plecare.traseu as oras_plecare_traseu'
+                // )
+                ->whereDate('data_cursa', '=', $request->data_cursa)
+                ->where('orase_plecare.traseu', $request->traseu)
+                ->update(['lista_plecare' => $request->lista]);
 
-        return redirect()->route('rapoarte', ['search_data' => $request->data_traseu]);
+            return redirect()
+                ->action([\App\Http\Controllers\RaportController::class , 'rapoarte'], 
+                    ['search_data' => $request->data_cursa, 'view_type' => 'plecare']);
+        } elseif ($request->tip_lista === "lista_sosire") {
+            $rezervari = Rezervare::
+                // join('orase as orase_plecare', 'rezervari.oras_plecare', '=', 'orase_plecare.id')
+                join('orase as orase_sosire', 'rezervari.oras_sosire', '=', 'orase_sosire.id')
+                // ->select(
+                //     'rezervari.*',
+                //     'orase_plecare.traseu as oras_plecare_traseu'
+                // )
+                ->whereDate('data_cursa', '=', $request->data_cursa)
+                ->where('orase_sosire.traseu', $request->traseu)
+                ->update(['lista_sosire' => $request->lista]);
+
+            return redirect()
+                ->action(
+                    [\App\Http\Controllers\RaportController::class, 'rapoarte'],
+                    ['search_data' => $request->data_cursa, 'view_type' => 'sosire']
+                );
+        }
+
+        // $request->validate(
+        //     [
+        //         'lista_noua' => ['required', 'numeric']
+        //     ],
+        // );
+
+        // if($request->tip_lista === "lista_plecare"){
+        //     $rezervari = Rezervare::whereIn('id', $request->rezervari)
+        //         ->update(['lista_plecare' => $request->lista_noua]);
+        // } elseif ($request->tip_lista === "lista_sosire"){
+        //     $rezervari = Rezervare::whereIn('id', $request->rezervari)
+        //         ->update(['lista_sosire' => $request->lista_noua]);
+        // }
+        
+        // return redirect()->route('rapoarte', ['search_data' => $request->data_traseu]);
     }
 
     public function extrageRezervari(Request $request){
@@ -208,7 +228,7 @@ class RaportController extends Controller
 
         dd('here');
 
-        $spreadsheet = new \PhpOffice\PhpWord\Spreadsheet();
+        $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->setCellValue('A1', 'Hello World !');
 

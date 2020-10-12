@@ -35,14 +35,14 @@
                                                 Data de plecare:
                                                 <br>
                                                 <span class="badge badge-primary" style="font-size:1.1em">
-                                                    {{ \Carbon\Carbon::parse($rezervare->data_plecare)->isoFormat('DD.MM.YYYY') }}
+                                                    {{ $rezervare->data_plecare ? \Carbon\Carbon::parse($rezervare->data_plecare)->isoFormat('DD.MM.YYYY') : ''}}
                                                 </span>
                                             </div>
                                             <div class="col-lg-4">
                                                 Oraș plecare:
                                                 <br>
                                                 <span class="badge badge-primary" style="font-size:1.1em">
-                                                    {{ $rezervare->oras_plecare_nume->oras }}
+                                                    {{ $rezervare->oras_plecare_nume->oras ?? '' }}
                                                 </span>
                                             </div>
                                             <div class="col-lg-1 pt-1 text-primary">
@@ -52,7 +52,7 @@
                                                 Oraș sosire:
                                                 <br>
                                                 <span class="badge badge-primary" style="font-size:1.1em">
-                                                    {{ $rezervare->oras_sosire_nume->oras }}
+                                                    {{ $rezervare->oras_sosire_nume->oras ?? '' }}
                                                 </span>
                                             </div>
                                         </div>
@@ -65,14 +65,14 @@
                                                     Data de întoarcere:
                                                     <br>
                                                     <span class="badge badge-primary" style="font-size:1.1em">
-                                                        {{ \Carbon\Carbon::parse($rezervare->data_intoarcere)->isoFormat('DD.MM.YYYY') }}
+                                                        {{ $rezervare->data_intoarcere ? \Carbon\Carbon::parse($rezervare->data_intoarcere)->isoFormat('DD.MM.YYYY') : '' }}
                                                     </span>
                                                 </div>
                                                 <div class="col-lg-4">
                                                     Oraș sosire:
                                                     <br>
                                                     <span class="badge badge-primary" style="font-size:1.1em">
-                                                        {{ $rezervare->oras_sosire_nume->oras }}
+                                                        {{ $rezervare->oras_sosire_nume->oras ?? '' }}
                                                     </span>
                                                 </div>
                                                 <div class="col-lg-1 pt-1 text-primary">
@@ -82,7 +82,7 @@
                                                     Oraș plecare:
                                                     <br>
                                                     <span class="badge badge-primary" style="font-size:1.1em">
-                                                        {{ $rezervare->oras_plecare_nume->oras }}
+                                                        {{ $rezervare->oras_plecare_nume->oras ?? '' }}
                                                     </span>
                                                 </div>
                                             </div>

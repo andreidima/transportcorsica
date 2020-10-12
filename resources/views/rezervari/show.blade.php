@@ -21,7 +21,7 @@
                             <div class="col-lg-12 p-4 mb-0">
                                 <div class="row mb-3 d-flex justify-content-center">
                                     <div class="col-lg-11 px-0 border rounded-lg">
-                                        <h5 class="bg-warning p-1 m-0 text-center">
+                                        <h5 class="bg-success p-1 m-0 text-center">
                                             Informații călătorie
                                         </h5>
                                     </div>
@@ -55,7 +55,7 @@
                                     </div>
                                 @if ($rezervare->nr_adulti)
                                     <div class="col-lg-11 px-0 border rounded-lg">
-                                        <h5 class="bg-warning p-1 m-0 text-center">
+                                        <h5 class="bg-success p-1 m-0 text-center">
                                             Informații pasageri
                                         </h5>
                                     </div>
@@ -88,17 +88,9 @@
                                             @endforeach
                                         </div>
                                     </div>        
-                                    {{-- @php
-                                        if(App\Models\Pasager::find(1)->rezervari->count()){
-                                            dd('dada');
-                                        }
-                                        else {
-                                            dd('nunu');
-                                        }
-                                    @endphp                         --}}
                                 @else
                                     <div class="col-lg-11 px-0 border rounded-lg">
-                                        <h5 class="bg-warning p-1 m-0 text-center">
+                                        <h5 class="bg-success p-1 m-0 text-center">
                                             Informații bagaj
                                         </h5>
                                     </div>
@@ -111,7 +103,7 @@
                                     </div>
                                 @endif
                                     <div class="col-lg-11 px-0 border rounded-lg">
-                                        <h5 class="bg-warning p-1 m-0 text-center">
+                                        <h5 class="bg-success p-1 m-0 text-center">
                                             Informații client
                                         </h5>
                                     </div>
@@ -126,7 +118,7 @@
                                     </div>
 
                                     <div class="col-lg-11 px-0 border rounded-lg">
-                                        <h5 class="bg-warning p-1 m-0 text-center">
+                                        <h5 class="bg-success p-1 m-0 text-center">
                                             Date pentru facturare
                                         </h5>
                                     </div>

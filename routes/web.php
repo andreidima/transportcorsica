@@ -41,8 +41,8 @@ Route::get('/orase_rezervari', [RezervareController::class, 'orase_rezervari']);
 Route::group(['middleware' => 'auth'], function () {
     Route::resource('rezervari', RezervareController::class,  ['parameters' => ['rezervari' => 'rezervare']]);
     
-    Route::any('/rapoarte', [RaportController::class, 'rapoarte'])->name('rapoarte');
     Route::post('/rapoarte/muta-rezervari', [RaportController::class, 'mutaRezervari']);
     Route::post('/rapoarte/extrage-rezervari/{view_type}', [RaportController::class, 'extrageRezervari']);
     Route::post('/rapoarte/excel-nava/{view_type}', [RaportController::class, 'excelNava']);
+    Route::any('/rapoarte/{view_type}', [RaportController::class, 'rapoarte'])->name('rapoarte');
 });

@@ -5,11 +5,22 @@
         <div class="row card-header justify-content-between py-1" style="border-radius: 40px 40px 0px 0px;">
             <div class="col-lg-3 align-self-center mb-2">
                 <h4 class=" mb-0">
-                    <a href="/rapoarte"><i class="fas fa-book mr-1"></i>Rapoarte</a>
+                    {{-- @php
+                        dd($view_type);
+                    @endphp --}}
+                    @if ($view_type === "plecare")                                          
+                        <a href="/rapoarte/plecare"><i class="fas fa-book mr-1"></i>Rapoarte plecare</a> 
+                    @elseif ($view_type === "sosire")      
+                        <a href="/rapoarte/sosire"><i class="fas fa-book mr-1"></i>Rapoarte sosire</a>
+                    @endif                    
                 </h4>
             </div> 
             <div class="col-lg-6" id="app1">
-                <form class="needs-validation" novalidate method="GET" action="/rapoarte">
+                @if ($view_type === "plecare")                                          
+                    <form class="needs-validation" novalidate method="GET" action="/rapoarte/plecare"> 
+                @elseif ($view_type === "sosire")      
+                    <form class="needs-validation" novalidate method="GET" action="/rapoarte/sosire">
+                @endif  
                     @csrf                    
                     <div class="row mb-2 input-group custom-search-form justify-content-center" style="border-bottom:2px solid black">
                         <div class="col-md-4 mb-2 px-1 d-flex align-items-center">
@@ -40,27 +51,29 @@
                         </div>
                     </div>
                 </form>
-                {{-- <form class="needs-validation" novalidate method="POST" action="/rapoarte/muta-rezervari">
+                <form class="needs-validation" novalidate method="POST" action="/rapoarte/muta-rezervari">
                     @csrf
 
                     <div class="row input-group custom-search-form justify-content-center">
                                 <div class="col-lg-6 px-0 mb-2 d-flex align-items-center">
-                                    <label class="mb-0">Mută rezervările traseu inițial:</label> 
-                                    <input type="text" class="form-control form-control-sm border rounded-pill mb-0 py-0 mx-2 {{ $errors->has('traseu_vechi') ? 'is-invalid' : '' }}" 
-                                        id="traseu_vechi" name="traseu_vechi" placeholder=""
+                                    <label class="mb-0">Mută rezervările traseului:</label> 
+                                    <input type="text" class="form-control form-control-sm border rounded-pill mb-0 py-0 mx-2 {{ $errors->has('traseu') ? 'is-invalid' : '' }}" 
+                                        id="traseu" name="traseu" placeholder=""
                                             style="width:50px"
-                                            value="{{ old('traseu_vechi') }}">
+                                            value="{{ old('traseu') }}">
                                 </div>
                                 <div class="col-lg-3 px-0 mb-2 d-flex align-items-center">
                                     în lista:
-                                    <input type="text" class="form-control form-control-sm border rounded-pill mb-0 py-0 mx-2 {{ $errors->has('traseu_nou') ? 'is-invalid' : '' }}" 
-                                        id="traseu_nou" name="traseu_nou" placeholder=""
+                                    <input type="text" class="form-control form-control-sm border rounded-pill mb-0 py-0 mx-2 {{ $errors->has('lista') ? 'is-invalid' : '' }}" 
+                                        id="lista" name="lista" placeholder=""
                                             style="width:50px"
-                                            value="{{ old('traseu_nou') }}">
-                                    <input type="hidden" class="form-control form-control-sm border rounded-pill mb-0 py-0 mx-2 {{ $errors->has('data_traseu') ? 'is-invalid' : '' }}" 
-                                        id="data_traseu" name="data_traseu" placeholder=""
-                                            style="width:50px"
-                                            value="{{ $search_data }}">
+                                            value="{{ old('lista') }}">
+                                    <input type="hidden" name="data_cursa" value="{{ $search_data }}">  
+                                    @if ($view_type === "plecare")                                          
+                                        <input type="hidden" name="tip_lista" value="lista_plecare"> 
+                                    @elseif ($view_type === "sosire")      
+                                        <input type="hidden" name="tip_lista" value="lista_sosire">
+                                    @endif
                                 </div>
                                 <div class="col-lg-3 px-0 mb-2">                            
                                     <button class="btn btn-sm btn-primary col-md-12 border border-dark rounded-pill" type="submit">
@@ -68,7 +81,7 @@
                                     </button>
                                 </div>
                     </div>
-                </form> --}}
+                </form>
             </div>
             {{-- <div class="col-lg-3 text-right align-self-center">
                 <a class="btn btn-sm bg-success text-white border border-dark rounded-pill col-md-8" href="{{ route('rezervari.create') }}" role="button">
@@ -94,7 +107,7 @@
                             </tr>
                             <tr class="" style="padding:2rem">
                                 <th>Nume</th>
-                                <th class="text-center">Traseu inițial</th>
+                                <th class="text-center">Traseu</th>
                                 <th>Oraș plecare</th>
                                 <th class="text-center">Nr. pers.</th>
                             </tr>
@@ -104,7 +117,13 @@
                                     <tr>
                                         <td colspan="3" class="text-white" style="background-color:lightslategrey">
                                             <b>
-                                                Lista {{$rezervari_pe_trasee->first()->lista_plecare}}
+                                                <a class="btn btn-sm btn-light" data-toggle="collapse" 
+                                                    href="#collapseLista{{$rezervari_pe_trasee->first()->lista_plecare}}" 
+                                                    role="button" 
+                                                    aria-expanded="false" 
+                                                    aria-controls="collapseLista{{$rezervari_pe_trasee->first()->lista_plecare}}">
+                                                        Lista {{$rezervari_pe_trasee->first()->lista_plecare}}
+                                                </a>
                                             </b>
                                         </td>
                                         <td colspan="1" class="text-right" style="background-color:lightslategrey">
@@ -129,14 +148,14 @@
                                                 </form>
                                             </div>
                                         </td>
-                                    </tr>             
+                                    </tr>           
                                 @forelse ($rezervari_pe_trasee->sortByDesc('oras_plecare_traseu')->groupBy('oras_plecare_traseu') as $rezervari_pe_trasee_pe_traseu_initial) 
                                     @forelse ($rezervari_pe_trasee_pe_traseu_initial->sortBy('oras_plecare_ordine')->groupBy('oras_plecare_ordine') as $rezervari_pe_trasee_pe_traseu_initial_pe_oras) 
                                         @forelse ($rezervari_pe_trasee_pe_traseu_initial_pe_oras->sortBy('oras_plecare_nume') as $rezervare) 
-                                        <tr>      
+                                        <tr class="collapse" id="collapseLista{{$rezervari_pe_trasee->first()->lista_plecare}}">      
                                             <td>
                                                 <a href="{{ $rezervare->path() }}">  
-                                                    <b>{{ $rezervare->nume }}{{ $rezervare->id }}</b>
+                                                    <b>{{ $rezervare->nume }}</b>
                                                 </a>
                                             </td>
                                             <td class="text-center">
@@ -174,7 +193,7 @@
                                             </a>
                                         </td>
                                     </tr> --}}
-                                    <tr>
+                                    {{-- <tr>
                                         <td colspan="5">  
                                             <form class="needs-validation" novalidate method="POST" action="/rapoarte/muta-rezervari">
                                                 @csrf
@@ -205,7 +224,7 @@
                                                     </div>
                                             </form>
                                         </td>
-                                    </tr>
+                                    </tr> --}}
                                     <tr class="bg-dark">
                                         <td colspan="5" height="50">
                                             <p></p>

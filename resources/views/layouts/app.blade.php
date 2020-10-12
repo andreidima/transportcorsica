@@ -47,7 +47,8 @@
                                 <i class="fas fa-book mr-1"></i>Rapoarte
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="/rapoarte">Rapoarte</a>
+                                    <a class="dropdown-item" href="/rapoarte/plecare">Rapoarte plecare</a>
+                                    <a class="dropdown-item" href="/rapoarte/sosire">Rapoarte sosire</a>
                                     {{-- <a class="dropdown-item" href="#">Raport Retur</a> --}}
                                 </div>
                             </li>

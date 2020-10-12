@@ -316,10 +316,32 @@
                                             </div>
                                             <div class="form-check form-check-inline {{ $errors->has('bilet_nava') ? 'is-invalid' : '' }}">
                                                 <input class="form-check-input" type="radio" name="bilet_nava" id="bilet_nava2" value="0"
-                                                {{ old('bilet_nava', ($rezervare->bilet_nava ?? '')) == "0" ? 'checked' : '' }}>
+                                                    {{ old('bilet_nava', ($rezervare->bilet_nava ?? '')) == "0" ? 'checked' : '' }}
+                                                data-toggle="modal" data-target="#nuDorescBiletLaNava"
+                                                >
                                                 <label class="form-check-label" for="bilet_nava2">
                                                     Nu doresc bilet la navă
                                                 </label>
+                                                        <!-- Modal -->
+                                                        <div class="modal fade" id="nuDorescBiletLaNava" tabindex="-1" role="dialog" aria-labelledby="nuDorescBiletLaNavaLabel" aria-hidden="true">
+                                                        <div class="modal-dialog" role="document" style="">
+                                                            <div class="modal-content">
+                                                            <div class="modal-header" style="background-color:red">
+                                                                <h5 class="modal-title" id="nuDorescBiletLaNavaLabel">Atenționare</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:white">
+                                                                <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body" style="color:black">
+                                                                 În cazul in care nu doriți să vă achiziționăm biletul la navă, sunteți obligați sa vi-l Achiziționați singuri și sunteți răspunzători de eventualele erori în procesarea acestuia ( ex. Ruta aleasă de noi și ora plecării navei )
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Închide</button>
+                                                                {{-- <button type="button" class="btn btn-primary">Save changes</button> --}}
+                                                            </div>
+                                                            </div>
+                                                        </div>
+                                                        </div>
                                             </div>                                            
                                         </div>                                        
                                     </div> 

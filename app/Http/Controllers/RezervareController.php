@@ -10,6 +10,7 @@ use Illuminate\Validation\Rule;
 use DB;
 
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 
 class RezervareController extends Controller
 {
@@ -81,12 +82,12 @@ class RezervareController extends Controller
 
         // Setarea informatiilor suplimentare necesare formularului
         $rezervare->tip_calatorie = $rezervare->nr_adulti ? "Calatori" : "Bagaje";
-        $rezervare->traseu = ($rezervare->oras_plecare_nume->tara === "Romania") ? "Romania-Corsica" : "Corsica-Romania";
+        $rezervare->traseu = (($rezervare->oras_plecare_nume->tara ?? null) === "Romania") ? "Romania-Corsica" : "Corsica-Romania";
         $rezervare->tur_retur = ($rezervare->retur) ? "true" : "false";
         $rezervare->data_plecare = $rezervare->data_cursa;
         $rezervare->data_intoarcere = ($rezervare->retur) ? Rezervare::find($rezervare->retur)->data_cursa : '';
-        $rezervare->judet_plecare = $rezervare->oras_plecare_nume->judet;
-        $rezervare->judet_sosire = $rezervare->oras_sosire_nume->judet;
+        $rezervare->judet_plecare = $rezervare->oras_plecare_nume->judet ?? null;
+        $rezervare->judet_sosire = $rezervare->oras_sosire_nume->judet ?? null;
         $rezervare->acord_de_confidentialitate = "1";
         $rezervare->termeni_si_conditii = "1";
 
@@ -133,8 +134,10 @@ class RezervareController extends Controller
         
         // // dd($request->request, $rezervare_tur, $rezervare_retur, $rezervare);
 
-        $rezervare_tur->lista_plecare = ($rezervare_tur->oras_plecare != $request->oras_plecare) ? Oras::find($request->oras_plecare)->traseu : $rezervare_tur->lista_plecare;
-        $rezervare_tur->lista_sosire = ($rezervare_tur->oras_sosire != $request->oras_sosire) ? Oras::find($request->oras_sosire)->traseu : $rezervare_tur->lista_sosire;
+        $rezervare_tur->lista_plecare = ($rezervare_tur->oras_plecare != $request->oras_plecare) ? (Oras::find($request->oras_plecare)->traseu ?? null) : $rezervare_tur->lista_plecare;
+        $rezervare_tur->lista_sosire = ($rezervare_tur->oras_sosire != $request->oras_sosire) ? (Oras::find($request->oras_sosire)->traseu ?? null) : $rezervare_tur->lista_sosire;
+        // $rezervare_tur->lista_plecare = ($rezervare_tur->oras_plecare != $request->oras_plecare) ? null : $rezervare_tur->lista_plecare;
+        // $rezervare_tur->lista_sosire = ($rezervare_tur->oras_sosire != $request->oras_sosire) ? null : $rezervare_tur->lista_sosire;
         $rezervare_tur->oras_plecare = $request->oras_plecare;
         $rezervare_tur->oras_sosire = $request->oras_sosire;
         $rezervare_tur->data_cursa = $request->data_plecare;
@@ -150,8 +153,10 @@ class RezervareController extends Controller
         $rezervare_tur->updated_at = \Carbon\Carbon::now();
 
         if ($rezervare_retur){
-            $rezervare_retur->lista_plecare = ($rezervare_retur->oras_plecare != $request->oras_sosire) ? Oras::find($request->oras_sosire)->traseu : $rezervare_retur->lista_plecare;
-            $rezervare_retur->lista_sosire = ($rezervare_retur->oras_plecare != $request->oras_plecare) ? Oras::find($request->oras_plecare)->traseu : $rezervare_retur->lista_sosire;
+            $rezervare_retur->lista_plecare = ($rezervare_retur->oras_plecare != $request->oras_sosire) ? (Oras::find($request->oras_sosire)->traseu ?? null) : $rezervare_retur->lista_plecare;
+            $rezervare_retur->lista_sosire = ($rezervare_retur->oras_sosire != $request->oras_plecare) ? (Oras::find($request->oras_plecare)->traseu ?? null) : $rezervare_retur->lista_sosire;
+            // $rezervare_retur->lista_plecare = ($rezervare_retur->oras_plecare != $request->oras_sosire) ? null : $rezervare_retur->lista_plecare;
+            // $rezervare_retur->lista_sosire = ($rezervare_retur->oras_plecare != $request->oras_plecare) ? null : $rezervare_retur->lista_sosire;
             $rezervare_retur->oras_plecare = $request->oras_sosire;
             $rezervare_retur->oras_sosire = $request->oras_plecare;
             $rezervare_retur->data_cursa = $request->data_intoarcere;
@@ -324,106 +329,153 @@ class RezervareController extends Controller
      */
     protected function validateRequest(Request $request, $rezervari = null)
     {
-        // dd ($request->traseu);
-        return request()->validate(
-            [
-                // 'cursa_id' =>['nullable', 'numeric', 'max:999'],
-                'tip_calatorie' => ['required'],
-                'traseu' => ['required'],
-                'judet_plecare' => [''],
-                'oras_plecare' => ['required', 'integer'],
-                'judet_sosire' => [''],
-                'oras_sosire' => ['required', 'integer'],
-                'tur_retur' => [''],
-                'bilet_nava' => ['required'],
-                // 'statie_id' => ['nullable', 'numeric', 'max:999'],
-                // 'statie_imbarcare' => ['nullable'],
-                'nr_adulti' => ['required_if:tip_calatorie,Calatori', 'integer', 'between:1,100'],
-                // 'pasageri.nume' => ['required_if:tip_calatorie,Calatori', 'min:nr_adulti+1'],
-                'pasageri.nume.*' => ['required', 'max:100'],
-                'pasageri.buletin.*' => ['nullable', 'max:100'],
-                'pasageri.data_nastere.*' => ['required', 'max:100'],
-                'pasageri.localitate_nastere.*' => ['required', 'max:100'],
-                'pasageri.localitate_domiciliu.*' => ['nullable', 'max:100'],
-                // "bagaje_kg" => "required_if:tip_calatorie,Bagaje|regex:/^\d+(\.\d{1,2})?$/",
-                'bagaje_kg' => ['required_if:tip_calatorie,Bagaje', 'numeric'],
-                'bagaje_descriere' => ['required_if:tip_calatorie,Bagaje', 'max:2000'],
-                // 'pret' => ['nullable', 'numeric', 'between:-0, 99999.99'],
-                // 'nr_copii' => ['nullable', 'integer', 'between:0,100'],
-                // 'data_plecare' => [''],
-                'data_plecare' => [
-                    // 'required_if:traseu,Romania-Corsica', 
-                    // 'required_if:tur_retur,true'
-                    'required'
-                ],
-                'data_intoarcere' => [
-                    // 'basil',
-                    'required_if:tur_retur,true',
-                    // 'required_unless:traseu,Romania-Corsica',
-                    'after:data_plecare', 
-                    'max:50',
-                    function ($attribute, $value, $fail) use ($request) {
-                        $data_plecare = \Carbon\Carbon::parse($request->data_plecare);
-                        $data_intoarcere = \Carbon\Carbon::parse($request->data_intoarcere);
-                        // if (($request->traseu == 'Romania-Corsica') && ($request->tur_retur == true) && ($data_plecare > $data_intoarcere)) {
-                        //     $fail('Data de intoarcere trebuie sa fie mai mare decât data de plecare.');
-                        // } elseif (($request->traseu == 'Corsica-Romania') && ($request->tur_retur == true) && ($data_plecare < $data_intoarcere)) {
-                        //     $fail('Data de intoarcere trebuie sa fie mai mare decât data de plecare.');
-                        // } elseif (($request->tur_retur == true) && ($data_plecare->diffInDays($data_intoarcere) > 15)) {
-                        //     $fail('Data de intoarcere trebuie sa fie la maxim 30 de zile de la data de plecare.');
-                        // }
-                        if (($request->tur_retur == true) && ($data_plecare->diffInDays($data_intoarcere) > 15)) {
-                            $fail('Data de intoarcere trebuie sa fie la maxim 15 zile de la data de plecare.');
-                        }
-                    },
-                ],
-                // 'ora_id' =>[ 'required', 'nullable', 'max:99'],
-                'nume' => ($request->_method === "PATCH") ?
-                    [
-                        'required', 'max:200',
-                        // Rule::unique('rezervari')->ignore($rezervari->id)->where(function ($query) use ($rezervari, $request) {
-                        //     return $query->where('telefon', $request->telefon)
-                        //         ->where('data_cursa', $request->data_cursa);
-                        // }),
-                    ]
-                    : [
-                        'required', 'max:200',
-                        Rule::unique('rezervari')->where(function ($query) use ($rezervari, $request) {
-                            return $query->where('telefon', $request->telefon)
-                                ->where('data_cursa', $request->data_plecare);
-                        }),
+        if (Auth::check()) {
+            return request()->validate(
+                [
+                    'tip_calatorie' => ['nullable'],
+                    'traseu' => ['nullable'],
+                    'judet_plecare' => [''],
+                    'oras_plecare' => ['nullable', 'integer'],
+                    'judet_sosire' => [''],
+                    'oras_sosire' => ['nullable', 'integer'],
+                    'tur_retur' => [''],
+                    'bilet_nava' => ['nullable'],
+                    'nr_adulti' => ['nullable', 'integer', ''],
+                    'pasageri.nume.*' => ['nullable', 'max:100'],
+                    'pasageri.buletin.*' => ['nullable', 'max:100'],
+                    'pasageri.data_nastere.*' => ['nullable', 'max:100'],
+                    'pasageri.localitate_nastere.*' => ['nullable', 'max:100'],
+                    'pasageri.localitate_domiciliu.*' => ['nullable', 'max:100'],
+                    'bagaje_kg' => ['nullable', 'numeric'],
+                    'bagaje_descriere' => ['nullable', 'max:2000'],
+                    'data_plecare' => [
+                        'nullable'
                     ],
-                'telefon' => ['required', 'regex:/^[0-9 ]+$/', 'max: 100'],
-                'email' => ['nullable', 'email', 'max:100'],
-                // 'pret_total' => ['nullable', 'numeric', 'max:999999'],
-                'adresa' => ['max:2000'],
-                'observatii' => ['max:2000'],
-                // 'pasageri' => ['max:2000'],
-
-                // 'plata_online' => [''],
-                // 'adresa' => ['required_if:plata_online,true', 'nullable', 'max:99'],
-
-                'document_de_calatorie' => ['', 'max:100'],
-                'expirare_document' => ['', 'max:100'],
-                'serie_document' => ['', 'max:100'],
-                'cnp' => ['', 'max:100'],
-                'acord_de_confidentialitate' => ['required'],
-                'termeni_si_conditii' => ['required'],
-                'acord_newsletter' => [''],
-                // 'oferta' => [''],
-            ],
-            [
-                // 'ora_id.required' => 'Câmpul Ora de plecare este obligatoriu.',
-                'telefon.regex' => 'Câmpul Telefon poate conține doar cifre și spații.',
-                'nume.unique' => 'Această Rezervare este deja înregistrată.',
-                'data_plecare.required_if' => 'Câmpul data plecare este necesar.',
-                'data_intoarcere.required_unless' => 'Câmpul data plecare este necesar.',
-                'nr_adulti.required_if' => 'Câmpul Nr. Pasageri este necesar.',
-                'nr_adulti.integer' => 'Câmpul Nr. Pasageri trebuie să conțină un număr.',
-                'nr_adulti.between' => 'Câmpul Nr. Pasageri trebuie să fie între 1 și 100.',
-                // 'adresa.required_if' => 'Câmpul Adresa este obligatoriu dacă este selectată plata cu card'
-            ]
-        );
+                    'data_intoarcere' => [
+                        'nullable',
+                        'after:data_plecare',
+                        'max:50',
+                        function ($attribute, $value, $fail) use ($request) {
+                            $data_plecare = \Carbon\Carbon::parse($request->data_plecare);
+                            $data_intoarcere = \Carbon\Carbon::parse($request->data_intoarcere);
+                            if (($request->tur_retur == true) && ($data_plecare->diffInDays($data_intoarcere) > 15)) {
+                                $fail('Data de intoarcere trebuie sa fie la maxim 15 zile de la data de plecare.');
+                            }
+                        },
+                    ],
+                    'nume' => ($request->_method === "PATCH") ?
+                        [
+                            'nullable', 'max:200',
+                            // Rule::unique('rezervari')->ignore($rezervari->id)->where(function ($query) use ($rezervari, $request) {
+                            //     return $query->where('telefon', $request->telefon)
+                            //         ->where('data_cursa', $request->data_cursa);
+                            // }),
+                        ]
+                        : [
+                            'nullable', 'max:200',
+                            // Rule::unique('rezervari')->where(function ($query) use ($rezervari, $request) {
+                            //     return $query->where('telefon', $request->telefon)
+                            //         ->where('data_cursa', $request->data_plecare);
+                            // }),
+                        ],
+                    'telefon' => ['nullable', 'regex:/^[0-9 ]+$/', 'max: 100'],
+                    'email' => ['nullable', 'email', 'max:100'],
+                    'adresa' => ['nullable', 'max:2000'],
+                    'observatii' => ['nullable', 'max:2000'],
+                    // 'plata_online' => [''],
+                    'document_de_calatorie' => ['nullable', 'max:100'],
+                    'expirare_document' => ['nullable', 'max:100'],
+                    'serie_document' => ['nullable', 'max:100'],
+                    'cnp' => ['nullable', 'max:100'],
+                    'acord_de_confidentialitate' => ['nullable'],
+                    'termeni_si_conditii' => ['nullable'],
+                    'acord_newsletter' => [''],
+                ],
+                [
+                    'telefon.regex' => 'Câmpul Telefon poate conține doar cifre și spații.',
+                    'nume.unique' => 'Această Rezervare este deja înregistrată.',
+                    'data_plecare.required_if' => 'Câmpul data plecare este necesar.',
+                    'data_intoarcere.required_unless' => 'Câmpul data plecare este necesar.',
+                    'nr_adulti.required_if' => 'Câmpul Nr. Pasageri este necesar.',
+                    'nr_adulti.integer' => 'Câmpul Nr. Pasageri trebuie să conțină un număr.',
+                    'nr_adulti.between' => 'Câmpul Nr. Pasageri trebuie să fie între 1 și 100.',
+                    // 'adresa.required_if' => 'Câmpul Adresa este obligatoriu dacă este selectată plata cu card'
+                ]
+            );
+        } else{
+            return request()->validate(
+                [
+                    'tip_calatorie' => ['required'],
+                    'traseu' => ['required'],
+                    'judet_plecare' => [''],
+                    'oras_plecare' => ['required', 'integer'],
+                    'judet_sosire' => [''],
+                    'oras_sosire' => ['required', 'integer'],
+                    'tur_retur' => [''],
+                    'bilet_nava' => ['required'],
+                    'nr_adulti' => ['required_if:tip_calatorie,Calatori', 'integer', 'between:1,100'],
+                    'pasageri.nume.*' => ['required', 'max:100'],
+                    'pasageri.buletin.*' => ['nullable', 'max:100'],
+                    'pasageri.data_nastere.*' => ['required', 'max:100'],
+                    'pasageri.localitate_nastere.*' => ['required', 'max:100'],
+                    'pasageri.localitate_domiciliu.*' => ['nullable', 'max:100'],
+                    'bagaje_kg' => ['required_if:tip_calatorie,Bagaje', 'numeric'],
+                    'bagaje_descriere' => ['required_if:tip_calatorie,Bagaje', 'max:2000'],
+                    'data_plecare' => [
+                        'required'
+                    ],
+                    'data_intoarcere' => [
+                        'required_if:tur_retur,true',
+                        'after:data_plecare', 
+                        'max:50',
+                        function ($attribute, $value, $fail) use ($request) {
+                            $data_plecare = \Carbon\Carbon::parse($request->data_plecare);
+                            $data_intoarcere = \Carbon\Carbon::parse($request->data_intoarcere);
+                            if (($request->tur_retur == true) && ($data_plecare->diffInDays($data_intoarcere) > 15)) {
+                                $fail('Data de intoarcere trebuie sa fie la maxim 15 zile de la data de plecare.');
+                            }
+                        },
+                    ],
+                    'nume' => ($request->_method === "PATCH") ?
+                        [
+                            'required', 'max:200',
+                            // Rule::unique('rezervari')->ignore($rezervari->id)->where(function ($query) use ($rezervari, $request) {
+                            //     return $query->where('telefon', $request->telefon)
+                            //         ->where('data_cursa', $request->data_cursa);
+                            // }),
+                        ]
+                        : [
+                            'required', 'max:200',
+                            Rule::unique('rezervari')->where(function ($query) use ($rezervari, $request) {
+                                return $query->where('telefon', $request->telefon)
+                                    ->where('data_cursa', $request->data_plecare);
+                            }),
+                        ],
+                    'telefon' => ['required', 'regex:/^[0-9 ]+$/', 'max: 100'],
+                    'email' => ['nullable', 'email', 'max:100'],
+                    'adresa' => ['max:2000'],
+                    'observatii' => ['max:2000'],
+                    // 'plata_online' => [''],
+                    'document_de_calatorie' => ['', 'max:100'],
+                    'expirare_document' => ['', 'max:100'],
+                    'serie_document' => ['', 'max:100'],
+                    'cnp' => ['', 'max:100'],
+                    'acord_de_confidentialitate' => ['required'],
+                    'termeni_si_conditii' => ['required'],
+                    'acord_newsletter' => [''],
+                ],
+                [
+                    'telefon.regex' => 'Câmpul Telefon poate conține doar cifre și spații.',
+                    'nume.unique' => 'Această Rezervare este deja înregistrată.',
+                    'data_plecare.required_if' => 'Câmpul data plecare este necesar.',
+                    'data_intoarcere.required_unless' => 'Câmpul data plecare este necesar.',
+                    'nr_adulti.required_if' => 'Câmpul Nr. Pasageri este necesar.',
+                    'nr_adulti.integer' => 'Câmpul Nr. Pasageri trebuie să conțină un număr.',
+                    'nr_adulti.between' => 'Câmpul Nr. Pasageri trebuie să fie între 1 și 100.',
+                    // 'adresa.required_if' => 'Câmpul Adresa este obligatoriu dacă este selectată plata cu card'
+                ]
+            );
+        }
     }
 
     public function pdfexport(Request $request, Rezervare $rezervari)
@@ -525,23 +577,25 @@ class RezervareController extends Controller
         $rezervare = $request->session()->get('rezervare');
         // dd($rezervare);
         $rezervare->created_at = \Carbon\Carbon::now();
-               
-        // Verificare rezervare duplicat
-        $request_verificare_duplicate = new Request([
-            'nume' => $request->session()->get('rezervare.nume'),
-            'telefon' => $request->session()->get('rezervare.telefon'),
-            'data_plecare' => $request->session()->get('rezervare.data_plecare')
-        ]);
 
-        $this->validate(
-            $request_verificare_duplicate,
-            [
-                'nume' => ['required', 'max:100', 'unique:rezervari,nume,NULL,id,telefon,' . $request_verificare_duplicate->telefon . ',data_cursa,' . $request_verificare_duplicate->data_plecare]
-            ],
-            [
-                'nume.unique' => 'Această Rezervare este deja înregistrată.'
-            ]
-        );
+        // Verificare rezervare duplicat - doar pentru utilizatorii externi
+        if (!Auth::check()) {
+            $request_verificare_duplicate = new Request([
+                'nume' => $request->session()->get('rezervare.nume'),
+                'telefon' => $request->session()->get('rezervare.telefon'),
+                'data_plecare' => $request->session()->get('rezervare.data_plecare')
+            ]);
+
+            $this->validate(
+                $request_verificare_duplicate,
+                [
+                    'nume' => ['required', 'max:100', 'unique:rezervari,nume,NULL,id,telefon,' . $request_verificare_duplicate->telefon . ',data_cursa,' . $request_verificare_duplicate->data_plecare]
+                ],
+                [
+                    'nume.unique' => 'Această Rezervare este deja înregistrată.'
+                ]
+            );
+        }
 
         $rezervare_unset = clone $rezervare;
         unset($rezervare_unset->tip_calatorie,
@@ -571,13 +625,13 @@ class RezervareController extends Controller
         $rezervare_retur = clone $rezervare_unset;
 
         $rezervare_tur->data_cursa = $rezervare->data_plecare;
-        $rezervare_tur->lista_plecare = Oras::find($rezervare_tur->oras_plecare)->traseu;
-        $rezervare_tur->lista_sosire = Oras::find($rezervare_tur->oras_sosire)->traseu;
+        $rezervare_tur->lista_plecare = Oras::find($rezervare_tur->oras_plecare)->traseu ?? null;
+        $rezervare_tur->lista_sosire = Oras::find($rezervare_tur->oras_sosire)->traseu ?? null;
         $rezervare_retur->data_cursa = $rezervare->data_intoarcere;
         $rezervare_retur->oras_plecare = $rezervare_tur->oras_sosire;
         $rezervare_retur->oras_sosire = $rezervare_tur->oras_plecare;
-        $rezervare_retur->lista_plecare = Oras::find($rezervare_retur->oras_plecare)->traseu;
-        $rezervare_retur->lista_sosire = Oras::find($rezervare_retur->oras_sosire)->traseu;
+        $rezervare_retur->lista_plecare = Oras::find($rezervare_retur->oras_plecare)->traseu ?? null;
+        $rezervare_retur->lista_sosire = Oras::find($rezervare_retur->oras_sosire)->traseu ?? null;
         $rezervare_retur->pret_total = 0;
 
         if ($rezervare->tur_retur === 'false') {
