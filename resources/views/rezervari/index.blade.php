@@ -124,6 +124,11 @@
                                             class="flex mr-1"    
                                         >
                                             <span class="badge badge-primary">Modifică</span>
+                                        </a> 
+                                        <a href="{{ $rezervare->path() }}/duplica"
+                                            class="flex mr-1"    
+                                        >
+                                            <span class="badge badge-secondary">Duplică</span>
                                         </a>     
                                         <div style="" class="">
                                             <a 

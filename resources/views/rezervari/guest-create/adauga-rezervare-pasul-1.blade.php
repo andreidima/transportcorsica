@@ -45,7 +45,8 @@
                                         <label class="btn btn-sm btn-success col-lg-6 border" v-bind:class="[tip_calatorie=='Calatori' ? active : '']">
                                             <input type="radio" class="btn-group-toggle" name="tip_calatorie" id="tip_calatorie1" autocomplete="off"
                                                 v-model="tip_calatorie" value="Calatori"
-                                                v-on:change="setTaraPlecare();getJudetePlecareInitial();getJudeteSosireInitial();setPreturi();"
+                                                {{-- v-on:change="setTaraPlecare();getJudetePlecareInitial();getJudeteSosireInitial();setPreturi();" --}}
+                                                v-on:change="setTaraPlecare();getOrasePlecare();getOraseSosire();setPreturi();"
                                                 >
                                                     <i class="fas fa-users" style="font-size: 2em;"></i>
                                                     <span style="font-size: 2em;">
@@ -55,7 +56,8 @@
                                         <label class="btn btn-sm btn-success col-lg-6 border" v-bind:class="[tip_calatorie=='Bagaje' ? active : '']">
                                             <input type="radio" class="btn-group-toggle" name="tip_calatorie" id="tip_calatorie2" autocomplete="off"
                                                 v-model="tip_calatorie" value="Bagaje"
-                                                v-on:change="setTaraPlecare();getJudetePlecareInitial();getJudeteSosireInitial();setPreturi();"
+                                                {{-- v-on:change="setTaraPlecare();getJudetePlecareInitial();getJudeteSosireInitial();setPreturi();" --}}
+                                                v-on:change="setTaraPlecare();getOrasePlecare();getOraseSosire();setPreturi();"
                                                 >
                                                     <i class="fas fa-box" style="font-size: 2em;"></i>
                                                     <span style="font-size: 2em;">
@@ -65,7 +67,7 @@
                                     </div>
                                 </div>
                             <div v-cloak v-if="tip_calatorie">
-                                <div class="form-row mb-4 d-flex justify-content-center">
+                                <div class="form-row mb-1 d-flex justify-content-center">
                                         <script type="application/javascript"> 
                                             traseuVechi={!! json_encode(old('traseu', ($rezervare->traseu?? ''))) !!} 
                                         </script>
@@ -76,7 +78,7 @@
                                         <label class="btn btn-success btn-sm border" v-bind:class="[traseu=='Romania-Corsica' ? active : '']">
                                             <input type="radio" class="btn-group-toggle" name="traseu" id="traseu1" autocomplete="off"
                                                 v-model="traseu" value="Romania-Corsica"
-                                                v-on:change="setTaraPlecare();getJudetePlecare();getJudeteSosire();setPreturi()"
+                                                v-on:change="setTaraPlecare();getOrasePlecare();getOraseSosire();setPreturi()"
                                                 >
                                                     <span style="font-size: 1.2em;">
                                                         România -> Corsica
@@ -85,32 +87,12 @@
                                         <label class="btn btn-success btn-sm border" v-bind:class="[traseu=='Corsica-Romania' ? active : '']">
                                             <input type="radio" class="btn-group-toggle" name="traseu" id="traseu2" autocomplete="off"
                                                 v-model="traseu" value="Corsica-Romania"
-                                                v-on:change="setTaraPlecare();getJudetePlecare();getJudeteSosire();setPreturi();"
+                                                v-on:change="setTaraPlecare();getOrasePlecare();getOraseSosire();setPreturi();"
                                                 >
                                                     <span style="font-size: 1.2em;">
                                                         Corsica -> România
                                                     </span>
                                         </label>
-                                    </div>
-                                    <div class="custom-control custom-switch col-lg-12 text-center py-1">
-                                        @if (old('tur_retur', ($rezervare->tur_retur ?? '')) === 'true')
-                                            <script type="application/javascript"> 
-                                                turReturVechi=true
-                                            </script>
-                                        @else
-                                            <script type="application/javascript"> 
-                                                turReturVechi=false
-                                            </script>
-                                        @endif
-                                            
-                                        </script>
-                                        <input type="hidden" name="tur_retur" value="false" />
-                                        <input type="checkbox" class="custom-control-input custom-control-lg" id="customSwitch1" 
-                                        name="tur_retur" v-model="tur_retur" value="true" required
-                                        {{ old('tur_retur') == 'true' ? 'checked' : '' }}
-                                        @change='setPreturi();getPretTotal()'
-                                        >
-                                        <label class="custom-control-label" for="customSwitch1">TUR - RETUR</label>                                        
                                     </div>
                                 </div>
                             </div>
@@ -128,13 +110,13 @@
             :id="type.id" > --}}
       
                                 <div v-cloak v-if="traseu">                        
-                                    <div class="row mb-2">
-                                        <div class="col-lg-6">
+                                    <div class="row mb-2 d-flex justify-content-between">
+                                        <div class="col-lg-3">
                                             <div class="form-row">
                                                 <div class="col-lg-12">
                                                     Plecare din:*
                                                 </div>
-                                                <div class="form-group col-lg-6"> 
+                                                {{-- <div class="form-group col-lg-6"> 
                                                     <script type="application/javascript"> 
                                                         judetPlecareVechi={!! json_encode(old('judet_plecare', ($rezervare->judet_plecare ?? '0'))) !!} 
                                                     </script>
@@ -151,8 +133,8 @@
                                                                 @{{judet_plecare.judet}}
                                                         </option>                                                
                                                     </select>
-                                                </div>
-                                                <div class="form-group col-lg-6">   
+                                                </div> --}}
+                                                <div class="form-group col-lg-12">   
                                                     {{-- <label for="oras_plecare" class="mb-0">Oraș:<span class="text-white">*</span></label>  --}}
                                                     <script type="application/javascript"> 
                                                         orasPlecareVechi={!! json_encode(old('oras_plecare', ($rezervare->oras_plecare ?? '0'))) !!} 
@@ -173,13 +155,12 @@
                                                 </div>  
                                             </div>
                                         </div>
-                                        <div class="col-lg-6">
+                                        <div class="col-lg-3">
                                             <div class="form-row">
                                                 <div class="col-lg-12">
                                                     Sosire la:*
                                                 </div>
-                                                <div class="form-group col-lg-6"> 
-                                                    {{-- <label for="judet_plecare" class="mb-0">Județ:<span class="text-white">*</span></label>   --}}
+                                                {{-- <div class="form-group col-lg-6"> 
                                                     <script type="application/javascript"> 
                                                         judetSosireVechi={!! json_encode(old('judet_sosire', ($rezervare->judet_sosire ?? '0'))) !!}
                                                     </script>        
@@ -193,8 +174,8 @@
                                                             :value='judet_sosire.judet'                                       
                                                             >@{{judet_sosire.judet}}</option>
                                                     </select>
-                                                </div>
-                                                <div class="form-group col-lg-6">   
+                                                </div> --}}
+                                                <div class="form-group col-lg-12">   
                                                     {{-- <label for="oras_plecare" class="mb-0">Oraș:<span class="text-white">*</span></label>     --}}
                                                     <script type="application/javascript"> 
                                                         orasSosireVechi={!! json_encode(old('oras_sosire', ($rezervare->oras_sosire ?? '0'))) !!} 
@@ -214,6 +195,26 @@
                                                         </select>
                                                 </div> 
                                             </div>
+                                        </div>
+                                        <div class="custom-control custom-switch col-lg-3 text-center d-flex align-items-center">
+                                            @if (old('tur_retur', ($rezervare->tur_retur ?? '')) === 'true')
+                                                <script type="application/javascript"> 
+                                                    turReturVechi=true
+                                                </script>
+                                            @else
+                                                <script type="application/javascript"> 
+                                                    turReturVechi=false
+                                                </script>
+                                            @endif
+                                                
+                                            </script>
+                                            <input type="hidden" name="tur_retur" value="false" />
+                                            <input type="checkbox" class="custom-control-input custom-control-lg" id="customSwitch1" 
+                                            name="tur_retur" v-model="tur_retur" value="true" required
+                                            {{ old('tur_retur') == 'true' ? 'checked' : '' }}
+                                            @change='setPreturi();getPretTotal()'
+                                            >
+                                            <label class="custom-control-label" for="customSwitch1">TUR - RETUR</label>                                        
                                         </div>
                                     </div>
                                     <div class="form-row mb-4 px-2 py-2 d-flex justify-content-center align-items-center border rounded"

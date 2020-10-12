@@ -94,6 +94,8 @@
 
             @include('errors')
             
+
+        @if ($view_type === "plecare") 
             @foreach ($rezervari->groupBy('oras_plecare_tara') as $rezervare_pe_tara)
 
                 <div class="table-responsive rounded mb-5">
@@ -115,24 +117,36 @@
                         <tbody> 
                             @foreach ($rezervare_pe_tara->where('oras_plecare_tara', $rezervare_pe_tara->first()->oras_plecare_tara)->sortBy('lista_plecare')->groupBy('lista_plecare') as $rezervari_pe_trasee)
                                     <tr>
-                                        <td colspan="3" class="text-white" style="background-color:lightslategrey">
+                                        <td colspan="2" class="text-white" style="background-color:lightslategrey">
                                             <b>
-                                                <a class="btn btn-sm btn-light" data-toggle="collapse" 
+                                                {{-- <a class="btn btn-sm btn-light" data-toggle="collapse" 
                                                     href="#collapseLista{{$rezervari_pe_trasee->first()->lista_plecare}}" 
                                                     role="button" 
                                                     aria-expanded="false" 
-                                                    aria-controls="collapseLista{{$rezervari_pe_trasee->first()->lista_plecare}}">
+                                                    aria-controls="collapseLista{{$rezervari_pe_trasee->first()->lista_plecare}}"> --}}
                                                         Lista {{$rezervari_pe_trasee->first()->lista_plecare}}
-                                                </a>
+                                                {{-- </a> --}}
                                             </b>
                                         </td>
-                                        <td colspan="1" class="text-right" style="background-color:lightslategrey">
+                                        <td colspan="2" class="text-right" style="background-color:lightslategrey">
                                             <div class="align-right">
                                                 <form class="needs-validation" novalidate method="POST" action="/rapoarte/extrage-rezervari/raport-pdf">
                                                     @csrf
 
-                                                        @forelse ($rezervari_pe_trasee->sortByDesc('oras_plecare_traseu')->groupBy('oras_plecare_traseu') as $rezervari_pe_trasee_pe_traseu_initial) 
-                                                            @forelse ($rezervari_pe_trasee_pe_traseu_initial->sortBy('oras_plecare_ordine')->groupBy('oras_plecare_ordine') as $rezervari_pe_trasee_pe_traseu_initial_pe_oras) 
+                                                        @forelse (                                                        
+                                                                ($rezervare_pe_tara->first()->oras_plecare_tara === 'Romania' ?
+                                                                    $rezervari_pe_trasee->sortBy('oras_plecare_traseu')->groupBy('oras_plecare_traseu') 
+                                                                    :
+                                                                    $rezervari_pe_trasee->sortByDesc('oras_plecare_traseu')->groupBy('oras_plecare_traseu')
+                                                                )
+                                                                as $rezervari_pe_trasee_pe_traseu_initial) 
+                                                            @forelse (                                                      
+                                                                    ($rezervare_pe_tara->first()->oras_plecare_tara === 'Romania' ?
+                                                                        $rezervari_pe_trasee_pe_traseu_initial->sortBy('oras_plecare_ordine')->groupBy('oras_plecare_ordine') 
+                                                                        :
+                                                                        $rezervari_pe_trasee_pe_traseu_initial->sortByDesc('oras_plecare_ordine')->groupBy('oras_plecare_ordine')
+                                                                    )
+                                                                    as $rezervari_pe_trasee_pe_traseu_initial_pe_oras) 
                                                                 @forelse ($rezervari_pe_trasee_pe_traseu_initial_pe_oras->sortBy('oras_plecare_nume') as $rezervare) 
                                                                     <input type="hidden" name="rezervari[]" value="{{ $rezervare->id }}">
                                                                 @endforeach
@@ -149,10 +163,24 @@
                                             </div>
                                         </td>
                                     </tr>           
-                                @forelse ($rezervari_pe_trasee->sortByDesc('oras_plecare_traseu')->groupBy('oras_plecare_traseu') as $rezervari_pe_trasee_pe_traseu_initial) 
-                                    @forelse ($rezervari_pe_trasee_pe_traseu_initial->sortBy('oras_plecare_ordine')->groupBy('oras_plecare_ordine') as $rezervari_pe_trasee_pe_traseu_initial_pe_oras) 
+                                @forelse (                                                        
+                                        ($rezervare_pe_tara->first()->oras_plecare_tara === 'Romania' ?
+                                            $rezervari_pe_trasee->sortBy('oras_plecare_traseu')->groupBy('oras_plecare_traseu') 
+                                            :
+                                            $rezervari_pe_trasee->sortByDesc('oras_plecare_traseu')->groupBy('oras_plecare_traseu')
+                                        )
+                                        as $rezervari_pe_trasee_pe_traseu_initial) 
+                                    @forelse (                                                      
+                                            ($rezervare_pe_tara->first()->oras_plecare_tara === 'Romania' ?
+                                                $rezervari_pe_trasee_pe_traseu_initial->sortBy('oras_plecare_ordine')->groupBy('oras_plecare_ordine') 
+                                                :
+                                                $rezervari_pe_trasee_pe_traseu_initial->sortByDesc('oras_plecare_ordine')->groupBy('oras_plecare_ordine')
+                                            )
+                                            as $rezervari_pe_trasee_pe_traseu_initial_pe_oras) 
                                         @forelse ($rezervari_pe_trasee_pe_traseu_initial_pe_oras->sortBy('oras_plecare_nume') as $rezervare) 
-                                        <tr class="collapse" id="collapseLista{{$rezervari_pe_trasee->first()->lista_plecare}}">      
+                                        <tr 
+                                            {{-- class="collapse" id="collapseLista{{$rezervari_pe_trasee->first()->lista_plecare}}" --}}
+                                            >      
                                             <td>
                                                 <a href="{{ $rezervare->path() }}">  
                                                     <b>{{ $rezervare->nume }}</b>
@@ -236,7 +264,7 @@
                 </div>
             @endforeach
 
-            
+        @elseif ($view_type === "sosire")
             
             @foreach ($rezervari->groupBy('oras_sosire_tara') as $rezervare_pe_tara)
 
@@ -251,7 +279,7 @@
                             </tr>
                             <tr class="" style="padding:2rem">
                                 <th>Nume</th>
-                                <th class="text-center">Traseu inițial</th>
+                                <th class="text-center">Traseu</th>
                                 <th>Oraș sosire</th>
                                 <th class="text-center">Nr. pers.</th>
                             </tr>
@@ -259,54 +287,65 @@
                         <tbody> 
                             @foreach ($rezervare_pe_tara->where('oras_sosire_tara', $rezervare_pe_tara->first()->oras_sosire_tara)->sortBy('lista_sosire')->groupBy('lista_sosire') as $rezervari_pe_trasee)
                                     <tr>
-                                        <td colspan="3" class="text-white" style="background-color:lightslategrey">
+                                        <td colspan="2" class="text-white" style="background-color:lightslategrey">
                                             <b>
-                                                Lista {{$rezervari_pe_trasee->first()->lista_sosire}}
+                                                {{-- <a class="btn btn-sm btn-light" data-toggle="collapse" 
+                                                    href="#collapseLista{{$rezervari_pe_trasee->first()->lista_sosire}}" 
+                                                    role="button" 
+                                                    aria-expanded="false" 
+                                                    aria-controls="collapseLista{{$rezervari_pe_trasee->first()->lista_sosire}}"> --}}
+                                                        Lista {{$rezervari_pe_trasee->first()->lista_sosire}}
+                                                {{-- </a> --}}
                                             </b>
                                         </td>
-                                        <td colspan="1" class="text-right" style="background-color:lightslategrey">
+                                        <td colspan="2" class="text-right" style="background-color:lightslategrey">
                                             <div class="align-right">
                                                 <form class="needs-validation" novalidate method="POST" action="/rapoarte/extrage-rezervari/raport-pdf">
                                                     @csrf
 
-                                                        @foreach ($rezervari_pe_trasee->sortBy('oras_sosire_traseu')->groupBy('oras_sosire_traseu') as $rezervari_pe_trasee_pe_traseu_initial)
+                                                        @forelse ($rezervari_pe_trasee->sortBy('oras_sosire_traseu')->groupBy('oras_sosire_traseu') as $rezervari_pe_trasee_pe_traseu_initial) 
                                                             @forelse ($rezervari_pe_trasee_pe_traseu_initial->sortBy('oras_sosire_ordine')->groupBy('oras_sosire_ordine') as $rezervari_pe_trasee_pe_traseu_initial_pe_oras) 
-                                                                @forelse ($rezervari_pe_trasee_pe_traseu_initial_pe_oras->sortBy('oras_plecare_nume') as $rezervare) 
+                                                                @forelse ($rezervari_pe_trasee_pe_traseu_initial_pe_oras->sortBy('oras_sosire_nume') as $rezervare) 
                                                                     <input type="hidden" name="rezervari[]" value="{{ $rezervare->id }}">
                                                                 @endforeach
                                                             @endforeach
                                                         @endforeach
-                                                            <input type="hidden" name="tip_lista" value="lista_sosire"> 
-                                                        <button type="submit" class="btn btn-sm bg-success text-white border border-light rounded-pill">
+                                                            <input type="hidden" name="tip_lista" value="lista_sosire">  
+                                                        <button type="submit" name="action" value="lista_sofer" class="btn btn-sm bg-success text-white border border-light rounded-pill">
                                                             <i class="fas fa-file-pdf text-white mr-1"></i>Raport PDF
                                                         </button> 
+                                                        <button type="submit" name="action" value="excel_nava" class="btn btn-sm bg-success text-white border border-light rounded-pill">
+                                                            <i class="fas fa-file-pdf text-white mr-1"></i>Raport Navă
+                                                        </button>
                                                 </form>
                                             </div>
                                         </td>
-                                    </tr>  
+                                    </tr>           
                                 @forelse ($rezervari_pe_trasee->sortBy('oras_sosire_traseu')->groupBy('oras_sosire_traseu') as $rezervari_pe_trasee_pe_traseu_initial) 
                                     @forelse ($rezervari_pe_trasee_pe_traseu_initial->sortBy('oras_sosire_ordine')->groupBy('oras_sosire_ordine') as $rezervari_pe_trasee_pe_traseu_initial_pe_oras) 
-                                        @forelse ($rezervari_pe_trasee_pe_traseu_initial_pe_oras->sortBy('oras_plecare_nume') as $rezervare) 
-                                    <tr>      
-                                        <td>
-                                            <a href="{{ $rezervare->path() }}">  
-                                                <b>{{ $rezervare->nume }}</b>
-                                            </a>
-                                        </td>
-                                        <td class="text-center">
-                                            {{ $rezervare->oras_sosire_traseu ?? ''}}
-                                        </td>
-                                        <td>
-                                            {{ $rezervare->oras_sosire_nume ?? ''}} ({{ $rezervare->oras_sosire_ordine ?? ''}})
-                                        </td>
-                                        <td class="text-center">
-                                            {{ $rezervare->nr_adulti }}
-                                        </td>
-                                    </tr>                                         
+                                        @forelse ($rezervari_pe_trasee_pe_traseu_initial_pe_oras->sortBy('oras_sosire_nume') as $rezervare) 
+                                        <tr 
+                                            {{-- class="collapse" id="collapseLista{{$rezervari_pe_trasee->first()->lista_sosire}}" --}}
+                                            >      
+                                            <td>
+                                                <a href="{{ $rezervare->path() }}">  
+                                                    <b>{{ $rezervare->nume }}</b>
+                                                </a>
+                                            </td>
+                                            <td class="text-center">
+                                                {{ $rezervare->oras_sosire_traseu ?? ''}}
+                                            </td>
+                                            <td>
+                                                {{ $rezervare->oras_sosire_nume ?? ''}} ({{ $rezervare->oras_sosire_ordine ?? ''}})
+                                            </td>
+                                            <td class="text-center">
+                                                {{ $rezervare->nr_adulti }}
+                                            </td>
+                                        </tr>                                       
                                         @empty
-                                        @endforelse                                       
+                                        @endforelse                                               
                                     @empty
-                                    @endforelse                                      
+                                    @endforelse                                     
                                 @empty
                                 @endforelse
                                     <tr>
@@ -328,7 +367,7 @@
                                             </a>
                                         </td>
                                     </tr> --}}
-                                    <tr>
+                                    {{-- <tr>
                                         <td colspan="5">  
                                             <form class="needs-validation" novalidate method="POST" action="/rapoarte/muta-rezervari">
                                                 @csrf
@@ -359,7 +398,7 @@
                                                     </div>
                                             </form>
                                         </td>
-                                    </tr>
+                                    </tr> --}}
                                     <tr class="bg-dark">
                                         <td colspan="5" height="50">
                                             <p></p>
@@ -371,6 +410,7 @@
                 </div>
             @endforeach
 
+        @endif
 
 
 

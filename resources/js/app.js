@@ -51,12 +51,12 @@ if (document.querySelector('#adauga-rezervare')) {
             traseu: traseuVechi,
             active: "active",
             tara_plecare: '',
-            judet_plecare: judetPlecareVechi,
-            judete_plecare: null,
+            // judet_plecare: judetPlecareVechi,
+            // judete_plecare: null,
             oras_plecare: orasPlecareVechi,
             orase_plecare: '',
-            judet_sosire: judetSosireVechi,
-            judete_sosire: null,
+            // judet_sosire: judetSosireVechi,
+            // judete_sosire: null,
             oras_sosire: orasSosireVechi,
             orase_sosire: '',
 
@@ -78,9 +78,11 @@ if (document.querySelector('#adauga-rezervare')) {
 
         created: function () {
             this.setTaraPlecare()
-            this.getJudetePlecareInitial()
+            // this.getJudetePlecareInitial()
+            // this.getOrasePlecareInitial()
             this.getOrasePlecare()
-            this.getJudeteSosireInitial()
+            // this.getJudeteSosireInitial()
+            // this.getOraseSosireInitial()
             this.getOraseSosire()
             this.setPreturi()
             this.getPretTotal()
@@ -91,7 +93,7 @@ if (document.querySelector('#adauga-rezervare')) {
                     this.tara_plecare = 'Romania';
                 // } else if (this.traseu == 'Corsica-Romania') {
                 } else{
-                    this.tara_plecare = 'Franta';
+                    this.tara_plecare = 'Corsica';
                 } 
             },
             getJudetePlecareInitial: function () {
@@ -134,7 +136,8 @@ if (document.querySelector('#adauga-rezervare')) {
                 axios.get('/orase_rezervari', {
                     params: {
                         request: 'orase_plecare',
-                        judet: this.judet_plecare,
+                        // judet: this.judet_plecare,
+                        tara: this.tara_plecare
                     }
                 })
                     .then(function (response) {
@@ -195,7 +198,8 @@ if (document.querySelector('#adauga-rezervare')) {
                 axios.get('/orase_rezervari', {
                     params: {
                         request: 'orase_sosire',
-                        judet: this.judet_sosire,
+                        // judet: this.judet_sosire,
+                        tara: this.tara_plecare
                     }
                 })
                     .then(function (response) {

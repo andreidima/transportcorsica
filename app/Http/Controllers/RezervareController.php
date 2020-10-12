@@ -31,6 +31,7 @@ class RezervareController extends Controller
             ->when($search_data, function ($query, $search_data) {
                 return $query->whereDate('data_cursa', '=', $search_data);
             })
+            ->whereNull('tur')
             ->latest()
             ->simplePaginate(25);
 
@@ -86,8 +87,8 @@ class RezervareController extends Controller
         $rezervare->tur_retur = ($rezervare->retur) ? "true" : "false";
         $rezervare->data_plecare = $rezervare->data_cursa;
         $rezervare->data_intoarcere = ($rezervare->retur) ? Rezervare::find($rezervare->retur)->data_cursa : '';
-        $rezervare->judet_plecare = $rezervare->oras_plecare_nume->judet ?? null;
-        $rezervare->judet_sosire = $rezervare->oras_sosire_nume->judet ?? null;
+        // $rezervare->judet_plecare = $rezervare->oras_plecare_nume->judet ?? null;
+        // $rezervare->judet_sosire = $rezervare->oras_sosire_nume->judet ?? null;
         $rezervare->acord_de_confidentialitate = "1";
         $rezervare->termeni_si_conditii = "1";
 
@@ -123,14 +124,19 @@ class RezervareController extends Controller
         $this->validateRequest($request);
 
         $rezervare_tur = (!$rezervare->tur) ? $rezervare : Rezervare::find($rezervare->tur);
-        $rezervare_retur = Rezervare::find($rezervare->retur);
+        if (!$rezervare_retur = Rezervare::find($rezervare->retur)){
+            if ($request->tur_retur === "true"){
+                $rezervare_retur = new Rezervare;
+            }
+        }
+        // dd($rezervare_tur, $rezervare_retur);
 
         // Stergerea pasagerilor si adaugarea lor din nou
         foreach ($rezervare_tur->pasageri_relation as $pasager) {
                 $pasager->delete();
         }
         $rezervare_tur->pasageri_relation()->detach();
-        $rezervare_retur ? $rezervare_retur->pasageri_relation()->detach() : '';
+        isset($rezervare_retur) ? $rezervare_retur->pasageri_relation()->detach() : '';
         
         // // dd($request->request, $rezervare_tur, $rezervare_retur, $rezervare);
 
@@ -152,7 +158,7 @@ class RezervareController extends Controller
         $rezervare_tur->acord_newsletter = $request->acord_newsletter;
         $rezervare_tur->updated_at = \Carbon\Carbon::now();
 
-        if ($rezervare_retur){
+        if(isset($rezervare_retur)){
             $rezervare_retur->lista_plecare = ($rezervare_retur->oras_plecare != $request->oras_sosire) ? (Oras::find($request->oras_sosire)->traseu ?? null) : $rezervare_retur->lista_plecare;
             $rezervare_retur->lista_sosire = ($rezervare_retur->oras_sosire != $request->oras_plecare) ? (Oras::find($request->oras_plecare)->traseu ?? null) : $rezervare_retur->lista_sosire;
             // $rezervare_retur->lista_plecare = ($rezervare_retur->oras_plecare != $request->oras_sosire) ? null : $rezervare_retur->lista_plecare;
@@ -175,7 +181,7 @@ class RezervareController extends Controller
         if($request->tip_calatorie === "Calatori"){
             $rezervare_tur->nr_adulti = $request->nr_adulti;
 
-            if ($rezervare_retur){
+            if (isset($rezervare_retur)){
                 $rezervare_retur->nr_adulti = $request->nr_adulti;
             }
         }else{
@@ -185,7 +191,7 @@ class RezervareController extends Controller
             $rezervare_tur->bagaje_kg = $request->bagaje_kg;
             $rezervare_tur->bagaje_descriere = $request->bagaje_descriere;
 
-            if ($rezervare_retur){
+            if (isset($rezervare_retur)){
                 $rezervare_retur->nr_adulti = null;
 
                 $rezervare_retur->bagaje_kg = $request->bagaje_kg;
@@ -199,14 +205,15 @@ class RezervareController extends Controller
         } elseif ($request->tur_retur === "true") {
             $rezervare->pret_total = $rezervare->nr_adulti * 200;
         }
-        if ($rezervare_retur){
+        if (isset($rezervare_retur)){
             $rezervare_retur->pret_total = 0;
         }
 
         if ($request->tur_retur === 'false') {
             //Inserarea rezervarii in baza de date
+            $rezervare_tur->retur = null;
             $rezervare_tur->save();
-            $rezervare_retur ? $rezervare_retur->delete() : '';
+            isset($rezervare_retur) ? $rezervare_retur->delete() : '';
 
             //Trimitere sms
             // $this->trimiteSms($rezervare_tur);
@@ -214,6 +221,12 @@ class RezervareController extends Controller
             //Inserarea rezervarilor in baza de date
             $rezervare_tur->save();
             $rezervare_retur->save();
+
+            //adaugarea id-urilor de tur - retur la fiecare in parte
+            $rezervare_tur->retur = $rezervare_retur->id;
+            $rezervare_tur->update();
+            $rezervare_retur->tur = $rezervare_tur->id;
+            $rezervare_retur->update();
 
             //Trimitere sms
             // $this->trimiteSms($rezervare_tur);
@@ -253,25 +266,33 @@ class RezervareController extends Controller
     {
         // stergere pasageri - daca nu mai sunt alte rezervari (tur, retur) continand acesti pasageri 
         foreach ($rezervare->pasageri_relation as $pasager) {
-            if ($pasager->rezervari->count() < 2) {
+            // if ($pasager->rezervari->count() < 2) {
                 $pasager->delete();
-            }
+            // }
         }
 
         $rezervare->pasageri_relation()->detach();
         $rezervare->delete();
 
-        if($rezervare->tur){
-            $rezervare_tur = Rezervare::find($rezervare->tur);
-            if ($rezervare->tur){
-                $rezervare_tur->retur = null;
-                $rezervare_tur->save();
-            }
-        } elseif ($rezervare->retur){
+        // if($rezervare->tur){
+        //     $rezervare_tur = Rezervare::find($rezervare->tur);
+        //     if ($rezervare->tur){
+        //         $rezervare_tur->retur = null;
+        //         $rezervare_tur->save();
+        //     }
+        // } elseif ($rezervare->retur){
+        //     $rezervare_retur = Rezervare::find($rezervare->retur);
+        //     if ($rezervare->retur){
+        //         $rezervare_retur->tur = null;
+        //         $rezervare_retur->save();
+        //     }
+        // }
+
+        if ($rezervare->retur){
             $rezervare_retur = Rezervare::find($rezervare->retur);
             if ($rezervare->retur){
-                $rezervare_retur->tur = null;
-                $rezervare_retur->save();
+                $rezervare_retur->pasageri_relation()->detach();
+                $rezervare_retur->delete();
             }
         }
 
@@ -295,9 +316,15 @@ class RezervareController extends Controller
                     ->get()
                     ->unique('judet');
                 break;
+            // case 'orase_plecare':
+            //     $raspuns = Oras::select('id', 'oras', 'judet')
+            //         ->where('judet', $request->judet)
+            //         ->orderBy('oras')
+            //         ->get();
+            //     break;
             case 'orase_plecare':
-                $raspuns = Oras::select('id', 'oras', 'judet')
-                    ->where('judet', $request->judet)
+                $raspuns = Oras::select('id', 'oras', 'tara')
+                    ->where('tara', $request->tara)
                     ->orderBy('oras')
                     ->get();
                 break;
@@ -308,9 +335,15 @@ class RezervareController extends Controller
                     ->get()
                     ->unique('judet');
                 break;
+            // case 'orase_sosire':
+            //     $raspuns = Oras::select('id', 'oras', 'judet')
+            //         ->where('judet', $request->judet)
+            //         ->orderBy('oras')
+            //         ->get();
+            //     break;
             case 'orase_sosire':
-                $raspuns = Oras::select('id', 'oras', 'judet')
-                    ->where('judet', $request->judet)
+                $raspuns = Oras::select('id', 'oras', 'tara')
+                    ->where('tara', '<>', $request->tara)
                     ->orderBy('oras')
                     ->get();
                 break;
@@ -334,9 +367,9 @@ class RezervareController extends Controller
                 [
                     'tip_calatorie' => ['nullable'],
                     'traseu' => ['nullable'],
-                    'judet_plecare' => [''],
+                    // 'judet_plecare' => [''],
                     'oras_plecare' => ['nullable', 'integer'],
-                    'judet_sosire' => [''],
+                    // 'judet_sosire' => [''],
                     'oras_sosire' => ['nullable', 'integer'],
                     'tur_retur' => [''],
                     'bilet_nava' => ['nullable'],
@@ -407,9 +440,9 @@ class RezervareController extends Controller
                 [
                     'tip_calatorie' => ['required'],
                     'traseu' => ['required'],
-                    'judet_plecare' => [''],
+                    // 'judet_plecare' => [''],
                     'oras_plecare' => ['required', 'integer'],
-                    'judet_sosire' => [''],
+                    // 'judet_sosire' => [''],
                     'oras_sosire' => ['required', 'integer'],
                     'tur_retur' => [''],
                     'bilet_nava' => ['required'],
@@ -603,8 +636,8 @@ class RezervareController extends Controller
             $rezervare_unset->tur_retur,
             $rezervare_unset->data_plecare,
             $rezervare_unset->data_intoarcere,
-            $rezervare_unset->judet_plecare,
-            $rezervare_unset->judet_sosire,
+            // $rezervare_unset->judet_plecare,
+            // $rezervare_unset->judet_sosire,
             $rezervare_unset->oras_plecare_nume,
             $rezervare_unset->oras_sosire_nume,
             $rezervare_unset->pasageri,
@@ -778,5 +811,28 @@ class RezervareController extends Controller
                 ->setPaper('a4');
             return $pdf->download('Rezervare ' . $rezervare_tur->nume . '.pdf');
         }
+    }
+
+    public function duplicaRezervare(Request $request, Rezervare $rezervare)
+    {
+        $rezervare_tur = $rezervare;
+        $rezervare_retur = Rezervare::find($rezervare_tur->retur);
+        
+        $clone_rezervare = $rezervare_tur->replicate();
+        (isset($rezervare_retur)) ? $clone_rezervare_retur = $rezervare_retur->replicate() : '';
+        
+        $clone_rezervare->save();
+        (isset($clone_rezervare_retur)) ? $clone_rezervare_retur->save() : '';
+        // dd($rezervare_tur->pasageri_relation, $rezervare_retur, $clone_rezervare, $clone_rezervare_retur);
+        // salvare pasageri si atasare la rezervari
+        foreach ($rezervare_tur->pasageri_relation as $pasager) {            
+            $clone_pasager = $pasager->replicate();            
+            $clone_pasager->save();
+
+            $clone_rezervare->pasageri_relation()->attach($clone_pasager->id);
+            (isset($clone_rezervare_retur)) ? $clone_rezervare_retur->pasageri_relation()->attach($clone_pasager->id) : '';
+        }
+    
+        return redirect('/rezervari')->with('status', 'Rezervarea clientului "' . $rezervare_tur->nume . '" a fost duplicată');
     }
 }

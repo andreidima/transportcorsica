@@ -94885,12 +94885,12 @@ if (document.querySelector('#adauga-rezervare')) {
       traseu: traseuVechi,
       active: "active",
       tara_plecare: '',
-      judet_plecare: judetPlecareVechi,
-      judete_plecare: null,
+      // judet_plecare: judetPlecareVechi,
+      // judete_plecare: null,
       oras_plecare: orasPlecareVechi,
       orase_plecare: '',
-      judet_sosire: judetSosireVechi,
-      judete_sosire: null,
+      // judet_sosire: judetSosireVechi,
+      // judete_sosire: null,
       oras_sosire: orasSosireVechi,
       orase_sosire: '',
       nr_adulti: nrAdultiVechi,
@@ -94904,10 +94904,12 @@ if (document.querySelector('#adauga-rezervare')) {
       tur_retur: turReturVechi
     },
     created: function created() {
-      this.setTaraPlecare();
-      this.getJudetePlecareInitial();
-      this.getOrasePlecare();
-      this.getJudeteSosireInitial();
+      this.setTaraPlecare(); // this.getJudetePlecareInitial()
+      // this.getOrasePlecareInitial()
+
+      this.getOrasePlecare(); // this.getJudeteSosireInitial()
+      // this.getOraseSosireInitial()
+
       this.getOraseSosire();
       this.setPreturi();
       this.getPretTotal();
@@ -94917,7 +94919,7 @@ if (document.querySelector('#adauga-rezervare')) {
         if (this.traseu == 'Romania-Corsica') {
           this.tara_plecare = 'Romania'; // } else if (this.traseu == 'Corsica-Romania') {
         } else {
-          this.tara_plecare = 'Franta';
+          this.tara_plecare = 'Corsica';
         }
       },
       getJudetePlecareInitial: function getJudetePlecareInitial() {
@@ -94953,7 +94955,8 @@ if (document.querySelector('#adauga-rezervare')) {
         axios.get('/orase_rezervari', {
           params: {
             request: 'orase_plecare',
-            judet: this.judet_plecare
+            // judet: this.judet_plecare,
+            tara: this.tara_plecare
           }
         }).then(function (response) {
           // app1.orase_plecare = '';
@@ -95004,7 +95007,8 @@ if (document.querySelector('#adauga-rezervare')) {
         axios.get('/orase_rezervari', {
           params: {
             request: 'orase_sosire',
-            judet: this.judet_sosire
+            // judet: this.judet_sosire,
+            tara: this.tara_plecare
           }
         }).then(function (response) {
           _app.orase_sosire = ''; // app1.oras_plecare = 0;
@@ -95383,8 +95387,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\laragon\www\transport-franta-corsica\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! D:\laragon\www\transport-franta-corsica\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! E:\laragon\www\transportcorsica\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! E:\laragon\www\transportcorsica\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
