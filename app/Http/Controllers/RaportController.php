@@ -170,31 +170,39 @@ class RaportController extends Controller
                 // dd($rezervari, $rezervari->where('bilet_nava', 1));
                 $nr_celula = 2;
                 foreach ($rezervari->where('bilet_nava', 1) as $rezervare){
-                    foreach ($rezervare->pasageri_relation as $pasager){         
+                    foreach ($rezervare->pasageri_relation as $pasager){
                     $sheet->setCellValue('A' . ($nr_celula), strtok($pasager->nume, " "));
-                    $sheet->setCellValue('B' . ($nr_celula), $pasager->nume);           
-                    $sheet->setCellValue('C' . ($nr_celula), $pasager->buletin);             
-                    $sheet->setCellValue('D' . ($nr_celula), $pasager->data_nastere);             
-                    $sheet->setCellValue('E' . ($nr_celula), $pasager->localitate_nastere);             
+                    $sheet->setCellValue('B' . ($nr_celula), $pasager->nume);
+                    $sheet->setCellValue('C' . ($nr_celula), $pasager->buletin);
+                    $sheet->setCellValue('D' . ($nr_celula), $pasager->data_nastere);
+                    $sheet->setCellValue('E' . ($nr_celula), $pasager->localitate_nastere);
                     $sheet->setCellValue('F' . ($nr_celula), $pasager->localitate_domiciliu);
                     $nr_celula++;
                     }
                 }
 
-                
-                try {
-                    Storage::makeDirectory('fisiere_temporare');
-                    $writer = new Xlsx($spreadsheet);
-                    $writer->save(storage_path(
-                        'app/fisiere_temporare/' .
-                        'Lista Nava' . '.xlsx'
-                    ));
-                } catch (Exception $e) { }
+                // redirect output to client browser
+                header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+                header('Content-Disposition: attachment;filename="Lista Navă.xlsx"');
+                header('Cache-Control: max-age=0');
 
-                return response()->download(storage_path(
-                    'app/fisiere_temporare/' .
-                    'Lista Nava' . '.xlsx'
-                ));
+                // $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
+                $writer = new Xlsx($spreadsheet);
+                $writer->save('php://output');
+                
+                // try {
+                //     Storage::makeDirectory('fisiere_temporare');
+                //     $writer = new Xlsx($spreadsheet);
+                //     $writer->save(storage_path(
+                //         'app/fisiere_temporare/' .
+                //         'Lista Nava' . '.xlsx'
+                //     ));
+                // } catch (Exception $e) { }
+
+                // return response()->download(storage_path(
+                //     'app/fisiere_temporare/' .
+                //     'Lista Nava' . '.xlsx'
+                // ));
 
                 break;
 
