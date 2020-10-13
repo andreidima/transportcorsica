@@ -41,6 +41,8 @@ Route::get('/orase_rezervari', [RezervareController::class, 'orase_rezervari']);
 Route::group(['middleware' => 'auth'], function () {
     Route::get('rezervari/{rezervare}/duplica', [RezervareController::class, 'duplicaRezervare']);
     Route::resource('rezervari', RezervareController::class,  ['parameters' => ['rezervari' => 'rezervare']]);
+
+    Route::resource('clienti-neseriosi', RezervareController::class,  ['parameters' => ['clienti-neseriosi' => 'client_neserios']]);
     
     Route::post('/rapoarte/muta-rezervari', [RaportController::class, 'mutaRezervari']);
     Route::post('/rapoarte/extrage-rezervari/{view_type}', [RaportController::class, 'extrageRezervari']);
