@@ -52,6 +52,11 @@
                                     {{-- <a class="dropdown-item" href="#">Raport Retur</a> --}}
                                 </div>
                             </li>
+                            <li class="nav-item active mr-4">
+                                <a class="nav-link" href="{{ route('clienti-neseriosi.index') }}">
+                                    <i class="fas fa-user-slash mr-1"></i>Clienți neserioși
+                                </a>
+                            </li>
 
                         </ul>
 

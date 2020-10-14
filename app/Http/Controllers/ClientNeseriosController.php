@@ -16,7 +16,7 @@ class ClientNeseriosController extends Controller
     {
         $search_nume = \Request::get('search_nume');
         $search_telefon = \Request::get('search_telefon');
-        $clienti = ClientNeserios::
+        $clienti_neseriosi = ClientNeserios::
             when($search_nume, function ($query, $search_nume) {
                 return $query->where('nume', 'like', '%' . $search_nume . '%');
             })
@@ -26,7 +26,7 @@ class ClientNeseriosController extends Controller
             ->latest()
             ->simplePaginate(25);
             
-        return view('clienti-neseriosi.index', compact('clienti', 'search_nume', 'search_telefon'));
+        return view('clienti-neseriosi.index', compact('clienti_neseriosi', 'search_nume', 'search_telefon'));
     }
 
     /**

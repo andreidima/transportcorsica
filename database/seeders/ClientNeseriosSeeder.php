@@ -13,6 +13,10 @@ class ClientNeseriosSeeder extends Seeder
      */
     public function run()
     {
-        //
+        return [
+            'nume' => $this->faker->name,
+            'telefon' => $this->faker->phoneNumber,
+            'observatii' => $this->faker->boolean($chanceOfGettingTrue = 50) ? null : $this->faker->text($maxNbChars = 50)
+        ];
     }
 }
