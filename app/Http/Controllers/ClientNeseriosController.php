@@ -48,9 +48,9 @@ class ClientNeseriosController extends Controller
     public function store(Request $request)
     {
         // $client = ServiceClient::create(array_merge($this->validateRequest($request),['tip' => 'service']));
-        // $client = ServiceClient::create($this->validateRequest($request));
+        $client = ClientNeserios::create($this->validateRequest($request));
 
-        // return redirect($client->path())->with('status', 'Clientul "' . $client->nume . '" a fost adăugat cu succes!');
+        return redirect('/clienti-neseriosi')->with('status', 'Clientul "' . $client->nume . '" a fost adăugat cu succes!');
     }
 
     /**
@@ -70,9 +70,9 @@ class ClientNeseriosController extends Controller
      * @param  \App\Models\ClientNeserios  $clientNeserios
      * @return \Illuminate\Http\Response
      */
-    public function edit(ClientNeserios $clientNeserios)
+    public function edit(ClientNeserios $client_neserios)
     {
-        //
+        return view('clienti-neseriosi.edit', compact('client_neserios'));
     }
 
     /**
@@ -82,9 +82,12 @@ class ClientNeseriosController extends Controller
      * @param  \App\Models\ClientNeserios  $clientNeserios
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ClientNeserios $clientNeserios)
+    public function update(Request $request, ClientNeserios $client_neserios)
     {
-        //
+        // $this->validateRequest($request, $clienti);
+        $client_neserios->update($this->validateRequest($request));
+
+        return redirect('/clienti-neseriosi')->with('status', 'Clientul "' . $client_neserios->nume . '" a fost modificat cu succes!');
     }
 
     /**
@@ -93,8 +96,23 @@ class ClientNeseriosController extends Controller
      * @param  \App\Models\ClientNeserios  $clientNeserios
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ClientNeserios $clientNeserios)
+    public function destroy(ClientNeserios $client_neserios)
     {
-        //
+        $client_neserios->delete();
+        return redirect('/clienti-neseriosi')->with('status', 'Clientul "' . $client_neserios->nume . '" a fost șters cu succes!');
+    }
+
+    /**
+     * Validate the request attributes.
+     *
+     * @return array
+     */
+    protected function validateRequest(Request $request)
+    {
+        return request()->validate([
+            'nume' => ['nullable', 'max:250'],
+            'telefon' => ['nullable', 'max:250'],
+            'observatii' => ['nullable', 'max:2000'],
+        ]);
     }
 }

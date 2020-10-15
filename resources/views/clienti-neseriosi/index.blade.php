@@ -4,16 +4,18 @@
 <div class="container card" style="border-radius: 40px 40px 40px 40px;">
         <div class="row card-header align-items-center" style="border-radius: 40px 40px 0px 0px;">
             <div class="col-lg-3">
-                <h4 class=" mb-0"><a href="{{ route('clienti-neseriosi.index') }}"><i class="fas fa-building mr-1"></i>Clienți neserioși</a></h4>
+                <h4 class=" mb-0"><a href="{{ route('clienti-neseriosi.index') }}"><i class="fas fa-user-slash mr-1"></i>Clienți neserioși</a></h4>
             </div> 
             <div class="col-lg-6">
                 <form class="needs-validation" novalidate method="GET" action="{{ route('clienti-neseriosi.index') }}">
                     @csrf
-                    <div class="row input-group custom-search-form">
+                    <div class="row mb-1 input-group custom-search-form justify-content-center">
                         <input type="text" class="form-control form-control-sm col-md-4 mr-1 border rounded-pill" id="search_nume" name="search_nume" placeholder="Nume" autofocus
                                 value="{{ $search_nume }}">
                         <input type="text" class="form-control form-control-sm col-md-4 mr-1 border rounded-pill" id="search_nume" name="search_nume" placeholder="Telefon" autofocus
                                 value="{{ $search_telefon }}">
+                    </div>
+                    <div class="row input-group custom-search-form justify-content-center">
                         <button class="btn btn-sm btn-primary col-md-4 mr-1 border border-dark rounded-pill" type="submit">
                             <i class="fas fa-search text-white mr-1"></i>Caută
                         </button>
@@ -68,7 +70,7 @@
                                 </td>
                                 <td class="d-flex justify-content-end">
                                     <a href="{{ $client->path() }}/modifica"
-                                        class="flex"    
+                                        class="flex mr-1"    
                                     >
                                         <span class="badge badge-primary">Modifică</span>
                                     </a>                                   

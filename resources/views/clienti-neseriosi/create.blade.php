@@ -3,10 +3,10 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-7">
+        <div class="col-md-5">
             <div class="shadow-lg" style="border-radius: 40px 40px 40px 40px;">
                 <div class="border border-secondary p-2" style="border-radius: 40px 40px 0px 0px; background-color:#e66800">                     
-                    <h6 class="ml-4 my-0" style="color:white"><i class="fas fa-building mr-1"></i>Adaugă un client nou</h6>
+                    <h6 class="ml-4 my-0" style="color:white"><i class="fas fa-user-slash mr-1"></i>Adaugă un client neserios nou</h6>
                 </div>
                 
                 @include ('errors')                
@@ -15,11 +15,11 @@
                     style="border-radius: 0px 0px 40px 40px;"
                     id="app1"
                 >
-                    <form  class="needs-validation" novalidate method="POST" action="/service/clienti">                     
+                    <form  class="needs-validation" novalidate method="POST" action="/clienti-neseriosi">                     
                 
                                 
-                                @include ('service.clienti.form', [
-                                    'clienti' => new App\Client,
+                                @include ('clienti-neseriosi.form', [
+                                    'client_neserios' => new App\Models\ClientNeserios,
                                     'buttonText' => 'Adaugă Clientul'
                                 ])
                     </form>

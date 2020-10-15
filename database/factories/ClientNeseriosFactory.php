@@ -22,7 +22,9 @@ class ClientNeseriosFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'nume' => $this->faker->name,
+            'telefon' => $this->faker->phoneNumber,
+            'observatii' => $this->faker->boolean($chanceOfGettingTrue = 20) ? null : $this->faker->text($maxNbChars = 50)
         ];
     }
 }
