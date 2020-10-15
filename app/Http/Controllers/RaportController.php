@@ -48,9 +48,11 @@ class RaportController extends Controller
             ->get();
 
         // dd($rezervari);
+        $clienti_neseriosi = \App\Models\ClientNeserios::pluck('nume')->all();
+        // dd($clienti_neseriosi);
 
         $view_type = $request->view_type;
-        return view('rapoarte.raport', compact('rezervari', 'search_data', 'view_type'));
+        return view('rapoarte.raport', compact('rezervari', 'clienti_neseriosi', 'search_data', 'view_type'));
     }
 
 

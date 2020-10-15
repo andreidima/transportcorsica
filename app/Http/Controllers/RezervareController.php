@@ -12,6 +12,8 @@ use DB;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 
+use App\Traits\TrimiteSmsTrait;
+
 class RezervareController extends Controller
 {
     /**
@@ -19,6 +21,9 @@ class RezervareController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    
+    use TrimiteSmsTrait;
+
     public function index()
     {
         $search_nume = \Request::get('search_nume');
@@ -297,6 +302,25 @@ class RezervareController extends Controller
         }
 
         return redirect('/rezervari')->with('status', 'Rezervarea pentru clientul "' . $rezervare->nume . '" a fost ștearsă cu succes!');
+    }
+
+
+    /**
+     * Insereaza Pasagerii in lista de Clienti Neseriosi
+     *
+     * @param  \App\Models\Rezervare  $rezervare
+     * @return \Illuminate\Http\Response
+     */
+    public function insereazaPasageriNeseriosi(Request $request, Rezervare $rezervare)
+    {
+        foreach ($rezervare->pasageri_relation as $pasager){
+            $client_neserios = \App\Models\ClientNeserios::make();
+            $client_neserios->nume = $pasager->nume;
+            $client_neserios->observatii = $request->observatii;
+            $client_neserios->save();
+        }
+
+        return back()->with('status', 'Pasagerii rezervării clientului „' . $rezervare->nume . '” au fost introduși cu succes în lista de „Clienți Neserioși”!');
     }
 
 
@@ -672,9 +696,6 @@ class RezervareController extends Controller
             $rezervare_tur->save();
 
             $request->session()->put('rezervare_tur', $rezervare_tur);
-
-            //Trimitere sms
-            // $this->trimiteSms($rezervare_tur);
         } else {
             //Inserarea rezervarilor in baza de date
             $rezervare_tur->save();
@@ -688,10 +709,6 @@ class RezervareController extends Controller
 
             $request->session()->put('rezervare_tur', $rezervare_tur);
             $request->session()->put('rezervare_retur', $rezervare_retur);
-
-            //Trimitere sms
-            // $this->trimiteSms($rezervare_tur);
-            // $this->trimiteSms($rezervare_retur);
         }
 
         // salvare pasageri si atasare la rezervari
@@ -728,6 +745,9 @@ class RezervareController extends Controller
             //     new CreareRezervare($rezervare, $tarife)
             // );
         }
+
+        //Trimitere sms        
+        $this->trimiteSms($rezervare_tur);
 
         // Cu sau fara plata online
         switch ($request->input('action')) {
@@ -835,4 +855,10 @@ class RezervareController extends Controller
     
         return redirect('/rezervari')->with('status', 'Rezervarea clientului "' . $rezervare_tur->nume . '" a fost duplicată');
     }
+
+    public function test()
+    {        
+        $this->trimiteSms('asd', 'sdf');
+    }
+
 }

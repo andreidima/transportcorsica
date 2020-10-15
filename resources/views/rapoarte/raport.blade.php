@@ -98,7 +98,7 @@
         @if ($view_type === "plecare") 
             @foreach ($rezervari->groupBy('oras_plecare_tara') as $rezervare_pe_tara)
 
-                <div class="table-responsive rounded mb-5">
+                <div class="table-responsive-sm rounded mb-5">
                     <table class="table table-striped table-hover table-sm rounded"> 
                         <thead class="text-white rounded" style="background-color:#e66800;">
                             <tr>
@@ -108,9 +108,9 @@
                                 </th>
                             </tr>
                             <tr class="" style="padding:2rem">
-                                <th>Nume</th>
+                                <th class="w-50">Nume</th>
                                 <th class="text-center">Traseu</th>
-                                <th>Oraș plecare</th>
+                                <th class="">Oraș plecare</th>
                                 <th class="text-center">Nr. pers.</th>
                             </tr>
                         </thead>
@@ -185,6 +185,21 @@
                                                 <a href="{{ $rezervare->path() }}">  
                                                     <b>{{ $rezervare->nume }}</b>
                                                 </a>
+                                                @php
+                                                    $nr_crt = 0;
+                                                @endphp
+                                                @foreach ($rezervare->pasageri_relation as $pasager)
+                                                    @if (in_array($pasager->nume, $clienti_neseriosi))
+                                                        @php
+                                                            $nr_crt++; 
+                                                        @endphp
+                                                        @if ($nr_crt === 1)
+                                                            | Clienți neserioși:
+                                                        @endif
+                                                        {{ \App\Models\ClientNeserios::where('nume', $pasager->nume)->first()->nume }} - 
+                                                        {{ \App\Models\ClientNeserios::where('nume', $pasager->nume)->first()->observatii }};
+                                                    @endif
+                                                @endforeach
                                             </td>
                                             <td class="text-center">
                                                 {{ $rezervare->oras_plecare_traseu ?? ''}}

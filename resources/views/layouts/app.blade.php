@@ -26,7 +26,7 @@
         @auth
             <nav class="navbar navbar-expand-md navbar-dark shadow py-0" style="background-color:darkcyan">
                 <div class="container">
-                    <a class="navbar-brand mr-4" href="{{ url('/') }}">
+                    <a class="navbar-brand mr-4" href="{{ url('/rezervari') }}">
                         {{ config('app.name', 'Transport Corsica') }}
                         {{-- <img src="{{ asset('images/logo.png') }}" height="40" class="border border-dark rounded-pill mr-4"> --}}
                     </a>

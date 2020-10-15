@@ -8,16 +8,16 @@
                     <a href="{{ route('rezervari.index') }}"><i class="fas fa-address-card mr-1"></i>Rezervări</a>
                 </h4>
             </div> 
-            <div class="col-lg-8" id="app1">
+            <div class="col-lg-6" id="app1">
                 <form class="needs-validation" novalidate method="GET" action="{{ route('rezervari.index') }}">
                     @csrf                    
                     <div class="row input-group custom-search-form justify-content-center">
-                        <div class="col-md-3 mb-2 px-1 d-flex align-items-center">
+                        <div class="col-md-4 mb-2 px-1 d-flex align-items-center">
                             <input type="text" class="form-control form-control-sm border rounded-pill mb-0 py-0" 
                             id="search_nume" name="search_nume" placeholder="Client"
                                     value="{{ $search_nume }}">
                         </div>
-                        <div class="col-md-3 mb-2 px-1 d-flex align-items-center">
+                        <div class="col-md-4 mb-2 px-1 d-flex align-items-center">
                             <label for="search_data" class="mb-0 align-self-center mr-1">Data:</label>
                             <vue2-datepicker
                                 data-veche="{{ $search_data }}"
@@ -31,14 +31,14 @@
                                 :doar-ziua-b="6"
                             ></vue2-datepicker>
                         </div>
-                    {{-- </div>
-                    <div class="row input-group custom-search-form justify-content-center"> --}}
-                        <div class="col-md-3 mb-2 px-1 d-flex align-items-center">
+                    </div>
+                    <div class="row input-group custom-search-form justify-content-center">
+                        <div class="col-md-4 mb-2 px-1 d-flex align-items-center">
                             <button class="btn btn-sm btn-primary col-md-12 border border-dark rounded-pill" type="submit">
                                 <i class="fas fa-search text-white mr-1"></i>Caută
                             </button>
                         </div>
-                        <div class="col-md-3 mb-2 px-1 d-flex align-items-center">
+                        <div class="col-md-4 mb-2 px-1 d-flex align-items-center">
                             <a class="btn btn-sm bg-secondary text-white col-md-12 border border-dark rounded-pill" href="{{ route('rezervari.index') }}" role="button">
                                 <i class="far fa-trash-alt text-white mr-1"></i>Resetează căutarea
                             </a>
@@ -46,11 +46,11 @@
                     </div>
                 </form>
             </div>
-            {{-- <div class="col-lg-3 text-right align-self-center">
-                <a class="btn btn-sm bg-success text-white border border-dark rounded-pill col-md-8" href="{{ route('rezervari.create') }}" role="button">
+            <div class="col-lg-3 text-right align-self-center">
+                <a class="btn btn-sm bg-success text-white border border-dark rounded-pill col-md-8" href="{{ route('adauga-rezervare-noua') }}" role="button">
                     <i class="fas fa-plus-square text-white mr-1"></i>Adaugă rezervare
                 </a>
-            </div>  --}}
+            </div> 
         </div>
 
         <div class="card-body px-0 py-3">
@@ -129,7 +129,59 @@
                                             class="flex mr-1"    
                                         >
                                             <span class="badge badge-secondary">Duplică</span>
-                                        </a>     
+                                        </a>   
+                                        <div style="" class="mr-1">
+                                            <a 
+                                                href="#" 
+                                                data-toggle="modal" 
+                                                data-target="#neseriosiRezervare{{ $rezervare->id }}"
+                                                title="Clienți neserioși"
+                                                >
+                                                <span class="badge badge-danger">Neserioși</span>
+                                            </a>
+                                                <div class="modal fade text-dark" id="neseriosiRezervare{{ $rezervare->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                        <div class="modal-header bg-danger">
+                                                            <h5 class="modal-title text-white" id="exampleModalLabel">Rezervare: <b>{{ $rezervare->nume }}</b></h5>
+                                                            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+
+                                                    <form method="POST" action="{{ route('insereaza-pasageri-neseriosi', ['rezervare' => $rezervare->id]) }}">
+                                                        {{-- @method('DELETE')   --}}
+                                                        @csrf  
+
+                                                        <div class="modal-body" style="text-align:left;">
+                                                            <p>
+                                                                Ești sigur ca vrei să adaugi pasagerii în lista de Clienți neserioși?
+                                                            </p>
+                                                        
+                                                            <div class="form-row">                              
+                                                                <div class="form-group col-lg-12">  
+                                                                    <label for="observatii" class="mb-0 pl-3">Observații:</label>  
+                                                                    <textarea class="form-control {{ $errors->has('observatii') ? 'is-invalid' : '' }}" 
+                                                                        name="observatii"
+                                                                        rows="2"
+                                                                    >{{ old('observatii') }}</textarea>
+                                                                </div>  
+                                                            </div> 
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Renunță</button>                                                              
+                                                                <button 
+                                                                    type="submit" 
+                                                                    class="btn btn-danger"  
+                                                                    >
+                                                                    Adaugă
+                                                                </button>  
+                                                        </div>                  
+                                                    </form>                                                        
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                        </div>      
                                         <div style="" class="">
                                             <a 
                                                 href="#" 

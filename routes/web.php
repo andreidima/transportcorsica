@@ -27,7 +27,7 @@ Route::get('/rezervare-client', function () {
 Route::redirect('/', 'adauga-rezervare-noua');
 
 // Rute pentru rezervare facuta de guest
-Route::any('/adauga-rezervare-noua', [RezervareController::class, 'adaugaRezervareNoua']);
+Route::any('/adauga-rezervare-noua', [RezervareController::class, 'adaugaRezervareNoua'])->name('adauga-rezervare-noua');
 Route::get('/adauga-rezervare-pasul-1', [RezervareController::class, 'adaugaRezervarePasul1']);
 Route::post('/adauga-rezervare-pasul-1', [RezervareController::class, 'postadaugaRezervarePasul1']);
 Route::get('/adauga-rezervare-pasul-2', [RezervareController::class, 'adaugaRezervarePasul2']);
@@ -40,7 +40,9 @@ Route::get('/orase_rezervari', [RezervareController::class, 'orase_rezervari']);
 
 
 Route::group(['middleware' => 'auth'], function () {
+    Route::get('rezervari/test', [RezervareController::class, 'test']);
     Route::get('rezervari/{rezervare}/duplica', [RezervareController::class, 'duplicaRezervare']);
+    Route::post('rezervari/{rezervare}/pasageri-neseriosi', [RezervareController::class, 'insereazaPasageriNeseriosi'])->name('insereaza-pasageri-neseriosi');
     Route::resource('rezervari', RezervareController::class,  ['parameters' => ['rezervari' => 'rezervare']]);
 
     Route::resource('clienti-neseriosi', ClientNeseriosController::class,  ['parameters' => ['clienti-neseriosi' => 'client_neserios']]);
