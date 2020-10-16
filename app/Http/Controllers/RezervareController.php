@@ -747,7 +747,7 @@ class RezervareController extends Controller
         }
 
         //Trimitere sms        
-        $this->trimiteSms($rezervare_tur);
+        // $this->trimiteSms($rezervare_tur);
 
         // Cu sau fara plata online
         switch ($request->input('action')) {
