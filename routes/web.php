@@ -39,7 +39,7 @@ Route::get('/bilet-rezervat/{view_type}', [RezervareController::class, 'pdfExpor
 Route::get('/orase_rezervari', [RezervareController::class, 'orase_rezervari']);
 
 
-// Route::group(['middleware' => 'auth'], function () {
+Route::group(['middleware' => 'auth'], function () {
     Route::get('rezervari/test', [RezervareController::class, 'test']);
     Route::get('rezervari/{rezervare}/duplica', [RezervareController::class, 'duplicaRezervare']);
     Route::post('rezervari/{rezervare}/pasageri-neseriosi', [RezervareController::class, 'insereazaPasageriNeseriosi'])->name('insereaza-pasageri-neseriosi');
@@ -51,4 +51,4 @@ Route::get('/orase_rezervari', [RezervareController::class, 'orase_rezervari']);
     Route::post('/rapoarte/extrage-rezervari/{view_type}', [RaportController::class, 'extrageRezervari']);
     Route::post('/rapoarte/excel-nava/{view_type}', [RaportController::class, 'excelNava']);
     Route::any('/rapoarte/{view_type}', [RaportController::class, 'rapoarte'])->name('rapoarte');
-// });
+});
