@@ -12,7 +12,7 @@
                     <div class="row mb-1 input-group custom-search-form justify-content-center">
                         <input type="text" class="form-control form-control-sm col-md-4 mr-1 border rounded-pill" id="search_nume" name="search_nume" placeholder="Nume" autofocus
                                 value="{{ $search_nume }}">
-                        <input type="text" class="form-control form-control-sm col-md-4 mr-1 border rounded-pill" id="search_nume" name="search_nume" placeholder="Telefon" autofocus
+                        <input type="text" class="form-control form-control-sm col-md-4 mr-1 border rounded-pill" id="search_telefon" name="search_telefon" placeholder="Telefon" autofocus
                                 value="{{ $search_telefon }}">
                     </div>
                     <div class="row input-group custom-search-form justify-content-center">

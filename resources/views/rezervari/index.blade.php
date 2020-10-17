@@ -82,7 +82,7 @@
                                 </td>
                                 <td>
                                     <a href="{{ $rezervare->path() }}">  
-                                        <b>{{ $rezervare->nume }}</b>
+                                        <b>{{ $rezervare->nume ?? $rezervare->pasageri_relation->first()->nume ?? '' }}</b>
                                     </a>
                                 </td>
                                 <td>

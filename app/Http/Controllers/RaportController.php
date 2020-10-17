@@ -139,6 +139,8 @@ class RaportController extends Controller
             return array_search($model->getKey(), $ids);
         });
 
+        // dd($rezervari, $ids);
+
         $tip_lista = $request->tip_lista;
 
         switch ($request->input('action')) {

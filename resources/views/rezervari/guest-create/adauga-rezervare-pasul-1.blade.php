@@ -502,7 +502,7 @@
                                                     type="text" 
                                                     class="form-control form-control-sm {{ $errors->has('bagaje_kg') ? 'is-invalid' : '' }}" 
                                                     name="bagaje_kg"
-                                                    placeholder="Ex: 2.5" 
+                                                    placeholder="" 
                                                     value="{{ old('bagaje_kg', ($rezervare->bagaje_kg ?? '')) }}"
                                                 >
                                             </div>

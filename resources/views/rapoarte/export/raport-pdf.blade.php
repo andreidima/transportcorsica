@@ -107,7 +107,7 @@
                             <b>{{ $rezervare->oras_plecare_nume }}</b>
                         </td>
                         <td>
-                            {{ $rezervare->nume }}
+                            {{ $rezervare->nume ?? $rezervare->pasageri_relation->first()->nume ?? '' }}                          
                         </td>
                         <td>
                             {{ $rezervare->telefon }}
@@ -125,9 +125,17 @@
                     <tr>
                         <td style="border-top:0rem; border-bottom:0rem"></td>
                         <td colspan="6" style="border-left:0rem">
-                            Pasageri:
+                            {{-- Pasageri: --}}
                     @forelse ($rezervare->pasageri_relation as $pasager)
-                        {{ $pasager->nume }},
+                        @if ($loop->index === 1)
+                            Plus pasageri:
+                        @endif
+                        @if ($loop->first)
+                        @elseif ($loop->last)
+                            {{ $pasager->nume }}.
+                        @else
+                            {{ $pasager->nume }},
+                        @endif
                     @empty
                     @endforelse
                             </div>
@@ -141,6 +149,20 @@
                         </td>
                     </tr>
                     @endif
+
+                    @isset($rezervare->nr_adulti)
+                    @else
+                        <tr>
+                            <td style="border-top:0rem; border-bottom:0rem"></td>
+                            <td colspan="6">
+                                Rezervare Bagaj {{ $rezervare->bagaje_kg ? ':' . $rezervare->bagaje_kg . 'kg' : '' }}
+                                @isset ($rezervare->bagaje_descriere)
+                                    <br>
+                                    Descriere bagaj: {{ $rezervare->bagaje_descriere }}
+                                @endisset
+                            </td>
+                        </tr>
+                    @endisset
                         
                 @empty
                 @endforelse
@@ -190,31 +212,31 @@
 
 
                 <table style="">
-                    <tr style="background-color:#e7d790;">
-                        <th>Nr. crt.</th>
-                        <th>Plecare</th>
+                    <tr style="background-color:#302700; color:#ffffff">
+                        <th>Nr crt</th>
+                        <th>Destinație</th>
                         <th>Nume si prenume</th>
                         <th>Telefon</th>
-                        <th>Destinație</th>
+                        <th>Plecare</th>
                         <th>Preț</th>
                         <th>Nr. pers</th>
                     </tr>
                 @forelse ($rezervari as $rezervare)
-                    <tr>
-                        <td style="text-align:center">
+                    <tr style="background-color:#e7d790; color:black">
+                        <td style="text-align:center; border-bottom:0rem">
                             {{ $loop->iteration }}
                         </td>
                         <td>
-                            {{ $rezervare->oras_plecare_nume }}
+                            <b>{{ $rezervare->oras_sosire_nume }}</b>
                         </td>
                         <td>
-                            {{ $rezervare->nume }}
+                            {{ $rezervare->nume ?? $rezervare->pasageri_relation->first()->nume ?? '' }}                          
                         </td>
                         <td>
                             {{ $rezervare->telefon }}
                         </td>
                         <td>
-                            {{ $rezervare->oras_sosire_nume }}
+                            {{ $rezervare->oras_plecare_nume }}
                         </td>
                         <td style="text-align:center">
                             {{ $rezervare->pret_total }}
@@ -223,6 +245,48 @@
                             {{ $rezervare->nr_adulti }}
                         </td>
                     </tr>
+                    <tr>
+                        <td style="border-top:0rem; border-bottom:0rem"></td>
+                        <td colspan="6" style="border-left:0rem">
+                            {{-- Pasageri: --}}
+                    @forelse ($rezervare->pasageri_relation as $pasager)
+                        @if ($loop->index === 1)
+                            Plus pasageri:
+                        @endif
+                        @if ($loop->first)
+                        @elseif ($loop->last)
+                            {{ $pasager->nume }}.
+                        @else
+                            {{ $pasager->nume }},
+                        @endif
+                    @empty
+                    @endforelse
+                            </div>
+                        </td>
+                    </tr>
+                    @if ($rezervare->observatii)
+                    <tr>
+                        <td style="border-top:0rem; border-bottom:0rem"></td>
+                        <td colspan="6">
+                            Observații: {{ $rezervare->observatii }}
+                        </td>
+                    </tr>
+                    @endif
+
+                    @isset($rezervare->nr_adulti)
+                    @else
+                        <tr>
+                            <td style="border-top:0rem; border-bottom:0rem"></td>
+                            <td colspan="6">
+                                Rezervare Bagaj {{ $rezervare->bagaje_kg ? ':' . $rezervare->bagaje_kg . 'kg' : '' }}
+                                @isset ($rezervare->bagaje_descriere)
+                                    <br>
+                                    Descriere bagaj: {{ $rezervare->bagaje_descriere }}
+                                @endisset
+                            </td>
+                        </tr>
+                    @endisset
+                        
                 @empty
                 @endforelse
                     <tr>

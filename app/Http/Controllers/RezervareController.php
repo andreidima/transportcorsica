@@ -87,7 +87,7 @@ class RezervareController extends Controller
         $rezervare = (!$rezervare->tur) ? $rezervare : Rezervare::find($rezervare->tur);
 
         // Setarea informatiilor suplimentare necesare formularului
-        $rezervare->tip_calatorie = $rezervare->nr_adulti ? "Calatori" : "Bagaje";
+        $rezervare->tip_calatorie = isset($rezervare->nr_adulti) ? "Calatori" : "Bagaje";
         $rezervare->traseu = (($rezervare->oras_plecare_nume->tara ?? null) === "Romania") ? "Romania-Corsica" : "Corsica-Romania";
         $rezervare->tur_retur = ($rezervare->retur) ? "true" : "false";
         $rezervare->data_plecare = $rezervare->data_cursa;
@@ -403,7 +403,7 @@ class RezervareController extends Controller
                     'pasageri.data_nastere.*' => ['nullable', 'max:100'],
                     'pasageri.localitate_nastere.*' => ['nullable', 'max:100'],
                     'pasageri.localitate_domiciliu.*' => ['nullable', 'max:100'],
-                    'bagaje_kg' => ['nullable', 'numeric'],
+                    'bagaje_kg' => ['nullable', 'integer', 'max:100'],
                     'bagaje_descriere' => ['nullable', 'max:2000'],
                     'data_plecare' => [
                         'nullable'

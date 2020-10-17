@@ -182,8 +182,19 @@
                                             {{-- class="collapse" id="collapseLista{{$rezervari_pe_trasee->first()->lista_plecare}}" --}}
                                             >      
                                             <td>
-                                                <a href="{{ $rezervare->path() }}">  
-                                                    <b>{{ $rezervare->nume }}</b>
+                                                <a href="{{ $rezervare->path() }}">   
+                                                    {{-- <b>{{ $rezervare->nume ?? $rezervare->pasageri_relation->first()->nume ?? '' }}</b> --}}
+                                                    @isset($rezervare->nr_adulti)
+                                                        @foreach ($rezervare->pasageri_relation as $pasager)
+                                                            @if(!$loop->last)
+                                                                {{ $pasager->nume }},
+                                                            @else
+                                                                {{ $pasager->nume }}
+                                                            @endif
+                                                        @endforeach
+                                                    @else
+                                                        Rezervare bagaj
+                                                    @endif
                                                 </a>
                                                 @php
                                                     $nr_crt = 0;
@@ -319,20 +330,20 @@
                                                     @csrf
 
                                                         @forelse (                                                        
-                                                                ($rezervare_pe_tara->first()->oras_sosire_tara === 'Romania' ?
+                                                                ($rezervare_pe_tara->first()->oras_plecare_tara === 'Romania' ?
                                                                     $rezervari_pe_trasee->sortBy('oras_sosire_traseu')->groupBy('oras_sosire_traseu') 
                                                                     :
                                                                     $rezervari_pe_trasee->sortByDesc('oras_sosire_traseu')->groupBy('oras_sosire_traseu')
                                                                 )
                                                                 as $rezervari_pe_trasee_pe_traseu_initial) 
                                                             @forelse (                                                      
-                                                                    ($rezervare_pe_tara->first()->oras_sosire_tara === 'Romania' ?
+                                                                    ($rezervare_pe_tara->first()->oras_plecare_tara === 'Romania' ?
                                                                         $rezervari_pe_trasee_pe_traseu_initial->sortBy('oras_sosire_ordine')->groupBy('oras_sosire_ordine') 
                                                                         :
                                                                         $rezervari_pe_trasee_pe_traseu_initial->sortByDesc('oras_sosire_ordine')->groupBy('oras_sosire_ordine')
                                                                     )
-                                                                    as $rezervari_pe_trasee_pe_traseu_initial_pe_oras)                                                                 
-                                                                @forelse ($rezervari_pe_trasee_pe_traseu_initial_pe_oras->sortBy('oras_sosire_nume') as $rezervare) 
+                                                                    as $rezervari_pe_trasee_pe_traseu_initial_pe_oras) 
+                                                                @forelse ($rezervari_pe_trasee_pe_traseu_initial_pe_oras->sortBy('oras_sosire_nume') as $rezervare)
                                                                     <input type="hidden" name="rezervari[]" value="{{ $rezervare->id }}">
                                                                 @endforeach
                                                             @endforeach
@@ -368,7 +379,18 @@
                                             >      
                                             <td>
                                                 <a href="{{ $rezervare->path() }}">  
-                                                    <b>{{ $rezervare->nume }}</b>
+                                                    {{-- <b>{{ $rezervare->nume ?? $rezervare->pasageri_relation->first()->nume ?? '' }}</b> --}}
+                                                    @isset($rezervare->nr_adulti)
+                                                        @foreach ($rezervare->pasageri_relation as $pasager)
+                                                            @if(!$loop->last)
+                                                                {{ $pasager->nume }},
+                                                            @else
+                                                                {{ $pasager->nume }}
+                                                            @endif
+                                                        @endforeach
+                                                    @else
+                                                        Rezervare bagaj
+                                                    @endif
                                                 </a>
                                             </td>
                                             <td class="text-center">
