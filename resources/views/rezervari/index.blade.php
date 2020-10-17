@@ -191,6 +191,13 @@
                                                 >
                                                 <span class="badge badge-danger">Șterge</span>
                                             </a>
+                                        </div> 
+                                    </div>
+                                </td>
+                            </tr> 
+                            
+                            
+                                                {{-- Modal pentru butonul de stergere --}}
                                                 <div class="modal fade text-dark" id="stergeRezervare{{ $rezervare->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
@@ -221,10 +228,8 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                        </div> 
-                                    </div>
-                                </td>
-                            </tr>                                          
+
+
                         @empty
                             {{-- <div>Nu s-au gasit rezervări în baza de date. Încearcă alte date de căutare</div> --}}
                         @endforelse
