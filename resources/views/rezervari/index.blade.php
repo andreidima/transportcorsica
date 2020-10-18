@@ -101,7 +101,7 @@
                                     {{ ($rezervare->tur || $rezervare->retur) ? 'DA' : 'NU' }}
                                 </td>
                                 <td>
-                                    {{ \Carbon\Carbon::parse($rezervare->data_cursa)->isoFormat('DD.MM.YYYY') }}
+                                    {{ $rezervare->data_cursa ? \Carbon\Carbon::parse($rezervare->data_cursa)->isoFormat('DD.MM.YYYY') : '' }}
                                 </td>
                                 {{-- <td>
                                     {{ $rezervare->pret_total }}

@@ -96,7 +96,7 @@
             
 
         @if ($view_type === "plecare") 
-            @foreach ($rezervari->groupBy('oras_plecare_tara') as $rezervare_pe_tara)
+            @foreach ($rezervari->groupBy('oras_plecare_tara') as $rezervari_pe_tara)
 
                 <div class="table-responsive-sm rounded mb-5">
                     <table class="table table-striped table-hover table-sm rounded"> 
@@ -104,18 +104,23 @@
                             <tr>
                                 <th colspan="4" class="text-center" style="font-size: 20px">
                                     Liste plecare
-                                    {{ $rezervare_pe_tara->first()->oras_plecare_tara }}
+                                    {{ $rezervari_pe_tara->first()->oras_plecare_tara }}
                                 </th>
                             </tr>
                             <tr class="" style="padding:2rem">
-                                <th class="w-50">Nume</th>
+                                <th class="w-50">Pasageri</th>
                                 <th class="text-center">Traseu</th>
                                 <th class="">Oraș plecare</th>
                                 <th class="text-center">Nr. pers.</th>
                             </tr>
                         </thead>
                         <tbody> 
-                            @foreach ($rezervare_pe_tara->where('oras_plecare_tara', $rezervare_pe_tara->first()->oras_plecare_tara)->sortBy('lista_plecare')->groupBy('lista_plecare') as $rezervari_pe_trasee)
+                            {{-- Lista Nava finala completa - Array pentru scoaterea tuturor rezervarilor pe tara --}}
+                            @php
+                                $rezervari_toate_pe_tara = [];
+                            @endphp
+
+                            @foreach ($rezervari_pe_tara->where('oras_plecare_tara', $rezervari_pe_tara->first()->oras_plecare_tara)->sortBy('lista_plecare')->groupBy('lista_plecare') as $rezervari_pe_trasee)
                                     <tr>
                                         <td colspan="2" class="text-white" style="background-color:lightslategrey">
                                             <b>
@@ -134,20 +139,23 @@
                                                     @csrf
 
                                                         @forelse (                                                        
-                                                                ($rezervare_pe_tara->first()->oras_plecare_tara === 'Romania' ?
+                                                                ($rezervari_pe_tara->first()->oras_plecare_tara === 'Romania' ?
                                                                     $rezervari_pe_trasee->sortBy('oras_plecare_traseu')->groupBy('oras_plecare_traseu') 
                                                                     :
                                                                     $rezervari_pe_trasee->sortByDesc('oras_plecare_traseu')->groupBy('oras_plecare_traseu')
                                                                 )
                                                                 as $rezervari_pe_trasee_pe_traseu_initial) 
                                                             @forelse (                                                      
-                                                                    ($rezervare_pe_tara->first()->oras_plecare_tara === 'Romania' ?
+                                                                    ($rezervari_pe_tara->first()->oras_plecare_tara === 'Romania' ?
                                                                         $rezervari_pe_trasee_pe_traseu_initial->sortBy('oras_plecare_ordine')->groupBy('oras_plecare_ordine') 
                                                                         :
                                                                         $rezervari_pe_trasee_pe_traseu_initial->sortByDesc('oras_plecare_ordine')->groupBy('oras_plecare_ordine')
                                                                     )
                                                                     as $rezervari_pe_trasee_pe_traseu_initial_pe_oras) 
                                                                 @forelse ($rezervari_pe_trasee_pe_traseu_initial_pe_oras->sortBy('oras_plecare_nume') as $rezervare) 
+                                                                    @php
+                                                                        $rezervari_toate_pe_tara[] = $rezervare->id;
+                                                                    @endphp
                                                                     <input type="hidden" name="rezervari[]" value="{{ $rezervare->id }}">
                                                                 @endforeach
                                                             @endforeach
@@ -164,14 +172,14 @@
                                         </td>
                                     </tr>           
                                 @forelse (                                                        
-                                        ($rezervare_pe_tara->first()->oras_plecare_tara === 'Romania' ?
+                                        ($rezervari_pe_tara->first()->oras_plecare_tara === 'Romania' ?
                                             $rezervari_pe_trasee->sortBy('oras_plecare_traseu')->groupBy('oras_plecare_traseu') 
                                             :
                                             $rezervari_pe_trasee->sortByDesc('oras_plecare_traseu')->groupBy('oras_plecare_traseu')
                                         )
                                         as $rezervari_pe_trasee_pe_traseu_initial) 
                                     @forelse (                                                      
-                                            ($rezervare_pe_tara->first()->oras_plecare_tara === 'Romania' ?
+                                            ($rezervari_pe_tara->first()->oras_plecare_tara === 'Romania' ?
                                                 $rezervari_pe_trasee_pe_traseu_initial->sortBy('oras_plecare_ordine')->groupBy('oras_plecare_ordine') 
                                                 :
                                                 $rezervari_pe_trasee_pe_traseu_initial->sortByDesc('oras_plecare_ordine')->groupBy('oras_plecare_ordine')
@@ -285,6 +293,27 @@
                                         </td>
                                     </tr>
                             @endforeach
+                                    <tr>
+                                        <td colspan="4" class="py-4 text-center">
+                                            <b>
+                                                Total pasageri în toate listele:
+                                                {{ $rezervari_pe_tara->sum('nr_adulti') }}
+                                            </b>
+                                            <br>
+                                                {{-- Lista Nava - pe toate tara --}}
+                                                <form class="needs-validation" novalidate method="POST" action="/rapoarte/extrage-rezervari/raport-pdf">
+                                                    @csrf
+                                                     
+                                                    @foreach ($rezervari_toate_pe_tara as $rezervare_nava) 
+                                                        <input type="hidden" name="rezervari[]" value="{{ $rezervare_nava }}">
+                                                    @endforeach
+                                                            <input type="hidden" name="tip_lista" value="lista_plecare">  
+                                                        <button type="submit" name="action" value="excel_nava" class="btn btn-sm bg-success text-white border border-light rounded-pill">
+                                                            <i class="fas fa-file-pdf text-white mr-1"></i>Raport Navă
+                                                        </button>
+                                                </form>
+                                        </td>
+                                    </tr>
                         </tbody>
                     </table>
                 </div>
@@ -292,7 +321,7 @@
 
         @elseif ($view_type === "sosire")
             
-            @foreach ($rezervari->groupBy('oras_sosire_tara') as $rezervare_pe_tara)
+            @foreach ($rezervari->groupBy('oras_sosire_tara') as $rezervari_pe_tara)
 
                 <div class="table-responsive rounded mb-5">
                     <table class="table table-striped table-hover table-sm rounded"> 
@@ -300,18 +329,18 @@
                             <tr>
                                 <th colspan="4" class="text-center" style="font-size: 20px">
                                     Liste sosire
-                                    {{ $rezervare_pe_tara->first()->oras_sosire_tara }}
+                                    {{ $rezervari_pe_tara->first()->oras_sosire_tara }}
                                 </th>
                             </tr>
                             <tr class="" style="padding:2rem">
-                                <th>Nume</th>
+                                <th class="w-50">Pasageri</th>
                                 <th class="text-center">Traseu</th>
                                 <th>Oraș sosire</th>
                                 <th class="text-center">Nr. pers.</th>
                             </tr>
                         </thead>
                         <tbody> 
-                            @foreach ($rezervare_pe_tara->where('oras_sosire_tara', $rezervare_pe_tara->first()->oras_sosire_tara)->sortBy('lista_sosire')->groupBy('lista_sosire') as $rezervari_pe_trasee)
+                            @foreach ($rezervari_pe_tara->where('oras_sosire_tara', $rezervari_pe_tara->first()->oras_sosire_tara)->sortBy('lista_sosire')->groupBy('lista_sosire') as $rezervari_pe_trasee)
                                     <tr>
                                         <td colspan="2" class="text-white" style="background-color:lightslategrey">
                                             <b>
@@ -330,14 +359,14 @@
                                                     @csrf
 
                                                         @forelse (                                                        
-                                                                ($rezervare_pe_tara->first()->oras_plecare_tara === 'Romania' ?
+                                                                ($rezervari_pe_tara->first()->oras_plecare_tara === 'Romania' ?
                                                                     $rezervari_pe_trasee->sortBy('oras_sosire_traseu')->groupBy('oras_sosire_traseu') 
                                                                     :
                                                                     $rezervari_pe_trasee->sortByDesc('oras_sosire_traseu')->groupBy('oras_sosire_traseu')
                                                                 )
                                                                 as $rezervari_pe_trasee_pe_traseu_initial) 
                                                             @forelse (                                                      
-                                                                    ($rezervare_pe_tara->first()->oras_plecare_tara === 'Romania' ?
+                                                                    ($rezervari_pe_tara->first()->oras_plecare_tara === 'Romania' ?
                                                                         $rezervari_pe_trasee_pe_traseu_initial->sortBy('oras_sosire_ordine')->groupBy('oras_sosire_ordine') 
                                                                         :
                                                                         $rezervari_pe_trasee_pe_traseu_initial->sortByDesc('oras_sosire_ordine')->groupBy('oras_sosire_ordine')
@@ -360,14 +389,14 @@
                                         </td>
                                     </tr>           
                                 @forelse (                                                        
-                                        ($rezervare_pe_tara->first()->oras_plecare_tara === 'Romania' ?
+                                        ($rezervari_pe_tara->first()->oras_plecare_tara === 'Romania' ?
                                             $rezervari_pe_trasee->sortBy('oras_sosire_traseu')->groupBy('oras_sosire_traseu') 
                                             :
                                             $rezervari_pe_trasee->sortByDesc('oras_sosire_traseu')->groupBy('oras_sosire_traseu')
                                         )
                                         as $rezervari_pe_trasee_pe_traseu_initial) 
                                     @forelse (                                                      
-                                            ($rezervare_pe_tara->first()->oras_plecare_tara === 'Romania' ?
+                                            ($rezervari_pe_tara->first()->oras_plecare_tara === 'Romania' ?
                                                 $rezervari_pe_trasee_pe_traseu_initial->sortBy('oras_sosire_ordine')->groupBy('oras_sosire_ordine') 
                                                 :
                                                 $rezervari_pe_trasee_pe_traseu_initial->sortByDesc('oras_sosire_ordine')->groupBy('oras_sosire_ordine')

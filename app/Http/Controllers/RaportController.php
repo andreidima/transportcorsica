@@ -175,7 +175,9 @@ class RaportController extends Controller
                 // dd($rezervari, $rezervari->where('bilet_nava', 1));
                 // $array = [];
                 $nr_celula = 2;
-                foreach ($rezervari->where('bilet_nava', 1) as $rezervare){
+                foreach ($rezervari
+                        ->where('bilet_nava', 1) 
+                        as $rezervare){
                     foreach ($rezervare->pasageri_relation as $pasager){
                     // $array[$nr_celula][1] = strtok($pasager->nume, " ");
                     // $array[$nr_celula][2] = substr(strstr($pasager->nume, " "), 1);

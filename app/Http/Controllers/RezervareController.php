@@ -38,7 +38,7 @@ class RezervareController extends Controller
             })
             ->whereNull('tur')
             ->latest()
-            ->simplePaginate(25);
+            ->simplePaginate(100);
 
         return view('rezervari.index', compact('rezervari', 'search_nume', 'search_data'));
     }
