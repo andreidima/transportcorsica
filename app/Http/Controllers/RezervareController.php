@@ -11,6 +11,7 @@ use DB;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Builder;
 
 use App\Traits\TrimiteSmsTrait;
 
@@ -30,14 +31,21 @@ class RezervareController extends Controller
         $search_data = \Request::get('search_data');
 
         $rezervari = Rezervare::with('oras_plecare_nume', 'oras_sosire_nume')
-            ->when($search_nume, function ($query, $search_nume) {
-                return $query->where('nume', 'like', '%' . $search_nume . '%');
+            // ->join('pasageri_rezervari as pasageri_rezervari', 'rezervari.id', '=', 'pasageri_rezervari.rezervare_id')
+            // ->join('pasageri as pasageri', 'pasageri_rezervari.pasager_id', '=', 'pasageri.id')
+            // ->when($search_nume, function ($query, $search_nume) {
+            //     return $query->where('pasageri.nume', 'like', '%' . $search_nume . '%');
+            // })
+            ->when($search_nume, function (Builder $query, $search_nume) {
+                $query->whereHas('pasageri_relation', function (Builder $query) use ($search_nume) {
+                    $query->where('nume', 'like', '%' . $search_nume . '%');
+                });
             })
             ->when($search_data, function ($query, $search_data) {
                 return $query->whereDate('data_cursa', '=', $search_data);
             })
             ->whereNull('tur')
-            ->latest()
+            ->orderBy('rezervari.created_at', 'desc')
             ->simplePaginate(100);
 
         return view('rezervari.index', compact('rezervari', 'search_nume', 'search_data'));
