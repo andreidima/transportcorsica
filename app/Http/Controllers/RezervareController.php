@@ -469,7 +469,7 @@ class RezervareController extends Controller
                     // 'judet_sosire' => [''],
                     'oras_sosire' => ['required', 'integer'],
                     'tur_retur' => [''],
-                    'bilet_nava' => ['required'],
+                    'bilet_nava' => ['required_if:tip_calatorie,Calatori'],
                     'nr_adulti' => ['required_if:tip_calatorie,Calatori', 'integer', 'between:1,100'],
                     'pasageri.nume.*' => ['required', 'max:100'],
                     'pasageri.buletin.*' => ['nullable', 'max:100'],
@@ -477,7 +477,8 @@ class RezervareController extends Controller
                     'pasageri.localitate_nastere.*' => ['required', 'max:100'],
                     'pasageri.localitate_domiciliu.*' => ['nullable', 'max:100'],
                     'bagaje_kg' => ['required_if:tip_calatorie,Bagaje', 'numeric'],
-                    'bagaje_descriere' => ['required_if:tip_calatorie,Bagaje', 'max:2000'],
+                    // 'bagaje_descriere' => ['required_if:tip_calatorie,Bagaje', 'max:2000'],
+                    'bagaje_descriere' => ['nullable', 'max:2000'],
                     'data_plecare' => [
                         'required'
                     ],
@@ -495,14 +496,15 @@ class RezervareController extends Controller
                     ],
                     'nume' => ($request->_method === "PATCH") ?
                         [
-                            'required', 'max:200',
+                            'nullable'
+                            // 'required_if:tip_calatorie,Bagaje', 'max:200',
                             // Rule::unique('rezervari')->ignore($rezervari->id)->where(function ($query) use ($rezervari, $request) {
                             //     return $query->where('telefon', $request->telefon)
                             //         ->where('data_cursa', $request->data_cursa);
                             // }),
                         ]
                         : [
-                            'required', 'max:200',
+                            'required_if:tip_calatorie,Bagaje', 'max:200',
                             Rule::unique('rezervari')->where(function ($query) use ($rezervari, $request) {
                                 return $query->where('telefon', $request->telefon)
                                     ->where('data_cursa', $request->data_plecare);
@@ -637,21 +639,21 @@ class RezervareController extends Controller
 
         // Verificare rezervare duplicat - doar pentru utilizatorii externi
         if (!Auth::check()) {
-            $request_verificare_duplicate = new Request([
-                'nume' => $request->session()->get('rezervare.nume'),
-                'telefon' => $request->session()->get('rezervare.telefon'),
-                'data_plecare' => $request->session()->get('rezervare.data_plecare')
-            ]);
+            // $request_verificare_duplicate = new Request([
+            //     'nume' => $request->session()->get('rezervare.nume'),
+            //     'telefon' => $request->session()->get('rezervare.telefon'),
+            //     'data_plecare' => $request->session()->get('rezervare.data_plecare')
+            // ]);
 
-            $this->validate(
-                $request_verificare_duplicate,
-                [
-                    'nume' => ['required', 'max:100', 'unique:rezervari,nume,NULL,id,telefon,' . $request_verificare_duplicate->telefon . ',data_cursa,' . $request_verificare_duplicate->data_plecare]
-                ],
-                [
-                    'nume.unique' => 'Această Rezervare este deja înregistrată.'
-                ]
-            );
+            // $this->validate(
+            //     $request_verificare_duplicate,
+            //     [
+            //         'nume' => ['required', 'max:100', 'unique:rezervari,nume,NULL,id,telefon,' . $request_verificare_duplicate->telefon . ',data_cursa,' . $request_verificare_duplicate->data_plecare]
+            //     ],
+            //     [
+            //         'nume.unique' => 'Această Rezervare este deja înregistrată.'
+            //     ]
+            // );
         }
 
         $rezervare_unset = clone $rezervare;
@@ -852,8 +854,15 @@ class RezervareController extends Controller
             $clone_rezervare->pasageri_relation()->attach($clone_pasager->id);
             (isset($clone_rezervare_retur)) ? $clone_rezervare_retur->pasageri_relation()->attach($clone_pasager->id) : '';
         }
-    
-        return redirect('/rezervari')->with('status', 'Rezervarea clientului "' . $rezervare_tur->nume . '" a fost duplicată');
+
+
+        // $tip_operatie = "modificare";
+        return redirect()->action(
+            [RezervareController::class, 'edit'],
+            ['rezervare' => $rezervare_tur->id]
+        );
+        // return view('rezervari.guest-create/adauga-rezervare-pasul-1', compact('rezervare', 'tip_operatie'));
+        // return redirect('/rezervari')->with('status', 'Rezervarea clientului "' . $rezervare_tur->nume . '" a fost duplicată');
     }
 
     public function test()

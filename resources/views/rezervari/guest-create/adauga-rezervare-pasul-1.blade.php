@@ -301,7 +301,7 @@
                                             Data de intoarcere trebuie sa fie la maxim 15 zile de la data de plecare.
                                         </div>
                                     </div> 
-                                    <div class="form-row mb-4 px-2 py-2 d-flex justify-content-center align-items-center border rounded"
+                                    <div v-if="tip_calatorie === 'Calatori'" class="form-row mb-4 px-2 py-2 d-flex justify-content-center align-items-center border rounded"
                                         style="background-color:lightseagreen; color:white"
                                     >
                                         <div class="form-group col-lg-12 mb-2 d-flex justify-content-center border-bottom">
@@ -519,7 +519,7 @@
                                     <div class="form-row mb-4 px-2 py-2 justify-content-between align-items-center border rounded"
                                         style="background-color:lightseagreen; color:white"
                                     >                                    
-                                        <div class="form-group col-lg-4">  
+                                        <div v-if="tip_calatorie === 'Bagaje'" class="form-group col-lg-4">  
                                             <label for="nume" class="mb-0">Nume și prenume Client:*</label>                                      
                                             <input 
                                                 type="text" 
