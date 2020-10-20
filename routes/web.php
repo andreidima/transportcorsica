@@ -47,8 +47,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('clienti-neseriosi', ClientNeseriosController::class,  ['parameters' => ['clienti-neseriosi' => 'client_neserios']]);
     
-    Route::post('/rapoarte/muta-rezervari', [RaportController::class, 'mutaRezervari']);
+    Route::post('/rapoarte/{tip_transport}/muta-rezervari', [RaportController::class, 'mutaRezervari']);
     Route::post('/rapoarte/extrage-rezervari/{view_type}', [RaportController::class, 'extrageRezervari']);
-    Route::post('/rapoarte/excel-nava/{view_type}', [RaportController::class, 'excelNava']);
-    Route::any('/rapoarte/{view_type}', [RaportController::class, 'rapoarte'])->name('rapoarte');
+    Route::any('/rapoarte/{tip_transport}/{view_type}', [RaportController::class, 'rapoarte'])->name('rapoarte');
 });

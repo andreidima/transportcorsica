@@ -11,18 +11,19 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 use Illuminate\Support\Facades\Storage;
 
+use Illuminate\Database\Eloquent\Builder;
+
 class RaportController extends Controller
 {
-    public function rapoarte(Request $request){
+    public function rapoarte(Request $request, $tip_transport = null){
         // $search_data = \Request::get('search_data');
         $search_data = \Request::get('search_data') ? \Request::get('search_data') : \Carbon\Carbon::today();
         // $search_data ?
         // dd($search_data);
-
+        
         $rezervari = Rezervare::
             join('orase as orase_plecare', 'rezervari.oras_plecare', '=', 'orase_plecare.id')
             ->join('orase as orase_sosire', 'rezervari.oras_sosire', '=', 'orase_sosire.id')
-            // with('oras_plecare_nume', 'oras_sosire_nume')
             ->select(
                 'rezervari.*', 
                 'orase_plecare.tara as oras_plecare_tara',
@@ -34,29 +35,23 @@ class RaportController extends Controller
                 'orase_sosire.traseu as oras_sosire_traseu',
                 'orase_sosire.ordine as oras_sosire_ordine',
             )
-            // ->when($search_data, function ($query, $search_data) {
-            //     return $query->whereDate('data_cursa', '=', $search_data);
-            // })
-            // when($search_data, function ($query, $search_data) {
-            //     return $query->whereDate('data_cursa', '=', $search_data);
-            // })
             ->whereDate('data_cursa', '=', $search_data)
-            // ->latest()
-            // ->orderBy('traseu_raport')
-            // ->orderBy('oras_plecare_traseu')
-            // ->orderBy('oras_plecare_ordine')
+            ->where(function (Builder $query) use ($tip_transport) {
+                $tip_transport === 'calatori' ?  $query->whereNotNull('nr_adulti') : $query->whereNull('nr_adulti');
+            })
             ->get();
+            // dd($rezervari);
 
         // dd($rezervari);
         $clienti_neseriosi = \App\Models\ClientNeserios::pluck('nume')->all();
         // dd($clienti_neseriosi);
 
         $view_type = $request->view_type;
-        return view('rapoarte.raport', compact('rezervari', 'clienti_neseriosi', 'search_data', 'view_type'));
+        return view('rapoarte.raport', compact('rezervari', 'clienti_neseriosi', 'search_data', 'view_type', 'tip_transport'));
     }
 
 
-    public function mutaRezervari(Request $request){
+    public function mutaRezervari(Request $request, $tip_transport = null){
         $request->validate(
             [
                 'traseu' => ['required', 'numeric'],
@@ -75,11 +70,14 @@ class RaportController extends Controller
                 // )
                 ->whereDate('data_cursa', '=', $request->data_cursa)
                 ->where('orase_plecare.traseu', $request->traseu)
+                ->where(function (Builder $query) use ($tip_transport) {
+                    $tip_transport === 'calatori' ?  $query->whereNotNull('nr_adulti') : $query->whereNull('nr_adulti');
+                })
                 ->update(['lista_plecare' => $request->lista]);
 
             return redirect()
                 ->action([\App\Http\Controllers\RaportController::class , 'rapoarte'], 
-                    ['search_data' => $request->data_cursa, 'view_type' => 'plecare']);
+                    ['search_data' => $request->data_cursa, 'tip_transport' => $tip_transport, 'view_type' => 'plecare']);
         } elseif ($request->tip_lista === "lista_sosire") {
             $rezervari = Rezervare::
                 // join('orase as orase_plecare', 'rezervari.oras_plecare', '=', 'orase_plecare.id')
@@ -90,12 +88,15 @@ class RaportController extends Controller
                 // )
                 ->whereDate('data_cursa', '=', $request->data_cursa)
                 ->where('orase_sosire.traseu', $request->traseu)
+                ->where(function (Builder $query) use ($tip_transport) {
+                    $tip_transport === 'calatori' ?  $query->whereNotNull('nr_adulti') : $query->whereNull('nr_adulti');
+                })
                 ->update(['lista_sosire' => $request->lista]);
 
             return redirect()
                 ->action(
                     [\App\Http\Controllers\RaportController::class, 'rapoarte'],
-                    ['search_data' => $request->data_cursa, 'view_type' => 'sosire']
+                    ['search_data' => $request->data_cursa, 'tip_transport' => $tip_transport, 'view_type' => 'sosire']
                 );
         }
 
@@ -140,6 +141,8 @@ class RaportController extends Controller
         });
 
         // dd($rezervari, $ids);
+        
+        $clienti_neseriosi = \App\Models\ClientNeserios::pluck('nume')->all();
 
         $tip_lista = $request->tip_lista;
 
@@ -147,10 +150,10 @@ class RaportController extends Controller
             case 'lista_sofer':
                 switch($request->view_type) {
                     case 'raport-html':
-                        return view('rapoarte.export.raport-pdf', compact('rezervari', 'tip_lista'));
+                        return view('rapoarte.export.raport-pdf', compact('rezervari', 'clienti_neseriosi', 'tip_lista'));
                         break;
                     case 'raport-pdf':
-                        $pdf = \PDF::loadView('rapoarte.export.raport-pdf', compact('rezervari', 'tip_lista'))
+                        $pdf = \PDF::loadView('rapoarte.export.raport-pdf', compact('rezervari', 'clienti_neseriosi', 'tip_lista'))
                             ->setPaper('a4');
                             // return $pdf->stream('Rezervare ' . $rezervari->nume . '.pdf');
                             return $pdf->download('Raport ' . 
@@ -227,54 +230,6 @@ class RaportController extends Controller
         }
 
         return back();
-    
-    }
-
-    public function excelNava(Request $request){
-        // cautarea rezervarilor dupa array-ul de id-uri primit din request
-        $rezervari = Rezervare::
-            join('orase as orase_plecare', 'rezervari.oras_plecare', '=', 'orase_plecare.id')
-            ->join('orase as orase_sosire', 'rezervari.oras_sosire', '=', 'orase_sosire.id')
-            ->with('pasageri_relation')
-            ->select(
-                'rezervari.*', 
-                'orase_plecare.tara as oras_plecare_tara',
-                'orase_plecare.oras as oras_plecare_nume',
-                'orase_plecare.traseu as oras_plecare_traseu',
-                'orase_sosire.tara as oras_sosire_tara',
-                'orase_sosire.oras as oras_sosire_nume',
-                'orase_sosire.traseu as oras_sosire_traseu'
-            )
-            ->find($request->rezervari);
-        
-        // asezare rezervarilor in aceeasi ordine ca id-urile primite din request
-        $ids = $request->rezervari;
-        $rezervari = $rezervari->sortBy(function($model) use ($ids) {
-            return array_search($model->getKey(), $ids);
-        });
-
-        $tip_lista = $request->tip_lista;
-
-        dd('here');
-
-        $spreadsheet = new Spreadsheet();
-        $sheet = $spreadsheet->getActiveSheet();
-        $sheet->setCellValue('A1', 'Hello World !');
-
-        $writer = new Xlsx($spreadsheet);
-        $writer->save('hello world.xlsx');
-
-        // if ($request->view_type === 'raport-html') {
-        //     return view('rapoarte.export.raport-pdf', compact('rezervari', 'tip_lista'));
-        // } elseif ($request->view_type === 'raport-pdf') {
-        //     $pdf = \PDF::loadView('rapoarte.export.raport-pdf', compact('rezervari', 'tip_lista'))
-        //         ->setPaper('a4');
-        //             // return $pdf->stream('Rezervare ' . $rezervari->nume . '.pdf');
-        //             return $pdf->download('Raport ' . 
-        //                 ($tip_lista === "lista_plecare" ? 'lista plecare ' : 'lista sosire ') . 
-        //                 \Carbon\Carbon::parse($rezervari->first()->data_cursa)->isoFormat('DD.MM.YYYY') . 
-        //                 '.pdf');
-        // }
     
     }
 }

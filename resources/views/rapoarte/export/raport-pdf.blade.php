@@ -150,6 +150,28 @@
                     </tr>
                     @endif
 
+                    @php
+                        $nr_crt = 0;
+                    @endphp
+                    @foreach ($rezervare->pasageri_relation as $pasager)
+                        @if (in_array($pasager->nume, $clienti_neseriosi))     
+                            @php
+                                $nr_crt++; 
+                            @endphp
+                            @if ($nr_crt === 1)                            
+                    <tr>
+                        <td style="border-top:0rem; border-bottom:0rem"></td>
+                        <td colspan="6">
+                                Clienți neserioși:
+                            @endif
+                            {{ \App\Models\ClientNeserios::where('nume', $pasager->nume)->first()->nume }} - 
+                            {{ \App\Models\ClientNeserios::where('nume', $pasager->nume)->first()->observatii }};                            
+                        @endif
+                    @endforeach
+                        </td>
+                    </tr>
+
+
                     @isset($rezervare->nr_adulti)
                     @else
                         <tr>

@@ -9,17 +9,17 @@
                         dd($view_type);
                     @endphp --}}
                     @if ($view_type === "plecare")                                          
-                        <a href="/rapoarte/plecare"><i class="fas fa-book mr-1"></i>Rapoarte plecare</a> 
+                        <a href="/rapoarte/calatori/plecare"><i class="fas fa-book mr-1"></i>Rapoarte plecare</a> 
                     @elseif ($view_type === "sosire")      
-                        <a href="/rapoarte/sosire"><i class="fas fa-book mr-1"></i>Rapoarte sosire</a>
+                        <a href="/rapoarte/calatori/sosire"><i class="fas fa-book mr-1"></i>Rapoarte sosire</a>
                     @endif                    
                 </h4>
             </div> 
             <div class="col-lg-6" id="app1">
                 @if ($view_type === "plecare")                                          
-                    <form class="needs-validation" novalidate method="GET" action="/rapoarte/plecare"> 
+                    <form class="needs-validation" novalidate method="GET" action="/rapoarte/{{ $tip_transport }}/plecare"> 
                 @elseif ($view_type === "sosire")      
-                    <form class="needs-validation" novalidate method="GET" action="/rapoarte/sosire">
+                    <form class="needs-validation" novalidate method="GET" action="/rapoarte/{{ $tip_transport }}/sosire">
                 @endif  
                     @csrf                    
                     <div class="row mb-2 input-group custom-search-form justify-content-center" style="border-bottom:2px solid black">
@@ -51,7 +51,7 @@
                         </div>
                     </div>
                 </form>
-                <form class="needs-validation" novalidate method="POST" action="/rapoarte/muta-rezervari">
+                <form class="needs-validation" novalidate method="POST" action="/rapoarte/{{ $tip_transport }}/muta-rezervari">
                     @csrf
 
                     <div class="row input-group custom-search-form justify-content-center">
@@ -190,21 +190,25 @@
                                             {{-- class="collapse" id="collapseLista{{$rezervari_pe_trasee->first()->lista_plecare}}" --}}
                                             >      
                                             <td>
-                                                <a href="{{ $rezervare->path() }}">   
+                                                   
                                                     {{-- <b>{{ $rezervare->nume ?? $rezervare->pasageri_relation->first()->nume ?? '' }}</b> --}}
                                                     @isset($rezervare->nr_adulti)
                                                         @foreach ($rezervare->pasageri_relation as $pasager)
+                                                                <a href="{{ $rezervare->path() }}">
+                                                                    {{ $pasager->nume }}
+                                                                </a>
+                                                                @if (in_array($pasager->nume, $clienti_neseriosi))
+                                                                    (client neserios:
+                                                                    {{ \App\Models\ClientNeserios::where('nume', $pasager->nume)->first()->observatii ?? '-'}})
+                                                                @endif
                                                             @if(!$loop->last)
-                                                                {{ $pasager->nume }},
-                                                            @else
-                                                                {{ $pasager->nume }}
+                                                                ,
                                                             @endif
                                                         @endforeach
                                                     @else
                                                         Rezervare bagaj
                                                     @endif
-                                                </a>
-                                                @php
+                                                {{-- @php
                                                     $nr_crt = 0;
                                                 @endphp
                                                 @foreach ($rezervare->pasageri_relation as $pasager)
@@ -218,7 +222,7 @@
                                                         {{ \App\Models\ClientNeserios::where('nume', $pasager->nume)->first()->nume }} - 
                                                         {{ \App\Models\ClientNeserios::where('nume', $pasager->nume)->first()->observatii }};
                                                     @endif
-                                                @endforeach
+                                                @endforeach --}}
                                             </td>
                                             <td class="text-center">
                                                 {{ $rezervare->oras_plecare_traseu ?? ''}}
@@ -293,6 +297,7 @@
                                         </td>
                                     </tr>
                             @endforeach
+                                @if ( $tip_transport === 'calatori')
                                     <tr>
                                         <td colspan="4" class="py-4 text-center">
                                             <b>
@@ -314,6 +319,7 @@
                                                 </form>
                                         </td>
                                     </tr>
+                                @endif
                         </tbody>
                     </table>
                 </div>

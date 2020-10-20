@@ -82,7 +82,18 @@
                                 </td>
                                 <td>
                                     <a href="{{ $rezervare->path() }}">  
-                                        <b>{{ $rezervare->nume ?? $rezervare->pasageri_relation->first()->nume ?? '' }}</b>
+                                        {{-- <b>{{ $rezervare->nume ?? $rezervare->pasageri_relation->first()->nume ?? '' }}</b> --}}
+                                        @isset($rezervare->nr_adulti)
+                                            @foreach ($rezervare->pasageri_relation as $pasager)
+                                                @if(!$loop->last)
+                                                    {{ $pasager->nume }},
+                                                @else
+                                                    {{ $pasager->nume }}
+                                                @endif
+                                            @endforeach
+                                        @else
+                                            Rezervare bagaj
+                                        @endif
                                     </a>
                                 </td>
                                 <td>

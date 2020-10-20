@@ -44,11 +44,21 @@
                             </li>
                             <li class="nav-item active mr-4 dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-book mr-1"></i>Rapoarte
+                                <i class="fas fa-book mr-1"></i>Rapoarte Călători
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="/rapoarte/plecare">Rapoarte plecare</a>
-                                    <a class="dropdown-item" href="/rapoarte/sosire">Rapoarte sosire</a>
+                                    <a class="dropdown-item" href="/rapoarte/calatori/plecare">Rapoarte plecare</a>
+                                    <a class="dropdown-item" href="/rapoarte/calatori/sosire">Rapoarte sosire</a>
+                                    {{-- <a class="dropdown-item" href="#">Raport Retur</a> --}}
+                                </div>
+                            </li>
+                            <li class="nav-item active mr-4 dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-book mr-1"></i>Rapoarte Bagaje
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="/rapoarte/bagaje/plecare">Rapoarte plecare</a>
+                                    <a class="dropdown-item" href="/rapoarte/bagaje/sosire">Rapoarte sosire</a>
                                     {{-- <a class="dropdown-item" href="#">Raport Retur</a> --}}
                                 </div>
                             </li>
