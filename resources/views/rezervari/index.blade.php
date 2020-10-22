@@ -150,6 +150,21 @@
                                                 >
                                                 <span class="badge badge-danger">Neserioși</span>
                                             </a>
+                                        </div>      
+                                        <div style="" class="">
+                                            <a 
+                                                href="#" 
+                                                data-toggle="modal" 
+                                                data-target="#stergeRezervare{{ $rezervare->id }}"
+                                                title="Șterge Rezervare"
+                                                >
+                                                <span class="badge badge-danger">Șterge</span>
+                                            </a>
+                                        </div> 
+                                    </div>
+                                </td>
+                            </tr> 
+                                                {{-- Modal pentru butonul de neseriosi --}}
                                                 <div class="modal fade text-dark" id="neseriosiRezervare{{ $rezervare->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
@@ -192,21 +207,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                        </div>      
-                                        <div style="" class="">
-                                            <a 
-                                                href="#" 
-                                                data-toggle="modal" 
-                                                data-target="#stergeRezervare{{ $rezervare->id }}"
-                                                title="Șterge Rezervare"
-                                                >
-                                                <span class="badge badge-danger">Șterge</span>
-                                            </a>
-                                        </div> 
-                                    </div>
-                                </td>
-                            </tr> 
-                            
+
                             
                                                 {{-- Modal pentru butonul de stergere --}}
                                                 <div class="modal fade text-dark" id="stergeRezervare{{ $rezervare->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" 

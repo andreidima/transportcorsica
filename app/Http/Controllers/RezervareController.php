@@ -915,24 +915,37 @@ class RezervareController extends Controller
         
         $clone_rezervare = $rezervare_tur->replicate();
         (isset($rezervare_retur)) ? $clone_rezervare_retur = $rezervare_retur->replicate() : '';
-        
+
+        $clone_rezervare->created_at = \Carbon\Carbon::now();
+        $clone_rezervare->updated_at = \Carbon\Carbon::now();
         $clone_rezervare->save();
-        (isset($clone_rezervare_retur)) ? $clone_rezervare_retur->save() : '';
+        if (isset($clone_rezervare_retur)) {
+            $clone_rezervare_retur->created_at = \Carbon\Carbon::now();
+            $clone_rezervare_retur->updated_at = \Carbon\Carbon::now();
+            $clone_rezervare_retur->save();
+
+            //adaugarea id-urilor de tur - retur la fiecare in parte
+            $clone_rezervare->retur = $clone_rezervare_retur->id;
+            $clone_rezervare->update();
+            $clone_rezervare_retur->tur = $clone_rezervare->id;
+            $clone_rezervare_retur->update();
+        }
         // dd($rezervare_tur->pasageri_relation, $rezervare_retur, $clone_rezervare, $clone_rezervare_retur);
         // salvare pasageri si atasare la rezervari
-        foreach ($rezervare_tur->pasageri_relation as $pasager) {            
-            $clone_pasager = $pasager->replicate();            
-            $clone_pasager->save();
+        // if ($rezervare_tur->pasageri_relation->exists()){
+            foreach ($rezervare_tur->pasageri_relation as $pasager) {            
+                $clone_pasager = $pasager->replicate();            
+                $clone_pasager->save();
 
-            $clone_rezervare->pasageri_relation()->attach($clone_pasager->id);
-            (isset($clone_rezervare_retur)) ? $clone_rezervare_retur->pasageri_relation()->attach($clone_pasager->id) : '';
-        }
-
+                $clone_rezervare->pasageri_relation()->attach($clone_pasager->id);
+                (isset($clone_rezervare_retur)) ? $clone_rezervare_retur->pasageri_relation()->attach($clone_pasager->id) : '';
+            }
+        // }
 
         // $tip_operatie = "modificare";
         return redirect()->action(
             [RezervareController::class, 'edit'],
-            ['rezervare' => $rezervare_tur->id]
+            ['rezervare' => $clone_rezervare->id]
         );
         // return view('rezervari.guest-create/adauga-rezervare-pasul-1', compact('rezervare', 'tip_operatie'));
         // return redirect('/rezervari')->with('status', 'Rezervarea clientului "' . $rezervare_tur->nume . '" a fost duplicată');
