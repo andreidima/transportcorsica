@@ -167,6 +167,13 @@
                                     </div>
                                 </td>
                             </tr> 
+
+                        @if ($loop->last)
+                        </tbody>
+                </table>
+            </div>
+                        @endif
+                                                
                                                 {{-- Modal pentru butonul de neseriosi --}}
                                                 <div class="modal fade text-dark" id="neseriosiRezervare{{ $rezervare->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog" role="document">
@@ -246,12 +253,6 @@
                                                     </div>
                                                 </div>
 
-                        @if ($loop->last)
-                        </tbody>
-                </table>
-            </div>
-                        @endif
-                        
                         @empty
                             {{-- <div>Nu s-au gasit rezervări în baza de date. Încearcă alte date de căutare</div> --}}
                         @endforelse
