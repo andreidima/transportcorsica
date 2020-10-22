@@ -57,6 +57,8 @@
 
             @include('errors')
 
+                        @forelse ($rezervari as $rezervare) 
+                        @if ($loop->first)
             <div class="table-responsive rounded mb-2">
                 <table class="table table-striped table-hover table-sm rounded"> 
                     <thead class="text-white rounded" style="background-color:#e66800;">
@@ -74,8 +76,9 @@
                             <th class="text-center">Acțiuni</th>
                         </tr>
                     </thead>
-                    <tbody>               
-                        @forelse ($rezervari as $rezervare) 
+                    <tbody>    
+                        @endif           
+                        {{-- @forelse ($rezervari as $rezervare)  --}}
                             <tr>                  
                                 <td align="">
                                     {{ ($rezervari ->currentpage()-1) * $rezervari ->perpage() + $loop->index + 1 }}
@@ -243,13 +246,15 @@
                                                     </div>
                                                 </div>
 
-
-                        @empty
-                            {{-- <div>Nu s-au gasit rezervări în baza de date. Încearcă alte date de căutare</div> --}}
-                        @endforelse
+                        @if ($loop->last)
                         </tbody>
                 </table>
             </div>
+                        @endif
+                        
+                        @empty
+                            {{-- <div>Nu s-au gasit rezervări în baza de date. Încearcă alte date de căutare</div> --}}
+                        @endforelse
 
                 <nav>
                     <ul class="pagination pagination-sm justify-content-center">
