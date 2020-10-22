@@ -67,29 +67,36 @@
                     -moz-border-radius: 10px;
                     -webkit-border-radius: 10px;
                     border-radius: 10px;">
-                <table style="">
-                    <tr style="">
+                <table style="background-color:darkcyan; color:white">
+                    <tr style="background-color:darkcyan; color:white">
                         <td style="border-width:0px; padding:0rem; width:30%">
                                 <img src="{{ asset('images/logo.png') }}" width="150px">
                         </td>
                         <td style="border-width:0px; padding:0rem; width:40%; font-size:16px; text-align:center">
+                            <br>
                             Listă plecare
                             {{ $rezervari->first()->oras_plecare_tara }}
+                            <br><br>
                         </td>
                         <td style="border-width:0px; padding:0rem; width:30%; font-size:16px; text-align:right">
                             {{-- Traseu {{ $rezervari->first()->oras_plecare_traseu }}
                             <br> --}}
+                            <br>
                             {{\Carbon\Carbon::parse($rezervari->first()->data_cursa)->isoFormat('DD.MM.YYYY')}}
-
+                            <br><br>
                         </td>
                     </tr>
+                    {{-- <tr>
+                        <td colspan="3">
+                            <br><br><br>
+                        </td>
+                    </tr> --}}
                 </table>
 
-                <br><br><br>
 
 
                 <table style="">
-                    <tr style="background-color:#302700; color:#ffffff">
+                    <tr style="background-color:darkcyan; color:white">
                         <th>Nr crt</th>
                         <th>Plecare</th>
                         <th>Nume si prenume</th>
@@ -99,7 +106,7 @@
                         <th>Nr. pers</th>
                     </tr>
                 @forelse ($rezervari as $rezervare)
-                    <tr style="background-color:#e7d790; color:black">
+                    <tr style="background-color:rgb(105, 255, 248); color:black">
                         <td style="text-align:center; border-bottom:0rem">
                             {{ $loop->iteration }}
                         </td>

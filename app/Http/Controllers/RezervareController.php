@@ -406,7 +406,30 @@ class RezervareController extends Controller
                     'tur_retur' => [''],
                     'bilet_nava' => ['nullable'],
                     'nr_adulti' => ['nullable', 'integer', ''],
-                    'pasageri.nume.*' => ['nullable', 'max:100'],
+                    'pasageri.nume.*' => ['nullable', 'max:100',
+                        function ($attribute, $value, $fail) use ($request) {
+                            if (!empty($request->data_plecare)){
+                                $pasageri = Pasager::whereHas('rezervari', function (Builder $query) use ($request) {
+                                        $query->whereDate('data_cursa', '=', $request->data_plecare);
+                                    })->pluck('nume')->all();
+                                if (in_array($value, $pasageri)) {
+                                    $fail('Pasagerul „' . $value . '” mai are o cursă în data de ' .
+                                        \Carbon\Carbon::parse($request->data_plecare)->isoFormat('DD.MM.YYYY'));
+                                }
+                            }
+                        },
+                        function ($attribute, $value, $fail) use ($request) {
+                            if (!empty($request->data_intoarcere)) {
+                                $pasageri = Pasager::whereHas('rezervari', function (Builder $query) use ($request) {
+                                    $query->whereDate('data_cursa', '=', $request->data_intoarcere);
+                                })->pluck('nume')->all();
+                                if (in_array($value, $pasageri)) {
+                                    $fail('Pasagerul „' . $value . '” mai are o cursă în data de ' .
+                                        \Carbon\Carbon::parse($request->data_intoarcere)->isoFormat('DD.MM.YYYY'));
+                                }
+                            }
+                        },
+                    ],
                     'pasageri.buletin.*' => ['nullable', 'max:100'],
                     'pasageri.data_nastere.*' => ['nullable', 'max:100'],
                     'pasageri.localitate_nastere.*' => ['nullable', 'max:100'],
@@ -479,7 +502,30 @@ class RezervareController extends Controller
                     'tur_retur' => [''],
                     'bilet_nava' => ['required_if:tip_calatorie,Calatori'],
                     'nr_adulti' => ['required_if:tip_calatorie,Calatori', 'integer', 'between:1,100'],
-                    'pasageri.nume.*' => ['required', 'max:100'],
+                    'pasageri.nume.*' => ['required', 'max:100',
+                        function ($attribute, $value, $fail) use ($request) {
+                            if (!empty($request->data_plecare)){
+                                $pasageri = Pasager::whereHas('rezervari', function (Builder $query) use ($request) {
+                                        $query->whereDate('data_cursa', '=', $request->data_plecare);
+                                    })->pluck('nume')->all();
+                                if (in_array($value, $pasageri)) {
+                                    $fail('Pasagerul „' . $value . '” mai are o cursă în data de ' .
+                                        \Carbon\Carbon::parse($request->data_plecare)->isoFormat('DD.MM.YYYY'));
+                                }
+                            }
+                        },
+                        function ($attribute, $value, $fail) use ($request) {
+                            if (!empty($request->data_intoarcere)) {
+                                $pasageri = Pasager::whereHas('rezervari', function (Builder $query) use ($request) {
+                                    $query->whereDate('data_cursa', '=', $request->data_intoarcere);
+                                })->pluck('nume')->all();
+                                if (in_array($value, $pasageri)) {
+                                    $fail('Pasagerul „' . $value . '” mai are o cursă în data de ' .
+                                        \Carbon\Carbon::parse($request->data_intoarcere)->isoFormat('DD.MM.YYYY'));
+                                }
+                            }
+                        },
+                    ],
                     'pasageri.buletin.*' => ['nullable', 'max:100'],
                     'pasageri.data_nastere.*' => ['required', 'max:100'],
                     'pasageri.localitate_nastere.*' => ['required', 'max:100'],
@@ -645,24 +691,43 @@ class RezervareController extends Controller
         // dd($rezervare);
         $rezervare->created_at = \Carbon\Carbon::now();
 
-        // Verificare rezervare duplicat - doar pentru utilizatorii externi
-        if (!Auth::check()) {
-            // $request_verificare_duplicate = new Request([
-            //     'nume' => $request->session()->get('rezervare.nume'),
-            //     'telefon' => $request->session()->get('rezervare.telefon'),
-            //     'data_plecare' => $request->session()->get('rezervare.data_plecare')
-            // ]);
+        // Verificare rezervare duplicat
+            $request_verificare_duplicate = new Request([
+                'pasageri' => $request->session()->get('rezervare.pasageri'),
+                'data_plecare' => $request->session()->get('rezervare.data_plecare'),
+                'data_intoarcere' => $request->session()->get('rezervare.data_intoarcere')
+            ]);
 
-            // $this->validate(
-            //     $request_verificare_duplicate,
-            //     [
-            //         'nume' => ['required', 'max:100', 'unique:rezervari,nume,NULL,id,telefon,' . $request_verificare_duplicate->telefon . ',data_cursa,' . $request_verificare_duplicate->data_plecare]
-            //     ],
-            //     [
-            //         'nume.unique' => 'Această Rezervare este deja înregistrată.'
-            //     ]
-            // );
-        }
+            $this->validate(
+                $request_verificare_duplicate,
+                [
+                    'pasageri.nume.*' => [
+                        'nullable', 'max:100',
+                        function ($attribute, $value, $fail) use ($request_verificare_duplicate) {
+                            if (!empty($request_verificare_duplicate->data_plecare)) {
+                                $pasageri = Pasager::whereHas('rezervari', function (Builder $query) use ($request_verificare_duplicate) {
+                                    $query->whereDate('data_cursa', '=', $request_verificare_duplicate->data_plecare);
+                                })->pluck('nume')->all();
+                                if (in_array($value, $pasageri)) {
+                                    $fail('Pasagerul „' . $value . '” mai are o cursă în data de ' .
+                                        \Carbon\Carbon::parse($request_verificare_duplicate->data_plecare)->isoFormat('DD.MM.YYYY'));
+                                }
+                            }
+                        },
+                        function ($attribute, $value, $fail) use ($request_verificare_duplicate) {
+                            if (!empty($request_verificare_duplicate->data_intoarcere)) {
+                                $pasageri = Pasager::whereHas('rezervari', function (Builder $query) use ($request_verificare_duplicate) {
+                                    $query->whereDate('data_cursa', '=', $request_verificare_duplicate->data_intoarcere);
+                                })->pluck('nume')->all();
+                                if (in_array($value, $pasageri)) {
+                                    $fail('Pasagerul „' . $value . '” mai are o cursă în data de ' .
+                                        \Carbon\Carbon::parse($request_verificare_duplicate->data_intoarcere)->isoFormat('DD.MM.YYYY'));
+                                }
+                            }
+                        },
+                    ],
+                ]
+            );
 
         $rezervare_unset = clone $rezervare;
         unset($rezervare_unset->tip_calatorie,
