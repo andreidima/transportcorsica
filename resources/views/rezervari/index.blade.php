@@ -57,8 +57,6 @@
 
             @include('errors')
 
-                        @forelse ($rezervari as $rezervare) 
-                        @if ($loop->first)
             <div class="table-responsive rounded mb-2">
                 <table class="table table-striped table-hover table-sm rounded"> 
                     <thead class="text-white rounded" style="background-color:#e66800;">
@@ -76,9 +74,8 @@
                             <th class="text-center">Acțiuni</th>
                         </tr>
                     </thead>
-                    <tbody>    
-                        @endif           
-                        {{-- @forelse ($rezervari as $rezervare)  --}}
+                    <tbody>             
+                        @forelse ($rezervari as $rezervare) 
                             <tr>                  
                                 <td align="">
                                     {{ ($rezervari ->currentpage()-1) * $rezervari ->perpage() + $loop->index + 1 }}
@@ -166,9 +163,10 @@
                                         </div> 
                                     </div>
                                 </td>
-                            </tr> 
-
-                        @if ($loop->last)
+                            </tr>                         
+                        @empty
+                            {{-- <div>Nu s-au gasit rezervări în baza de date. Încearcă alte date de căutare</div> --}}
+                        @endforelse
                         </tbody>
                 </table>
             </div>
@@ -181,14 +179,31 @@
 
         </div>
     </div>
-                        @endif
 
+
+    {{-- Modalele --}}
+                        @forelse ($rezervari as $rezervare) 
                                                 {{-- Modal pentru butonul de neseriosi --}}
                                                 <div class="modal fade text-dark" id="neseriosiRezervare{{ $rezervare->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
                                                         <div class="modal-header bg-danger">
-                                                            <h5 class="modal-title text-white" id="exampleModalLabel">Rezervare: <b>{{ $rezervare->nume }}</b></h5>
+                                                            <h5 class="modal-title text-white" id="exampleModalLabel">
+                                                                Rezervare: 
+                                                                <b>
+                                                                    @isset($rezervare->nr_adulti)
+                                                                        @foreach ($rezervare->pasageri_relation as $pasager)
+                                                                            @if(!$loop->last)
+                                                                                {{ $pasager->nume }},
+                                                                            @else
+                                                                                {{ $pasager->nume }}
+                                                                            @endif
+                                                                        @endforeach
+                                                                    @else
+                                                                        Rezervare bagaj
+                                                                    @endif
+                                                                </b>
+                                                            </h5>
                                                             <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
                                                             </button>
@@ -235,7 +250,22 @@
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
                                                         <div class="modal-header bg-danger">
-                                                            <h5 class="modal-title text-white" id="exampleModalLabel">Rezervare: <b>{{ $rezervare->nume }}</b></h5>
+                                                            <h5 class="modal-title text-white" id="exampleModalLabel">
+                                                                Rezervare: 
+                                                                <b>
+                                                                    @isset($rezervare->nr_adulti)
+                                                                        @foreach ($rezervare->pasageri_relation as $pasager)
+                                                                            @if(!$loop->last)
+                                                                                {{ $pasager->nume }},
+                                                                            @else
+                                                                                {{ $pasager->nume }}
+                                                                            @endif
+                                                                        @endforeach
+                                                                    @else
+                                                                        Rezervare bagaj
+                                                                    @endif
+                                                                </b>
+                                                            </h5>
                                                             <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
                                                             </button>
@@ -260,11 +290,8 @@
                                                         </div>
                                                         </div>
                                                     </div>
-                                                </div>
-
+                                                </div>                      
                         @empty
                             {{-- <div>Nu s-au gasit rezervări în baza de date. Încearcă alte date de căutare</div> --}}
                         @endforelse
-
-
 @endsection
