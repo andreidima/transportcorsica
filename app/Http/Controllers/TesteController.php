@@ -13,6 +13,11 @@ class TesteController extends Controller
 
     public function testeModaleApasaButon()
     {
-        return back()->with('status', 'Butonul a fost apasat cu succes!');
+        return back()->with('status', 'Butonul 1 a fost apasat cu succes!');
+    }
+
+    public function testeModaleApasaButon2()
+    {
+        return back()->with('status', 'Butonul 2 a fost apasat cu succes!');
     }
 }

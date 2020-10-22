@@ -31,10 +31,20 @@
                                                 data-target="#testeModala"
                                                 title="Teste Modala"
                                                 >
-                                                <h1>Testeaza Modala</h1>
+                                                <h1>Testeaza Modala 1</h1>
                                             </a>
                                         </div> 
                             
+                                        <div style="" class="">
+                                            <a 
+                                                href="#" 
+                                                data-toggle="modal" 
+                                                data-target="#testeModala2"
+                                                title="Teste Modala"
+                                                >
+                                                <h1>Testeaza Modala 2</h1>
+                                            </a>
+                                        </div>
                             
                                                 {{-- Modal pentru butonul de stergere --}}
                                                 <div class="modal fade text-dark" id="testeModala" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" 
@@ -43,7 +53,7 @@
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
                                                         <div class="modal-header bg-danger">
-                                                            <h5 class="modal-title text-white" id="exampleModalLabel">Testeaza Modala</b></h5>
+                                                            <h5 class="modal-title text-white" id="exampleModalLabel">Testeaza Modala 1</b></h5>
                                                             <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
                                                             </button>
@@ -71,5 +81,38 @@
                                                 </div>
 
     </div>
+                                                {{-- Modal pentru butonul de stergere --}}
+                                                <div class="modal fade text-dark" id="testeModala2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" 
+                                                    {{-- data-backdrop="false" --}}
+                                                >
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                        <div class="modal-header bg-danger">
+                                                            <h5 class="modal-title text-white" id="exampleModalLabel">Testeaza Modala 2</b></h5>
+                                                            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body" style="text-align:left;">
+                                                            Apasa butonul
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Nu</button>
+                                                            
+                                                            <form method="POST" action="teste-modale-apasa-buton-2">
+                                                                {{-- @method('DELETE')   --}}
+                                                                @csrf   
+                                                                <button 
+                                                                    type="submit" 
+                                                                    class="btn btn-danger"  
+                                                                    >
+                                                                    Da
+                                                                </button>                    
+                                                            </form>
+                                                        
+                                                        </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
 </body>
 </html>

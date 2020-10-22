@@ -40,6 +40,7 @@ Route::get('/orase_rezervari', [RezervareController::class, 'orase_rezervari']);
 
 Route::get('/teste-modale', [App\Http\Controllers\TesteController::class, 'testeModale']);
 Route::post('/teste-modale-apasa-buton', [App\Http\Controllers\TesteController::class, 'testeModaleApasaButon']);
+Route::post('/teste-modale-apasa-buton-2', [App\Http\Controllers\TesteController::class, 'testeModaleApasaButon2']);
 
 
 Route::group(['middleware' => 'auth'], function () {
