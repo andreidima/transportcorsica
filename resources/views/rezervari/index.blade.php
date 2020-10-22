@@ -172,8 +172,17 @@
                         </tbody>
                 </table>
             </div>
+
+                <nav>
+                    <ul class="pagination pagination-sm justify-content-center">
+                        {{$rezervari->appends(Request::except('page'))->links()}}
+                    </ul>
+                </nav>
+
+        </div>
+    </div>
                         @endif
-                                                
+
                                                 {{-- Modal pentru butonul de neseriosi --}}
                                                 <div class="modal fade text-dark" id="neseriosiRezervare{{ $rezervare->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog" role="document">
@@ -257,12 +266,5 @@
                             {{-- <div>Nu s-au gasit rezervări în baza de date. Încearcă alte date de căutare</div> --}}
                         @endforelse
 
-                <nav>
-                    <ul class="pagination pagination-sm justify-content-center">
-                        {{$rezervari->appends(Request::except('page'))->links()}}
-                    </ul>
-                </nav>
 
-        </div>
-    </div>
 @endsection
