@@ -309,7 +309,7 @@ class RezervareController extends Controller
             }
         }
 
-        return redirect('/rezervari')->with('status', 'Rezervarea pentru clientul "' . $rezervare->nume . '" a fost ștearsă cu succes!');
+        return redirect('/rezervari')->with('status', 'Rezervarea a fost ștearsă cu succes!');
     }
 
 
