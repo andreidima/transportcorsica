@@ -330,7 +330,7 @@
                 @empty
                 @endforelse
                     <tr>
-                        <td colspan="6" style="text-align:right">
+                        <td colspan="5" style="text-align:right">
                             <b>Total</b>
                         </td>
                         <td style="text-align:center">
@@ -338,6 +338,9 @@
                         </td>
                         <td style="text-align:center">
                             <b>{{ $rezervari->sum('nr_adulti') }}</b>
+                        </td>
+                        <td>
+                            
                         </td>
                     </tr>
 
