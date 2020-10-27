@@ -785,7 +785,7 @@
                                                             type="text" 
                                                             class="form-control form-control-sm mx-1 {{ $errors->has('pret_total') ? 'is-invalid' : '' }}" 
                                                             style="width:70px"
-                                                            name="pret_total"
+                                                            name="pret_total_tur"
                                                             {{ 
                                                                 (isset($tip_operatie) && ($tip_operatie === "modificare")) ? 
                                                                     'value=' . old('pret_total_tur', ($rezervare->pret_total_tur ?? '')) 

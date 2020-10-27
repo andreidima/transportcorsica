@@ -802,6 +802,7 @@ class RezervareController extends Controller
      */
     public function postAdaugaRezervarePasul1(Request $request)
     {
+        // dd($request);
         if(empty($request->session()->get('rezervare'))){
             $rezervare = new Rezervare();
             $rezervare->fill($this->validateRequest($request));
