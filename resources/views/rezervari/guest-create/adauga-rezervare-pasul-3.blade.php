@@ -30,7 +30,20 @@
                                     @isset ($rezervare_tur)
                                         <div class="col-lg-11 px-0 border rounded-lg">
                                             <h5 class="bg-warning p-1 m-0 text-center">
-                                                <b>{{ $rezervare_tur->nume }}</b>, rezervarea a fost înregistrată cu codul <b>RO{{ $rezervare_tur->id }}</b>
+                                                Rezervarea a fost înregistrată cu codul <b>RO{{ $rezervare_tur->id }}</b>
+                                                <br>
+                                                @isset($rezervare_tur->nr_adulti)
+                                                    Pasageri:
+                                                    @foreach ($rezervare_tur->pasageri_relation as $pasager)
+                                                        @if(!$loop->last)
+                                                            {{ $pasager->nume }},
+                                                        @else
+                                                            {{ $pasager->nume }}
+                                                        @endif
+                                                    @endforeach
+                                                @else
+                                                    Rezervare bagaj
+                                                @endif
                                             </h5>
                                         </div>
                                         <div class="col-lg-11 p-4 bg-white border rounded-lg">

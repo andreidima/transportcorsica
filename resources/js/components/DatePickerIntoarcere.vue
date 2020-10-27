@@ -74,6 +74,9 @@ export default {
           return (date.getTime() > notAfter.getTime());
         }
       },
+      dataintoarcere: function () {
+        this.$emit('dataintoarcere', this.time);
+      }
     },
     created() {
         if (this.dataVeche == "") {
@@ -81,8 +84,10 @@ export default {
         else {
           this.time = this.dataVeche
         }
+        this.dataintoarcere('dataIntoarcereTrimisa');
     },
     updated() {
+        this.dataintoarcere('dataIntoarcereTrimisa');
     }
 
 

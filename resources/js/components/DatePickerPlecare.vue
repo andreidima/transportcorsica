@@ -74,6 +74,10 @@ export default {
           return (date.getTime() > notAfter.getTime());
         }
       },
+      dataplecare: function () {
+        // dataplecare = 'dataPlecareTrimisa';
+        this.$emit('dataplecare', this.time);
+      }
     },
     created() {
         if (this.dataVeche == "") {
@@ -81,8 +85,11 @@ export default {
         else {
           this.time = this.dataVeche
         }
+        this.dataplecare('dataPlecareTrimisa');
     },
     updated() {
+        this.dataplecare('dataPlecareTrimisa');
+      
     }
 
 

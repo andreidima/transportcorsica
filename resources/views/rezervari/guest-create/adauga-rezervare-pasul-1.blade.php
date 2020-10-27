@@ -46,7 +46,8 @@
                                             <input type="radio" class="btn-group-toggle" name="tip_calatorie" id="tip_calatorie1" autocomplete="off"
                                                 v-model="tip_calatorie" value="Calatori"
                                                 {{-- v-on:change="setTaraPlecare();getJudetePlecareInitial();getJudeteSosireInitial();setPreturi();" --}}
-                                                v-on:change="setTaraPlecare();getOrasePlecare();getOraseSosire();setPreturi();"
+                                                {{-- v-on:change="setTaraPlecare();getOrasePlecare();getOraseSosire();setPreturi();" --}}
+                                                v-on:change="setTaraPlecare();getOrasePlecare();getOraseSosire();"
                                                 >
                                                     <i class="fas fa-users" style="font-size: 2em;"></i>
                                                     <span style="font-size: 2em;">
@@ -57,7 +58,8 @@
                                             <input type="radio" class="btn-group-toggle" name="tip_calatorie" id="tip_calatorie2" autocomplete="off"
                                                 v-model="tip_calatorie" value="Bagaje"
                                                 {{-- v-on:change="setTaraPlecare();getJudetePlecareInitial();getJudeteSosireInitial();setPreturi();" --}}
-                                                v-on:change="setTaraPlecare();getOrasePlecare();getOraseSosire();setPreturi();"
+                                                {{-- v-on:change="setTaraPlecare();getOrasePlecare();getOraseSosire();setPreturi();" --}}
+                                                v-on:change="setTaraPlecare();getOrasePlecare();getOraseSosire();"
                                                 >
                                                     <i class="fas fa-box" style="font-size: 2em;"></i>
                                                     <span style="font-size: 2em;">
@@ -78,7 +80,8 @@
                                         <label class="btn btn-success btn-sm border" v-bind:class="[traseu=='Romania-Corsica' ? active : '']">
                                             <input type="radio" class="btn-group-toggle" name="traseu" id="traseu1" autocomplete="off"
                                                 v-model="traseu" value="Romania-Corsica"
-                                                v-on:change="setTaraPlecare();getOrasePlecare();getOraseSosire();setPreturi()"
+                                                {{-- v-on:change="setTaraPlecare();getOrasePlecare();getOraseSosire();setPreturi()" --}}
+                                                v-on:change="setTaraPlecare();getOrasePlecare();getOraseSosire();"
                                                 >
                                                     <span style="font-size: 1.2em;">
                                                         România -> Corsica
@@ -87,7 +90,8 @@
                                         <label class="btn btn-success btn-sm border" v-bind:class="[traseu=='Corsica-Romania' ? active : '']">
                                             <input type="radio" class="btn-group-toggle" name="traseu" id="traseu2" autocomplete="off"
                                                 v-model="traseu" value="Corsica-Romania"
-                                                v-on:change="setTaraPlecare();getOrasePlecare();getOraseSosire();setPreturi();"
+                                                {{-- v-on:change="setTaraPlecare();getOrasePlecare();getOraseSosire();setPreturi();" --}}
+                                                v-on:change="setTaraPlecare();getOrasePlecare();getOraseSosire();"
                                                 >
                                                     <span style="font-size: 1.2em;">
                                                         Corsica -> România
@@ -196,7 +200,7 @@
                                                 </div> 
                                             </div>
                                         </div>
-                                        <div class="custom-control custom-switch col-lg-3 text-center d-flex align-items-center">
+                                        <div class="custom-control custom-switch col-lg-3 text-center d-flex align-items-center justify-content-center">
                                             @if (old('tur_retur', ($rezervare->tur_retur ?? '')) === 'true')
                                                 <script type="application/javascript"> 
                                                     turReturVechi=true
@@ -212,7 +216,8 @@
                                             <input type="checkbox" class="custom-control-input custom-control-lg" id="customSwitch1" 
                                             name="tur_retur" v-model="tur_retur" value="true" required
                                             {{ old('tur_retur') == 'true' ? 'checked' : '' }}
-                                            @change='setPreturi();getPretTotal()'
+                                            {{-- @change='setPreturi();getPretTotal()' --}}
+                                            {{-- @change='getPretTotal()' --}}
                                             >
                                             <label class="custom-control-label" for="customSwitch1">TUR - RETUR</label>                                        
                                         </div>
@@ -242,57 +247,95 @@
                                                             <a href="tel:+40761329420" style="color:white"> +40 761 329 420</a>
                                                         </span>
                                         </div>
+
+                                                <script type="application/javascript"> 
+                                                    dataPlecareVeche={!! json_encode(old('data_plecare', ($rezervare->data_plecare ?? ''))) !!} 
+                                                    dataIntoarcereVeche={!! json_encode(old('data_intoarcere', ($rezervare->data_intoarcere ?? ''))) !!} 
+                                                </script>
                                         <div class="form-group col-lg-4 mb-2 d-flex justify-content-center align-items-end">
                                             <label for="data_plecare" class="mb-0 mr-2">Dată plecare:*</label>
                                             <div v-if="traseu === 'Romania-Corsica'" class=""> 
                                                 <vue2-datepicker-plecare
-                                                    data-veche="{{ old('data_plecare', ($rezervare->data_plecare ?? '')) }}"
+                                                    {{-- data-veche="{{ old('data_plecare', ($rezervare->data_plecare ?? '')) }}" --}}
+                                                    :data-veche="data_plecare_veche"
                                                     nume-camp-db="data_plecare"
                                                     :latime="{ width: '125px' }"
                                                     tip="date"
                                                     value-type="YYYY-MM-DD"
                                                     format="DD-MM-YYYY"
-                                                    not-before-date="{{ \Carbon\Carbon::today() }}"
+                                                    {{-- not-before-date="{{ \Carbon\Carbon::today() }}" --}}
+                                                    not-before-date="{{ auth()->check() ? \Carbon\Carbon::today()->subYear() : \Carbon\Carbon::today() }}"
                                                     :doar-ziua="3"
+                                                    @dataplecare="dataPlecareTrimisa"
+                                                    {{-- v-on:dataplecare="dataPlecareTrimisa" --}}
                                                 ></vue2-datepicker-plecare>
                                             </div> 
                                             <div v-if="traseu === 'Corsica-Romania'">
                                                 <vue2-datepicker-intoarcere
-                                                    data-veche="{{ old('data_plecare', ($rezervare->data_plecare ?? '')) }}"
+                                                    {{-- data-veche="{{ old('data_plecare', ($rezervare->data_plecare ?? '')) }}" --}}
+                                                    :data-veche="data_plecare_veche"
                                                     nume-camp-db="data_plecare"
                                                     :latime="{ width: '125px' }"
                                                     tip="date"
                                                     value-type="YYYY-MM-DD"
                                                     format="DD-MM-YYYY"
-                                                    not-before-date="{{ \Carbon\Carbon::today() }}"
+                                                    {{-- not-before-date="{{ \Carbon\Carbon::today() }}" --}}
+                                                    not-before-date="{{ auth()->check() ? \Carbon\Carbon::today()->subYear() : \Carbon\Carbon::today() }}"
                                                     :doar-ziua="6"
+                                                    @dataintoarcere="dataIntoarcereTrimisa"
+                                                    {{-- v-on:dataplecare="dataPlecareTrimisa" --}}
                                                 ></vue2-datepicker-intoarcere> 
                                             </div>
                                         </div>
+                                        {{-- <div class="form-group col-lg-4 mb-2 justify-content-center align-items-end">
+                                            <br>
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control form-control-sm" 
+                                                    style="width:200px"
+                                                    name="pret_adult"
+                                                    v-model="data1"
+                                                > 
+                                            <br>
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control form-control-sm" 
+                                                    style="width:200px"
+                                                    name="pret_adult"
+                                                    v-model="data2"
+                                                > 
+                                            <br>
+                                        </div> --}}
                                         <div v-if="tur_retur" class="form-group col-lg-4 mb-2 d-flex justify-content-center align-items-end">
                                             <label for="data_intoarcere" class="mb-0 mr-2">Dată întoarcere:*</label>
                                             <div v-if="traseu === 'Romania-Corsica'">
                                                 <vue2-datepicker-intoarcere
-                                                    data-veche="{{ old('data_intoarcere', ($rezervare->data_intoarcere) ?? '') }}"
+                                                    {{-- data-veche="{{ old('data_intoarcere', ($rezervare->data_intoarcere) ?? '') }}" --}}
+                                                    :data-veche="data_intoarcere_veche"
                                                     nume-camp-db="data_intoarcere"
                                                     :latime="{ width: '125px' }"
                                                     tip="date"
                                                     value-type="YYYY-MM-DD"
                                                     format="DD-MM-YYYY"
-                                                    not-before-date="{{ \Carbon\Carbon::today() }}"
+                                                    {{-- not-before-date="{{ \Carbon\Carbon::today() }}" --}}
+                                                    not-before-date="{{ auth()->check() ? \Carbon\Carbon::today()->subYear() : \Carbon\Carbon::today() }}"
                                                     :doar-ziua="6"
+                                                    @dataintoarcere="dataIntoarcereTrimisa"
                                                 ></vue2-datepicker-intoarcere> 
                                             </div>
                                             <div v-if="traseu === 'Corsica-Romania'"> 
                                                 <vue2-datepicker-plecare
-                                                    data-veche="{{ old('data_intoarcere', ($rezervare->data_intoarcere ?? '')) }}"
+                                                    {{-- data-veche="{{ old('data_intoarcere', ($rezervare->data_intoarcere ?? '')) }}" --}}
+                                                    :data-veche="data_intoarcere_veche"
                                                     nume-camp-db="data_intoarcere"
                                                     :latime="{ width: '125px' }"
                                                     tip="date"
                                                     value-type="YYYY-MM-DD"
                                                     format="DD-MM-YYYY"
-                                                    not-before-date="{{ \Carbon\Carbon::today() }}"
+                                                    {{-- not-before-date="{{ \Carbon\Carbon::today() }}" --}}
+                                                    not-before-date="{{ auth()->check() ? \Carbon\Carbon::today()->subYear() : \Carbon\Carbon::today() }}"
                                                     :doar-ziua="3"
+                                                    @dataplecare="dataPlecareTrimisa"
                                                 ></vue2-datepicker-plecare>
                                             </div> 
                                         </div>
@@ -350,18 +393,23 @@
                                         style="background-color:lightseagreen; color:white"
                                     >
                                         <div class="form-group col-lg-12 mb-2 d-flex justify-content-center border-bottom">
-                                                <h5 class="mb-1">Pasageri și costuri:</h5>
+                                                <h5 class="mb-1">Prețuri:</h5>
                                         </div>
-                                        <div class="form-group col-lg-4 mb-4 d-flex">
-                                            <label for="pret_adult" class="col-form-label mb-0 mr-2">Preț per pasager: </label>
-                                            <div class="px-0" style="width:50px">
+                                        <script type="application/javascript"> 
+                                            pretAdult={!! json_encode($tarife->adult ?? '') !!} 
+                                            pretCopil={!! json_encode($tarife->copil ?? '') !!} 
+                                            pretAdultTurRetur={!! json_encode($tarife->adult_tur_retur ?? '') !!} 
+                                            pretCopilTurRetur={!! json_encode($tarife->copil_tur_retur ?? '') !!} 
+                                        </script>
+                                        <div class="form-group col-lg-6 d-flex">
+                                            <label for="pret_adult" class="col-form-label mb-0 mr-2">Preț adult: </label>
+                                            <div class="px-0">
                                                 <input 
                                                     type="text" 
-                                                    class="form-control form-control-sm {{ $errors->has('pret_adult') ? 'is-invalid' : '' }}" 
+                                                    class="form-control form-control-sm" 
+                                                    style="width:50px"
                                                     name="pret_adult"
                                                     v-model="pret_adult" 
-                                                    {{-- value="{{ old('pret_adult') }}" --}}
-                                                    {{-- value="{{ 120 }}" --}}
                                                     required
                                                     disabled>
                                             </div>
@@ -369,10 +417,68 @@
                                                 Euro
                                             </label>
                                         </div>
+                                        <div class="form-group col-lg-6 d-flex align-items-center">
+                                            <label for="pret_copil" class="col-form-label mb-0 mr-2">Preț copil (1-12 ani) (inclus Navă): </label>
+                                            <div class="px-0">
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control form-control-sm" 
+                                                    style="width:50px"
+                                                    name="pret_copil"
+                                                    v-model="pret_copil" 
+                                                    required
+                                                    disabled>
+                                            </div>
+                                            <label id="" class="col-form-label pl-1 align-bottom">
+                                                Euro
+                                            </label>
+                                        </div>
+                                        <div class="form-group col-lg-6 d-flex">
+                                            <label for="pret_adult" class="col-form-label mb-0 mr-2">Preț adult tur retur: </label>
+                                            <div class="px-0">
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control form-control-sm" 
+                                                    style="width:50px"
+                                                    name="pret_adult_tur_retur"
+                                                    v-model="pret_adult_tur_retur" 
+                                                    required
+                                                    disabled>
+                                            </div>
+                                            <label id="" class="col-form-label pl-1 align-bottom">
+                                                Euro
+                                            </label>
+                                        </div>
+                                        <div class="form-group col-lg-6 d-flex align-items-center">
+                                            <label for="pret_copil_tur_retur" class="col-form-label mb-0 mr-2">Preț copil tur retur (1-12 ani) (inclus Navă): </label>
+                                            <div class="px-0">
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control form-control-sm" 
+                                                    style="width:50px"
+                                                    name="pret_copil_tur_retur"
+                                                    v-model="pret_copil_tur_retur" 
+                                                    required
+                                                    disabled>
+                                            </div>
+                                            <label id="" class="col-form-label pl-1 align-bottom">
+                                                Euro
+                                            </label>
+                                        </div>
+                                        <div class="form-group col-lg-12 border-left border-warning" style="border-width:5px !important">
+                                            Prețurile tur retur sunt cu discount, dar se aplică doar dacă între tur și retur nu este o diferență mai mare de 14 zile.
+                                        </div>
+                                    </div>
+                                    <div v-if="tip_calatorie === 'Calatori'" class="form-row mb-4 px-2 pt-2 d-flex justify-content-center align-items-center border rounded"
+                                        style="background-color:lightseagreen; color:white"
+                                    >
+                                        <div class="form-group col-lg-12 mb-2 d-flex justify-content-center border-bottom">
+                                                <h5 class="mb-1">Pasageri:</h5>
+                                        </div>
                                         <div class="form-group col-lg-4 justify-content-center mb-4 d-flex">
 
                                             {{-- <div class="col-lg-6 px-0 d-flex align-self-center">                                                  --}}
-                                                <label for="nr_adulti" class="col-form-label mb-0 mr-2">Nr. pasageri:*</label>
+                                                <label for="nr_adulti" class="col-form-label mb-0 mr-2">Nr. adulți:*</label>
                                             {{-- </div> --}}
                                             
                                             {{-- <div class="col-lg-6 px-0 d-flex align-self-center">   --}}
@@ -401,7 +507,39 @@
                                                 </button>  
                                             {{-- </div> --}}
                                         </div>
-                                        <div class="form-group col-lg-4 justify-content-end mb-4 d-flex">
+                                        <div class="form-group col-lg-4 justify-content-center mb-4 d-flex">
+
+                                            {{-- <div class="col-lg-6 px-0 d-flex align-self-center">                                                  --}}
+                                                <label for="nr_copii" class="col-form-label mb-0 mr-2">Nr. copii:</label>
+                                            {{-- </div> --}}
+                                            
+                                            {{-- <div class="col-lg-6 px-0 d-flex align-self-center">   --}}
+                                                <button type="button" class="btn m-0 p-0 mb-1"
+                                                    v-on:click="nr_copii -= 1;getPretTotal()"
+                                                    >
+                                                    <i class="far fa-minus-square bg-danger text-white fa-2x"></i>
+                                                </button>  
+                                                <script type="application/javascript"> 
+                                                    nrCopiiVechi={!! json_encode(old('nr_copii', ($rezervare->nr_copii ?? '0')), JSON_NUMERIC_CHECK) !!}
+                                                </script>  
+                                                <div class="px-0" style="width:80px">                                  
+                                                    <input 
+                                                        type="text" 
+                                                        class="form-control form-control-sm {{ $errors->has('nr_copii') ? 'is-invalid' : '' }}" 
+                                                        name="nr_copii"
+                                                        v-model="nr_copii" 
+                                                        {{-- value="{{ old('nr_copii') }}" --}}
+                                                        required
+                                                        readonly>
+                                                </div>
+                                                <button type="button" class="btn m-0 p-0 mb-1" 
+                                                    v-on:click="nr_copii += 1;getPretTotal()">
+                                                    <i class="far fa-plus-square bg-success text-white fa-2x">
+                                                    </i>
+                                                </button>  
+                                            {{-- </div> --}}
+                                        </div>
+                                        {{-- <div class="form-group col-lg-4 justify-content-end mb-4 d-flex">
                                             <label for="pret_total" class="col-form-label mb-0 mr-2">Preț total:</label>
                                             <div class="px-0 d-flex" style="width:100px">
                                                 <input 
@@ -409,14 +547,13 @@
                                                     class="form-control form-control-sm {{ $errors->has('pret_total') ? 'is-invalid' : '' }}" 
                                                     name="pret_total"
                                                     v-model="pret_total" 
-                                                    {{-- value="{{ old('pret_total') }}" --}}
                                                     required
                                                     disabled>
                                                 <label id="" class="col-form-label pl-1 align-bottom">
                                                     Euro
                                                 </label>
                                             </div>
-                                        </div>   
+                                        </div>    --}}
                                         {{-- @php
                                             $flattened = \Illuminate\Support\Arr::flatten($rezervare->pasageri['nume']);
                                             $buletin_flattened = \Illuminate\Support\Arr::flatten(old('pasageri.buletin', ($rezervare->pasageri['buletin'] ?? [])))
@@ -427,71 +564,245 @@
                                         {{-- {{ $rezervare->pasageri['nume']->toArray() }} --}}
                                         <div class="form-group col-lg-12 justify-content-end m-0">  
                                                 <script type="application/javascript"> 
-                                                    numeVechi={!! json_encode(\Illuminate\Support\Arr::flatten(old('pasageri.nume', ($rezervare->pasageri['nume'] ?? [])))) !!}
-                                                    buletinVechi={!! json_encode(\Illuminate\Support\Arr::flatten(old('pasageri.buletin', ($rezervare->pasageri['buletin'] ?? [])))) !!}
+                                                    adultiNumeVechi={!! json_encode(\Illuminate\Support\Arr::flatten(old('adulti.nume', ($rezervare->adulti['nume'] ?? [])))) !!}
+                                                    adultiDataNastereVechi={!! json_encode(\Illuminate\Support\Arr::flatten(old('adulti.data_nastere', ($rezervare->adulti['data_nastere'] ?? [])))) !!}
+                                                    adultiLocalitateNastereVechi={!! json_encode(\Illuminate\Support\Arr::flatten(old('adulti.localitate_nastere', ($rezervare->adulti['localitate_nastere'] ?? [])))) !!}
+                                                    adultiSexVechi={!! json_encode(\Illuminate\Support\Arr::flatten(old('adulti.sex', ($rezervare->adulti['sex'] ?? [])))) !!}
                                                     
-                                                    dataNastereVechi={!! json_encode(\Illuminate\Support\Arr::flatten(old('pasageri.data_nastere', ($rezervare->pasageri['data_nastere'] ?? [])))) !!}
-                                                    localitateNastereVechi={!! json_encode(\Illuminate\Support\Arr::flatten(old('pasageri.localitate_nastere', ($rezervare->pasageri['localitate_nastere'] ?? [])))) !!}
-                                                    localitateDomiciliuVechi={!! json_encode(\Illuminate\Support\Arr::flatten(old('pasageri.localitate_domiciliu', ($rezervare->pasageri['localitate_domiciliu'] ?? [])))) !!}
+                                                    copiiNumeVechi={!! json_encode(\Illuminate\Support\Arr::flatten(old('copii.nume', ($rezervare->copii['nume'] ?? [])))) !!}
+                                                    copiiDataNastereVechi={!! json_encode(\Illuminate\Support\Arr::flatten(old('copii.data_nastere', ($rezervare->copii['data_nastere'] ?? [])))) !!}
+                                                    copiiLocalitateNastereVechi={!! json_encode(\Illuminate\Support\Arr::flatten(old('copii.localitate_nastere', ($rezervare->copii['localitate_nastere'] ?? [])))) !!}
+                                                    copiiSexVechi={!! json_encode(\Illuminate\Support\Arr::flatten(old('copii.sex', ($rezervare->copii['sex'] ?? [])))) !!}
+                                                    
+                                                    // buletinVechi={!! json_encode(\Illuminate\Support\Arr::flatten(old('pasageri.buletin', ($rezervare->pasageri['buletin'] ?? [])))) !!}
+                                                    // localitateNastereVechi={!! json_encode(\Illuminate\Support\Arr::flatten(old('pasageri.localitate_nastere', ($rezervare->pasageri['localitate_nastere'] ?? [])))) !!}
+                                                    // localitateDomiciliuVechi={!! json_encode(\Illuminate\Support\Arr::flatten(old('pasageri.localitate_domiciliu', ($rezervare->pasageri['localitate_domiciliu'] ?? [])))) !!}
                                                 </script>    
-                                            <div v-for="index in nr_adulti" :key="index">
-                                                <div class="form-row align-items-center mb-2" style="background-color:#005757; border-radius: 10px 10px 10px 10px;">
-                                                    <div class="form-group col-lg-2 mb-0 pb-0">
-                                                        Pasager @{{ index }}:
-                                                        <br>
-                                                        <button  type="button" class="btn m-0 p-0 mb-1" @click="stergePasager(index-1)">
-                                                            <span class="px-1" style="background-color:red; color:white; border-radius:20px">
-                                                                Șterge pasagerul
-                                                            </span>
-                                                        </button>
+                                            <div>
+                                                <div v-for="adult in nr_adulti" :key="adult">
+                                                    <div class="form-row align-items-start mb-2" style="background-color:#005757; border-radius: 10px 10px 10px 10px;">
+                                                        <div class="col-lg-2">
+                                                            <div class="row">
+                                                                <div class="form-group col-lg-12 mb-0 pb-0">
+                                                                    Adult @{{ adult }}:
+                                                                    <br>
+                                                                    <button  type="button" class="btn m-0 p-0 mb-1" @click="stergeAdult(adult-1)">
+                                                                        <span class="px-1" style="background-color:red; color:white; border-radius:20px">
+                                                                            Șterge adultul
+                                                                        </span>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-10">
+                                                            <div class="row">
+                                                                <div class="form-group col-lg-3">
+                                                                    <label for="adulti_nume" class="col-form-label col-form-label-sm mb-0 py-0 mr-2">Nume și prenume:</label>
+                                                                    <input type="text"
+                                                                        class="form-control form-control-sm"
+                                                                        :name="'adulti[nume][' + adult + ']'" 
+                                                                        v-model="adulti_nume[adult-1]">
+                                                                </div>
+                                                                {{-- <div class="form-group col-lg-3">
+                                                                    <label for="adulti_buletin" class="col-form-label col-form-label-sm mb-0 py-0 mr-2">Seria si nr. buletin:</label>
+                                                                    <input type="text" 
+                                                                        class="form-control form-control-sm"
+                                                                        :name="'adulti[buletin][' + adult + ']'"
+                                                                        v-model="adulti_buletin[adult-1]">
+                                                                </div> --}}
+                                                                <div class="form-group col-lg-3">
+                                                                    <label for="adulti_data_nastere" class="col-form-label col-form-label-sm mb-0 py-0 mr-2">Data nașterii:</label>
+                                                                    <input type="text" 
+                                                                        class="form-control form-control-sm"
+                                                                        placeholder="Ex: 01/01/2020"
+                                                                        :name="'adulti[data_nastere][' + adult + ']'"
+                                                                        v-model="adulti_data_nastere[adult-1]">
+                                                                </div>
+                                                                <div class="form-group col-lg-3">
+                                                                    <label for="adulti_licalitate_nastere" class="col-form-label col-form-label-sm mb-0 py-0 mr-2">Localitate naștere:</label>
+                                                                    <input type="text" 
+                                                                        class="form-control form-control-sm"
+                                                                        :name="'adulti[localitate_nastere][' + adult + ']'"
+                                                                        v-model="adulti_localitate_nastere[adult-1]">
+                                                                </div>
+                                                                <div class="form-group col-lg-3">
+                                                                    <label for="adulti_sex" class="col-form-label col-form-label-sm mb-0 py-0 mr-2">Sex:</label>
+                                                                    <select class="custom-select-sm custom-select"
+                                                                        :name="'adulti[sex][' + adult + ']'" 
+                                                                        v-model="adulti_sex[adult-1]">
+                                                                        >       
+                                                                        <option disabled value="">Selectează o opțiune</option>                                         
+                                                                        <option
+                                                                            v-for='tip_sex in tipuri_sex'
+                                                                            :value='tip_sex.nume'                  
+                                                                            >
+                                                                                @{{tip_sex.nume}}
+                                                                        </option>                                                
+                                                                    </select>
+                                                                </div>
+                                                                {{-- <div class="form-group col-lg-3">
+                                                                    <label for="pasageri_localitate_domiciliu" class="col-form-label col-form-label-sm mb-0 py-0 mr-2">Localitate domiciliu:</label>
+                                                                    <input type="text" 
+                                                                        class="form-control form-control-sm"
+                                                                        :name="'pasageri[localitate_domiciliu][' + adult + ']'"
+                                                                        v-model="localitate_domiciliu[adult-1]">
+                                                                </div> --}}
+                                                                <div class="col-lg-3">
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <div class="form-group col-lg-2">
-                                                        <label for="pasageri_nume" class="col-form-label col-form-label-sm mb-0 py-0 mr-2">Nume:</label>
-                                                        <input type="text"
-                                                            class="form-control form-control-sm"
-                                                            :name="'pasageri[nume][' + index + ']'" 
-                                                            v-model="nume[index-1]">
+                                                </div>  
+                                            </div>
+                                            <div>
+                                                <div v-for="copil in nr_copii" :key="copil">
+                                                    <div class="form-row align-items-start mb-2" style="background-color:#005757; border-radius: 10px 10px 10px 10px;">
+                                                        <div class="col-lg-2">
+                                                            <div class="row">
+                                                                <div class="form-group col-lg-12 mb-0 pb-0">
+                                                                    Copil @{{ copil }}:
+                                                                    <br>
+                                                                    <button  type="button" class="btn m-0 p-0 mb-1" @click="stergeCopil(copil-1)">
+                                                                        <span class="px-1" style="background-color:red; color:white; border-radius:20px">
+                                                                            Șterge copilul
+                                                                        </span>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-10">
+                                                            <div class="row">
+                                                                <div class="form-group col-lg-3">
+                                                                    <label for="copii_nume" class="col-form-label col-form-label-sm mb-0 py-0 mr-2">Nume și prenume:</label>
+                                                                    <input type="text"
+                                                                        class="form-control form-control-sm"
+                                                                        :name="'copii[nume][' + copil + ']'" 
+                                                                        v-model="copii_nume[copil-1]">
+                                                                </div>
+                                                                <div class="form-group col-lg-3">
+                                                                    <label for="copii_data_nastere" class="col-form-label col-form-label-sm mb-0 py-0 mr-2">Data nașterii:</label>
+                                                                    <input type="text" 
+                                                                        class="form-control form-control-sm"
+                                                                        placeholder="Ex: 01/01/2020"
+                                                                        :name="'copii[data_nastere][' + copil + ']'"
+                                                                        v-model="copii_data_nastere[copil-1]">
+                                                                </div>
+                                                                <div class="form-group col-lg-3">
+                                                                    <label for="copii_licalitate_nastere" class="col-form-label col-form-label-sm mb-0 py-0 mr-2">Localitate naștere:</label>
+                                                                    <input type="text" 
+                                                                        class="form-control form-control-sm"
+                                                                        :name="'copii[localitate_nastere][' + copil + ']'"
+                                                                        v-model="copii_localitate_nastere[copil-1]">
+                                                                </div>
+                                                                <div class="form-group col-lg-3">
+                                                                    <label for="copii_sex" class="col-form-label col-form-label-sm mb-0 py-0 mr-2">Sex:</label>
+                                                                    <select class="custom-select-sm custom-select"
+                                                                        :name="'copii[sex][' + copil + ']'" 
+                                                                        v-model="copii_sex[copil-1]">
+                                                                        >       
+                                                                        <option disabled value="">Selectează o opțiune</option>                                         
+                                                                        <option
+                                                                            v-for='tip_sex in tipuri_sex'
+                                                                            :value='tip_sex.nume'                  
+                                                                            >
+                                                                                @{{tip_sex.nume}}
+                                                                        </option>                                                
+                                                                    </select>
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <div class="form-group col-lg-2">
-                                                        <label for="pasageri_buletin" class="col-form-label col-form-label-sm mb-0 py-0 mr-2">Seria si nr. buletin:</label>
-                                                        <input type="text" 
-                                                            class="form-control form-control-sm"
-                                                            :name="'pasageri[buletin][' + index + ']'"
-                                                            v-model="buletin[index-1]">
-                                                    </div>
-                                                    <div class="form-group col-lg-2">
-                                                        <label for="pasageri_data_nastere" class="col-form-label col-form-label-sm mb-0 py-0 mr-2">Data nașterii:</label>
-                                                        <input type="text" 
-                                                            class="form-control form-control-sm"
-                                                            placeholder="Ex: 01/01/2020"
-                                                            :name="'pasageri[data_nastere][' + index + ']'"
-                                                            v-model="data_nastere[index-1]">
-                                                    </div>
-                                                    <div class="form-group col-lg-2">
-                                                        <label for="pasageri_licalitate_nastere" class="col-form-label col-form-label-sm mb-0 py-0 mr-2">Localitate naștere:</label>
-                                                        <input type="text" 
-                                                            class="form-control form-control-sm"
-                                                            :name="'pasageri[localitate_nastere][' + index + ']'"
-                                                            v-model="localitate_nastere[index-1]">
-                                                    </div>
-                                                    <div class="form-group col-lg-2">
-                                                        <label for="pasageri_localitate_domiciliu" class="col-form-label col-form-label-sm mb-0 py-0 mr-2">Localitate domiciliu:</label>
-                                                        <input type="text" 
-                                                            class="form-control form-control-sm"
-                                                            :name="'pasageri[localitate_domiciliu][' + index + ']'"
-                                                            v-model="localitate_domiciliu[index-1]">
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                    </div>
-                                                </div>
-                                            </div>     
+                                                </div>  
+                                            </div>
                                         </div>                  
                                         {{-- <div class="form-group col-lg-12 mb-2 justify-content-center"> 
                                             <label for="pasageri" class="mb-0">Pasageri(numele si seria de buletin pentru fiecare pasager):*</label>
                                             <textarea class="form-control {{ $errors->has('pasageri') ? 'is-invalid' : '' }}" 
                                                 name="pasageri" id="pasageri" rows="2">{{ old('pasageri') }}</textarea>
                                         </div>  --}}
-                                    </div>  
+                                    </div> 
+                                    <div v-if="tip_calatorie === 'Calatori'" class="form-row mb-4 px-2 pt-2 d-flex justify-content-center align-items-center border rounded"
+                                        style="background-color:lightseagreen; color:white"
+                                    >
+                                        <div v-if="tur_retur" class="col-lg-12">
+                                            {{-- <div class="form-group col-lg-12 mb-1"> --}}
+                                                <div class="row justify-content-center">
+                                                    <div class="col-lg-5 d-flex justify-content-center">
+                                                        <h5 class="mb-0 d-flex align-items-center">
+                                                            Preț tur:
+                                                                <input 
+                                                                    type="text" 
+                                                                    class="form-control form-control-sm mx-1 {{ $errors->has('pret_total') ? 'is-invalid' : '' }}" 
+                                                                    style="width:70px"
+                                                                    name="pret_total_tur"
+                                                                    {{ 
+                                                                        (isset($tip_operatie) && ($tip_operatie === "modificare")) ? 
+                                                                            'value=' . old('pret_total_tur', ($rezervare->pret_total_tur ?? '')) 
+                                                                            : 
+                                                                            'v-model=pret_total_tur' 
+                                                                    }}
+                                                                    required
+                                                                    {{ auth()->check() ? '' : 'disabled' }}
+                                                                >
+                                                            <label id="" class="col-form-label pl-1 align-bottom">
+                                                                Euro
+                                                            </label>
+                                                        </h5>
+                                                    </div>
+                                                    <div class="col-lg-5 d-flex justify-content-center">
+                                                        <h5 class="mb-0 d-flex align-items-center">
+                                                            Preț retur:
+                                                            <input 
+                                                                type="text" 
+                                                                class="form-control form-control-sm mx-1 {{ $errors->has('pret_total') ? 'is-invalid' : '' }}" 
+                                                                style="width:70px"
+                                                                name="pret_total_retur"
+                                                                {{ 
+                                                                    (isset($tip_operatie) && ($tip_operatie === "modificare")) ? 
+                                                                        'value=' . old('pret_total_retur', ($rezervare->pret_total_retur ?? '')) 
+                                                                        : 
+                                                                        'v-model=pret_total_retur' 
+                                                                }} 
+                                                                required
+                                                                {{ auth()->check() ? '' : 'disabled' }}
+                                                            >
+                                                            <label id="" class="col-form-label pl-1 align-bottom">
+                                                                Euro
+                                                            </label>
+                                                        </h5>
+                                                    </div>
+                                                </div>
+                                            {{-- </div> --}}
+                                        </div>
+                                        <div v-else>
+                                            <div class="form-group col-lg-12 mb-1 d-flex justify-content-center">
+                                                <div>
+                                                    <h5 class="mb-0 d-flex align-items-center">
+                                                        Preț total:
+                                                        <input 
+                                                            type="text" 
+                                                            class="form-control form-control-sm mx-1 {{ $errors->has('pret_total') ? 'is-invalid' : '' }}" 
+                                                            style="width:70px"
+                                                            name="pret_total"
+                                                            {{ 
+                                                                (isset($tip_operatie) && ($tip_operatie === "modificare")) ? 
+                                                                    'value=' . old('pret_total_tur', ($rezervare->pret_total_tur ?? '')) 
+                                                                    : 
+                                                                    'v-model=pret_total_tur' 
+                                                            }}
+                                                            required
+                                                            {{ auth()->check() ? '' : 'disabled' }}
+                                                        >
+                                                        <label id="" class="col-form-label pl-1 align-bottom">
+                                                            Euro
+                                                        </label>
+                                                    </h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> 
                                     <div v-else class="form-row mb-4 px-2 py-3 d-flex justify-content-center align-items-center border rounded"
                                         style="background-color:lightseagreen; color:white"
                                     >                       

@@ -104,6 +104,7 @@
                         <th>Destinație</th>
                         <th>Preț</th>
                         <th>Nr. pers</th>
+                        <th>Kg. bagaj</th>
                     </tr>
                 @forelse ($rezervari as $rezervare)
                     <tr style="background-color:rgb(105, 255, 248); color:black">
@@ -128,10 +129,13 @@
                         <td style="text-align:center">
                             {{ $rezervare->nr_adulti }}
                         </td>
+                        <td>
+
+                        </td>
                     </tr>
                     <tr>
                         <td style="border-top:0rem; border-bottom:0rem"></td>
-                        <td colspan="6" style="border-left:0rem">
+                        <td colspan="7" style="border-left:0rem">
                             {{-- Pasageri: --}}
                     @forelse ($rezervare->pasageri_relation as $pasager)
                         @if ($loop->index === 1)
@@ -151,7 +155,7 @@
                     @if ($rezervare->observatii)
                     <tr>
                         <td style="border-top:0rem; border-bottom:0rem"></td>
-                        <td colspan="6">
+                        <td colspan="7">
                             Observații: {{ $rezervare->observatii }}
                         </td>
                     </tr>
@@ -168,7 +172,7 @@
                             @if ($nr_crt === 1)                            
                     <tr>
                         <td style="border-top:0rem; border-bottom:0rem"></td>
-                        <td colspan="6">
+                        <td colspan="7">
                                 Clienți neserioși:
                             @endif
                             {{ \App\Models\ClientNeserios::where('nume', $pasager->nume)->first()->nume }} - 
@@ -183,7 +187,7 @@
                     @else
                         <tr>
                             <td style="border-top:0rem; border-bottom:0rem"></td>
-                            <td colspan="6">
+                            <td colspan="7">
                                 Rezervare Bagaj {{ $rezervare->bagaje_kg ? ':' . $rezervare->bagaje_kg . 'kg' : '' }}
                                 @isset ($rezervare->bagaje_descriere)
                                     <br>
@@ -204,6 +208,9 @@
                         </td>
                         <td style="text-align:center">
                             <b>{{ $rezervari->sum('nr_adulti') }}</b>
+                        </td>
+                        <td>
+                            
                         </td>
                     </tr>
 
@@ -249,6 +256,7 @@
                         <th>Plecare</th>
                         <th>Preț</th>
                         <th>Nr. pers</th>
+                        <th>Kg. bagaj</th>
                     </tr>
                 @forelse ($rezervari as $rezervare)
                     <tr style="background-color:#e7d790; color:black">
@@ -273,10 +281,13 @@
                         <td style="text-align:center">
                             {{ $rezervare->nr_adulti }}
                         </td>
+                        <td>
+                            
+                        </td>
                     </tr>
                     <tr>
                         <td style="border-top:0rem; border-bottom:0rem"></td>
-                        <td colspan="6" style="border-left:0rem">
+                        <td colspan="7" style="border-left:0rem">
                             {{-- Pasageri: --}}
                     @forelse ($rezervare->pasageri_relation as $pasager)
                         @if ($loop->index === 1)
@@ -296,7 +307,7 @@
                     @if ($rezervare->observatii)
                     <tr>
                         <td style="border-top:0rem; border-bottom:0rem"></td>
-                        <td colspan="6">
+                        <td colspan="7">
                             Observații: {{ $rezervare->observatii }}
                         </td>
                     </tr>
@@ -306,7 +317,7 @@
                     @else
                         <tr>
                             <td style="border-top:0rem; border-bottom:0rem"></td>
-                            <td colspan="6">
+                            <td colspan="7">
                                 Rezervare Bagaj {{ $rezervare->bagaje_kg ? ':' . $rezervare->bagaje_kg . 'kg' : '' }}
                                 @isset ($rezervare->bagaje_descriere)
                                     <br>
@@ -319,7 +330,7 @@
                 @empty
                 @endforelse
                     <tr>
-                        <td colspan="5" style="text-align:right">
+                        <td colspan="6" style="text-align:right">
                             <b>Total</b>
                         </td>
                         <td style="text-align:center">

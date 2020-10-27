@@ -89,17 +89,17 @@
                     </td>
                 </tr>
                 <tr>
-                    <td width="35%" style="">
-                        Client: 
+                    <td width="" style="">
+                        {{-- Client: 
                         <br>
-                        <b>{{ $rezervare_tur->nume }}</b>
+                        <b>{{ $rezervare_tur->nume }}</b> --}}
                     </td>
-                    <td width="25%" style="text-align:center;">
+                    <td width="50%" style="text-align:center;">
                         Telefon: 
                         <br>
                         <b>{{ $rezervare_tur->telefon }}</b>
                     </td>
-                    <td width="40%" style="text-align:right;">
+                    <td width="50%" style="text-align:center;">
                         E-mail: 
                         <br>
                         <b>{{ $rezervare_tur->email }}</b>
@@ -136,7 +136,7 @@
                     <td style="">
                         Oraș plecare:
                         <br>
-                        <b>{{ $rezervare_tur->oras_plecare_nume->oras }}</b>
+                        <b>{{ $rezervare_tur->oras_plecare_nume->oras ?? '' }}</b>
                     </td>
                     <td>
                         <img src="{{ asset('images/sageata dreapta.jpg') }}" width="50px">
@@ -144,7 +144,7 @@
                     <td style="">
                         Oraș sosire:
                         <br>
-                        <b>{{ $rezervare_tur->oras_sosire_nume->oras }}</b>
+                        <b>{{ $rezervare_tur->oras_sosire_nume->oras ?? '' }}</b>
                     </td>
                 </tr>
                 <tr>
@@ -163,7 +163,7 @@
                         <td style="">
                             Oraș sosire:
                             <br>
-                            <b>{{ $rezervare_retur->oras_plecare_nume->oras }}</b>
+                            <b>{{ $rezervare_retur->oras_sosire_nume->oras ?? '' }}</b>
                         </td>
                         <td>
                         <img src="{{ asset('images/sageata stanga.jpg') }}" width="50px">
@@ -171,7 +171,7 @@
                         <td style="">
                             Oraș plecare:
                             <br>
-                            <b>{{ $rezervare_retur->oras_sosire_nume->oras }}</b>
+                            <b>{{ $rezervare_retur->oras_plecare_nume->oras ?? '' }}</b>
                         </td>
                     </tr>
                 @endif
@@ -191,26 +191,41 @@
                                 <span style="margin-right:50px">
                                     Pasageri: <b>{{ $rezervare_tur->nr_adulti }}</b>
                                 </span>
-                                <span>
-                                    Preț total: <b>{{ $rezervare_tur->pret_total }}Euro</b>
-                                </span>
+                                @if ($rezervare_retur && ($rezervare_retur->pret_total > 0))
+                                    <span style="margin-right:50px">
+                                        Preț tur: <b>{{ $rezervare_tur->pret_total }}Euro</b>
+                                    </span>
+                                    <span>
+                                        Preț retur: <b>{{ $rezervare_retur->pret_total }}Euro</b>
+                                    </span>
+                                @else
+                                    <span>
+                                        Preț total: <b>{{ $rezervare_tur->pret_total }}Euro</b>
+                                    </span>
+                                @endif
                             </td>
                         </tr>
                         <tr>
                             <td style="border: solid 1px gray">
                                 Nume:
                             </td>
-                            <td style="border: solid 1px gray">
+                            {{-- <td style="border: solid 1px gray">
                                 Buletin
-                            </td>
+                            </td> --}}
                             <td style="border: solid 1px gray">
                                 Data naștere
                             </td>
                             <td style="border: solid 1px gray">
                                 Localitate naștere
                             </td>
-                            <td style="border: solid 1px gray">
+                            {{-- <td style="border: solid 1px gray">
                                 Localitate domiciliu
+                            </td> --}}
+                            <td style="border: solid 1px gray">
+                                Sex
+                            </td>
+                            <td style="border: solid 1px gray">
+                                Categorie
                             </td>
                         </tr>
                         @foreach ($rezervare_tur->pasageri_relation as $pasager)
@@ -218,24 +233,30 @@
                             <td style="border: solid 1px gray">
                                 {{ $pasager->nume }}
                             </td>
-                            <td style="border: solid 1px gray">
+                            {{-- <td style="border: solid 1px gray">
                                 {{ $pasager->buletin }}
-                            </td>
+                            </td> --}}
                             <td style="border: solid 1px gray">
                                 {{ $pasager->data_nastere }}
                             </td>
                             <td style="border: solid 1px gray">
                                 {{ $pasager->localitate_nastere }}
                             </td>
-                            <td style="border: solid 1px gray">
+                            {{-- <td style="border: solid 1px gray">
                                 {{ $pasager->localitate_domiciliu }}
+                            </td> --}}
+                            <td style="border: solid 1px gray">
+                                {{ $pasager->sex }}
+                            </td>
+                            <td style="border: solid 1px gray">
+                                {{ $pasager->categorie }}
                             </td>
                         </tr> 
                         @endforeach      
                         </tr>
                     @else
                         <tr>
-                            <td colspan="5">
+                            <td colspan="4">
                                 Descriere bagaj: {{ $rezervare_tur->bagaje_descriere }}
                                 <br>
                                 <b>Cantitate: {{ $rezervare_tur->bagaje_kg }}Kg</b>

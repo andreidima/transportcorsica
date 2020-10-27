@@ -2089,14 +2089,21 @@ __webpack_require__.r(__webpack_exports__);
 
         return date.getTime() > _notAfter.getTime();
       }
+    },
+    dataintoarcere: function dataintoarcere() {
+      this.$emit('dataintoarcere', this.time);
     }
   },
   created: function created() {
     if (this.dataVeche == "") {} else {
       this.time = this.dataVeche;
     }
+
+    this.dataintoarcere('dataIntoarcereTrimisa');
   },
-  updated: function updated() {}
+  updated: function updated() {
+    this.dataintoarcere('dataIntoarcereTrimisa');
+  }
 });
 
 /***/ }),
@@ -2190,14 +2197,22 @@ __webpack_require__.r(__webpack_exports__);
 
         return date.getTime() > _notAfter.getTime();
       }
+    },
+    dataplecare: function dataplecare() {
+      // dataplecare = 'dataPlecareTrimisa';
+      this.$emit('dataplecare', this.time);
     }
   },
   created: function created() {
     if (this.dataVeche == "") {} else {
       this.time = this.dataVeche;
     }
+
+    this.dataplecare('dataPlecareTrimisa');
   },
-  updated: function updated() {}
+  updated: function updated() {
+    this.dataplecare('dataPlecareTrimisa');
+  }
 });
 
 /***/ }),
@@ -94863,6 +94878,34 @@ Vue.component('vue2-datepicker-intoarcere', __webpack_require__(/*! ./components
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
+// Vue.component('button-counter', {
+//     template: '<label v-on:click="increment">{{ counter }}</label>',
+//     data: function () {
+//         return {
+//             counter: 0
+//         }
+//     },
+//     methods: {
+//         increment: function () {
+//             this.counter++
+//             this.$emit('increment')
+//         }
+//     },
+// })
+// Vue.component('data-plecare', {
+//     template: '<label v-on:click="dataplecare">asd</label>',
+//     data: function () {
+//         return {
+//             // counter: 0
+//         }
+//     },
+//     methods: {
+//         dataplecare: function () {
+//             // this.counter++
+//             this.$emit('dataplecare')
+//         }
+//     },
+// })
 
 if (document.querySelector('#app1')) {
   var app1 = new Vue({
@@ -94874,13 +94917,21 @@ if (document.querySelector('#adauga-rezervare')) {
   var _app = new Vue({
     el: '#adauga-rezervare',
     data: {
-      // nume: [[]],
-      // buletin: [[]],
-      nume: numeVechi,
-      buletin: buletinVechi,
-      data_nastere: dataNastereVechi,
-      localitate_nastere: localitateNastereVechi,
-      localitate_domiciliu: localitateDomiciliuVechi,
+      adulti_nume: adultiNumeVechi,
+      adulti_data_nastere: adultiDataNastereVechi,
+      adulti_localitate_nastere: adultiLocalitateNastereVechi,
+      adulti_sex: adultiSexVechi,
+      copii_nume: copiiNumeVechi,
+      copii_data_nastere: copiiDataNastereVechi,
+      copii_localitate_nastere: copiiLocalitateNastereVechi,
+      copii_sex: copiiSexVechi,
+      // buletin: buletinVechi,
+      // localitate_domiciliu: localitateDomiciliuVechi,
+      tipuri_sex: [{
+        nume: 'M'
+      }, {
+        nume: 'F'
+      }],
       tip_calatorie: tipCalatorieVeche,
       traseu: traseuVechi,
       active: "active",
@@ -94893,15 +94944,56 @@ if (document.querySelector('#adauga-rezervare')) {
       // judete_sosire: null,
       oras_sosire: orasSosireVechi,
       orase_sosire: '',
+      // sex: '',
       nr_adulti: nrAdultiVechi,
-      pret_adult: 0,
-      pret_copil: 0,
+      nr_copii: nrCopiiVechi,
+      pret_adult: pretAdult,
+      pret_copil: pretCopil,
+      pret_adult_tur_retur: pretAdultTurRetur,
+      pret_copil_tur_retur: pretCopilTurRetur,
       pret_animal_mic: 0,
       pret_animal_mare: 0,
       pret_adult_cu_reducere_10_procente: 0,
       pret_copil_cu_reducere_10_procente: 0,
-      pret_total: '',
-      tur_retur: turReturVechi
+      pret_total_tur: '',
+      pret_total_retur: '',
+      tur_retur: turReturVechi,
+      tur_retur_test: '',
+      data1: '',
+      data2: '',
+      diferenta_date: '',
+      data_plecare_veche: dataPlecareVeche,
+      data_intoarcere_veche: dataIntoarcereVeche
+    },
+    watch: {
+      traseu: function traseu() {
+        this.data_plecare_veche = '';
+        this.data_intoarcere_veche = '';
+      },
+      data1: function data1() {
+        this.getPretTotal();
+      },
+      data2: function data2() {
+        this.getPretTotal();
+      },
+      tur_retur: function tur_retur() {
+        if (this.tur_retur == false) {
+          // if (this.traseu == "Romania-Corsica") {
+          //     this.data2 = '';
+          //     this.tur_retur_test = 1
+          // }
+          // else if (this.traseu == "Corsica-Romania") {
+          //     this.data2 = '';
+          //     this.tur_retur_test = 2
+          // } else {
+          //     this.tur_retur_test = 3;
+          // }
+          this.data2 = '';
+          this.diferenta_date = '';
+        }
+
+        this.getPretTotal();
+      }
     },
     created: function created() {
       this.setTaraPlecare(); // this.getJudetePlecareInitial()
@@ -94910,8 +95002,8 @@ if (document.querySelector('#adauga-rezervare')) {
       this.getOrasePlecare(); // this.getJudeteSosireInitial()
       // this.getOraseSosireInitial()
 
-      this.getOraseSosire();
-      this.setPreturi();
+      this.getOraseSosire(); // this.setPreturi()
+
       this.getPretTotal();
     },
     methods: {
@@ -95016,31 +95108,130 @@ if (document.querySelector('#adauga-rezervare')) {
           _app.orase_sosire = response.data.raspuns;
         });
       },
-      setPreturi: function setPreturi() {
-        if (this.tur_retur == false) {
-          this.pret_adult = 120;
-        } else if (this.tur_retur == true) {
-          this.pret_adult = 200;
+      // setPreturi() {
+      //     if (this.tur_retur == false) {
+      //         this.pret_adult = 120;
+      //     } else if (this.tur_retur == true) {
+      //         this.pret_adult = 200;
+      //     }
+      // },
+      getPretTotal: function getPretTotal() {
+        // this.pret_total = 5;
+        // if (this.tur_retur == false) {
+        //     if (!isNaN(this.nr_adulti) && (this.nr_adulti > 0)) {
+        //         this.pret_total = this.pret_total + this.pret_adult * this.nr_adulti
+        //     }
+        //     if (!isNaN(this.nr_copii) && (this.nr_copii > 0)) {
+        //         this.pret_total = this.pret_total + this.pret_copil * this.nr_copii
+        //     } 
+        // } else if (this.tur_retur == true) {
+        //     if (this.data_plecare && this.data_intoarcere){
+        //         dt1 = new Date(this.data_plecare)
+        //         dt2 = new Date(this.data_intoarcere)
+        //         this.diferenta_date = Math.floor((Date.UTC(dt2.getFullYear(), dt2.getMonth(), dt2.getDate()) - Date.UTC(dt1.getFullYear(), dt1.getMonth(), dt1.getDate())) / (1000 * 60 * 60 * 24))
+        //         if (this.diferenta_date < 15) {
+        //             if (!isNaN(this.nr_adulti) && (this.nr_adulti > 0)) {
+        //                 this.pret_total = this.pret_total + this.pret_adult_tur_retur * this.nr_adulti
+        //             }
+        //             if (!isNaN(this.nr_copii) && (this.nr_copii > 0)) {
+        //                 this.pret_total = this.pret_total + this.pret_copil_tur_retur * this.nr_copii
+        //             }
+        //         }
+        //     } else {
+        //         this.pret_adult = 200;
+        //         this.pret_total = 3;
+        //     }
+        // } else{
+        //     this.pret_total = 2
+        // }
+        this.pret_total_tur = 0;
+        this.pret_total_retur = 0;
+
+        if (this.data1 && this.data2) {
+          dt1 = new Date(this.data1);
+          dt2 = new Date(this.data2);
+          this.diferenta_date = Math.floor((Date.UTC(dt2.getFullYear(), dt2.getMonth(), dt2.getDate()) - Date.UTC(dt1.getFullYear(), dt1.getMonth(), dt1.getDate())) / (1000 * 60 * 60 * 24));
+        }
+
+        if (this.isNumeric(this.diferenta_date) && this.diferenta_date < 15) {
+          if (this.hasOnlyDigits(this.nr_adulti) && this.nr_adulti > 0) {
+            this.pret_total_tur = this.pret_total_tur + this.pret_adult_tur_retur * this.nr_adulti;
+          }
+
+          if (this.hasOnlyDigits(this.nr_copii) && this.nr_copii > 0) {
+            this.pret_total_tur = this.pret_total_tur + this.pret_copil_tur_retur * this.nr_copii;
+          }
+        } else {
+          if (this.hasOnlyDigits(this.nr_adulti) && this.nr_adulti > 0) {
+            this.pret_total_tur = this.pret_total_tur + this.pret_adult * this.nr_adulti;
+          }
+
+          if (this.hasOnlyDigits(this.nr_copii) && this.nr_copii > 0) {
+            this.pret_total_tur = this.pret_total_tur + this.pret_copil * this.nr_copii;
+          }
+
+          if (this.tur_retur == true) {
+            this.pret_total_retur = this.pret_total_tur;
+          }
         }
       },
-      getPretTotal: function getPretTotal() {
-        this.pret_total = 0;
+      stergeAdult: function stergeAdult(adult) {
+        // this.nume.splice(adult,1);
+        this.$delete(this.adulti_nume, adult); // this.$delete(this.buletin, adult);
 
-        if (!isNaN(this.nr_adulti) && this.nr_adulti > 0) {
-          this.pret_total = this.pret_total + this.pret_adult * this.nr_adulti;
-        } // if (!isNaN(this.nr_copii) && (this.nr_copii > 0)) {
-        //     this.pret_total = this.pret_total + this.pret_copil * this.nr_copii
-        // }
+        this.$delete(this.adulti_data_nastere, adult);
+        this.$delete(this.adulti_localitate_nastere, adult); // this.$delete(this.localitate_domiciliu, adult);
+
+        this.$delete(this.adulti_sex, adult);
+        this.nr_adulti--;
+        this.getPretTotal();
+      },
+      stergeCopil: function stergeCopil(copil) {
+        // this.nume.splice(copil,1);
+        this.$delete(this.copii_nume, copil); // this.$delete(this.buletin, copil);
+
+        this.$delete(this.copii_data_nastere, copil);
+        this.$delete(this.copii_localitate_nastere, copil); // this.$delete(this.localitate_domiciliu, copil);
+
+        this.$delete(this.copii_sex, copil);
+        this.nr_copii--;
+        this.getPretTotal();
+      },
+      dataPlecareTrimisa: function dataPlecareTrimisa(data_plecare) {
+        if (this.traseu == "Romania-Corsica") {
+          this.data1 = data_plecare;
+        } else if (this.traseu == "Corsica-Romania") {
+          this.data2 = data_plecare;
+        } // this.data_plecare = data_plecare;
+        // this.getPretTotal();
 
       },
-      stergePasager: function stergePasager(index) {
-        // this.nume.splice(index,1);
-        this.$delete(this.nume, index);
-        this.$delete(this.buletin, index);
-        this.$delete(this.data_nastere, index);
-        this.$delete(this.localitate_nastere, index);
-        this.$delete(this.localitate_domiciliu, index);
-        this.nr_adulti--;
+      dataIntoarcereTrimisa: function dataIntoarcereTrimisa(data_intoarcere) {
+        if (this.traseu == "Romania-Corsica") {
+          this.data2 = data_intoarcere;
+        } else if (this.traseu == "Corsica-Romania") {
+          this.data1 = data_intoarcere;
+        } // this.data_intoarcere = data_intoarcere;
+        // this.getPretTotal();
+
+      },
+      // // new Date("dateString") is browser-dependent and discouraged, so we'll write
+      // // a simple parse function for U.S. date format (which does no error checking)
+      // parseDate(str) {
+      //     var mdy = str.split('/');
+      //     return new Date(mdy[2], mdy[0] - 1, mdy[1]);
+      // },
+      // datediff(first, second) {
+      // // Take the difference between the dates and divide by milliseconds per day.
+      // // Round to nearest whole number to deal with DST.
+      // return Math.round((second - first) / (1000 * 60 * 60 * 24));
+      // }
+      isNumeric: function isNumeric(value) {
+        return /^-?\d+$/.test(value);
+      },
+      // allow positive whole numbers
+      hasOnlyDigits: function hasOnlyDigits(value) {
+        return /^\d+$/.test(value);
       }
     }
   });
@@ -95387,8 +95578,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! E:\laragon\www\transportcorsica\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! E:\laragon\www\transportcorsica\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! D:\laragon\www\transport-franta-corsica\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! D:\laragon\www\transport-franta-corsica\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

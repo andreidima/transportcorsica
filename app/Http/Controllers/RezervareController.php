@@ -80,7 +80,9 @@ class RezervareController extends Controller
      */
     public function show(Rezervare $rezervare)
     {
-        return view('rezervari.show', compact('rezervare'));
+        $rezervare_tur = $rezervare;
+        $rezervare_retur = Rezervare::find($rezervare->retur);
+        return view('rezervari.show', compact('rezervare_tur', 'rezervare_retur'));
     }
 
     /**
@@ -100,28 +102,60 @@ class RezervareController extends Controller
         $rezervare->tur_retur = ($rezervare->retur) ? "true" : "false";
         $rezervare->data_plecare = $rezervare->data_cursa;
         $rezervare->data_intoarcere = ($rezervare->retur) ? Rezervare::find($rezervare->retur)->data_cursa : '';
+        $rezervare->pret_total_tur = $rezervare->pret_total;
+        $rezervare->pret_total_retur = ($rezervare->retur) ? Rezervare::find($rezervare->retur)->pret_total : '';
         // $rezervare->judet_plecare = $rezervare->oras_plecare_nume->judet ?? null;
         // $rezervare->judet_sosire = $rezervare->oras_sosire_nume->judet ?? null;
         $rezervare->acord_de_confidentialitate = "1";
         $rezervare->termeni_si_conditii = "1";
 
         // Incarcare pasageri in rezervare
-        $pasageri = ['nume' => [], 'buletin' => [], 'data_nastere' => [], 'localitate_nastere' => [], 'localitate_domiciliu' => []];
+        $adulti = [
+            'nume' => [], 
+            // 'buletin' => [], 
+            'data_nastere' => [], 
+            'localitate_nastere' => [],
+            // 'localitate_domiciliu' => []
+            'sex' => [], 
+        ];
         $i = 1;
-        foreach ($rezervare->pasageri_relation as $pasager){
-            $pasageri['nume'] = Arr::add($pasageri['nume'], $i, $pasager->nume);
-            $pasageri['buletin'] = Arr::add($pasageri['buletin'], $i, $pasager->buletin);
-            $pasageri['data_nastere'] = Arr::add($pasageri['data_nastere'], $i, $pasager->data_nastere);
-            $pasageri['localitate_nastere'] = Arr::add($pasageri['localitate_nastere'], $i, $pasager->localitate_nastere);
-            $pasageri['localitate_domiciliu'] = Arr::add($pasageri['localitate_domiciliu'], $i, $pasager->localitate_domiciliu);
+        foreach ($rezervare->pasageri_relation_adulti as $adult){
+            $adulti['nume'] = Arr::add($adulti['nume'], $i, $adult->nume);
+            // $adulti['buletin'] = Arr::add($adulti['buletin'], $i, $adult->buletin);
+            $adulti['data_nastere'] = Arr::add($adulti['data_nastere'], $i, $adult->data_nastere);
+            $adulti['localitate_nastere'] = Arr::add($adulti['localitate_nastere'], $i, $adult->localitate_nastere);
+            // $adulti['localitate_domiciliu'] = Arr::add($adulti['localitate_domiciliu'], $i, $adult->localitate_domiciliu);
+            $adulti['sex'] = Arr::add($adulti['sex'], $i, $adult->sex);
             $i++;
         }
-        $rezervare->pasageri = $pasageri;
-        // dd($pasageri, $rezervare);
+        $rezervare->adulti = $adulti;
+        $copii = [
+            'nume' => [],
+            // 'buletin' => [], 
+            'data_nastere' => [],
+            'localitate_nastere' => [],
+            // 'localitate_domiciliu' => []
+            'sex' => [],
+        ];
+        $i = 1;
+        foreach ($rezervare->pasageri_relation_copii as $copil) {
+            $copii['nume'] = Arr::add($copii['nume'], $i, $copil->nume);
+            // $copii['buletin'] = Arr::add($copii['buletin'], $i, $copil->buletin);
+            $copii['data_nastere'] = Arr::add($copii['data_nastere'], $i, $copil->data_nastere);
+            $copii['localitate_nastere'] = Arr::add($copii['localitate_nastere'], $i, $copil->localitate_nastere);
+            // $copii['localitate_domiciliu'] = Arr::add($copii['localitate_domiciliu'], $i, $copil->localitate_domiciliu);
+            $copii['sex'] = Arr::add($copii['sex'], $i, $copil->sex);
+            $i++;
+        }
+        $rezervare->copii = $copii;
+        // dd($rezervare);
+
+        $tarife = \App\Models\Tarif::first();
+
         // Se foloseste acelasi formular ca si la adaugare, asa ca este necesara aceasta variabila pentru diferentiere
         $tip_operatie = "modificare";
 
-        return view('rezervari.guest-create/adauga-rezervare-pasul-1', compact('rezervare', 'tip_operatie'));
+        return view('rezervari.guest-create/adauga-rezervare-pasul-1', compact('rezervare', 'tarife', 'tip_operatie'));
     }
 
     /**
@@ -133,16 +167,17 @@ class RezervareController extends Controller
      */
     public function update(Request $request, Rezervare $rezervare)
     {
-        // dd($request);
-        $this->validateRequest($request);
-
         $rezervare_tur = (!$rezervare->tur) ? $rezervare : Rezervare::find($rezervare->tur);
         if (!$rezervare_retur = Rezervare::find($rezervare->retur)){
             if ($request->tur_retur === "true"){
                 $rezervare_retur = new Rezervare;
             }
         }
+
         // dd($rezervare_tur, $rezervare_retur);
+
+        $this->validateRequest($request, '', $rezervare_tur, $rezervare_retur);
+        // dd($request);
 
         // Stergerea pasagerilor si adaugarea lor din nou
         foreach ($rezervare_tur->pasageri_relation as $pasager) {
@@ -193,12 +228,17 @@ class RezervareController extends Controller
         
         if($request->tip_calatorie === "Calatori"){
             $rezervare_tur->nr_adulti = $request->nr_adulti;
+            $rezervare_tur->nr_copii = $request->nr_copii;
+            $rezervare_tur->pret_total = $request->pret_total_tur;
 
             if (isset($rezervare_retur)){
                 $rezervare_retur->nr_adulti = $request->nr_adulti;
+                $rezervare_retur->nr_copii  = $request->nr_copii;
+                $rezervare_retur->pret_total = $request->pret_total_retur;
             }
         }else{
             $rezervare_tur->nr_adulti = null;
+            $rezervare_tur->nr_copii = null;
             $rezervare_tur->pret_total = 0;
 
             $rezervare_tur->bagaje_kg = $request->bagaje_kg;
@@ -206,20 +246,12 @@ class RezervareController extends Controller
 
             if (isset($rezervare_retur)){
                 $rezervare_retur->nr_adulti = null;
+                $rezervare_retur->nr_copii = null;
+                $rezervare_retur->pret_total = 0;
 
                 $rezervare_retur->bagaje_kg = $request->bagaje_kg;
                 $rezervare_retur->bagaje_descriere = $request->bagaje_descriere;
             }
-        }
-
-        // Recalcularea pretului total pentru siguranta
-        if ($request->tur_retur === "false") {
-            $rezervare_tur->pret_total = $rezervare->nr_adulti * 120;
-        } elseif ($request->tur_retur === "true") {
-            $rezervare->pret_total = $rezervare->nr_adulti * 200;
-        }
-        if (isset($rezervare_retur)){
-            $rezervare_retur->pret_total = 0;
         }
 
         if ($request->tur_retur === 'false') {
@@ -247,26 +279,46 @@ class RezervareController extends Controller
         }
 
         // salvare pasageri si atasare la rezervari
-        if($request->tip_calatorie === "Calatori"){
+        if ($request->tip_calatorie === "Calatori") {
             for ($i = 1; $i <= $request->nr_adulti; $i++) {
                 $pasager = new Pasager;
-                $pasager->nume = $request->pasageri['nume'][$i];
-                $pasager->buletin = $request->pasageri['buletin'][$i];
-                $pasager->data_nastere = $request->pasageri['data_nastere'][$i];
-                $pasager->localitate_nastere = $request->pasageri['localitate_nastere'][$i];
-                $pasager->localitate_domiciliu = $request->pasageri['localitate_domiciliu'][$i];
+                $pasager->nume = $request->adulti['nume'][$i];
+                // $pasager->buletin = $request->adulti['buletin'][$i];
+                $pasager->data_nastere = $request->adulti['data_nastere'][$i];
+                $pasager->localitate_nastere = $request->adulti['localitate_nastere'][$i];
+                // $pasager->localitate_domiciliu = $request->adulti['localitate_domiciliu'][$i];
+                $pasager->sex = $request->adulti['sex'][$i] ?? '';
+                $pasager->categorie = 'Adult';
                 $pasager->save();
 
                 if ($request->tur_retur === 'false') {
                     $rezervare_tur->pasageri_relation()->attach($pasager->id);
-                }else{
+                } else {
+                    $rezervare_tur->pasageri_relation()->attach($pasager->id);
+                    $rezervare_retur->pasageri_relation()->attach($pasager->id);
+                }
+            }
+            for ($i = 1; $i <= $request->nr_copii; $i++) {
+                $pasager = new Pasager;
+                $pasager->nume = $request->copii['nume'][$i];
+                // $pasager->buletin = $request->copii['buletin'][$i];
+                $pasager->data_nastere = $request->copii['data_nastere'][$i];
+                $pasager->localitate_nastere = $request->copii['localitate_nastere'][$i];
+                // $pasager->localitate_domiciliu = $request->copii['localitate_domiciliu'][$i];
+                $pasager->sex = $request->copii['sex'][$i] ?? '';
+                $pasager->categorie = 'Copil';
+                $pasager->save();
+
+                if ($request->tur_retur === 'false') {
+                    $rezervare_tur->pasageri_relation()->attach($pasager->id);
+                } else {
                     $rezervare_tur->pasageri_relation()->attach($pasager->id);
                     $rezervare_retur->pasageri_relation()->attach($pasager->id);
                 }
             }
         }
 
-        return redirect('/rezervari')->with('status', 'Rezervarea pentru clientul "' . $rezervare_tur->nume . '" a fost modificată cu succes!');
+        return redirect('/rezervari')->with('status', 'Rezervarea a fost modificată cu succes!');
     }
 
     /**
@@ -392,8 +444,9 @@ class RezervareController extends Controller
      *
      * @return array
      */
-    protected function validateRequest(Request $request, $rezervari = null)
+    protected function validateRequest(Request $request, $rezervari = null, $rezervare_tur = null, $rezervare_retur = null)
     {
+        // dd($rezervare_tur, $rezervare_retur);
         if (Auth::check()) {
             return request()->validate(
                 [
@@ -406,11 +459,20 @@ class RezervareController extends Controller
                     'tur_retur' => [''],
                     'bilet_nava' => ['nullable'],
                     'nr_adulti' => ['nullable', 'integer', ''],
-                    'pasageri.nume.*' => ['nullable', 'max:100',
-                        function ($attribute, $value, $fail) use ($request) {
+                    'nr_copii' => ['nullable', 'integer', ''],
+                    'pret_total_tur' => ['nullable', 'integer', ''],
+                    'pret_total_retur' => ['nullable', 'integer', ''],
+                    'adulti.nume.*' => ['nullable', 'max:100',
+                        function ($attribute, $value, $fail) use ($request, $rezervare_tur) {
                             if (!empty($request->data_plecare)){
-                                $pasageri = Pasager::whereHas('rezervari', function (Builder $query) use ($request) {
-                                        $query->whereDate('data_cursa', '=', $request->data_plecare);
+                                $pasageri = Pasager::whereHas('rezervari', function (Builder $query) use ($request, $rezervare_tur) {
+                                        if ($request->_method === "PATCH") {
+                                            // dd($rezervare_tur->id);
+                                            $query->where('rezervari.id', '<>', $rezervare_tur->id)
+                                                ->whereDate('data_cursa', '=', $request->data_plecare);
+                                        } else {
+                                            $query->whereDate('data_cursa', '=', $request->data_plecare);
+                                        }
                                     })->pluck('nume')->all();
                                 if (in_array($value, $pasageri)) {
                                     $fail('Pasagerul „' . $value . '” mai are o cursă în data de ' .
@@ -418,10 +480,16 @@ class RezervareController extends Controller
                                 }
                             }
                         },
-                        function ($attribute, $value, $fail) use ($request) {
+                        function ($attribute, $value, $fail) use ($request, $rezervare_retur) {
                             if (!empty($request->data_intoarcere)) {
-                                $pasageri = Pasager::whereHas('rezervari', function (Builder $query) use ($request) {
-                                    $query->whereDate('data_cursa', '=', $request->data_intoarcere);
+                                $pasageri = Pasager::whereHas('rezervari', function (Builder $query) use ($request, $rezervare_retur) {
+                                    if ($request->_method === "PATCH") {
+                                        // dd($request, $rezervare_retur->id);
+                                        $query->where('rezervari.id', '<>', $rezervare_retur->id)
+                                            ->whereDate('data_cursa', '=', $request->data_intoarcere);
+                                    } else {
+                                        $query->whereDate('data_cursa', '=', $request->data_intoarcere);
+                                    }
                                 })->pluck('nume')->all();
                                 if (in_array($value, $pasageri)) {
                                     $fail('Pasagerul „' . $value . '” mai are o cursă în data de ' .
@@ -430,10 +498,53 @@ class RezervareController extends Controller
                             }
                         },
                     ],
-                    'pasageri.buletin.*' => ['nullable', 'max:100'],
-                    'pasageri.data_nastere.*' => ['nullable', 'max:100'],
-                    'pasageri.localitate_nastere.*' => ['nullable', 'max:100'],
-                    'pasageri.localitate_domiciliu.*' => ['nullable', 'max:100'],
+                    // 'adulti.buletin.*' => ['nullable', 'max:100'],
+                    'adulti.data_nastere.*' => ['nullable', 'max:100'],
+                    'adulti.localitate_nastere.*' => ['nullable', 'max:100'],
+                    // 'adulti.localitate_domiciliu.*' => ['nullable', 'max:100'],
+                    'adulti.sex.*' => ['nullable', 'max:100'],
+                    'copii.nume.*' => [
+                        'nullable', 'max:100',
+                        function ($attribute, $value, $fail) use ($request, $rezervare_tur) {
+                            if (!empty($request->data_plecare)) {
+                                $pasageri = Pasager::whereHas('rezervari', function (Builder $query) use ($request, $rezervare_tur) {
+                                    if ($request->_method === "PATCH") {
+                                        // dd($rezervare_tur->id);
+                                        $query->where('rezervari.id', '<>', $rezervare_tur->id)
+                                            ->whereDate('data_cursa', '=', $request->data_plecare);
+                                    } else {
+                                        $query->whereDate('data_cursa', '=', $request->data_plecare);
+                                    }
+                                })->pluck('nume')->all();
+                                if (in_array($value, $pasageri)) {
+                                    $fail('Pasagerul „' . $value . '” mai are o cursă în data de ' .
+                                        \Carbon\Carbon::parse($request->data_plecare)->isoFormat('DD.MM.YYYY'));
+                                }
+                            }
+                        },
+                        function ($attribute, $value, $fail) use ($request, $rezervare_retur) {
+                            if (!empty($request->data_intoarcere)) {
+                                $pasageri = Pasager::whereHas('rezervari', function (Builder $query) use ($request, $rezervare_retur) {
+                                    if ($request->_method === "PATCH") {
+                                        // dd($request, $rezervare_retur->id);
+                                        $query->where('rezervari.id', '<>', $rezervare_retur->id)
+                                            ->whereDate('data_cursa', '=', $request->data_intoarcere);
+                                    } else {
+                                        $query->whereDate('data_cursa', '=', $request->data_intoarcere);
+                                    }
+                                })->pluck('nume')->all();
+                                if (in_array($value, $pasageri)) {
+                                    $fail('Pasagerul „' . $value . '” mai are o cursă în data de ' .
+                                        \Carbon\Carbon::parse($request->data_intoarcere)->isoFormat('DD.MM.YYYY'));
+                                }
+                            }
+                        },
+                    ],
+                    // 'copii.buletin.*' => ['nullable', 'max:100'],
+                    'copii.data_nastere.*' => ['nullable', 'max:100'],
+                    'copii.localitate_nastere.*' => ['nullable', 'max:100'],
+                    // 'copii.localitate_domiciliu.*' => ['nullable', 'max:100'],
+                    'copii.sex.*' => ['nullable', 'max:100'],
                     'bagaje_kg' => ['nullable', 'integer', 'max:100'],
                     'bagaje_descriere' => ['nullable', 'max:2000'],
                     'data_plecare' => [
@@ -442,14 +553,14 @@ class RezervareController extends Controller
                     'data_intoarcere' => [
                         'nullable',
                         'after:data_plecare',
-                        'max:50',
-                        function ($attribute, $value, $fail) use ($request) {
-                            $data_plecare = \Carbon\Carbon::parse($request->data_plecare);
-                            $data_intoarcere = \Carbon\Carbon::parse($request->data_intoarcere);
-                            if (($request->tur_retur == true) && ($data_plecare->diffInDays($data_intoarcere) > 15)) {
-                                $fail('Data de intoarcere trebuie sa fie la maxim 15 zile de la data de plecare.');
-                            }
-                        },
+                        'max:50'
+                        // function ($attribute, $value, $fail) use ($request) {
+                        //     $data_plecare = \Carbon\Carbon::parse($request->data_plecare);
+                        //     $data_intoarcere = \Carbon\Carbon::parse($request->data_intoarcere);
+                        //     if (($request->tur_retur == true) && ($data_plecare->diffInDays($data_intoarcere) > 15)) {
+                        //         $fail('Data de intoarcere trebuie sa fie la maxim 15 zile de la data de plecare.');
+                        //     }
+                        // },
                     ],
                     'nume' => ($request->_method === "PATCH") ?
                         [
@@ -466,7 +577,11 @@ class RezervareController extends Controller
                             //         ->where('data_cursa', $request->data_plecare);
                             // }),
                         ],
-                    'telefon' => ['nullable', 'regex:/^[0-9 ]+$/', 'max: 100'],
+                    'telefon' => [
+                        'nullable', 
+                        // 'regex:/^[0-9 ]+$/', 
+                        'max: 100'
+                    ],
                     'email' => ['nullable', 'email', 'max:100'],
                     'adresa' => ['nullable', 'max:2000'],
                     'observatii' => ['nullable', 'max:2000'],
@@ -502,7 +617,40 @@ class RezervareController extends Controller
                     'tur_retur' => [''],
                     'bilet_nava' => ['required_if:tip_calatorie,Calatori'],
                     'nr_adulti' => ['required_if:tip_calatorie,Calatori', 'integer', 'between:1,100'],
-                    'pasageri.nume.*' => ['required', 'max:100',
+                    'nr_copii' => ['required_if:tip_calatorie,Calatori', 'integer', 'between:0,100'],
+                    'pret_total_tur' => ['nullable', 'integer', ''],
+                    'pret_total_retur' => ['nullable', 'integer', ''],
+                    'adulti.nume.*' => [
+                        'required', 'max:100',
+                        function ($attribute, $value, $fail) use ($request) {
+                            if (!empty($request->data_plecare)) {
+                                $pasageri = Pasager::whereHas('rezervari', function (Builder $query) use ($request) {
+                                    $query->whereDate('data_cursa', '=', $request->data_plecare);
+                                })->pluck('nume')->all();
+                                if (in_array($value, $pasageri)) {
+                                    $fail('Pasagerul „' . $value . '” mai are o cursă în data de ' .
+                                        \Carbon\Carbon::parse($request->data_plecare)->isoFormat('DD.MM.YYYY'));
+                                }
+                            }
+                        },
+                        function ($attribute, $value, $fail) use ($request) {
+                            if (!empty($request->data_intoarcere)) {
+                                $pasageri = Pasager::whereHas('rezervari', function (Builder $query) use ($request) {
+                                    $query->whereDate('data_cursa', '=', $request->data_intoarcere);
+                                })->pluck('nume')->all();
+                                if (in_array($value, $pasageri)) {
+                                    $fail('Pasagerul „' . $value . '” mai are o cursă în data de ' .
+                                        \Carbon\Carbon::parse($request->data_intoarcere)->isoFormat('DD.MM.YYYY'));
+                                }
+                            }
+                        },
+                    ],
+                    // 'adulti.buletin.*' => ['nullable', 'max:100'],
+                    'adulti.data_nastere.*' => ['required', 'max:100'],
+                    'adulti.localitate_nastere.*' => ['required', 'max:100'],
+                    // 'adulti.localitate_domiciliu.*' => ['nullable', 'max:100'],
+                    'adulti.sex.*' => ['nullable', 'max:100'],
+                    'copii.nume.*' => ['required', 'max:100',
                         function ($attribute, $value, $fail) use ($request) {
                             if (!empty($request->data_plecare)){
                                 $pasageri = Pasager::whereHas('rezervari', function (Builder $query) use ($request) {
@@ -526,10 +674,11 @@ class RezervareController extends Controller
                             }
                         },
                     ],
-                    'pasageri.buletin.*' => ['nullable', 'max:100'],
-                    'pasageri.data_nastere.*' => ['required', 'max:100'],
-                    'pasageri.localitate_nastere.*' => ['required', 'max:100'],
-                    'pasageri.localitate_domiciliu.*' => ['nullable', 'max:100'],
+                    // 'copii.buletin.*' => ['nullable', 'max:100'],
+                    'copii.data_nastere.*' => ['required', 'max:100'],
+                    'copii.localitate_nastere.*' => ['required', 'max:100'],
+                    // 'copii.localitate_domiciliu.*' => ['nullable', 'max:100'],
+                    'copii.sex.*' => ['nullable', 'max:100'],
                     'bagaje_kg' => ['required_if:tip_calatorie,Bagaje', 'numeric'],
                     // 'bagaje_descriere' => ['required_if:tip_calatorie,Bagaje', 'max:2000'],
                     'bagaje_descriere' => ['nullable', 'max:2000'],
@@ -539,14 +688,14 @@ class RezervareController extends Controller
                     'data_intoarcere' => [
                         'required_if:tur_retur,true',
                         'after:data_plecare', 
-                        'max:50',
-                        function ($attribute, $value, $fail) use ($request) {
-                            $data_plecare = \Carbon\Carbon::parse($request->data_plecare);
-                            $data_intoarcere = \Carbon\Carbon::parse($request->data_intoarcere);
-                            if (($request->tur_retur == true) && ($data_plecare->diffInDays($data_intoarcere) > 15)) {
-                                $fail('Data de intoarcere trebuie sa fie la maxim 15 zile de la data de plecare.');
-                            }
-                        },
+                        'max:50'
+                        // function ($attribute, $value, $fail) use ($request) {
+                        //     $data_plecare = \Carbon\Carbon::parse($request->data_plecare);
+                        //     $data_intoarcere = \Carbon\Carbon::parse($request->data_intoarcere);
+                        //     if (($request->tur_retur == true) && ($data_plecare->diffInDays($data_intoarcere) > 15)) {
+                        //         $fail('Data de intoarcere trebuie sa fie la maxim 15 zile de la data de plecare.');
+                        //     }
+                        // },
                     ],
                     'nume' => ($request->_method === "PATCH") ?
                         [
@@ -564,7 +713,11 @@ class RezervareController extends Controller
                                     ->where('data_cursa', $request->data_plecare);
                             }),
                         ],
-                    'telefon' => ['required', 'regex:/^[0-9 ]+$/', 'max: 100'],
+                    'telefon' => [
+                        'required', 
+                        // 'regex:/^[0-9 ]+$/', 
+                        'max: 100'
+                    ],
                     'email' => ['nullable', 'email', 'max:100'],
                     'adresa' => ['max:2000'],
                     'observatii' => ['max:2000'],
@@ -582,9 +735,9 @@ class RezervareController extends Controller
                     'nume.unique' => 'Această Rezervare este deja înregistrată.',
                     'data_plecare.required_if' => 'Câmpul data plecare este necesar.',
                     'data_intoarcere.required_unless' => 'Câmpul data plecare este necesar.',
-                    'nr_adulti.required_if' => 'Câmpul Nr. Pasageri este necesar.',
-                    'nr_adulti.integer' => 'Câmpul Nr. Pasageri trebuie să conțină un număr.',
-                    'nr_adulti.between' => 'Câmpul Nr. Pasageri trebuie să fie între 1 și 100.',
+                    // 'nr_adulti.required_if' => 'Câmpul Nr. Pasageri este necesar.',
+                    // 'nr_adulti.integer' => 'Câmpul Nr. Pasageri trebuie să conțină un număr.',
+                    // 'nr_adulti.between' => 'Câmpul Nr. Pasageri trebuie să fie între 1 și 100.',
                     // 'adresa.required_if' => 'Câmpul Adresa este obligatoriu dacă este selectată plata cu card'
                 ]
             );
@@ -621,6 +774,7 @@ class RezervareController extends Controller
     public function adaugaRezervareNoua(Request $request)
     {
         $rezervare = $request->session()->forget('rezervare');
+
         return redirect('/adauga-rezervare-pasul-1');
     }
 
@@ -636,7 +790,8 @@ class RezervareController extends Controller
     public function adaugaRezervarePasul1(Request $request)
     {
         $rezervare = $request->session()->get('rezervare');
-        return view('rezervari.guest-create/adauga-rezervare-pasul-1', compact('rezervare'));
+        $tarife = \App\Models\Tarif::first();
+        return view('rezervari.guest-create/adauga-rezervare-pasul-1', compact('rezervare', 'tarife'));
     }
 
     /**
@@ -656,12 +811,24 @@ class RezervareController extends Controller
         }
 
         // Recalcularea pretului total pentru siguranta
-        if ($rezervare->tur_retur === "false") {
-            $rezervare->pret_total = $rezervare->nr_adulti * 120;
-        } elseif ($rezervare->tur_retur === "true") {
-            $rezervare->pret_total = $rezervare->nr_adulti * 200;
+        if (!Auth::check()) {
+            $rezervare->pret_total_tur = 0;
+            $rezervare->pret_total_retur = 0;
+            $tarife = \App\Models\Tarif::first();
+            if ($request->data_plecare && $request->data_intoarcere) {
+                $diferenta_date = \Carbon\Carbon::parse($request->data_plecare)->diffInDays(\Carbon\Carbon::parse($request->data_intoarcere));
+            }
+            if (isset($diferenta_date) && ($diferenta_date < 15)) {
+                $rezervare->pret_total_tur = $rezervare->nr_adulti * $tarife->adult_tur_retur + $rezervare->nr_copii * $tarife->copil_tur_retur;
+            } else {
+                $rezervare->pret_total_tur = $rezervare->nr_adulti * $tarife->adult + $rezervare->nr_copii * $tarife->copil;
+                if ($request->tur_retur === "true"){
+                    $rezervare->pret_total_retur = $rezervare->pret_total_tur;
+                }
+            }
         }
 
+        // dd($request, $diferenta_date, $rezervare);
         $request->session()->put('rezervare', $rezervare);
 
         return redirect('/adauga-rezervare-pasul-2');
@@ -693,7 +860,8 @@ class RezervareController extends Controller
 
         // Verificare rezervare duplicat
             $request_verificare_duplicate = new Request([
-                'pasageri' => $request->session()->get('rezervare.pasageri'),
+                'adulti' => $request->session()->get('rezervare.adulti'),
+                'copii' => $request->session()->get('rezervare.copii'),
                 'data_plecare' => $request->session()->get('rezervare.data_plecare'),
                 'data_intoarcere' => $request->session()->get('rezervare.data_intoarcere')
             ]);
@@ -701,7 +869,32 @@ class RezervareController extends Controller
             $this->validate(
                 $request_verificare_duplicate,
                 [
-                    'pasageri.nume.*' => [
+                    'adulti.nume.*' => [
+                        'nullable', 'max:100',
+                        function ($attribute, $value, $fail) use ($request_verificare_duplicate) {
+                            if (!empty($request_verificare_duplicate->data_plecare)) {
+                                $pasageri = Pasager::whereHas('rezervari', function (Builder $query) use ($request_verificare_duplicate) {
+                                    $query->whereDate('data_cursa', '=', $request_verificare_duplicate->data_plecare);
+                                })->pluck('nume')->all();
+                                if (in_array($value, $pasageri)) {
+                                    $fail('Pasagerul „' . $value . '” mai are o cursă în data de ' .
+                                        \Carbon\Carbon::parse($request_verificare_duplicate->data_plecare)->isoFormat('DD.MM.YYYY'));
+                                }
+                            }
+                        },
+                        function ($attribute, $value, $fail) use ($request_verificare_duplicate) {
+                            if (!empty($request_verificare_duplicate->data_intoarcere)) {
+                                $pasageri = Pasager::whereHas('rezervari', function (Builder $query) use ($request_verificare_duplicate) {
+                                    $query->whereDate('data_cursa', '=', $request_verificare_duplicate->data_intoarcere);
+                                })->pluck('nume')->all();
+                                if (in_array($value, $pasageri)) {
+                                    $fail('Pasagerul „' . $value . '” mai are o cursă în data de ' .
+                                        \Carbon\Carbon::parse($request_verificare_duplicate->data_intoarcere)->isoFormat('DD.MM.YYYY'));
+                                }
+                            }
+                        },
+                    ],
+                    'copii.nume.*' => [
                         'nullable', 'max:100',
                         function ($attribute, $value, $fail) use ($request_verificare_duplicate) {
                             if (!empty($request_verificare_duplicate->data_plecare)) {
@@ -739,7 +932,10 @@ class RezervareController extends Controller
             // $rezervare_unset->judet_sosire,
             $rezervare_unset->oras_plecare_nume,
             $rezervare_unset->oras_sosire_nume,
-            $rezervare_unset->pasageri,
+            $rezervare_unset->adulti,
+            $rezervare_unset->copii,
+            $rezervare_unset->pret_total_tur,
+            $rezervare_unset->pret_total_retur,
             $rezervare_unset->acord_de_confidentialitate,
             $rezervare_unset->termeni_si_conditii
         );
@@ -749,8 +945,10 @@ class RezervareController extends Controller
                 $rezervare_unset->bagaje_descriere
             );
         }else{
-            unset($rezervare_unset->nr_adulti);
-            $rezervare_unset->pret_total = 0;
+            unset(
+                $rezervare_unset->nr_adulti,
+                $rezervare_unset->nr_copii       
+            );
         }
 
         $rezervare_tur = clone $rezervare_unset;
@@ -759,12 +957,13 @@ class RezervareController extends Controller
         $rezervare_tur->data_cursa = $rezervare->data_plecare;
         $rezervare_tur->lista_plecare = Oras::find($rezervare_tur->oras_plecare)->traseu ?? null;
         $rezervare_tur->lista_sosire = Oras::find($rezervare_tur->oras_sosire)->traseu ?? null;
+        $rezervare_tur->pret_total = $rezervare->pret_total_tur;
         $rezervare_retur->data_cursa = $rezervare->data_intoarcere;
         $rezervare_retur->oras_plecare = $rezervare_tur->oras_sosire;
         $rezervare_retur->oras_sosire = $rezervare_tur->oras_plecare;
         $rezervare_retur->lista_plecare = Oras::find($rezervare_retur->oras_plecare)->traseu ?? null;
         $rezervare_retur->lista_sosire = Oras::find($rezervare_retur->oras_sosire)->traseu ?? null;
-        $rezervare_retur->pret_total = 0;
+        $rezervare_retur->pret_total = $rezervare->pret_total_retur;
 
         if ($rezervare->tur_retur === 'false') {
             //Inserarea rezervarii in baza de date
@@ -790,16 +989,36 @@ class RezervareController extends Controller
         if($rezervare->tip_calatorie === "Calatori"){
             for ($i = 1; $i <= $rezervare->nr_adulti; $i++) {
                 $pasager = new Pasager;
-                $pasager->nume = $rezervare->pasageri['nume'][$i];
-                $pasager->buletin = $rezervare->pasageri['buletin'][$i];
-                $pasager->data_nastere = $rezervare->pasageri['data_nastere'][$i];
-                $pasager->localitate_nastere = $rezervare->pasageri['localitate_nastere'][$i];
-                $pasager->localitate_domiciliu = $rezervare->pasageri['localitate_domiciliu'][$i];
+                $pasager->nume = $rezervare->adulti['nume'][$i];
+                // $pasager->buletin = $rezervare->adulti['buletin'][$i];
+                $pasager->data_nastere = $rezervare->adulti['data_nastere'][$i];
+                $pasager->localitate_nastere = $rezervare->adulti['localitate_nastere'][$i];
+                // $pasager->localitate_domiciliu = $rezervare->adulti['localitate_domiciliu'][$i];
+                $pasager->sex = $rezervare->adulti['sex'][$i] ?? '';
+                $pasager->categorie = 'Adult';
                 $pasager->save();
 
                 if ($rezervare->tur_retur === 'false') {
                     $rezervare_tur->pasageri_relation()->attach($pasager->id);
                 }else{
+                    $rezervare_tur->pasageri_relation()->attach($pasager->id);
+                    $rezervare_retur->pasageri_relation()->attach($pasager->id);
+                }
+            }
+            for ($i = 1; $i <= $rezervare->nr_copii; $i++) {
+                $pasager = new Pasager;
+                $pasager->nume = $rezervare->copii['nume'][$i];
+                // $pasager->buletin = $rezervare->copii['buletin'][$i];
+                $pasager->data_nastere = $rezervare->copii['data_nastere'][$i];
+                $pasager->localitate_nastere = $rezervare->copii['localitate_nastere'][$i];
+                // $pasager->localitate_domiciliu = $rezervare->copii['localitate_domiciliu'][$i];
+                $pasager->sex = $rezervare->copii['sex'][$i] ?? '';
+                $pasager->categorie = 'Copil';
+                $pasager->save();
+
+                if ($rezervare->tur_retur === 'false') {
+                    $rezervare_tur->pasageri_relation()->attach($pasager->id);
+                } else {
                     $rezervare_tur->pasageri_relation()->attach($pasager->id);
                     $rezervare_retur->pasageri_relation()->attach($pasager->id);
                 }

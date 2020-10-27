@@ -72,7 +72,7 @@
                                                     Oraș sosire:
                                                     <br>
                                                     <span class="badge badge-primary" style="font-size:1.1em">
-                                                        {{ $rezervare->oras_sosire_nume->oras ?? '' }}
+                                                        {{ $rezervare->oras_plecare_nume->oras ?? '' }}
                                                     </span>
                                                 </div>
                                                 <div class="col-lg-1 pt-1 text-primary">
@@ -82,7 +82,7 @@
                                                     Oraș plecare:
                                                     <br>
                                                     <span class="badge badge-primary" style="font-size:1.1em">
-                                                        {{ $rezervare->oras_plecare_nume->oras ?? '' }}
+                                                        {{ $rezervare->oras_sosire_nume->oras ?? '' }}
                                                     </span>
                                                 </div>
                                             </div>
@@ -98,11 +98,11 @@
                                         <div class="row justify-content-center">
                                             <div class="col-lg-4">
                                                 Număr pasageri: 
-                                                <span class="badge badge-primary" style="font-size:1em">{{ $rezervare->nr_adulti }}</span>
+                                                <span class="badge badge-primary" style="font-size:1em">{{ $rezervare->nr_adulti + $rezervare->nr_copii }}</span>
                                             </div>
                                             <div class="col-lg-4">
                                                 Preț total: 
-                                                <span class="badge badge-primary" style="font-size:1em">{{ $rezervare->pret_total }}€</span>
+                                                <span class="badge badge-primary" style="font-size:1em">{{ $rezervare->pret_total_tur + $rezervare->pret_total_retur }}€</span>
                                             </div>
                                         </div>
                                     </div>
@@ -110,15 +110,32 @@
                                         <div class="row justify-content-between">
                                             @for ($i = 1 ; $i <= $rezervare->nr_adulti ; $i++)
                                                 <div class="col-lg-5 m-2" style="border-bottom: solid 1px #005757">
-                                                    Nume: <span class="badge badge-primary" style="font-size:1.1em">{{ $rezervare->pasageri['nume'][$i] }}</span>
+                                                    Nume: <span class="badge badge-primary" style="font-size:1.1em">{{ $rezervare->adulti['nume'][$i] }}</span>
+                                                    {{-- <br>
+                                                    Seria și nr. buletin: {{ $rezervare->adulti['buletin'][$i] }} --}}
                                                     <br>
-                                                    Seria și nr. buletin: {{ $rezervare->pasageri['buletin'][$i] }}
+                                                    Data nașterii: {{ $rezervare->adulti['data_nastere'][$i] }}
                                                     <br>
-                                                    Data nașterii: {{ $rezervare->pasageri['data_nastere'][$i] }}
+                                                    Localitate naștere: {{ $rezervare->adulti['localitate_nastere'][$i] }}
+                                                    {{-- <br>
+                                                    Localitate domiciliu: {{ $rezervare->adulti['localitate_domiciliu'][$i] }} --}}
                                                     <br>
-                                                    Localitate naștere: {{ $rezervare->pasageri['localitate_nastere'][$i] }}
+                                                    Sex: {{ $rezervare->adulti['sex'][$i] ?? ''}}
+                                                </div>
+                                            @endfor
+                                            @for ($i = 1 ; $i <= $rezervare->nr_copii ; $i++)
+                                                <div class="col-lg-5 m-2" style="border-bottom: solid 1px #005757">
+                                                    Nume: <span class="badge badge-primary" style="font-size:1.1em">{{ $rezervare->copii['nume'][$i] }}</span>
+                                                    {{-- <br>
+                                                    Seria și nr. buletin: {{ $rezervare->copii['buletin'][$i] }} --}}
                                                     <br>
-                                                    Localitate domiciliu: {{ $rezervare->pasageri['localitate_domiciliu'][$i] }}
+                                                    Data nașterii: {{ $rezervare->copii['data_nastere'][$i] }}
+                                                    <br>
+                                                    Localitate naștere: {{ $rezervare->copii['localitate_nastere'][$i] }}
+                                                    {{-- <br>
+                                                    Localitate domiciliu: {{ $rezervare->copii['localitate_domiciliu'][$i] }} --}}
+                                                    <br>
+                                                    Sex: {{ $rezervare->copii['sex'][$i] ?? ''}}
                                                 </div>
                                             @endfor
                                         </div>
@@ -143,8 +160,8 @@
                                         </h5>
                                     </div>
                                     <div class="col-lg-11 px-4 py-2 mb-4 bg-white border rounded-lg">
-                                        Nume: <span class="badge badge-primary" style="font-size:1.1em">{{ $rezervare->nume }}</span>
-                                        <br>
+                                        {{-- Nume: <span class="badge badge-primary" style="font-size:1.1em">{{ $rezervare->nume }}</span>
+                                        <br> --}}
                                         Telefon: <b>{{ $rezervare->telefon }}</b>
                                         <br>
                                         Email: <b>{{ $rezervare->email }}</b>

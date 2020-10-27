@@ -169,14 +169,15 @@ class RaportController extends Controller
                 $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(20);
                 $sheet->setCellValue('A1', 'Nume');
                 $sheet->setCellValue('B1', 'Prenume');
-                $sheet->setCellValue('C1', 'Buletin');
-                $sheet->setCellValue('D1', 'Data de naștere');
-                $sheet->setCellValue('E1', 'Localitate naștere');
-                $sheet->setCellValue('F1', 'Localitate domiciliu');
-                $sheet->setCellValue('G1', 'Cetățenie');
+                // $sheet->setCellValue('C1', 'Buletin');
+                $sheet->setCellValue('C1', 'Data de naștere');
+                $sheet->setCellValue('D1', 'Localitate naștere');
+                // $sheet->setCellValue('F1', 'Localitate domiciliu');
+                $sheet->setCellValue('E1', 'Sex');
+                $sheet->setCellValue('F1', 'Cetățenie');
 
                 // dd($rezervari, $rezervari->where('bilet_nava', 1));
-                // $array = [];
+                
                 $nr_celula = 2;
                 foreach ($rezervari
                         ->where('bilet_nava', 1) 
@@ -190,17 +191,17 @@ class RaportController extends Controller
                     // $array[$nr_celula][6] = $pasager->localitate_domiciliu;
                     // $array[$nr_celula][7] = 'Română';
                     $sheet->setCellValue('A' . ($nr_celula), strtok($pasager->nume, " "));
-                    $sheet->setCellValue('B' . ($nr_celula), substr(strstr($pasager->nume, " "), 1));
-                    $sheet->setCellValue('C' . ($nr_celula), $pasager->buletin);
-                    $sheet->setCellValue('D' . ($nr_celula), \Carbon\Carbon::parse($pasager->data_nastere)->isoFormat('DD.MM.YYYY'));
-                    $sheet->setCellValue('E' . ($nr_celula), $pasager->localitate_nastere);
-                    $sheet->setCellValue('F' . ($nr_celula), $pasager->localitate_domiciliu);
-                    $sheet->setCellValue('G' . ($nr_celula), 'Română');
+                    $sheet->setCellValue('B' . ($nr_celula), (substr(strstr($pasager->nume, " "), 1) === false) ? '' : substr(strstr($pasager->nume, " "), 1));
+                    // $sheet->setCellValue('C' . ($nr_celula), $pasager->buletin);
+                    // $sheet->setCellValue('C' . ($nr_celula), \Carbon\Carbon::parse($pasager->data_nastere ?? '0')->isoFormat('DD.MM.YYYY'));
+                    $sheet->setCellValue('C' . ($nr_celula), ($pasager->data_nastere));
+                    $sheet->setCellValue('D' . ($nr_celula), $pasager->localitate_nastere);
+                    // $sheet->setCellValue('F' . ($nr_celula), $pasager->localitate_domiciliu);
+                    $sheet->setCellValue('E' . ($nr_celula), $pasager->sex);
+                    $sheet->setCellValue('F' . ($nr_celula), 'Română');
                     $nr_celula++;
                     }
                 }
-
-                // dd($array);
 
                 // // redirect output to client browser
                 // header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');

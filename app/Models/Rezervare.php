@@ -31,4 +31,14 @@ class Rezervare extends Model
     {
         return $this->belongsToMany('App\Models\Pasager', 'pasageri_rezervari', 'rezervare_id', 'pasager_id');
     }
+
+    public function pasageri_relation_adulti()
+    {
+        return $this->pasageri_relation()->where('categorie', 'Adult');
+    }
+
+    public function pasageri_relation_copii()
+    {
+        return $this->pasageri_relation()->where('categorie', 'Copil');
+    }
 }
