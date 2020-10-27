@@ -231,7 +231,7 @@
                                                 {{ $rezervare->oras_plecare_nume ?? ''}} ({{ $rezervare->oras_plecare_ordine ?? ''}})
                                             </td>
                                             <td class="text-center">
-                                                {{ $rezervare->nr_adulti }}
+                                                {{ $rezervare->nr_adulti + $rezervare->nr_copii }}
                                             </td>
                                         </tr>                                       
                                         @empty
@@ -248,7 +248,7 @@
                                         </td>
                                         <td class="text-center">
                                             <b>
-                                                {{ $rezervari_pe_trasee->sum('nr_adulti') }}
+                                                {{ $rezervari_pe_trasee->sum('nr_adulti') + $rezervari_pe_trasee->sum('nr_copii') }}
                                             </b>
                                         </td>
                                     </tr>
@@ -302,7 +302,7 @@
                                         <td colspan="4" class="py-4 text-center">
                                             <b>
                                                 Total pasageri în toate listele:
-                                                {{ $rezervari_pe_tara->sum('nr_adulti') }}
+                                                {{ $rezervari_pe_tara->sum('nr_adulti') + $rezervari_pe_tara->sum('nr_copii') }}
                                             </b>
                                             <br>
                                                 {{-- Lista Nava - pe toate tara --}}
@@ -435,7 +435,7 @@
                                                 {{ $rezervare->oras_sosire_nume ?? ''}} ({{ $rezervare->oras_sosire_ordine ?? ''}})
                                             </td>
                                             <td class="text-center">
-                                                {{ $rezervare->nr_adulti }}
+                                                {{ $rezervare->nr_adulti + $rezervare->nr_copii }}
                                             </td>
                                         </tr>                                       
                                         @empty
@@ -452,7 +452,7 @@
                                         </td>
                                         <td class="text-center">
                                             <b>
-                                                {{ $rezervari_pe_trasee->sum('nr_adulti') }}
+                                                {{ $rezervari_pe_trasee->sum('nr_adulti') + $rezervari_pe_trasee->sum('nr_copii') }}
                                             </b>
                                         </td>
                                     </tr>

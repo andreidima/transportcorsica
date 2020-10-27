@@ -127,7 +127,7 @@
                             {{ $rezervare->pret_total }}
                         </td>
                         <td style="text-align:center">
-                            {{ $rezervare->nr_adulti }}
+                            {{ $rezervare->nr_adulti + $rezervare->nr_copii }}
                         </td>
                         <td>
 
@@ -207,7 +207,7 @@
                             <b>{{ $rezervari->sum('pret_total') }}</b>
                         </td>
                         <td style="text-align:center">
-                            <b>{{ $rezervari->sum('nr_adulti') }}</b>
+                            <b>{{ $rezervari->sum('nr_adulti') + $rezervari->sum('nr_copii') }}</b>
                         </td>
                         <td>
                             
@@ -279,7 +279,7 @@
                             {{ $rezervare->pret_total }}
                         </td>
                         <td style="text-align:center">
-                            {{ $rezervare->nr_adulti }}
+                            {{ $rezervare->nr_adulti + $rezervare->nr_copii }}
                         </td>
                         <td>
                             
@@ -337,10 +337,10 @@
                             <b>{{ $rezervari->sum('pret_total') }}</b>
                         </td>
                         <td style="text-align:center">
-                            <b>{{ $rezervari->sum('nr_adulti') }}</b>
+                            <b>{{ $rezervari->sum('nr_adulti') + $rezervari->sum('nr_copii') }}</b>
                         </td>
                         <td>
-                            
+
                         </td>
                     </tr>
 
