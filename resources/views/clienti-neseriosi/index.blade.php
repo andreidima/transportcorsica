@@ -43,6 +43,9 @@
                             <th>Nr. Crt.</th>
                             <th>Nume</th>
                             <th>Telefon</th>
+                            <th>Oraș plecare</th>
+                            <th>Oraș sosire</th>
+                            <th>Data cursă</th>
                             <th>Observații</th>
                             <th class="text-center">Acțiuni</th>
                         </tr>
@@ -66,6 +69,15 @@
                                     {{ $client->telefon }}
                                 </td>
                                 <td>
+                                    {{ $client->oras_plecare }}
+                                </td>
+                                <td>
+                                    {{ $client->oras_sosire }}
+                                </td>
+                                <td>
+                                    {{ $client->data_cursa ? \Carbon\Carbon::parse($client->data_cursa)->isoFormat('DD.MM.YYYY') : ''}}
+                                </td>
+                                <td>
                                     {{ $client->observatii }}
                                 </td>
                                 <td class="d-flex justify-content-end">
@@ -83,36 +95,6 @@
                                             >
                                             <span class="badge badge-danger">Șterge</span>
                                         </a>
-                                            <div class="modal fade text-dark" id="stergeClient{{ $client->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                    <div class="modal-header bg-danger">
-                                                        <h5 class="modal-title text-white" id="exampleModalLabel">Client: <b>{{ $client->nume }}</b></h5>
-                                                        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body" style="text-align:left;">
-                                                        Ești sigur ca vrei să ștergi Clientul?
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Renunță</button>
-                                                        
-                                                        <form method="POST" action="{{ $client->path() }}">
-                                                            @method('DELETE')  
-                                                            @csrf   
-                                                            <button 
-                                                                type="submit" 
-                                                                class="btn btn-danger"  
-                                                                >
-                                                                Șterge Client
-                                                            </button>                    
-                                                        </form>
-                                                    
-                                                    </div>
-                                                    </div>
-                                                </div>
-                                            </div>
                                     </div> 
                                 </td>
                             </tr>  
@@ -131,4 +113,39 @@
 
         </div>
     </div>
+
+    {{-- Modalele pentru stergere client --}}
+    @foreach ($clienti_neseriosi as $client)
+        <div class="modal fade text-dark" id="stergeClient{{ $client->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                <div class="modal-header bg-danger">
+                    <h5 class="modal-title text-white" id="exampleModalLabel">Client: <b>{{ $client->nume }}</b></h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="text-align:left;">
+                    Ești sigur ca vrei să ștergi Clientul?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Renunță</button>
+                    
+                    <form method="POST" action="{{ $client->path() }}">
+                        @method('DELETE')  
+                        @csrf   
+                        <button 
+                            type="submit" 
+                            class="btn btn-danger"  
+                            >
+                            Șterge Client
+                        </button>                    
+                    </form>
+                
+                </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
+
 @endsection

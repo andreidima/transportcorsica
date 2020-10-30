@@ -112,6 +112,9 @@ class ClientNeseriosController extends Controller
         return request()->validate([
             'nume' => ['nullable', 'max:250'],
             'telefon' => ['nullable', 'max:250'],
+            'oras_plecare' => ['nullable', 'max:30'],
+            'oras_sosire' => ['nullable', 'max:30'],
+            'data_cursa' => ['nullable'],
             'observatii' => ['nullable', 'max:2000'],
         ]);
     }

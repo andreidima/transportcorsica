@@ -15,7 +15,7 @@
                     @endif                    
                 </h4>
             </div> 
-            <div class="col-lg-6" id="app1">
+            <div class="col-lg-7" id="app1">
                 @if ($view_type === "plecare")                                          
                     <form class="needs-validation" novalidate method="GET" action="/rapoarte/{{ $tip_transport }}/plecare"> 
                 @elseif ($view_type === "sosire")      
@@ -102,7 +102,7 @@
                     <table class="table table-striped table-hover table-sm rounded"> 
                         <thead class="text-white rounded" style="background-color:#e66800;">
                             <tr>
-                                <th colspan="4" class="text-center" style="font-size: 20px">
+                                <th colspan="5" class="text-center" style="font-size: 20px">
                                     Liste plecare
                                     {{ $rezervari_pe_tara->first()->oras_plecare_tara }}
                                 </th>
@@ -112,6 +112,7 @@
                                 <th class="text-center">Traseu</th>
                                 <th class="">Oraș plecare</th>
                                 <th class="text-center">Nr. pers.</th>
+                                <th class="text-right">Acțiuni</th>
                             </tr>
                         </thead>
                         <tbody> 
@@ -133,7 +134,7 @@
                                                 {{-- </a> --}}
                                             </b>
                                         </td>
-                                        <td colspan="2" class="text-right" style="background-color:lightslategrey">
+                                        <td colspan="3" class="text-right" style="background-color:lightslategrey">
                                             <div class="align-right">
                                                 <form class="needs-validation" novalidate method="POST" action="/rapoarte/extrage-rezervari/raport-pdf">
                                                     @csrf
@@ -233,6 +234,28 @@
                                             <td class="text-center">
                                                 {{ $rezervare->nr_adulti + $rezervare->nr_copii }}
                                             </td>
+                                            <td class="d-flex justify-content-end">
+                                                <div style="" class="mr-1">
+                                                    <a 
+                                                        href="#" 
+                                                        data-toggle="modal" 
+                                                        data-target="#neseriosiRezervare{{ $rezervare->id }}"
+                                                        title="Clienți neserioși"
+                                                        >
+                                                        <span class="badge badge-danger">Neserioși</span>
+                                                    </a>
+                                                </div>      
+                                                <div style="" class="">
+                                                    <a 
+                                                        href="#" 
+                                                        data-toggle="modal" 
+                                                        data-target="#stergeRezervare{{ $rezervare->id }}"
+                                                        title="Șterge Rezervare"
+                                                        >
+                                                        <span class="badge badge-danger">Șterge</span>
+                                                    </a>
+                                                </div>
+                                            </td>
                                         </tr>                                       
                                         @empty
                                         @endforelse                                               
@@ -251,6 +274,7 @@
                                                 {{ $rezervari_pe_trasee->sum('nr_adulti') + $rezervari_pe_trasee->sum('nr_copii') }}
                                             </b>
                                         </td>
+                                        <td></td>
                                     </tr>
                                     {{-- <tr>
                                         <td colspan="5" class="text-center">
@@ -292,14 +316,14 @@
                                         </td>
                                     </tr> --}}
                                     <tr class="bg-dark">
-                                        <td colspan="5" height="50">
+                                        <td colspan="6" height="50">
                                             <p></p>
                                         </td>
                                     </tr>
                             @endforeach
                                 @if ( $tip_transport === 'calatori')
                                     <tr>
-                                        <td colspan="4" class="py-4 text-center">
+                                        <td colspan="5" class="py-4 text-center">
                                             <b>
                                                 Total pasageri în toate listele:
                                                 {{ $rezervari_pe_tara->sum('nr_adulti') + $rezervari_pe_tara->sum('nr_copii') }}
@@ -323,6 +347,7 @@
                         </tbody>
                     </table>
                 </div>
+
             @endforeach
 
         @elseif ($view_type === "sosire")
@@ -333,7 +358,7 @@
                     <table class="table table-striped table-hover table-sm rounded"> 
                         <thead class="text-white rounded" style="background-color:#e66800;">
                             <tr>
-                                <th colspan="4" class="text-center" style="font-size: 20px">
+                                <th colspan="5" class="text-center" style="font-size: 20px">
                                     Liste sosire
                                     {{ $rezervari_pe_tara->first()->oras_sosire_tara }}
                                 </th>
@@ -343,6 +368,7 @@
                                 <th class="text-center">Traseu</th>
                                 <th>Oraș sosire</th>
                                 <th class="text-center">Nr. pers.</th>
+                                <th class="text-right">Acțiuni</th>
                             </tr>
                         </thead>
                         <tbody> 
@@ -359,7 +385,7 @@
                                                 {{-- </a> --}}
                                             </b>
                                         </td>
-                                        <td colspan="2" class="text-right" style="background-color:lightslategrey">
+                                        <td colspan="3" class="text-right" style="background-color:lightslategrey">
                                             <div class="align-right">
                                                 <form class="needs-validation" novalidate method="POST" action="/rapoarte/extrage-rezervari/raport-pdf">
                                                     @csrf
@@ -437,6 +463,28 @@
                                             <td class="text-center">
                                                 {{ $rezervare->nr_adulti + $rezervare->nr_copii }}
                                             </td>
+                                            <td>
+                                                <div style="" class="mr-1">
+                                                    <a 
+                                                        href="#" 
+                                                        data-toggle="modal" 
+                                                        data-target="#neseriosiRezervare{{ $rezervare->id }}"
+                                                        title="Clienți neserioși"
+                                                        >
+                                                        <span class="badge badge-danger">Neserioși</span>
+                                                    </a>
+                                                </div>      
+                                                <div style="" class="">
+                                                    <a 
+                                                        href="#" 
+                                                        data-toggle="modal" 
+                                                        data-target="#stergeRezervare{{ $rezervare->id }}"
+                                                        title="Șterge Rezervare"
+                                                        >
+                                                        <span class="badge badge-danger">Șterge</span>
+                                                    </a>
+                                                </div>
+                                            </td>
                                         </tr>                                       
                                         @empty
                                         @endforelse                                               
@@ -455,6 +503,7 @@
                                                 {{ $rezervari_pe_trasee->sum('nr_adulti') + $rezervari_pe_trasee->sum('nr_copii') }}
                                             </b>
                                         </td>
+                                        <td></td>
                                     </tr>
                                     {{-- <tr>
                                         <td colspan="5" class="text-center">
@@ -512,4 +561,120 @@
 
         </div>
     </div>
+
+
+    {{-- Modalele --}}
+                        @forelse ($rezervari as $rezervare) 
+                                                {{-- Modal pentru butonul de neseriosi --}}
+                                                <div class="modal fade text-dark" id="neseriosiRezervare{{ $rezervare->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                        <div class="modal-header bg-danger">
+                                                            <h5 class="modal-title text-white" id="exampleModalLabel">
+                                                                Rezervare: 
+                                                                <b>
+                                                                    @isset($rezervare->nr_adulti)
+                                                                        @foreach ($rezervare->pasageri_relation as $pasager)
+                                                                            @if(!$loop->last)
+                                                                                {{ $pasager->nume }},
+                                                                            @else
+                                                                                {{ $pasager->nume }}
+                                                                            @endif
+                                                                        @endforeach
+                                                                    @else
+                                                                        Rezervare bagaj
+                                                                    @endif
+                                                                </b>
+                                                            </h5>
+                                                            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+
+                                                    <form method="POST" action="{{ route('insereaza-pasageri-neseriosi', ['rezervare' => $rezervare->id]) }}">
+                                                        {{-- @method('DELETE')   --}}
+                                                        @csrf  
+
+                                                        <div class="modal-body" style="text-align:left;">
+                                                            <p>
+                                                                Ești sigur ca vrei să adaugi pasagerii în lista de Clienți neserioși?
+                                                            </p>
+                                                        
+                                                            <div class="form-row">                              
+                                                                <div class="form-group col-lg-12">  
+                                                                    <label for="observatii" class="mb-0 pl-3">Observații:</label>  
+                                                                    <textarea class="form-control {{ $errors->has('observatii') ? 'is-invalid' : '' }}" 
+                                                                        name="observatii"
+                                                                        rows="2"
+                                                                    >{{ old('observatii') }}</textarea>
+                                                                </div>  
+                                                            </div> 
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Renunță</button>                                                              
+                                                                <button 
+                                                                    type="submit" 
+                                                                    class="btn btn-danger"  
+                                                                    >
+                                                                    Adaugă
+                                                                </button>  
+                                                        </div>                  
+                                                    </form>                                                        
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                            
+                                                {{-- Modal pentru butonul de stergere --}}
+                                                <div class="modal fade text-dark" id="stergeRezervare{{ $rezervare->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" 
+                                                    {{-- data-backdrop="false" --}}
+                                                >
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                        <div class="modal-header bg-danger">
+                                                            <h5 class="modal-title text-white" id="exampleModalLabel">
+                                                                Rezervare: 
+                                                                <b>
+                                                                    @isset($rezervare->nr_adulti)
+                                                                        @foreach ($rezervare->pasageri_relation as $pasager)
+                                                                            @if(!$loop->last)
+                                                                                {{ $pasager->nume }},
+                                                                            @else
+                                                                                {{ $pasager->nume }}
+                                                                            @endif
+                                                                        @endforeach
+                                                                    @else
+                                                                        Rezervare bagaj
+                                                                    @endif
+                                                                </b>
+                                                            </h5>
+                                                            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body" style="text-align:left;">
+                                                            Ești sigur ca vrei să ștergi Rezervarea?
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Renunță</button>
+                                                            
+                                                            <form method="POST" action="{{ $rezervare->path() }}">
+                                                                @method('DELETE')  
+                                                                @csrf   
+                                                                <button 
+                                                                    type="submit" 
+                                                                    class="btn btn-danger"  
+                                                                    >
+                                                                    Șterge Rezervarea
+                                                                </button>                    
+                                                            </form>
+                                                        
+                                                        </div>
+                                                        </div>
+                                                    </div>
+                                                </div>                      
+                        @empty
+                            {{-- <div>Nu s-au gasit rezervări în baza de date. Încearcă alte date de căutare</div> --}}
+                        @endforelse
+
 @endsection

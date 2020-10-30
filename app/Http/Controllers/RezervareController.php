@@ -361,7 +361,8 @@ class RezervareController extends Controller
             }
         }
 
-        return redirect('/rezervari')->with('status', 'Rezervarea a fost ștearsă cu succes!');
+        // return redirect('/rezervari')->with('status', 'Rezervarea a fost ștearsă cu succes!');
+        return back()->with('status', 'Rezervarea a fost ștearsă cu succes!');
     }
 
 
@@ -373,14 +374,20 @@ class RezervareController extends Controller
      */
     public function insereazaPasageriNeseriosi(Request $request, Rezervare $rezervare)
     {
+        // dd($rezervare, $rezervare->oras_plecare_nume->oras);
         foreach ($rezervare->pasageri_relation as $pasager){
             $client_neserios = \App\Models\ClientNeserios::make();
             $client_neserios->nume = $pasager->nume;
+            $client_neserios->telefon = $rezervare->telefon;
+            $client_neserios->data_cursa = $rezervare->data_cursa;
+            $client_neserios->oras_plecare = $rezervare->oras_plecare_nume->oras;
+            $client_neserios->oras_sosire = $rezervare->oras_sosire_nume->oras;
             $client_neserios->observatii = $request->observatii;
+            // dd($client_neserios);
             $client_neserios->save();
         }
 
-        return back()->with('status', 'Pasagerii rezervării clientului „' . $rezervare->nume . '” au fost introduși cu succes în lista de „Clienți Neserioși”!');
+        return back()->with('status', 'Pasagerii au fost introduși cu succes în lista de „Clienți Neserioși”!');
     }
 
 
@@ -1172,8 +1179,9 @@ class RezervareController extends Controller
     }
 
     public function test()
-    {        
-        $this->trimiteSms('asd', 'sdf');
+    {
+        $telefoane = ['0752926589', '0749262658'];
+        $this->trimiteSms('categorie', null, '2', $telefoane);
     }
 
 }
