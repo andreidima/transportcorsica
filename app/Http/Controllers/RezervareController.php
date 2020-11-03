@@ -1048,8 +1048,23 @@ class RezervareController extends Controller
             // );
         }
 
-        //Trimitere sms        
-        // $this->trimiteSms($rezervare_tur);
+        //Trimitere sms           
+        $mesaj = 'Buna ziua! ';
+        if($rezervare->tip_calatorie === "Calatori"){
+            $mesaj .= 'Rezervarea pentru pasagerii: ';
+            foreach ($rezervare_tur->pasageri_relation_adulti as $adult) {
+                $mesaj .= $adult->nume . ', ';
+            }
+            foreach ($rezervare_tur->pasageri_relation_copii as $copil) {
+                $mesaj .= $copil->nume . ', ';
+            }
+            $mesaj .= 'a fost inregistrata in sistem. ';
+        } else {
+            $mesaj .= 'Rezervarea pentru bagajul dumneavoastra a fost inregistrata in sistem. ';
+        }
+        $mesaj .= 'O zi placuta va dorim!';
+        // Trait continant functie cu argumentele: categorie(string), subcategorie(string), referinta_id(integer), telefoane(array), mesaj(string)
+        $this->trimiteSms('rezervari', null, $rezervare_tur->id, [$rezervare_tur->telefon], $mesaj);
 
         // Cu sau fara plata online
         switch ($request->input('action')) {
@@ -1180,8 +1195,11 @@ class RezervareController extends Controller
 
     public function test()
     {
-        $telefoane = ['0752926589', '0749262658'];
-        $this->trimiteSms('categorie', null, '2', $telefoane);
+        // $telefoane = ['5749262658'];
+        $telefon1 = '5749262658';
+        $telefon2 = '00005749262658';
+        $telefoane = [$telefon1, $telefon2];
+        $this->trimiteSms('rezervari', null, '2', $telefoane, 'Salutare tuturor');
     }
 
 }

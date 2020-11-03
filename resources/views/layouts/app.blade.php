@@ -62,10 +62,15 @@
                                     {{-- <a class="dropdown-item" href="#">Raport Retur</a> --}}
                                 </div>
                             </li>
-                            <li class="nav-item active mr-4">
-                                <a class="nav-link" href="{{ route('clienti-neseriosi.index') }}">
-                                    <i class="fas fa-user-slash mr-1"></i>Clienți neserioși
+                            <li class="nav-item active mr-4 dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-bars mr-1"></i>Utile
                                 </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('clienti-neseriosi.index') }}">Clienți neserioși</a>
+                                    <a class="dropdown-item" href="{{ route('mesaje-trimise-sms.index') }}">SMS trimise</a>
+                                    {{-- <a class="dropdown-item" href="#">Raport Retur</a> --}}
+                                </div>
                             </li>
 
                         </ul>

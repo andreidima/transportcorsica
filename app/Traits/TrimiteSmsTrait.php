@@ -6,13 +6,13 @@ namespace App\Traits;
 trait trimiteSmsTrait {
     public function trimiteSms($categorie = null, $subcategorie = null, $referinta_id = null, $telefoane = null, $mesaj = null)
     {
-        foreach ($telefoane as $telefon) {
-            echo $telefon . '<br>';
-        }
-        dd($categorie, $subcategorie, $referinta_id, $telefoane, $mesaj);
+        // foreach ($telefoane as $telefon) {
+        //     echo $telefon . '<br>';
+        // }
+        // dd($categorie, $subcategorie, $referinta_id, $telefoane, $mesaj);
         // Setarea trimiterii live sau testarea sms-ului
-        // $test = 1; // sms-ul nu se trimite
-        $test = 0; // sms-ul se trimite  
+        $test = 1; // sms-ul nu se trimite
+        // $test = 0; // sms-ul se trimite  
 
         foreach ($telefoane as $telefon) {
 
@@ -34,8 +34,8 @@ trait trimiteSmsTrait {
             // $mesaj = "Salutare domnule";
             $content = file_get_contents("http://www.smslink.ro/sms/gateway/communicate/?" .
                 "connection_id=" . config('sms_link.connection_id') . "&password=" . config('sms_link.password') .
-                "&to=" . $telefon . "&message=" .
-                urlencode($mesaj) .
+                "&to=" . urlencode($telefon) . 
+                "&message=" . urlencode($mesaj) .
                 '&test=' . $test);
             // dd($content);
             // ----------------------------------------------------------------------------

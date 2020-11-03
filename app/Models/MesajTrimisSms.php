@@ -14,6 +14,11 @@ class MesajTrimisSms extends Model
 
     public function path()
     {
-        return "/mesje-trimise-sms/{$this->id}";
+        return "/mesaje-trimise-sms/{$this->id}";
+    }
+
+    public function rezervare()
+    {
+        return $this->belongsTo('App\Models\Rezervare', 'referinta_id');
     }
 }
