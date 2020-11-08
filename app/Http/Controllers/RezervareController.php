@@ -1066,13 +1066,13 @@ class RezervareController extends Controller
             if (stripos($rezervare->nume, 'fara email') !== false) {
                 // nu se trimite email
             } else {
-                \Mail::to($rezervare_tur->email ?? '')
+                \Mail::to($rezervare_tur->email ?? 'adima@validsoftware.ro')
                     ->bcc('adima@validsoftware.ro')
                     ->send(new RezervareFinalizata($rezervare_tur)
                 );
             }
         } else {
-            \Mail::to($rezervare_tur->email ?? '')
+            \Mail::to($rezervare_tur->email ?? 'rezervari@transportcorsica.ro')
                 ->bcc('rezervari@transportcorsica.ro')
                 ->send(
                     new RezervareFinalizata($rezervare_tur)
