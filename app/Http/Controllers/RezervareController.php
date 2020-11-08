@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use DB;
 
+use App\Mail\RezervareFinalizata;
+
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
@@ -481,9 +483,11 @@ class RezervareController extends Controller
                                             $query->whereDate('data_cursa', '=', $request->data_plecare);
                                         }
                                     })->pluck('nume')->all();
-                                if (in_array($value, $pasageri)) {
-                                    $fail('Pasagerul „' . $value . '” mai are o cursă în data de ' .
-                                        \Carbon\Carbon::parse($request->data_plecare)->isoFormat('DD.MM.YYYY'));
+                                if (stripos($value, 'Andrei Dima test') === false) {
+                                    if (in_array($value, $pasageri)) {
+                                        $fail('Pasagerul „' . $value . '” mai are o cursă în data de ' .
+                                            \Carbon\Carbon::parse($request->data_plecare)->isoFormat('DD.MM.YYYY'));
+                                    }
                                 }
                             }
                         },
@@ -498,9 +502,11 @@ class RezervareController extends Controller
                                         $query->whereDate('data_cursa', '=', $request->data_intoarcere);
                                     }
                                 })->pluck('nume')->all();
-                                if (in_array($value, $pasageri)) {
-                                    $fail('Pasagerul „' . $value . '” mai are o cursă în data de ' .
-                                        \Carbon\Carbon::parse($request->data_intoarcere)->isoFormat('DD.MM.YYYY'));
+                                if (stripos($value, 'Andrei Dima test') === false) {
+                                    if (in_array($value, $pasageri)) {
+                                        $fail('Pasagerul „' . $value . '” mai are o cursă în data de ' .
+                                            \Carbon\Carbon::parse($request->data_intoarcere)->isoFormat('DD.MM.YYYY'));
+                                    }
                                 }
                             }
                         },
@@ -523,9 +529,11 @@ class RezervareController extends Controller
                                         $query->whereDate('data_cursa', '=', $request->data_plecare);
                                     }
                                 })->pluck('nume')->all();
-                                if (in_array($value, $pasageri)) {
-                                    $fail('Pasagerul „' . $value . '” mai are o cursă în data de ' .
-                                        \Carbon\Carbon::parse($request->data_plecare)->isoFormat('DD.MM.YYYY'));
+                                if (stripos($value, 'Andrei Dima test') === false) {
+                                    if (in_array($value, $pasageri)) {
+                                        $fail('Pasagerul „' . $value . '” mai are o cursă în data de ' .
+                                            \Carbon\Carbon::parse($request->data_plecare)->isoFormat('DD.MM.YYYY'));
+                                    }
                                 }
                             }
                         },
@@ -540,9 +548,11 @@ class RezervareController extends Controller
                                         $query->whereDate('data_cursa', '=', $request->data_intoarcere);
                                     }
                                 })->pluck('nume')->all();
-                                if (in_array($value, $pasageri)) {
-                                    $fail('Pasagerul „' . $value . '” mai are o cursă în data de ' .
-                                        \Carbon\Carbon::parse($request->data_intoarcere)->isoFormat('DD.MM.YYYY'));
+                                if (stripos($value, 'Andrei Dima test') === false) {
+                                    if (in_array($value, $pasageri)) {
+                                        $fail('Pasagerul „' . $value . '” mai are o cursă în data de ' .
+                                            \Carbon\Carbon::parse($request->data_intoarcere)->isoFormat('DD.MM.YYYY'));
+                                    }
                                 }
                             }
                         },
@@ -634,9 +644,11 @@ class RezervareController extends Controller
                                 $pasageri = Pasager::whereHas('rezervari', function (Builder $query) use ($request) {
                                     $query->whereDate('data_cursa', '=', $request->data_plecare);
                                 })->pluck('nume')->all();
-                                if (in_array($value, $pasageri)) {
-                                    $fail('Pasagerul „' . $value . '” mai are o cursă în data de ' .
-                                        \Carbon\Carbon::parse($request->data_plecare)->isoFormat('DD.MM.YYYY'));
+                                if (stripos($value, 'Andrei Dima test') === false) {
+                                    if (in_array($value, $pasageri)) {
+                                        $fail('Pasagerul „' . $value . '” mai are o cursă în data de ' .
+                                            \Carbon\Carbon::parse($request->data_plecare)->isoFormat('DD.MM.YYYY'));
+                                    }
                                 }
                             }
                         },
@@ -645,9 +657,11 @@ class RezervareController extends Controller
                                 $pasageri = Pasager::whereHas('rezervari', function (Builder $query) use ($request) {
                                     $query->whereDate('data_cursa', '=', $request->data_intoarcere);
                                 })->pluck('nume')->all();
-                                if (in_array($value, $pasageri)) {
-                                    $fail('Pasagerul „' . $value . '” mai are o cursă în data de ' .
-                                        \Carbon\Carbon::parse($request->data_intoarcere)->isoFormat('DD.MM.YYYY'));
+                                if (stripos($value, 'Andrei Dima test') === false) {
+                                    if (in_array($value, $pasageri)) {
+                                        $fail('Pasagerul „' . $value . '” mai are o cursă în data de ' .
+                                            \Carbon\Carbon::parse($request->data_intoarcere)->isoFormat('DD.MM.YYYY'));
+                                    }
                                 }
                             }
                         },
@@ -663,9 +677,11 @@ class RezervareController extends Controller
                                 $pasageri = Pasager::whereHas('rezervari', function (Builder $query) use ($request) {
                                         $query->whereDate('data_cursa', '=', $request->data_plecare);
                                     })->pluck('nume')->all();
-                                if (in_array($value, $pasageri)) {
-                                    $fail('Pasagerul „' . $value . '” mai are o cursă în data de ' .
-                                        \Carbon\Carbon::parse($request->data_plecare)->isoFormat('DD.MM.YYYY'));
+                                if (stripos($value, 'Andrei Dima test') === false) {
+                                    if (in_array($value, $pasageri)) {
+                                        $fail('Pasagerul „' . $value . '” mai are o cursă în data de ' .
+                                            \Carbon\Carbon::parse($request->data_plecare)->isoFormat('DD.MM.YYYY'));
+                                    }
                                 }
                             }
                         },
@@ -674,9 +690,11 @@ class RezervareController extends Controller
                                 $pasageri = Pasager::whereHas('rezervari', function (Builder $query) use ($request) {
                                     $query->whereDate('data_cursa', '=', $request->data_intoarcere);
                                 })->pluck('nume')->all();
-                                if (in_array($value, $pasageri)) {
-                                    $fail('Pasagerul „' . $value . '” mai are o cursă în data de ' .
-                                        \Carbon\Carbon::parse($request->data_intoarcere)->isoFormat('DD.MM.YYYY'));
+                                if (stripos($value, 'Andrei Dima test') === false) {
+                                    if (in_array($value, $pasageri)) {
+                                        $fail('Pasagerul „' . $value . '” mai are o cursă în data de ' .
+                                            \Carbon\Carbon::parse($request->data_intoarcere)->isoFormat('DD.MM.YYYY'));
+                                    }
                                 }
                             }
                         },
@@ -878,15 +896,17 @@ class RezervareController extends Controller
                 $request_verificare_duplicate,
                 [
                     'adulti.nume.*' => [
-                        'nullable', 'max:100',
+                        'nullable', 'max:100',                        
                         function ($attribute, $value, $fail) use ($request_verificare_duplicate) {
                             if (!empty($request_verificare_duplicate->data_plecare)) {
                                 $pasageri = Pasager::whereHas('rezervari', function (Builder $query) use ($request_verificare_duplicate) {
                                     $query->whereDate('data_cursa', '=', $request_verificare_duplicate->data_plecare);
                                 })->pluck('nume')->all();
-                                if (in_array($value, $pasageri)) {
-                                    $fail('Pasagerul „' . $value . '” mai are o cursă în data de ' .
-                                        \Carbon\Carbon::parse($request_verificare_duplicate->data_plecare)->isoFormat('DD.MM.YYYY'));
+                                if (stripos($value, 'Andrei Dima test') === false) {
+                                    if (in_array($value, $pasageri)) {
+                                        $fail('Pasagerul „' . $value . '” mai are o cursă în data de ' .
+                                            \Carbon\Carbon::parse($request_verificare_duplicate->data_plecare)->isoFormat('DD.MM.YYYY'));
+                                    }
                                 }
                             }
                         },
@@ -895,9 +915,11 @@ class RezervareController extends Controller
                                 $pasageri = Pasager::whereHas('rezervari', function (Builder $query) use ($request_verificare_duplicate) {
                                     $query->whereDate('data_cursa', '=', $request_verificare_duplicate->data_intoarcere);
                                 })->pluck('nume')->all();
-                                if (in_array($value, $pasageri)) {
-                                    $fail('Pasagerul „' . $value . '” mai are o cursă în data de ' .
-                                        \Carbon\Carbon::parse($request_verificare_duplicate->data_intoarcere)->isoFormat('DD.MM.YYYY'));
+                                if (stripos($value, 'Andrei Dima test') === false) {
+                                    if (in_array($value, $pasageri)) {
+                                        $fail('Pasagerul „' . $value . '” mai are o cursă în data de ' .
+                                            \Carbon\Carbon::parse($request_verificare_duplicate->data_intoarcere)->isoFormat('DD.MM.YYYY'));
+                                    }
                                 }
                             }
                         },
@@ -909,9 +931,11 @@ class RezervareController extends Controller
                                 $pasageri = Pasager::whereHas('rezervari', function (Builder $query) use ($request_verificare_duplicate) {
                                     $query->whereDate('data_cursa', '=', $request_verificare_duplicate->data_plecare);
                                 })->pluck('nume')->all();
-                                if (in_array($value, $pasageri)) {
-                                    $fail('Pasagerul „' . $value . '” mai are o cursă în data de ' .
-                                        \Carbon\Carbon::parse($request_verificare_duplicate->data_plecare)->isoFormat('DD.MM.YYYY'));
+                                if (stripos($value, 'Andrei Dima test') === false) {
+                                    if (in_array($value, $pasageri)) {
+                                        $fail('Pasagerul „' . $value . '” mai are o cursă în data de ' .
+                                            \Carbon\Carbon::parse($request_verificare_duplicate->data_plecare)->isoFormat('DD.MM.YYYY'));
+                                    }
                                 }
                             }
                         },
@@ -920,9 +944,11 @@ class RezervareController extends Controller
                                 $pasageri = Pasager::whereHas('rezervari', function (Builder $query) use ($request_verificare_duplicate) {
                                     $query->whereDate('data_cursa', '=', $request_verificare_duplicate->data_intoarcere);
                                 })->pluck('nume')->all();
-                                if (in_array($value, $pasageri)) {
-                                    $fail('Pasagerul „' . $value . '” mai are o cursă în data de ' .
-                                        \Carbon\Carbon::parse($request_verificare_duplicate->data_intoarcere)->isoFormat('DD.MM.YYYY'));
+                                if (stripos($value, 'Andrei Dima test') === false) {
+                                    if (in_array($value, $pasageri)) {
+                                        $fail('Pasagerul „' . $value . '” mai are o cursă în data de ' .
+                                            \Carbon\Carbon::parse($request_verificare_duplicate->data_intoarcere)->isoFormat('DD.MM.YYYY'));
+                                    }
                                 }
                             }
                         },
@@ -976,6 +1002,7 @@ class RezervareController extends Controller
         if ($rezervare->tur_retur === 'false') {
             //Inserarea rezervarii in baza de date
             $rezervare_tur->save();
+            $rezervare_retur = null;
 
             $request->session()->put('rezervare_tur', $rezervare_tur);
         } else {
@@ -1034,15 +1061,18 @@ class RezervareController extends Controller
         }
 
         // Trimitere email
-        if (stripos($rezervare->nume, 'Andrei Dima Test') !== false) {
+        if (stripos($rezervare_tur->pasageri_relation_adulti->first()->nume, 'Andrei Dima test') !== false) {
+            // dd('da');
             if (stripos($rezervare->nume, 'fara email') !== false) {
                 // nu se trimite email
             } else {
-                // \Mail::to('adima@validsoftware.ro')->send(
-                //     new CreareRezervare($rezervare, $tarife)
-                // );
+                \Mail::to($rezervare_tur->email)
+                    ->bcc('adima@validsoftware.ro')
+                    ->send(new RezervareFinalizata($rezervare_tur)
+                );
             }
         } else {
+            // dd('nu');
             // \Mail::to('alsimy_mond_travel@yahoo.com')->send(
             //     new CreareRezervare($rezervare, $tarife)
             // );
