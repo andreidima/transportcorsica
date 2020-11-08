@@ -1066,16 +1066,17 @@ class RezervareController extends Controller
             if (stripos($rezervare->nume, 'fara email') !== false) {
                 // nu se trimite email
             } else {
-                \Mail::to($rezervare_tur->email)
+                \Mail::to($rezervare_tur->email ?? '')
                     ->bcc('adima@validsoftware.ro')
                     ->send(new RezervareFinalizata($rezervare_tur)
                 );
             }
         } else {
-            // dd('nu');
-            // \Mail::to('alsimy_mond_travel@yahoo.com')->send(
-            //     new CreareRezervare($rezervare, $tarife)
-            // );
+            \Mail::to($rezervare_tur->email ?? '')
+                ->bcc('rezervari@transportcorsica.ro')
+                ->send(
+                    new RezervareFinalizata($rezervare_tur)
+                );
         }
 
         //Trimitere sms           
