@@ -171,22 +171,20 @@
                                         Observații: {{ $rezervare->observatii }}
                                     </div>
 
+                                @if (! $rezervare->cumparator->isEmpty())
                                     <div class="col-lg-11 px-0 border rounded-lg">
                                         <h5 class="bg-success text-white p-1 m-0 text-center">
                                             Date pentru facturare
                                         </h5>
                                     </div>
                                     <div class="col-lg-11 px-4 py-2 mb-2 bg-white border rounded-lg">
-                                        Document de călătorie: {{ $rezervare->document_de_calatorie }}
+                                        Cumpărător: {{ $rezervare->cumparator }}
                                         <br>
-                                        {{-- Data expirării documentului: 
-                                            @if ($rezervare->expirare_document !== null)
-                                                {{ \Carbon\Carbon::parse($rezervare->expirare_document)->isoFormat('DD.MM.YYYY') }}    
-                                            @endif                                        
-                                        <br> --}}
-                                        Seria buletin / pașaport:: {{ $rezervare->serie_document }}
+                                        Nr. Reg. Com.: {{ $rezervare->nr_reg_com }}
                                         <br>
-                                        Cnp: {{ $rezervare->cnp }}
+                                        CIF: {{ $rezervare->cif }}
+                                        <br>
+                                        Sediul: {{ $rezervare->sediul }}
                                     </div>
 
                                 </div>  

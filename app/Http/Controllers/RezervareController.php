@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Rezervare;
 use App\Models\Oras;
 use App\Models\Pasager;
+use App\Models\Factura;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use DB;
@@ -603,9 +604,10 @@ class RezervareController extends Controller
                     'adresa' => ['nullable', 'max:2000'],
                     'observatii' => ['nullable', 'max:2000'],
                     // 'plata_online' => [''],
-                    'document_de_calatorie' => ['nullable', 'max:100'],
-                    'expirare_document' => ['nullable', 'max:100'],
-                    'serie_document' => ['nullable', 'max:100'],
+                    'cumparator' => ['nullable', 'max:100'],
+                    'nr_reg_com' => ['nullable', 'max:100'],
+                    'cif' => ['nullable', 'max:100'],
+                    'sediul' => ['nullable', 'max:100'],
                     'cnp' => ['nullable', 'max:100'],
                     'acord_de_confidentialitate' => ['nullable'],
                     'termeni_si_conditii' => ['nullable'],
@@ -747,10 +749,10 @@ class RezervareController extends Controller
                     'adresa' => ['max:2000'],
                     'observatii' => ['max:2000'],
                     // 'plata_online' => [''],
-                    'document_de_calatorie' => ['', 'max:100'],
-                    'expirare_document' => ['', 'max:100'],
-                    'serie_document' => ['', 'max:100'],
-                    'cnp' => ['', 'max:100'],
+                    'cumparator' => ['nullable', 'max:100'],
+                    'nr_reg_com' => ['nullable', 'max:100'],
+                    'cif' => ['nullable', 'max:100'],
+                    'sediul' => ['nullable', 'max:100'],
                     'acord_de_confidentialitate' => ['required'],
                     'termeni_si_conditii' => ['required'],
                     'acord_newsletter' => [''],
@@ -1060,28 +1062,43 @@ class RezervareController extends Controller
             }
         }
 
+        // Salvare Factura
+        if (! $rezervare->cumparator->isEmpty()){
+            $factura = new Factura;
+            $factura->cumparator = $rezervare->cumparator;
+            $factura->nr_reg_com = $rezervare->nr_reg_com;
+            $factura->cif = $rezervare->cif;
+            $factura->sediul = $rezervare->sediul;
+            $factura->seria = Factura::select('seria')->latest()->first()->seria ?? 'MRW';
+            $factura->numar = (Factura::select('numar')->latest()->first()->numar ?? 0) + 1;
+
+            $rezervare_tur->factura->save($factura);
+        }
+
         // Trimitere email
-        if (stripos($rezervare_tur->pasageri_relation_adulti->first()->nume, 'Andrei Dima test') !== false) {
-            // dd('da');
-            if (stripos($rezervare->nume, 'fara email') !== false) {
-                // nu se trimite email
-            } else {
-                if ($rezervare_tur->email){
-                    $mail = \Mail::to($rezervare_tur->email)
-                        ->bcc('adima@validsoftware.ro');
+        if (!Auth::check()) {
+            if (stripos($rezervare_tur->pasageri_relation_adulti->first()->nume, 'Andrei Dima test') !== false) {
+                // dd('da');
+                if (stripos($rezervare->nume, 'fara email') !== false) {
+                    // nu se trimite email
                 } else {
-                    $mail = \Mail::to('adima@validsoftware.ro');
+                    if ($rezervare_tur->email){
+                        $mail = \Mail::to($rezervare_tur->email)
+                            ->bcc('adima@validsoftware.ro');
+                    } else {
+                        $mail = \Mail::to('adima@validsoftware.ro');
+                    }
+                    $mail->send(new RezervareFinalizata($rezervare_tur));
+                }
+            } else {
+                if ($rezervare_tur->email) {
+                    $mail = \Mail::to($rezervare_tur->email)
+                        ->bcc('rezervari@transportcorsica.ro');
+                } else {
+                    $mail = \Mail::to('rezervari@transportcorsica.ro');
                 }
                 $mail->send(new RezervareFinalizata($rezervare_tur));
             }
-        } else {
-            if ($rezervare_tur->email) {
-                $mail = \Mail::to($rezervare_tur->email)
-                    ->bcc('rezervari@transportcorsica.ro');
-            } else {
-                $mail = \Mail::to('rezervari@transportcorsica.ro');
-            }
-            $mail->send(new RezervareFinalizata($rezervare_tur));
         }
 
         //Trimitere sms           

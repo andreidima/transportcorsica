@@ -107,7 +107,7 @@
                         <th>Kg. bagaj</th>
                     </tr>
                 @forelse ($rezervari as $rezervare)
-                    <tr style="background-color:rgb(105, 255, 248); color:black">
+                    <tr style="background-color:rgb(209, 253, 251); color:black">
                         <td style="text-align:center; border-bottom:0rem">
                             {{ $loop->iteration }}
                         </td>

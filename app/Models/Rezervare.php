@@ -41,4 +41,9 @@ class Rezervare extends Model
     {
         return $this->pasageri_relation()->where('categorie', 'Copil');
     }
+
+    public function factura()
+    {
+        return $this->hasOne('App\Models\Factura', 'rezervare_id');
+    }
 }

@@ -876,55 +876,43 @@
                                                 <span>*Completați aceste câmpuri doar dacă doriți factură.</h5>
                                         </div>
                                         <div class="form-group col-lg-3 mb-2">
-                                            <label for="document_de_calatorie" class="mb-0">Document de călătorie:</label> 
-                                                <select class="custom-select-sm custom-select {{ $errors->has('document_de_calatorie') ? 'is-invalid' : '' }}"
-                                                    name="document_de_calatorie">      
-                                                    <option selected value="">Selectează o opțiune</option>                                          
-                                                    <option value='Carte de identitate' 
-                                                        {{ old('document_de_calatorie', ($rezervare->document_de_calatorie ?? '')) === "Carte de identitate" ? 'selected' : '' }}>
-                                                        Carte de identitate
-                                                    </option>                                 
-                                                    <option value='Pașaport'
-                                                        {{ old('document_de_calatorie', ($rezervare->document_de_calatorie ?? '')) === "Pașaport" ? 'selected' : '' }}>
-                                                        Pașaport
-                                                    </option>                                                 
-                                                </select>                                       
-                                            {{-- <input 
-                                                type="text" 
-                                                class="form-control form-control-sm {{ $errors->has('document_de_calatorie') ? 'is-invalid' : '' }}" 
-                                                name="document_de_calatorie" 
-                                                placeholder="" 
-                                                value="{{ old('document_de_calatorie', ($rezervare->document_de_calatorie ?? '')) }}"
-                                                required>  --}}
-                                        </div>
-                                        {{-- <div class="form-group col-lg-3 mb-2">
-                                            <label for="expirare_document" class="mb-0"><small> Data expirării documentului:</small></label>
-                                                <vue2-datepicker-buletin
-                                                    data-veche="{{ old('expirare_document') == '' ? '' : old('expirare_document') }}"
-                                                    nume-camp-db="expirare_document"
-                                                    tip="date"
-                                                    latime="150"
-                                                    not-before="{{ \Carbon\Carbon::today() }}"
-                                                ></vue2-datepicker-buletin>
-                                        </div> --}}
-                                        <div class="form-group col-lg-3 mb-2">
-                                            <label for="serie_document" class="mb-0">Seria buletin / pașaport:</label>                                        
+                                            <label for="cumparator" class="mb-0">Cumpărător:</label>                                        
                                             <input 
                                                 type="text" 
-                                                class="form-control form-control-sm {{ $errors->has('serie_document') ? 'is-invalid' : '' }}" 
-                                                name="serie_document" 
+                                                class="form-control form-control-sm {{ $errors->has('cumparator') ? 'is-invalid' : '' }}" 
+                                                name="cumparator" 
                                                 placeholder="" 
-                                                value="{{ old('serie_document', ($rezervare->serie_document ?? '')) }}"
+                                                value="{{ old('cumparator', ($rezervare->cumparator ?? '')) }}"
                                                 required> 
                                         </div>
                                         <div class="form-group col-lg-3 mb-2">
-                                            <label for="cnp" class="mb-0">Cnp:</label>                                        
+                                            <label for="nr_reg_com" class="mb-0">Nr. Reg. Com.:</label>                                        
                                             <input 
                                                 type="text" 
-                                                class="form-control form-control-sm {{ $errors->has('cnp') ? 'is-invalid' : '' }}" 
-                                                name="cnp" 
+                                                class="form-control form-control-sm {{ $errors->has('nr_reg_com') ? 'is-invalid' : '' }}" 
+                                                name="nr_reg_com" 
                                                 placeholder="" 
-                                                value="{{ old('cnp', ($rezervare->cnp ?? '')) }}"
+                                                value="{{ old('nr_reg_com', ($rezervare->nr_reg_com ?? '')) }}"
+                                                required> 
+                                        </div>
+                                        <div class="form-group col-lg-3 mb-2">
+                                            <label for="cif" class="mb-0">CIF:</label>                                        
+                                            <input 
+                                                type="text" 
+                                                class="form-control form-control-sm {{ $errors->has('cif') ? 'is-invalid' : '' }}" 
+                                                name="cif" 
+                                                placeholder="" 
+                                                value="{{ old('cif', ($rezervare->cif ?? '')) }}"
+                                                required> 
+                                        </div>
+                                        <div class="form-group col-lg-3 mb-2">
+                                            <label for="sediul" class="mb-0">Sediul:</label>                                        
+                                            <input 
+                                                type="text" 
+                                                class="form-control form-control-sm {{ $errors->has('sediul') ? 'is-invalid' : '' }}" 
+                                                name="sediul" 
+                                                placeholder="" 
+                                                value="{{ old('sediul', ($rezervare->sediul ?? '')) }}"
                                                 required> 
                                         </div>
                                     </div>  
