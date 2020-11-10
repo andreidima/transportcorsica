@@ -6,6 +6,7 @@ use App\Http\Controllers\RezervareController;
 use App\Http\Controllers\RaportController;
 use App\Http\Controllers\ClientNeseriosController;
 use App\Http\Controllers\MesajTrimisSmsController;
+use App\Http\Controllers\FacturaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -60,4 +61,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::any('/rapoarte/{tip_transport}/{view_type}', [RaportController::class, 'rapoarte'])->name('rapoarte');
 
     Route::resource('mesaje-trimise-sms', MesajTrimisSmsController::class,  ['parameters' => ['mesaje_trimise_sms' => 'mesaj_trimis_sms']]);
+
+    Route::resource('facturi', FacturaController::class,  ['parameters' => ['facturi' => 'factura']])
+        ->only(['index']);
 });

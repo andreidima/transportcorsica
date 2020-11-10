@@ -167,23 +167,22 @@
                                         Observații: {{ $rezervare_tur->observatii }}
                                     </div>
 
+                                @if ($rezervare_tur->factura)
                                     <div class="col-lg-11 px-0 border rounded-lg">
-                                        <h5 class="bg-success p-1 m-0 text-center">
+                                        <h5 class="bg-success text-white p-1 m-0 text-center">
                                             Date pentru facturare
                                         </h5>
                                     </div>
-                                    <div class="col-lg-11 px-4 py-2 mb-4 bg-white border rounded-lg">
-                                        Document de călătorie: {{ $rezervare_tur->document_de_calatorie }}
+                                    <div class="col-lg-11 px-4 py-2 mb-2 bg-white border rounded-lg">
+                                        Cumpărător: {{ $rezervare_tur->factura->cumparator }}
                                         <br>
-                                        {{-- Data expirării documentului: 
-                                            @if ($rezervare_tur->expirare_document !== null)
-                                                {{ \Carbon\Carbon::parse($rezervare_tur->expirare_document)->isoFormat('DD.MM.YYYY') }}    
-                                            @endif                                        
-                                        <br> --}}
-                                        Seria buletin / pașaport:: {{ $rezervare_tur->serie_document }}
+                                        Nr. Reg. Com.: {{ $rezervare_tur->factura->nr_reg_com }}
                                         <br>
-                                        Cnp: {{ $rezervare_tur->cnp }}
+                                        CIF: {{ $rezervare_tur->factura->cif }}
+                                        <br>
+                                        Sediul: {{ $rezervare_tur->factura->sediul }}
                                     </div>
+                                @endif
 
                                     <div class="col-lg-12 mb-0 d-flex justify-content-center">  
                                         <a class="btn bg-primary text-white border border-dark rounded-pill" href="{{ route('rezervari.index') }}" role="button">

@@ -69,6 +69,7 @@
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('clienti-neseriosi.index') }}">Clienți neserioși</a>
                                     <a class="dropdown-item" href="{{ route('mesaje-trimise-sms.index') }}">SMS trimise</a>
+                                    <a class="dropdown-item" href="{{ route('facturi.index') }}">Facturi</a>
                                     {{-- <a class="dropdown-item" href="#">Raport Retur</a> --}}
                                 </div>
                             </li>
