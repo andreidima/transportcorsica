@@ -171,7 +171,7 @@
                                         Observații: {{ $rezervare->observatii }}
                                     </div>
 
-                                @if (! $rezervare->cumparator->isEmpty())
+                                @if ($rezervare->cumparator)
                                     <div class="col-lg-11 px-0 border rounded-lg">
                                         <h5 class="bg-success text-white p-1 m-0 text-center">
                                             Date pentru facturare
@@ -186,6 +186,7 @@
                                         <br>
                                         Sediul: {{ $rezervare->sediul }}
                                     </div>
+                                @endif
 
                                 </div>  
                                 

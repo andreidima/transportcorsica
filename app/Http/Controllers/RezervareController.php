@@ -151,7 +151,14 @@ class RezervareController extends Controller
             $i++;
         }
         $rezervare->copii = $copii;
-        // dd($rezervare);
+
+        // Incarcarea datelor de facturare in rezervare
+        if ($rezervare->factura){
+            $rezervare->cumparator = $rezervare->factura->cumparator;
+            $rezervare->nr_reg_com = $rezervare->factura->nr_reg_com;
+            $rezervare->cif = $rezervare->factura->cif;
+            $rezervare->sediul = $rezervare->factura->sediul;
+        }
 
         $tarife = \App\Models\Tarif::first();
 
@@ -317,6 +324,30 @@ class RezervareController extends Controller
                 } else {
                     $rezervare_tur->pasageri_relation()->attach($pasager->id);
                     $rezervare_retur->pasageri_relation()->attach($pasager->id);
+                }
+            }
+
+            // Salvare Factura
+            if ($request->cumparator) {
+                $factura = new Factura;
+                $factura->cumparator = $request->cumparator;
+                $factura->nr_reg_com = $request->nr_reg_com;
+                $factura->cif = $request->cif;
+                $factura->sediul = $request->sediul;
+                $factura->seria = Factura::select('seria')->latest()->first()->seria ?? 'MRW';
+                $factura->numar = (Factura::select('numar')->latest()->first()->numar ?? 0) + 1;
+
+                if($rezervare_tur->factura){
+                    $rezervare_tur->factura()->update(
+                        [
+                            'cumparator' => $request->cumparator,
+                            'nr_reg_com' => $request->nr_reg_com,
+                            'cif' => $request->cif,
+                            'sediul' => $request->sediul
+                        ]
+                    );
+                } else {
+                    $rezervare_tur->factura()->save($factura);
                 }
             }
         }
@@ -972,6 +1003,10 @@ class RezervareController extends Controller
             $rezervare_unset->copii,
             $rezervare_unset->pret_total_tur,
             $rezervare_unset->pret_total_retur,
+            $rezervare_unset->cumparator,
+            $rezervare_unset->nr_reg_com,
+            $rezervare_unset->cif,
+            $rezervare_unset->sediul,
             $rezervare_unset->acord_de_confidentialitate,
             $rezervare_unset->termeni_si_conditii
         );
@@ -1063,7 +1098,7 @@ class RezervareController extends Controller
         }
 
         // Salvare Factura
-        if (! $rezervare->cumparator->isEmpty()){
+        if ($rezervare->cumparator){
             $factura = new Factura;
             $factura->cumparator = $rezervare->cumparator;
             $factura->nr_reg_com = $rezervare->nr_reg_com;
@@ -1072,7 +1107,7 @@ class RezervareController extends Controller
             $factura->seria = Factura::select('seria')->latest()->first()->seria ?? 'MRW';
             $factura->numar = (Factura::select('numar')->latest()->first()->numar ?? 0) + 1;
 
-            $rezervare_tur->factura->save($factura);
+            $rezervare_tur->factura()->save($factura);
         }
 
         // Trimitere email
