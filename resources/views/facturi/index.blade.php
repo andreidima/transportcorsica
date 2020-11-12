@@ -61,7 +61,7 @@
                                     {{ $factura->seria }}{{ $factura->numar }}
                                 </td>
                                 <td>
-                                    <a href="{{ $factura->rezervare->path() }}">
+                                    <a href="{{ $factura->rezervare->path() ?? '' }}">
                                         @isset($factura->rezervare->nr_adulti)
                                             @foreach ($factura->rezervare->pasageri_relation as $pasager)
                                                 @if(!$loop->last)

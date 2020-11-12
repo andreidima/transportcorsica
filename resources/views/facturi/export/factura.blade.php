@@ -75,7 +75,7 @@
                             <b>MRW88 MAXARMONY SRL</b> <br>
                             Nr. Reg. com.: J39/570/2015 <br>
                             CIF: RO35059906 <br>
-                            Sediul: Str. Soseaua Nationala 22 Et:1 -, Ceardac, Judet: Vrancea <br>
+                            Sediul: Str. Soseaua Nationala 22 Et:1, Ceardac, Judet: Vrancea <br>
                     </td>
                     <td style="border-width:0px; padding:0rem; width:10%">
 
