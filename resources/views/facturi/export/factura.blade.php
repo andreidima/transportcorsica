@@ -68,7 +68,7 @@
                       
             <table style="">
                 <tr style="">
-                    <td style="border-width:0px; padding:0rem; width:45%">
+                    <td style="border-width:0px; padding:0rem; width:50%; vertical-align:top;">
                             <p style="background-color:teal; color: white; padding:5px; width:50%">
                                 <b>FURNIZOR</b> 
                             </p>                     
@@ -80,7 +80,7 @@
                     <td style="border-width:0px; padding:0rem; width:10%">
 
                     </td>
-                    <td style="border-width:0px; padding:0rem; width:45%">
+                    <td style="border-width:0px; padding:0rem; width:50%; vertical-align:top;">
                             <p style="background-color:teal; color: white; padding:5px; width:50%">
                                 <b>CUMPĂRĂTOR</b> 
                             </p>     
