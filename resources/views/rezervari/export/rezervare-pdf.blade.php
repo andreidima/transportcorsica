@@ -265,7 +265,7 @@
                     @endif              
             </table>
                             
-            <table style="margin-bottom:20px">
+            {{-- <table style="margin-bottom:20px">
                 <tr style="text-align:center; font-weight:bold;">
                     <td colspan="" style="border-width:0px; padding:0rem;">
                         <h3 style="background-color:#e7d790; color:black; margin:10px 0px 5px 0px; padding:5px 0px">
@@ -283,7 +283,7 @@
                         <br>
                     </td>
                 </tr>                
-            </table>
+            </table> --}}
             
             {{-- * IN PRETUL BILETULUI AVETI INCLUS 40 KG PTR BAGAJUL DVS , CE DEPASESTE SE TAXEAZA CU 1 EURO / KG !!!
             <br><br>
