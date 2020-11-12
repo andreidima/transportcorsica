@@ -52,9 +52,9 @@ class RezervareFinalizata extends Mailable
 
         if ($rezervare_tur->factura){
             $factura = $rezervare_tur->factura;
-            $factura = \PDF::loadView('facturi.export.factura', compact('factura'))
+            $factura_pdf = \PDF::loadView('facturi.export.factura', compact('factura'))
                 ->setPaper('a4');
-            $message->attachData($pdf->output(), 'Factura MRW Transport Corsica.pdf');
+            $message->attachData( $factura_pdf->output(), 'Factura MRW Transport Corsica.pdf');
         }
 
         return $message;
