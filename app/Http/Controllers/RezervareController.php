@@ -1143,7 +1143,7 @@ class RezervareController extends Controller
 
         // Trimitere email
         if (!Auth::check()) {
-            if (stripos($rezervare_tur->pasageri_relation_adulti->first()->nume, 'Andrei Dima test') !== false) {
+            if (stripos($rezervare_tur->pasageri_relation_adulti->first()->nume ?? '', 'Andrei Dima test') !== false) {
                 // dd('da');
                 if (stripos($rezervare->nume, 'fara email') !== false) {
                     // nu se trimite email
