@@ -61,19 +61,21 @@
                                     {{ $factura->seria }}{{ $factura->numar }}
                                 </td>
                                 <td>
-                                    <a href="{{ $factura->rezervare->path() ?? '' }}">
-                                        @isset($factura->rezervare->nr_adulti)
-                                            @foreach ($factura->rezervare->pasageri_relation as $pasager)
-                                                @if(!$loop->last)
-                                                    {{ $pasager->nume }},
-                                                @else
-                                                    {{ $pasager->nume }}
-                                                @endif
-                                            @endforeach
-                                        @else
-                                            Rezervare bagaj
-                                        @endif
-                                    </a>
+                                    @isset($factura->rezervare)
+                                        <a href="{{ $factura->rezervare->path() }}">
+                                            @isset($factura->rezervare->nr_adulti)
+                                                @foreach ($factura->rezervare->pasageri_relation as $pasager)
+                                                    @if(!$loop->last)
+                                                        {{ $pasager->nume }},
+                                                    @else
+                                                        {{ $pasager->nume }}
+                                                    @endif
+                                                @endforeach
+                                            @else
+                                                Rezervare bagaj
+                                            @endif
+                                        </a>
+                                    @endisset
                                 </td>
                                 <td>
                                     {{ $factura->cumparator }}
