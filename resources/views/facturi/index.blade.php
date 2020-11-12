@@ -47,7 +47,7 @@
                             <th>Nr. Reg. Com.</th>
                             <th>CIF</th>
                             <th>Sediul</th>
-                            <th>PDF</th>
+                            <th class="text-center">PDF</th>
                             {{-- <th class="text-center">Acțiuni</th> --}}
                         </tr>
                     </thead>
@@ -86,6 +86,11 @@
                                 </td>
                                 <td>
                                     {{ $factura->sediul }}
+                                </td>
+                                <td class="text-center">
+                                    <a href="/facturi/{{ $factura->id }}/export/export-pdf">
+                                        <i class="fas fa-file-pdf fa-lg bg-white text-danger"></i>
+                                    </a>
                                 </td>
                             </tr>  
                         @empty

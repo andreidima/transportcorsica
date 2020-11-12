@@ -1106,6 +1106,37 @@ class RezervareController extends Controller
             $factura->sediul = $rezervare->sediul;
             $factura->seria = Factura::select('seria')->latest()->first()->seria ?? 'MRW';
             $factura->numar = (Factura::select('numar')->latest()->first()->numar ?? 0) + 1;
+            $factura->valoare_euro = $rezervare->pret_total_tur + $rezervare->pret_total_retur;
+            
+
+                // Cursul EURO se actualizeaza pe site-ul BNR in fiecare zi imediat dupa ora 13:00
+                $curs_bnr_euro = \App\Models\Variabila::where('nume', 'curs_bnr_euro')->first();
+                if (\Carbon\Carbon::now()->hour >= 14) {
+                    if (\Carbon\Carbon::parse($curs_bnr_euro->updated_at) < (\Carbon\Carbon::today()->hour(14))){
+                        $xml=simplexml_load_file("https://www.bnr.ro/nbrfxrates.xml") or die("Error: Cannot create object");            
+                        foreach($xml->Body->Cube->children() as $curs_bnr) {
+                            if ((string) $curs_bnr['currency'] === 'EUR'){
+                                $curs_bnr_euro->valoare = $curs_bnr[0];
+                                $curs_bnr_euro->save();
+                            }
+                        }
+                    }
+                } else {
+                    if (\Carbon\Carbon::parse($curs_bnr_euro->updated_at) < (\Carbon\Carbon::yesterday()->hour(14))){
+                        $xml=simplexml_load_file("https://www.bnr.ro/nbrfxrates.xml") or die("Error: Cannot create object");            
+                        foreach($xml->Body->Cube->children() as $curs_bnr) {
+                            if ((string) $curs_bnr['currency'] === 'EUR'){
+                                $curs_bnr_euro->valoare = $curs_bnr[0];
+                                $curs_bnr_euro->save();
+                            }
+                        }        
+                    }
+                }
+
+            $factura->curs_bnr_euro = $curs_bnr_euro->valoare;
+            
+            $factura->valoare_lei_tva = ($factura->valoare_euro * $factura->curs_bnr_euro) * 0.19;
+            $factura->valoare_lei = ($factura->valoare_euro * $factura->curs_bnr_euro) - $factura->valoare_lei_tva;
 
             $rezervare_tur->factura()->save($factura);
         }

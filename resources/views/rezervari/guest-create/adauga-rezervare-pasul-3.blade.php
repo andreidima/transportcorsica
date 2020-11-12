@@ -48,7 +48,7 @@
                                         </div>
                                         <div class="col-lg-11 p-4 bg-white border rounded-lg">
                                             <div class="row">
-                                                <div class="col-sm-12 text-center">                                                   
+                                                    <div class="col-sm-12 text-center">                                                   
                                                             <a href="/bilet-rezervat/rezervare-pdf"
                                                                 class="btn btn-success border border-white rounded-lg mb-0"
                                                                 role="button"
@@ -57,9 +57,23 @@
                                                                 >
                                                                 <h5 class="p-0 m-0">Descărcați și tipăriți biletul de rezervare</h5>
                                                             </a>
-                                                </div>
+                                                    </div>
+                                        
+                                                @isset($rezervare_tur->factura)
+                                                    <div class="col-sm-12 text-center my-4">                                                   
+                                                            <a href="/facturi/{{ $rezervare_tur->factura->id }}/export/export-pdf"
+                                                                class="btn btn-success border border-white rounded-lg mb-0"
+                                                                role="button"
+                                                                target="_blank"
+                                                                title="Descarcă factura"
+                                                                >
+                                                                <h5 class="p-0 m-0">Descărcați și tipăriți factura</h5>
+                                                            </a>
+                                                    </div>
+                                                @endisset
                                             </div>
                                         </div>
+
                                     @else
                                         <div class="col-lg-11 px-0 border rounded-lg">
                                             <h5 class="bg-warning p-1 m-0 text-center">

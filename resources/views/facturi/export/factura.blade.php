@@ -31,7 +31,7 @@
         }
         
         th, td {
-            padding: 0px 5px;
+            padding: 5px 5px;
             border-width:1px;
             border-style: solid;
             table-layout:fixed;
@@ -69,7 +69,9 @@
             <table style="">
                 <tr style="">
                     <td style="border-width:0px; padding:0rem; width:45%">
-                            <b>Furnizor</b> <br>
+                            <p style="background-color:teal; color: white; padding:5px; width:50%">
+                                <b>FURNIZOR</b> 
+                            </p>                     
                             <b>MRW88 MAXARMONY SRL</b> <br>
                             Nr. Reg. com.: J39/570/2015 <br>
                             CIF: RO35059906 <br>
@@ -79,198 +81,89 @@
 
                     </td>
                     <td style="border-width:0px; padding:0rem; width:45%">
-                            <b>Cumparator</b> <br>
+                            <p style="background-color:teal; color: white; padding:5px; width:50%">
+                                <b>CUMPĂRĂTOR</b> 
+                            </p>     
                             <b>{{ $factura->cumparator }}</b> <br>
                             Nr. Reg. com.: {{ $factura->nr_reg_com }} <br>
                             CIF: {{ $factura->cif }} <br>
-                            Adresa: {{ $factura->adresa }} <br>
+                            Sediul: {{ $factura->sediul }} <br>
                     </td>
                 </tr>
             </table>
         </div>
-
-            <p>
-                        Factura seria: <b>{{ $factura->seria }}</b> 
-                        Nr.: <b>{{ $factura->numar }}</b>
-                        Data: {{ \Carbon\Carbon::parse($factura->created_at)->isoFormat('D.MM.YYYY') }}
-                        Cota TVA: 19%
-            </p>
-
-            
-                    <table style="width:100%;">
-                        <tr style="background-color:#e7d790;">
-                            <th style="text-align: center">Denumire</th>
-                            <th style="text-align: center">U.M.</th>
-                            <th style="text-align: center">Cant.</th>
-                            <th style="text-align: center">Pret unitar</th>
-                            <th style="text-align: center">Valoare</th>
-                            <th style="text-align: center">Valoare TVA</th>
-                        </tr>  
-                        @forelse ($factura->produse as $produs)
-                            <tr>
-                                <td>
-                                    {{ $produs->nume }}
-                                </td>
-                                <td style="text-align: center">
-                                    {{ $produs->um }}
-                                </td>
-                                <td style="text-align: right">
-                                    {{ $produs->cantitate }}
-                                </td>
-                                <td style="text-align: right">
-                                    {{ $produs->pret_unitar }}
-                                </td>
-                                <td style="text-align: right">
-                                    {{ $produs->valoare }}
-                                </td>
-                                <td style="text-align: right">
-                                    {{ $produs->valoare_tva }}
-                                </td>
-                            </tr>
-                            @if (!is_null($produs->observatii))
-                                <tr>
-                                    <td colspan="6" style="padding-left: 30px;">
-                                        Observații: {{ $produs->observatii }}
-                                    </td>
-                                </tr>
-                            @endif
-                        @empty
-                        @endforelse
-                    </table>
-
-                    <p></p>
-
-                    <table style="width:100%;">
-                        <tr style="">
-                            <td style="border-width:0px; padding:0rem;">
-                                Semnătură și ștampilă furnizor
-                            </td>
-                            <td style="border-width:0px; padding:0rem;">
-                                DELEGAT - {{ $factura->delegat }}
-                                <BR>
-                                {{ $factura->seria_nr_buletin }}
-                            </td>
-                            <td style="border-width:0px; text-align:center;">
-                                TOTAL DE PLATĂ
-                                <br>
-                                <b>{{ $factura->produse->sum('valoare') + $factura->produse->sum('valoare_tva') }} lei</b>
-                            </td>
-                        </tr>
-                    </table>
-
-                    <p style="margin-top:40px; margin-bottom:{{ 260 - $factura->produse->count() * 20 }}px">&nbsp;</p>
         
         <div style="
-            border:dashed #999;
             width:680px;         
-            padding: 10px 15px 10px 15px;
+            padding: 10px 0px 10px 15px;
             margin:0px 0px;
                 -moz-border-radius: 10px;
                 -webkit-border-radius: 10px;
                 border-radius: 10px;">
 
-                      
-            <table style="">
-                <tr style="">
-                    <td style="border-width:0px; padding:0rem; width:45%;">
-                            {{-- <img src="{{ asset('images/cropped-gsmobile-logo-red.jpg') }}" width="150px"> --}}
-                            <b>Furnizor</b> <br>
-                            <b>G.S.MOBILE 2001 SRL</b> <br>
-                            Nr. Reg. com.: J39/13/2001 <br>
-                            CIF: RO13648994 <br>
-                            Adresa: Golesti, Str. Pasunii, Nr. 30A, Vrancea <br>
-                            Pct.de lucru: Focsani, Str. Stefan cel Mare, Nr. 5, Vrancea <br>
-                            Telefon: 0722873217	<br>
-                            {{-- Banca: BRD FOCSANI <br> --}}
-                            Cont BRD: RO60BRDE400SV19069964000 <br>
-                            Cont TREZ: RO40TREZ6915069XXX001749
-                    </td>
-                    <td style="border-width:0px; padding:0rem; width:10%">
-
-                    </td>
-                    <td style="border-width:0px; padding:0rem; width:45%">
-                            <b></b> <br>
-                            <b>{{ $factura->firma }}</b> <br>
-                            Nr. Reg. com.: {{ $factura->nr_reg_com }} <br>
-                            CIF: {{ $factura->cif_cnp }} <br>
-                            Adresa: {{ $factura->adresa }} <br>
-                            
-                            Telefon: {{ $factura->telefon }} <br>
-                            <br>
-                            <br>
-                    </td>
-                </tr>
-            </table>
-        </div>
-
-            <p>
-                        Factura seria: <b>{{ $factura->seria }}</b> 
-                        Nr.: <b>{{ $factura->numar }}</b>
-                        Data: {{ \Carbon\Carbon::parse($factura->created_at)->isoFormat('D.MM.YYYY') }}
-                        Cota TVA: 19%
+            <p style="text-align: left">
+                        Factura seria și număr: <b>{{ $factura->seria }}{{ $factura->numar }}</b> 
+                        {{-- <br>
+                        Nr.: <b>{{ $factura->numar }}</b> --}}
+                        <br>
+                        Data: <b>{{ \Carbon\Carbon::parse($factura->created_at)->isoFormat('D.MM.YYYY') }}</b>
             </p>
+        </div>
 
             
                     <table style="width:100%;">
-                        <tr style="background-color:#e7d790;">
-                            <th style="text-align: center">Denumire</th>
-                            <th style="text-align: center">U.M.</th>
-                            <th style="text-align: center">Cant.</th>
-                            <th style="text-align: center">Pret unitar</th>
-                            <th style="text-align: center">Valoare</th>
-                            <th style="text-align: center">Valoare TVA</th>
-                        </tr>  
-                        @forelse ($factura->produse as $produs)
-                            <tr>
-                                <td>
-                                    {{ $produs->nume }}
-                                </td>
-                                <td style="text-align: center">
-                                    {{ $produs->um }}
-                                </td>
-                                <td style="text-align: right">
-                                    {{ $produs->cantitate }}
-                                </td>
-                                <td style="text-align: right">
-                                    {{ $produs->pret_unitar }}
-                                </td>
-                                <td style="text-align: right">
-                                    {{ $produs->valoare }}
-                                </td>
-                                <td style="text-align: right">
-                                    {{ $produs->valoare_tva }}
-                                </td>
-                            </tr>
-                            @if (!is_null($produs->observatii))
-                                <tr>
-                                    <td colspan="6" style="padding-left: 30px;">
-                                        Observații: {{ $produs->observatii }}
-                                    </td>
-                                </tr>
-                            @endif
-                        @empty
-                        @endforelse
-                    </table>
-
-                    <p></p>
-
-                    <table style="width:100%;">
-                        <tr style="">
-                            <td style="border-width:0px; padding:0rem;">
-                                Semnătură și ștampilă furnizor
+                        <tr style="background-color:teal; color:white;">
+                            <th style="text-align: center; padding:2px">DESCRIERE</th>
+                            <th style="text-align: center; padding:2px">CANT.</th>
+                            <th style="text-align: center; padding:2px">PREȚ UNITAR</th>
+                            <th style="text-align: center; padding:2px">SUMĂ</th>
+                        </tr> 
+                        <tr style="height:200px; vertical-align:top;">
+                            <td>
+                                Servicii Transport Persoane <br>
+                                Preț în EURO: {{ round($factura->valoare_euro) }}&euro; 
+                                <br><br>
+                                Curs valutar BNR la data de {{ \Carbon\Carbon::parse($factura->created_at)->isoFormat('DD.MM.YYYY') }}: <br>
+                                1 EURO = {{ $factura->curs_bnr_euro }} 
                             </td>
-                            <td style="border-width:0px; padding:0rem;">
-                                DELEGAT - {{ $factura->delegat }}
-                                <BR>
-                                {{ $factura->seria_nr_buletin }}
+                            <td style="text-align:center">
+                                1
                             </td>
-                            <td style="border-width:0px; text-align:center;">
-                                TOTAL DE PLATĂ
-                                <br>
-                                <b>{{ $factura->produse->sum('valoare') + $factura->produse->sum('valoare_tva') }} lei</b>
+                            <td style="text-align:right">
+                                {{ $factura->valoare_lei }}
+                            </td>
+                            <td style="text-align:right">
+                                {{ $factura->valoare_lei }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: center; color:teal">
+                                Vă mulțumim pentru colaborare!
+                            </td>
+                            <td colspan="2" style="background-color:rgb(225, 255, 255)">
+                                SUBTOTAL <br>
+                                % TVA <br>
+                                VALOARE TVA <br>
+                                <b>TOTAL</b>
+                            </td>
+                            <td style="background-color:rgb(225, 255, 255); text-align:right">
+                                {{ $factura->valoare_lei }} <br>
+                                19% <br>
+                                {{ $factura->valoare_lei_tva }} <br>
+                                <b>{{ $factura->valoare_lei + $factura->valoare_lei_tva }}</b>
                             </td>
                         </tr>
                     </table>
+        
+        <br>
+        <br>
+
+        <p style="text-align:center">
+            Dacă aveți întrebări legate de această factură, trimiteți un email la: 
+            <br>
+            <b>rezervari@transportcorsica.ro</b>
+        </p>
+        
  
 </body>
 

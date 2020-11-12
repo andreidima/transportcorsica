@@ -29,4 +29,15 @@ class FacturaController extends Controller
         // return view('facturi.index', compact('facturi', 'search_nume', 'search_telefon'));
         return view('facturi.index', compact('facturi'));
     }
+
+    public function exportPDF(Request $request, Factura $factura = null, $view_type = null)
+    {        
+        if ($view_type === 'export-html') {
+            return view('facturi.export.factura', compact('factura'));
+        } elseif ($view_type === 'export-pdf') {
+                $pdf = \PDF::loadView('facturi.export.factura', compact('factura'))
+                    ->setPaper('a4', 'portrait');
+                return $pdf->download('Factura ' . $factura->cumparator . ' - ' . \Carbon\Carbon::parse($factura->created_at)->isoFormat('DD.MM.YYYY') . '.pdf');
+        }
+    }
 }

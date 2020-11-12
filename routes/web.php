@@ -52,19 +52,48 @@ Route::get('/test', function () {
     // $xml = file_get_contents($url, false, $context);
     // $xml = simplexml_load_string($xml);
 
+    $curs_bnr_euro = \App\Models\Variabila::where('nume', 'curs_bnr_euro')->first();
 
+    // dd(\Carbon\Carbon::parse($curs_bnr_euro->updated_at)->hour);
+    // dd(\Carbon\Carbon::today()->hour = 9);
+    // Cursul EURO se actualizeaza pe site-ul BNR in fiecare zi imediat dupa ora 13:00
+    if (\Carbon\Carbon::now()->hour >= 14) {
+        if (\Carbon\Carbon::parse($curs_bnr_euro->updated_at) < (\Carbon\Carbon::today()->hour(14))){
+            $xml=simplexml_load_file("https://www.bnr.ro/nbrfxrates.xml") or die("Error: Cannot create object");            
+            foreach($xml->Body->Cube->children() as $curs_bnr) {
+                if ((string) $curs_bnr['currency'] === 'EUR'){
+                    $curs_bnr_euro->valoare = $curs_bnr[0];
+                    $curs_bnr_euro->save();
+                }
+            }
+        }
+    } else {
+        if (\Carbon\Carbon::parse($curs_bnr_euro->updated_at) < (\Carbon\Carbon::yesterday()->hour(14))){
+            $xml=simplexml_load_file("https://www.bnr.ro/nbrfxrates.xml") or die("Error: Cannot create object");            
+            foreach($xml->Body->Cube->children() as $curs_bnr) {
+                if ((string) $curs_bnr['currency'] === 'EUR'){
+                    $curs_bnr_euro->valoare = $curs_bnr[0];
+                    $curs_bnr_euro->save();
+                }
+            }        
+        }
+    }
+
+    
+    
     // $xml1=simplexml_load_file("https://bjvrancea.ro/temp/books.xml") or die("Error: Cannot create object");
-    $xml=simplexml_load_file("https://bjvrancea.ro/temp/nbrfxrates.xml") or die("Error: Cannot create object");
+    // $xml=simplexml_load_file("https://bjvrancea.ro/temp/nbrfxrates.xml") or die("Error: Cannot create object");
     // echo $xml->book[0]->title . "<br>";
     // echo $xml->book[1]->title;
     
-    $curs_bnr_euro = 0;
-    foreach($xml->Body->Cube->children() as $curs_bnr) {
-        if ((string) $curs_bnr['currency'] === 'EUR'){
-            $curs_bnr_euro = $curs_bnr[0];
-        }
-    }
-    echo $curs_bnr_euro;
+
+    // $curs_bnr_euro = 0;
+    // foreach($xml->Body->Cube->children() as $curs_bnr) {
+    //     if ((string) $curs_bnr['currency'] === 'EUR'){
+    //         $curs_bnr_euro = $curs_bnr[0];
+    //     }
+    // }
+    // echo $curs_bnr_euro;
 
     // echo $curs_bnr['currency'];
     // echo $books[0];
@@ -108,4 +137,5 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('facturi', FacturaController::class,  ['parameters' => ['facturi' => 'factura']])
         ->only(['index']);
+    Route::get('/facturi/{factura}/export/{view_type}', [FacturaController::class, 'exportPDF']);
 });

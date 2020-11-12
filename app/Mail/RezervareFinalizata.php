@@ -48,7 +48,14 @@ class RezervareFinalizata extends Mailable
 
         $message->subject('Rezervare MRW Transport');
 
-        $message->attachData($pdf->output(), 'Rezervare MRW Transport.pdf');
+        $message->attachData($pdf->output(), 'Rezervare MRW Transport Corsica.pdf');
+
+        if ($rezervare_tur->factura){
+            $factura = $rezervare_tur->factura;
+            $factura = \PDF::loadView('facturi.export.factura', compact('factura'))
+                ->setPaper('a4');
+            $message->attachData($pdf->output(), 'Factura MRW Transport Corsica.pdf');
+        }
 
         return $message;
     }
