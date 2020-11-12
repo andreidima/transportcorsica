@@ -61,7 +61,7 @@
                                         
                                                 @isset($rezervare_tur->factura)
                                                     <div class="col-sm-12 text-center my-4">                                                   
-                                                            <a href="/facturi/{{ $rezervare_tur->factura->id }}/export/export-pdf"
+                                                            <a href="/factura-descarca/export-pdf"
                                                                 class="btn btn-success border border-white rounded-lg mb-0"
                                                                 role="button"
                                                                 target="_blank"

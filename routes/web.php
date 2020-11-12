@@ -36,6 +36,7 @@ Route::get('/adauga-rezervare-pasul-2', [RezervareController::class, 'adaugaReze
 Route::post('/adauga-rezervare-pasul-2', [RezervareController::class, 'postAdaugaRezervarePasul2']);
 Route::get('/adauga-rezervare-pasul-3', [RezervareController::class, 'adaugaRezervarePasul3']);
 Route::get('/bilet-rezervat/{view_type}', [RezervareController::class, 'pdfExportGuest']);
+Route::get('/factura-descarca/{view_type}', [RezervareController::class, 'exportPDFGuest']);
 
 // Extras date cu Axios
 Route::get('/orase_rezervari', [RezervareController::class, 'orase_rezervari']);

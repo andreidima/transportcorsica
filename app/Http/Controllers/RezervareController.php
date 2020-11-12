@@ -1267,6 +1267,20 @@ class RezervareController extends Controller
                 ->setPaper('a4');
             return $pdf->download('Rezervare ' . $rezervare_tur->nume . '.pdf');
         }
+    }    
+
+    public function exportPDFGuest(Request $request)
+    {        
+        $rezervare_tur = $request->session()->get('rezervare_tur');
+        $factura = $rezervare_tur->factura;
+
+        if ($request->view_type === 'export-html') {
+            return view('facturi.export.factura', compact('factura'));
+        } elseif ($request->view_type === 'export-pdf') {
+                $pdf = \PDF::loadView('facturi.export.factura', compact('factura'))
+                    ->setPaper('a4', 'portrait');
+                return $pdf->download('Factura ' . $factura->cumparator . ' - ' . \Carbon\Carbon::parse($factura->created_at)->isoFormat('DD.MM.YYYY') . '.pdf');
+        }
     }
 
     public function duplicaRezervare(Request $request, Rezervare $rezervare)
