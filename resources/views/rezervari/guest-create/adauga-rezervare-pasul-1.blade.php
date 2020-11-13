@@ -866,7 +866,8 @@
                                                 name="observatii" id="observatii" rows="2">{{ old('observatii', ($rezervare->observatii ?? '')) }}</textarea>
                                         </div> 
                                     </div>                              
-                                    <div class="form-row mb-4 px-2 pt-2 d-flex justify-content-between align-items-center border rounded" 
+                                    <div  v-if="tip_calatorie === 'Calatori'"
+                                        class="form-row mb-4 px-2 pt-2 d-flex justify-content-between align-items-center border rounded" 
                                         style="background-color:lightseagreen; color:white"
                                     >
                                         <div class="form-group col-lg-12 mb-2 d-flex justify-content-center border-bottom">
