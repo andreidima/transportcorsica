@@ -277,6 +277,9 @@ class RezervareController extends Controller
             $rezervare_tur->save();
             $rezervare_retur->save();
 
+            // Adaugarea cheii unice la retur daca aceasta lipseste, in cazul in care rezervarea initiala era fara retur
+            ($rezervare_retur->cheie_unica === null) ? ($rezervare_retur->cheie_unica = uniqid('retur')) : '';
+
             //adaugarea id-urilor de tur - retur la fiecare in parte
             $rezervare_tur->retur = $rezervare_retur->id;
             $rezervare_tur->update();
@@ -1029,12 +1032,14 @@ class RezervareController extends Controller
         $rezervare_tur->lista_plecare = Oras::find($rezervare_tur->oras_plecare)->traseu ?? null;
         $rezervare_tur->lista_sosire = Oras::find($rezervare_tur->oras_sosire)->traseu ?? null;
         $rezervare_tur->pret_total = $rezervare->pret_total_tur;
+        $rezervare_tur->cheie_unica = uniqid('tur');
         $rezervare_retur->data_cursa = $rezervare->data_intoarcere;
         $rezervare_retur->oras_plecare = $rezervare_tur->oras_sosire;
         $rezervare_retur->oras_sosire = $rezervare_tur->oras_plecare;
         $rezervare_retur->lista_plecare = Oras::find($rezervare_retur->oras_plecare)->traseu ?? null;
         $rezervare_retur->lista_sosire = Oras::find($rezervare_retur->oras_sosire)->traseu ?? null;
         $rezervare_retur->pret_total = $rezervare->pret_total_retur;
+        $rezervare_retur->cheie_unica = uniqid('retur');
 
         if ($rezervare->tur_retur === 'false') {
             //Inserarea rezervarii in baza de date
@@ -1291,10 +1296,12 @@ class RezervareController extends Controller
         $clone_rezervare = $rezervare_tur->replicate();
         (isset($rezervare_retur)) ? $clone_rezervare_retur = $rezervare_retur->replicate() : '';
 
+        $clone_rezervare->cheie_unica = uniqid('tur');
         $clone_rezervare->created_at = \Carbon\Carbon::now();
         $clone_rezervare->updated_at = \Carbon\Carbon::now();
         $clone_rezervare->save();
         if (isset($clone_rezervare_retur)) {
+            $clone_rezervare_retur->cheie_unica = uniqid('retur');
             $clone_rezervare_retur->created_at = \Carbon\Carbon::now();
             $clone_rezervare_retur->updated_at = \Carbon\Carbon::now();
             $clone_rezervare_retur->save();

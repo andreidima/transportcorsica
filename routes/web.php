@@ -44,7 +44,7 @@ Route::get('/orase_rezervari', [RezervareController::class, 'orase_rezervari']);
 Route::get('/teste-modale', [App\Http\Controllers\TesteController::class, 'testeModale']);
 Route::post('/teste-modale-apasa-buton', [App\Http\Controllers\TesteController::class, 'testeModaleApasaButon']);
 Route::post('/teste-modale-apasa-buton-2', [App\Http\Controllers\TesteController::class, 'testeModaleApasaButon2']);
-Route::get('/test', function () {
+Route::get('/test-bnr-curs-euro', function () {
 
     // $context  = stream_context_create(array('https' => array('header' => 'Accept: application/xml')));
     // // $url = 'https://www.bnr.ro/nbrfxrates.xml ';
@@ -118,8 +118,10 @@ Route::get('/test', function () {
 
     // dd($xml, $xml1, $xml1->book, $xml2->Body->Cube->Rate);
     // print_r($xml, $xml['SimpleXMLElement']['cube']['rate']['10']);
-    // print_r($xml['Subject']);
-    
+    // print_r($xml['Subject']);    
+});
+Route::get('/test-unique-id', function () {
+    echo uniqid();
 });
 
 Route::group(['middleware' => 'auth'], function () {
