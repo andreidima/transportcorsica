@@ -120,8 +120,29 @@ Route::get('/test-bnr-curs-euro', function () {
     // print_r($xml, $xml['SimpleXMLElement']['cube']['rate']['10']);
     // print_r($xml['Subject']);    
 });
-Route::get('/test-unique-id', function () {
-    echo uniqid();
+Route::get('/test-file-download', function () {
+    $clienti_neseriosi = \App\Models\ClientNeserios::pluck('nume')->all();
+    $tip_lista = 'lista_plecare';
+    $rezervari = \App\Models\Rezervare::join('orase as orase_plecare', 'rezervari.oras_plecare', '=', 'orase_plecare.id')
+        ->join('orase as orase_sosire', 'rezervari.oras_sosire', '=', 'orase_sosire.id')
+        ->with('pasageri_relation')
+        ->select(
+            'rezervari.*',
+            'orase_plecare.tara as oras_plecare_tara',
+            'orase_plecare.oras as oras_plecare_nume',
+            'orase_plecare.traseu as oras_plecare_traseu',
+            'orase_sosire.tara as oras_sosire_tara',
+            'orase_sosire.oras as oras_sosire_nume',
+            'orase_sosire.traseu as oras_sosire_traseu'
+        )
+        ->take(10)
+        ->get();
+    $pdf = \PDF::loadView('rapoarte.export.raport-pdf', compact('rezervari', 'clienti_neseriosi', 'tip_lista'))
+        ->setPaper('a4');
+    // return $pdf->stream('Rezervare ' . $rezervari->nume . '.pdf');
+    return $pdf->download('Raport ' . ($tip_lista === "lista_plecare" ? 'lista plecare ' : 'lista sosire ') .
+        \Carbon\Carbon::parse($rezervari->first()->data_cursa)->isoFormat('DD.MM.YYYY') .
+        '.pdf');
 });
 
 Route::group(['middleware' => 'auth'], function () {
