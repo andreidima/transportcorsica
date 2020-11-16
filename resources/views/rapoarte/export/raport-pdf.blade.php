@@ -97,14 +97,15 @@
 
                 <table style="">
                     <tr style="background-color:darkcyan; color:white">
-                        <th>Nr crt</th>
+                        <th style="width: 20px">Nr crt</th>
                         <th>Plecare</th>
                         <th>Nume si prenume</th>
                         <th>Telefon</th>
                         <th>Destinație</th>
-                        <th>Preț</th>
-                        <th>Nr. pers</th>
-                        <th>Kg. bagaj</th>
+                        <th style="width: 40px">Preț</th>
+                        <th style="width: 30px">Nr. pers</th>
+                        <th style="width: 70px">Kg. bagaj</th>
+                        <th style="width: 50px">Chitanță</th>
                     </tr>
                 @forelse ($rezervari as $rezervare)
                     <tr style="background-color:rgb(209, 253, 251); color:black">
@@ -132,10 +133,13 @@
                         <td>
 
                         </td>
+                        <td>
+                            <img src="data:image/png;base64, {{ base64_encode(\SimpleSoftwareIO\QrCode\Facades\QrCode::size(50)->generate('https://transportcorsica.ro/chitanta-descarca/' . $rezervare->cheie_unica)) }} ">
+                        </td>
                     </tr>
                     <tr>
                         <td style="border-top:0rem; border-bottom:0rem"></td>
-                        <td colspan="7" style="border-left:0rem">
+                        <td colspan="8" style="border-left:0rem">
                             {{-- Pasageri: --}}
                     @forelse ($rezervare->pasageri_relation as $pasager)
                         @if ($loop->index === 1)
@@ -155,7 +159,7 @@
                     @if ($rezervare->observatii)
                     <tr>
                         <td style="border-top:0rem; border-bottom:0rem"></td>
-                        <td colspan="7">
+                        <td colspan="8">
                             Observații: {{ $rezervare->observatii }}
                         </td>
                     </tr>
@@ -172,7 +176,7 @@
                             @if ($nr_crt === 1)                            
                     <tr>
                         <td style="border-top:0rem; border-bottom:0rem"></td>
-                        <td colspan="7">
+                        <td colspan="8">
                                 Clienți neserioși:
                             @endif
                             {{ \App\Models\ClientNeserios::where('nume', $pasager->nume)->first()->nume }} - 
@@ -187,7 +191,7 @@
                     @else
                         <tr>
                             <td style="border-top:0rem; border-bottom:0rem"></td>
-                            <td colspan="7">
+                            <td colspan="8">
                                 Rezervare Bagaj {{ $rezervare->bagaje_kg ? ':' . $rezervare->bagaje_kg . 'kg' : '' }}
                                 @isset ($rezervare->bagaje_descriere)
                                     <br>
@@ -208,6 +212,9 @@
                         </td>
                         <td style="text-align:center">
                             <b>{{ $rezervari->sum('nr_adulti') + $rezervari->sum('nr_copii') }}</b>
+                        </td>
+                        <td>
+                            
                         </td>
                         <td>
                             
@@ -249,7 +256,7 @@
 
                 <table style="">
                     <tr style="background-color:#302700; color:#ffffff">
-                        <th>Nr crt</th>
+                        <th style="width: 20px">Nr crt</th>
                         <th>Destinație</th>
                         <th>Nume si prenume</th>
                         <th>Telefon</th>
@@ -257,6 +264,7 @@
                         <th>Preț</th>
                         <th>Nr. pers</th>
                         <th>Kg. bagaj</th>
+                        <th style="width: 50px">Chitanță</th>
                     </tr>
                 @forelse ($rezervari as $rezervare)
                     <tr style="background-color:#e7d790; color:black">
@@ -284,10 +292,13 @@
                         <td>
                             
                         </td>
+                        <td>
+                            <img src="data:image/png;base64, {{ base64_encode(\SimpleSoftwareIO\QrCode\Facades\QrCode::size(50)->generate('https://transportcorsica.ro/chitanta-descarca/' . $rezervare->cheie_unica)) }} ">
+                        </td>
                     </tr>
                     <tr>
                         <td style="border-top:0rem; border-bottom:0rem"></td>
-                        <td colspan="7" style="border-left:0rem">
+                        <td colspan="8" style="border-left:0rem">
                             {{-- Pasageri: --}}
                     @forelse ($rezervare->pasageri_relation as $pasager)
                         @if ($loop->index === 1)
@@ -307,7 +318,7 @@
                     @if ($rezervare->observatii)
                     <tr>
                         <td style="border-top:0rem; border-bottom:0rem"></td>
-                        <td colspan="7">
+                        <td colspan="8">
                             Observații: {{ $rezervare->observatii }}
                         </td>
                     </tr>
@@ -317,7 +328,7 @@
                     @else
                         <tr>
                             <td style="border-top:0rem; border-bottom:0rem"></td>
-                            <td colspan="7">
+                            <td colspan="8">
                                 Rezervare Bagaj {{ $rezervare->bagaje_kg ? ':' . $rezervare->bagaje_kg . 'kg' : '' }}
                                 @isset ($rezervare->bagaje_descriere)
                                     <br>
@@ -338,6 +349,9 @@
                         </td>
                         <td style="text-align:center">
                             <b>{{ $rezervari->sum('nr_adulti') + $rezervari->sum('nr_copii') }}</b>
+                        </td>
+                        <td>
+
                         </td>
                         <td>
 

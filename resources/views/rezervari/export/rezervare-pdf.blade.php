@@ -133,18 +133,21 @@
                         <br>
                         <b>{{ \Carbon\Carbon::parse($rezervare_tur->data_cursa)->isoFormat('DD.MM.YYYY') }}</b>
                     </td>
-                    <td style="">
+                    <td style="text-align: center">
                         Oraș plecare:
                         <br>
                         <b>{{ $rezervare_tur->oras_plecare_nume->oras ?? '' }}</b>
                     </td>
-                    <td>
+                    <td style="text-align: center">
                         <img src="{{ asset('images/sageata dreapta.jpg') }}" width="50px">
                     </td>
-                    <td style="">
+                    <td style="text-align: center">
                         Oraș sosire:
                         <br>
                         <b>{{ $rezervare_tur->oras_sosire_nume->oras ?? '' }}</b>
+                    </td>
+                    <td style="text-align: right">
+                        <img src="data:image/png;base64, {{ base64_encode(\SimpleSoftwareIO\QrCode\Facades\QrCode::size(50)->generate('https://transportcorsica.ro/chitanta-descarca/' . $rezervare_tur->cheie_unica)) }} ">
                     </td>
                 </tr>
                 <tr>
@@ -160,18 +163,21 @@
                             <br>
                             <b>{{ \Carbon\Carbon::parse($rezervare_retur->data_cursa)->isoFormat('DD.MM.YYYY') }}</b>
                         </td>
-                        <td style="">
+                        <td style="text-align: center">
                             Oraș sosire:
                             <br>
                             <b>{{ $rezervare_retur->oras_sosire_nume->oras ?? '' }}</b>
                         </td>
-                        <td>
+                        <td style="text-align: center">
                         <img src="{{ asset('images/sageata stanga.jpg') }}" width="50px">
                         </td>
-                        <td style="">
+                        <td style="text-align: center">
                             Oraș plecare:
                             <br>
                             <b>{{ $rezervare_retur->oras_plecare_nume->oras ?? '' }}</b>
+                        </td>
+                        <td style="text-align: right">
+                            <img src="data:image/png;base64, {{ base64_encode(\SimpleSoftwareIO\QrCode\Facades\QrCode::size(50)->generate('https://transportcorsica.ro/chitanta-descarca/' . $rezervare_retur->cheie_unica)) }} ">
                         </td>
                     </tr>
                 @endif

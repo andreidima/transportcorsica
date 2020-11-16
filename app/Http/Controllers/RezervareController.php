@@ -1240,6 +1240,10 @@ class RezervareController extends Controller
 
         $rezervare_tur = $request->session()->get('rezervare_tur');
 
+        if(!$rezervare_tur){
+            return redirect('https://transportcorsica.ro');
+        }
+
         if (!$rezervare_tur->retur){
             $rezervare_retur = null;
         } else {
@@ -1276,6 +1280,26 @@ class RezervareController extends Controller
 
     public function exportPDFGuest(Request $request)
     {        
+        $rezervare_tur = $request->session()->get('rezervare_tur');
+        $factura = $rezervare_tur->factura;
+
+        if ($request->view_type === 'export-html') {
+            return view('facturi.export.factura', compact('factura'));
+        } elseif ($request->view_type === 'export-pdf') {
+                $pdf = \PDF::loadView('facturi.export.factura', compact('factura'))
+                    ->setPaper('a4', 'portrait');
+                return $pdf->download('Factura ' . $factura->cumparator . ' - ' . \Carbon\Carbon::parse($factura->created_at)->isoFormat('DD.MM.YYYY') . '.pdf');
+        }
+    }  
+
+    public function chitantaExportPDFGuest(Request $request, $cheie_unica = null)
+    {        
+        $rezervare = Rezervare::where('cheie_unica', $cheie_unica)->get();
+        // use SimpleSoftwareIO\QrCode\Facades\QrCode;
+        $QrCode = \SimpleSoftwareIO\QrCode\Facades\QrCode::size(50)->generate('Make me into a QrCode!');
+        // $QrCode->size(50);
+        echo $QrCode;
+        dd($cheie_unica, $rezervare, $QrCode);
         $rezervare_tur = $request->session()->get('rezervare_tur');
         $factura = $rezervare_tur->factura;
 
