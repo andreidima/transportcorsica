@@ -338,17 +338,52 @@ class RezervareController extends Controller
                 $factura->cif = $request->cif;
                 $factura->sediul = $request->sediul;
                 $factura->seria = Factura::select('seria')->latest()->first()->seria ?? 'MRW';
-                $factura->numar = (Factura::select('numar')->latest()->first()->numar ?? 0) + 1;
+                $factura->numar = $rezervare_tur->factura->numar ?? ((Factura::select('numar')->latest()->first()->numar ?? 0) + 1);
+                // dd($rezervare_tur->pret_total, $rezervare_retur->pret_total ?? 0);
+                $factura->valoare_euro = $rezervare_tur->pret_total + ($rezervare_retur->pret_total ?? 0);
 
+
+                // Cursul EURO se actualizeaza pe site-ul BNR in fiecare zi imediat dupa ora 13:00
+                $curs_bnr_euro = \App\Models\Variabila::where('nume', 'curs_bnr_euro')->first();
+                if (\Carbon\Carbon::now()->hour >= 14) {
+                    if (\Carbon\Carbon::parse($curs_bnr_euro->updated_at) < (\Carbon\Carbon::today()->hour(14))) {
+                        $xml = simplexml_load_file("https://www.bnr.ro/nbrfxrates.xml") or die("Error: Cannot create object");
+                        foreach ($xml->Body->Cube->children() as $curs_bnr) {
+                            if ((string) $curs_bnr['currency'] === 'EUR') {
+                                $curs_bnr_euro->valoare = $curs_bnr[0];
+                                $curs_bnr_euro->save();
+                            }
+                        }
+                    }
+                } else {
+                    if (\Carbon\Carbon::parse($curs_bnr_euro->updated_at) < (\Carbon\Carbon::yesterday()->hour(14))) {
+                        $xml = simplexml_load_file("https://www.bnr.ro/nbrfxrates.xml") or die("Error: Cannot create object");
+                        foreach ($xml->Body->Cube->children() as $curs_bnr) {
+                            if ((string) $curs_bnr['currency'] === 'EUR') {
+                                $curs_bnr_euro->valoare = $curs_bnr[0];
+                                $curs_bnr_euro->save();
+                            }
+                        }
+                    }
+                }
+
+                $factura->curs_bnr_euro = $curs_bnr_euro->valoare;
+
+                $factura->valoare_lei_tva = ($factura->valoare_euro * $factura->curs_bnr_euro) * 0.19;
+                $factura->valoare_lei = ($factura->valoare_euro * $factura->curs_bnr_euro) - $factura->valoare_lei_tva;
+
+                // $rezervare_tur->factura()->save($factura);
+                // dd($factura->toArray());
                 if($rezervare_tur->factura){
-                    $rezervare_tur->factura()->update(
-                        [
-                            'cumparator' => $request->cumparator,
-                            'nr_reg_com' => $request->nr_reg_com,
-                            'cif' => $request->cif,
-                            'sediul' => $request->sediul
-                        ]
-                    );
+                    // $rezervare_tur->factura()->update(
+                    //     [
+                    //         'cumparator' => $request->cumparator,
+                    //         'nr_reg_com' => $request->nr_reg_com,
+                    //         'cif' => $request->cif,
+                    //         'sediul' => $request->sediul
+                    //     ]
+                    // );
+                    $rezervare_tur->factura()->update($factura->toArray());
                 } else {
                     $rezervare_tur->factura()->save($factura);
                 }
