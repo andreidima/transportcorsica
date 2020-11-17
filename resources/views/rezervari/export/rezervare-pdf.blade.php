@@ -195,7 +195,7 @@
                         <tr>
                             <td colspan="5" style="text-align: center">
                                 <span style="margin-right:50px">
-                                    Pasageri: <b>{{ $rezervare_tur->nr_adulti }}</b>
+                                    Pasageri: <b>{{ $rezervare_tur->nr_adulti + $rezervare_tur->nr_copii }}</b>
                                 </span>
                                 @if ($rezervare_retur && ($rezervare_retur->pret_total > 0))
                                     <span style="margin-right:50px">

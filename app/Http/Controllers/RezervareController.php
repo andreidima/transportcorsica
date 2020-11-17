@@ -840,15 +840,16 @@ class RezervareController extends Controller
         }
     }
 
-    public function pdfexport(Request $request, Rezervare $rezervari)
+    public function pdfExport(Request $request, $view_type = null, Rezervare $rezervare_tur = null, Rezervare $rezervare_retur = null)
     {
+        // dd($view_type, $rezervare_tur, $rezervare_retur);
+
         if ($request->view_type === 'rezervare-html') {
-            return view('rezervari.export.rezervare-pdf', compact('rezervari'));
+            return view('rezervari.export.rezervare-pdf', compact('rezervare_tur', 'rezervare_retur'));
         } elseif ($request->view_type === 'rezervare-pdf') {
-            $pdf = \PDF::loadView('rezervari.export.rezervare-pdf', compact('rezervari'))
+            $pdf = \PDF::loadView('rezervari.export.rezervare-pdf', compact('rezervare_tur', 'rezervare_retur'))
                 ->setPaper('a4');
-            // return $pdf->stream('Rezervare ' . $rezervari->nume . '.pdf');
-            return $pdf->download('Rezervare ' . $rezervari->nume . '.pdf');
+            return $pdf->download('Rezervare ' . $rezervare_tur->nume . '.pdf');
         }
         // elseif($request->view_type === 'fisa-de-date-a-imobilului-pdf'){
         //     $pdf = PDF::loadView('registru.export.pdf-fisa-de-date-a-imobilului', ['registre' => $registre]) ->setPaper('a4');

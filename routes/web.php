@@ -153,6 +153,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('rezervari/{rezervare}/pasageri-neseriosi', [RezervareController::class, 'insereazaPasageriNeseriosi'])->name('insereaza-pasageri-neseriosi');
     Route::resource('rezervari', RezervareController::class,  ['parameters' => ['rezervari' => 'rezervare']]);
 
+    Route::get('/bilet-rezervat-user-logat/{view_type}/{rezervare_tur}/{rezervare_retur?}', [RezervareController::class, 'pdfExport']);
+
     Route::resource('clienti-neseriosi', ClientNeseriosController::class,  ['parameters' => ['clienti-neseriosi' => 'client_neserios']]);
     
     Route::post('/rapoarte/{tip_transport}/muta-rezervari', [RaportController::class, 'mutaRezervari']);

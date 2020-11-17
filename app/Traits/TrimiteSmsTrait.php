@@ -3,7 +3,7 @@
 namespace App\Traits;
 // use App\Student;
 
-trait trimiteSmsTrait {
+trait TrimiteSmsTrait {
     public function trimiteSms($categorie = null, $subcategorie = null, $referinta_id = null, $telefoane = null, $mesaj = null)
     {
         // foreach ($telefoane as $telefon) {
