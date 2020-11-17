@@ -1066,14 +1066,16 @@ class RezervareController extends Controller
         $rezervare_tur->data_cursa = $rezervare->data_plecare;
         $rezervare_tur->lista_plecare = Oras::find($rezervare_tur->oras_plecare)->traseu ?? null;
         $rezervare_tur->lista_sosire = Oras::find($rezervare_tur->oras_sosire)->traseu ?? null;
-        $rezervare_tur->pret_total = $rezervare->pret_total_tur;
-        $rezervare_tur->cheie_unica = uniqid('tur');
         $rezervare_retur->data_cursa = $rezervare->data_intoarcere;
         $rezervare_retur->oras_plecare = $rezervare_tur->oras_sosire;
         $rezervare_retur->oras_sosire = $rezervare_tur->oras_plecare;
         $rezervare_retur->lista_plecare = Oras::find($rezervare_retur->oras_plecare)->traseu ?? null;
         $rezervare_retur->lista_sosire = Oras::find($rezervare_retur->oras_sosire)->traseu ?? null;
+
+        $rezervare_tur->pret_total = $rezervare->pret_total_tur;
         $rezervare_retur->pret_total = $rezervare->pret_total_retur;
+
+        $rezervare_tur->cheie_unica = uniqid('tur');
         $rezervare_retur->cheie_unica = uniqid('retur');
 
         if ($rezervare->tur_retur === 'false') {
@@ -1137,6 +1139,43 @@ class RezervareController extends Controller
             }
         }
 
+        // Cursul EURO se actualizeaza pe site-ul BNR in fiecare zi imediat dupa ora 13:00
+        $curs_bnr_euro = \App\Models\Variabila::where('nume', 'curs_bnr_euro')->first();
+        if (\Carbon\Carbon::now()->hour >= 14) {
+            if (\Carbon\Carbon::parse($curs_bnr_euro->updated_at) < (\Carbon\Carbon::today()->hour(14))){
+                $xml=simplexml_load_file("https://www.bnr.ro/nbrfxrates.xml") or die("Error: Cannot create object");            
+                foreach($xml->Body->Cube->children() as $curs_bnr) {
+                    if ((string) $curs_bnr['currency'] === 'EUR'){
+                        $curs_bnr_euro->valoare = $curs_bnr[0];
+                        $curs_bnr_euro->save();
+                    }
+                }
+            }
+        } else {
+            if (\Carbon\Carbon::parse($curs_bnr_euro->updated_at) < (\Carbon\Carbon::yesterday()->hour(14))){
+                $xml=simplexml_load_file("https://www.bnr.ro/nbrfxrates.xml") or die("Error: Cannot create object");            
+                foreach($xml->Body->Cube->children() as $curs_bnr) {
+                    if ((string) $curs_bnr['currency'] === 'EUR'){
+                        $curs_bnr_euro->valoare = $curs_bnr[0];
+                        $curs_bnr_euro->save();
+                    }
+                }        
+            }
+        }
+
+        // Salvarea preturilor in lei in tabelul de rezervari, pentru a emite chitante
+        $rezervare_tur->curs_bnr_euro = $curs_bnr_euro->valoare;
+        $rezervare_tur->valoare_lei_tva = ($rezervare_tur->pret_total * $rezervare_tur->curs_bnr_euro) * 0.19;
+        $rezervare_tur->valoare_lei = ($rezervare_tur->pret_total * $rezervare_tur->curs_bnr_euro) - $rezervare_tur->valoare_lei_tva;
+        $rezervare_tur->update();
+
+        if ($rezervare->tur_retur !== 'false') {
+            $rezervare_retur->curs_bnr_euro = $curs_bnr_euro->valoare;
+            $rezervare_retur->valoare_lei_tva = ($rezervare_retur->pret_total * $rezervare_retur->curs_bnr_euro) * 0.19;
+            $rezervare_retur->valoare_lei = ($rezervare_retur->pret_total * $rezervare_retur->curs_bnr_euro) - $rezervare_retur->valoare_lei_tva;
+            $rezervare_retur->update();
+        }
+
         // Salvare Factura
         if ($rezervare->cumparator){
             $factura = new Factura;
@@ -1147,36 +1186,11 @@ class RezervareController extends Controller
             $factura->seria = Factura::select('seria')->latest()->first()->seria ?? 'MRW';
             $factura->numar = (Factura::select('numar')->latest()->first()->numar ?? 0) + 1;
             $factura->valoare_euro = $rezervare->pret_total_tur + $rezervare->pret_total_retur;
-            
-
-                // Cursul EURO se actualizeaza pe site-ul BNR in fiecare zi imediat dupa ora 13:00
-                $curs_bnr_euro = \App\Models\Variabila::where('nume', 'curs_bnr_euro')->first();
-                if (\Carbon\Carbon::now()->hour >= 14) {
-                    if (\Carbon\Carbon::parse($curs_bnr_euro->updated_at) < (\Carbon\Carbon::today()->hour(14))){
-                        $xml=simplexml_load_file("https://www.bnr.ro/nbrfxrates.xml") or die("Error: Cannot create object");            
-                        foreach($xml->Body->Cube->children() as $curs_bnr) {
-                            if ((string) $curs_bnr['currency'] === 'EUR'){
-                                $curs_bnr_euro->valoare = $curs_bnr[0];
-                                $curs_bnr_euro->save();
-                            }
-                        }
-                    }
-                } else {
-                    if (\Carbon\Carbon::parse($curs_bnr_euro->updated_at) < (\Carbon\Carbon::yesterday()->hour(14))){
-                        $xml=simplexml_load_file("https://www.bnr.ro/nbrfxrates.xml") or die("Error: Cannot create object");            
-                        foreach($xml->Body->Cube->children() as $curs_bnr) {
-                            if ((string) $curs_bnr['currency'] === 'EUR'){
-                                $curs_bnr_euro->valoare = $curs_bnr[0];
-                                $curs_bnr_euro->save();
-                            }
-                        }        
-                    }
-                }
 
             $factura->curs_bnr_euro = $curs_bnr_euro->valoare;
             
-            $factura->valoare_lei_tva = ($factura->valoare_euro * $factura->curs_bnr_euro) * 0.19;
-            $factura->valoare_lei = ($factura->valoare_euro * $factura->curs_bnr_euro) - $factura->valoare_lei_tva;
+            $factura->valoare_lei_tva = $rezervare_tur->valoare_lei_tva + $rezervare_retur->valoare_lei_tva;
+            $factura->valoare_lei = $rezervare_tur->valoare_lei + $rezervare_retur->valoare_lei;
 
             $rezervare_tur->factura()->save($factura);
         }
