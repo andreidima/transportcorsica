@@ -72,10 +72,13 @@
                             <p style="background-color:teal; color: white; padding:5px; width:50%">
                                 <b>FURNIZOR</b> 
                             </p>                     
-                            <b>MRW88 MAXARMONY SRL</b> <br>
-                            Nr. Reg. com.: J39/570/2015 <br>
+                            <b>MRW88 MAXARMONY S.R.L.</b> <br>
+                            Nr. ord. reg. com./an: J39/570/29.09.2015 <br>
                             CIF: RO35059906 <br>
-                            Sediul: Str. Soseaua Nationala 22 Et:1, Ceardac, Judet: Vrancea <br>
+                            Sediul: Str. Șoseaua Națională nr. 22, Et:1, Sat Ceardac, com. Golești, Județ Vrancea <br>
+                            Banca: Transilvania <br>
+                            Cod IBAN EURO: RO83BTRLEURCRT0319122801 <br>
+                            Cod IBAN LEI: RO36BTRLRONCRT0319122801 <br>
                     </td>
                     <td style="border-width:0px; padding:0rem; width:10%">
 
@@ -121,6 +124,32 @@
                         <tr style="height:200px; vertical-align:top;">
                             <td>
                                 Servicii Transport Persoane <br>
+                                @isset ($factura->rezervare->retur)
+                                    Bilete de călătorie:
+                                    <ul>
+                                        <li>
+                                            MRW{{ $factura->rezervare->id }} - {{ \Carbon\Carbon::parse($factura->rezervare->data_cursa)->isoFormat('DD.MM.YYYY') }}, 
+                                        </li>
+                                        <li>
+                                    MRW{{ $factura->rezervare->retur }} - {{ \Carbon\Carbon::parse(App\Models\Rezervare::find($factura->rezervare->retur)->data_cursa)->isoFormat('DD.MM.YYYY') }}. <br>
+                                        </li>
+                                    </ul>
+                                @else
+                                    Bilet de călătorie: MRW{{ $factura->rezervare->id }}. <br>                                
+                                @endisset
+                                Pasageri:                                
+                                    @isset($factura->rezervare->nr_adulti)
+                                        @foreach ($factura->rezervare->pasageri_relation as $pasager)
+                                            @if(!$loop->last)
+                                                {{ $pasager->nume }},
+                                            @else
+                                                {{ $pasager->nume }}.
+                                            @endif
+                                        @endforeach
+                                    @endisset
+                                <br>
+                                Data cursă:
+                                <br><br>
                                 Preț în EURO: {{ round($factura->valoare_euro) }}&euro; 
                                 <br><br>
                                 Curs valutar BNR la data de {{ \Carbon\Carbon::parse($factura->created_at)->isoFormat('DD.MM.YYYY') }}: <br>
