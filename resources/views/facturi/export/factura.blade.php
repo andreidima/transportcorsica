@@ -103,9 +103,15 @@
                 -moz-border-radius: 10px;
                 -webkit-border-radius: 10px;
                 border-radius: 10px;">
+            
+            
+            <h2 style="text-align: center; color:teal; margin-bottom:0px">FACTURĂ</h2>
+            <p style="text-align: center; margin-top:0px">
+                (de decont)
+            </p>
 
-            <p style="text-align: left">
-                        Factura seria și număr: <b>{{ $factura->seria }}{{ $factura->numar }}</b> 
+            <p style="text-align: center; ">                        
+                        Seria și număr: <b>{{ $factura->seria }} {{ $factura->numar }}</b> 
                         {{-- <br>
                         Nr.: <b>{{ $factura->numar }}</b> --}}
                         <br>
@@ -123,20 +129,21 @@
                         </tr> 
                         <tr style="height:200px; vertical-align:top;">
                             <td>
-                                Servicii Transport Persoane <br>
+                                Servicii Transport Persoane <br><br>
                                 @isset ($factura->rezervare->retur)
                                     Bilete de călătorie:
-                                    <ul>
+                                    <ul style="margin: 0px">
                                         <li>
-                                            MRW{{ $factura->rezervare->id }} - {{ \Carbon\Carbon::parse($factura->rezervare->data_cursa)->isoFormat('DD.MM.YYYY') }}, 
+                                            MRW {{ $factura->rezervare->id }} | Dată transport: {{ \Carbon\Carbon::parse($factura->rezervare->data_cursa)->isoFormat('DD.MM.YYYY') }};
                                         </li>
                                         <li>
-                                    MRW{{ $factura->rezervare->retur }} - {{ \Carbon\Carbon::parse(App\Models\Rezervare::find($factura->rezervare->retur)->data_cursa)->isoFormat('DD.MM.YYYY') }}. <br>
+                                            MRW {{ $factura->rezervare->retur }} | Dată transport: {{ \Carbon\Carbon::parse(App\Models\Rezervare::find($factura->rezervare->retur)->data_cursa)->isoFormat('DD.MM.YYYY') }}. <br>
                                         </li>
                                     </ul>
                                 @else
-                                    Bilet de călătorie: MRW{{ $factura->rezervare->id }}. <br>                                
+                                    Bilet de călătorie: MRW {{ $factura->rezervare->id }} | Dată transport: {{ \Carbon\Carbon::parse($factura->rezervare->data_cursa)->isoFormat('DD.MM.YYYY') }}. <br>                                
                                 @endisset
+                                <br>
                                 Pasageri:                                
                                     @isset($factura->rezervare->nr_adulti)
                                         @foreach ($factura->rezervare->pasageri_relation as $pasager)
@@ -147,8 +154,6 @@
                                             @endif
                                         @endforeach
                                     @endisset
-                                <br>
-                                Data cursă:
                                 <br><br>
                                 Preț în EURO: {{ round($factura->valoare_euro) }}&euro; 
                                 <br><br>
@@ -186,6 +191,10 @@
         
         <br>
         <br>
+
+        <p style="text-align:center">
+            Întocmit de: Manolache Viorel, CNP 1781113390675, seria și nr. buletin VN 478829.
+        </p>
 
         <p style="text-align:center">
             Dacă aveți întrebări legate de această factură, trimiteți un email la: 

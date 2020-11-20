@@ -1344,21 +1344,20 @@ class RezervareController extends Controller
 
     public function chitantaExportPDFGuest(Request $request, $cheie_unica = null)
     {        
-        $rezervare = Rezervare::where('cheie_unica', $cheie_unica)->get();
-        // use SimpleSoftwareIO\QrCode\Facades\QrCode;
-        $QrCode = \SimpleSoftwareIO\QrCode\Facades\QrCode::size(50)->generate('Make me into a QrCode!');
-        // $QrCode->size(50);
-        echo $QrCode;
-        dd($cheie_unica, $rezervare, $QrCode);
-        $rezervare_tur = $request->session()->get('rezervare_tur');
-        $factura = $rezervare_tur->factura;
+        $rezervare = Rezervare::where('cheie_unica', $cheie_unica)->first();
+        // // use SimpleSoftwareIO\QrCode\Facades\QrCode;
+        // $QrCode = \SimpleSoftwareIO\QrCode\Facades\QrCode::size(50)->generate('Make me into a QrCode!');
+        // // $QrCode->size(50);
+        // echo $QrCode;
+        // dd($cheie_unica, $rezervare, $QrCode);
 
         if ($request->view_type === 'export-html') {
-            return view('facturi.export.factura', compact('factura'));
+            return view('chitante.export.chitanta', compact('rezervare'));
         } elseif ($request->view_type === 'export-pdf') {
-                $pdf = \PDF::loadView('facturi.export.factura', compact('factura'))
-                    ->setPaper('a4', 'portrait');
-                return $pdf->download('Factura ' . $factura->cumparator . ' - ' . \Carbon\Carbon::parse($factura->created_at)->isoFormat('DD.MM.YYYY') . '.pdf');
+                $pdf = \PDF::loadView('chitante.export.chitanta', compact('rezervare'))
+                    ->setPaper('a7', 'portrait');
+                return $pdf->stream();
+                // return $pdf->download('Chitanta.pdf');
         }
     }
 
