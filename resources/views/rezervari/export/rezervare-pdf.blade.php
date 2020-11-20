@@ -177,7 +177,7 @@
                             <b>{{ $rezervare_retur->oras_plecare_nume->oras ?? '' }}</b>
                         </td>
                         <td style="text-align: right">
-                            <img src="data:image/png;base64, {{ base64_encode(\SimpleSoftwareIO\QrCode\Facades\QrCode::size(50)->generate('https://transportcorsica.ro/chitanta-descarca/' . $rezervare_retur->cheie_unica)) }} ">
+                            <img src="data:image/png;base64, {{ base64_encode(\SimpleSoftwareIO\QrCode\Facades\QrCode::size(50)->generate('https://transportcorsica.ro/chitanta-descarca/' . $rezervare_retur->cheie_unica . '/export-pdf')) }} ">
                         </td>
                     </tr>
                 @endif
