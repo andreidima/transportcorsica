@@ -1223,21 +1223,24 @@ class RezervareController extends Controller
         }
 
         //Trimitere sms           
-        $mesaj = 'Buna ziua! ';
-        if($rezervare->tip_calatorie === "Calatori"){
-            $mesaj .= 'Rezervarea pentru pasagerii: ';
-            foreach ($rezervare_tur->pasageri_relation_adulti as $adult) {
-                $mesaj .= $adult->nume . ', ';
-            }
-            foreach ($rezervare_tur->pasageri_relation_copii as $copil) {
-                $mesaj .= $copil->nume . ', ';
-            }
-            $mesaj .= 'a fost inregistrata in sistem. ';
-        } else {
-            $mesaj .= 'Rezervarea pentru bagajul dumneavoastra a fost inregistrata in sistem. ';
-        }
-        $mesaj .= 'O zi placuta va dorim!';
-        // Trait continant functie cu argumentele: categorie(string), subcategorie(string), referinta_id(integer), telefoane(array), mesaj(string)
+        // $mesaj = 'Buna ziua! ';
+        // if($rezervare->tip_calatorie === "Calatori"){
+        //     $mesaj .= 'Rezervarea pentru pasagerii: ';
+        //     foreach ($rezervare_tur->pasageri_relation_adulti as $adult) {
+        //         $mesaj .= $adult->nume . ', ';
+        //     }
+        //     foreach ($rezervare_tur->pasageri_relation_copii as $copil) {
+        //         $mesaj .= $copil->nume . ', ';
+        //     }
+        //     $mesaj .= 'a fost inregistrata in sistem. ';
+        // } else {
+        //     $mesaj .= 'Rezervarea pentru bagajul dumneavoastra a fost inregistrata in sistem. ';
+        // }
+        // $mesaj .= 'O zi placuta va dorim!';
+
+        $mesaj = 'Rezervarea dumneavoastra a fost inregistrata cu succes in sistem. Veti fi contactat cu minim 12 ore inainte de plecare. Cu stima, MRW Transport +40761329420!';
+
+        // Trait continand functie cu argumentele: categorie(string), subcategorie(string), referinta_id(integer), telefoane(array), mesaj(string)
         $this->trimiteSms('rezervari', null, $rezervare_tur->id, [$rezervare_tur->telefon], $mesaj);
 
         // Cu sau fara plata online
