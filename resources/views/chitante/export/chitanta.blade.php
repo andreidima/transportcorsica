@@ -11,8 +11,8 @@
         }
 
         body { 
-            /* font-family: DejaVu Sans, sans-serif; */
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: DejaVu Sans, sans-serif;
+            /* font-family: Arial, Helvetica, sans-serif; */
             font-size: 12px;
             margin: 0px;
         }
@@ -58,7 +58,7 @@
 <body>
     {{-- <div style="width:730px; height: 1030px; border-style: dashed ; border-width:2px; border-radius: 15px;">      --}}
     <div style="
-        width:320px;
+        width:250px;
         margin:0px 0px;
             -moz-border-radius: 10px;
             -webkit-border-radius: 10px;
@@ -70,10 +70,10 @@
             
             Seria: MRW <br>
             Nr. {{ $rezervare->id }} <br>
-            Ruta: {{ $rezervare->oras_plecare_nume->oras ?? '' }} - {{ $rezervare->oras_sosire_nume->oras ?? '' }} <br><br>
+            Ruta: {{ $rezervare->oras_plecare_nume->oras ?? '' }} - {{ $rezervare->oras_sosire_nume->oras ?? '' }} <br><br><br>
 
-            <h1 style="margin:5px">PREȚUL {{ $rezervare->valoare_lei + $rezervare->valoare_lei_tva }}</h1>
-
+            <h2 style="margin:5px">PREȚUL {{ $rezervare->valoare_lei + $rezervare->valoare_lei_tva }} lei</h2>
+            <br>
             Păstrați biletul pentru control
             
              
