@@ -134,7 +134,7 @@
 
                         </td>
                         <td>
-                            <img src="data:image/png;base64, {{ base64_encode(\SimpleSoftwareIO\QrCode\Facades\QrCode::size(50)->generate('https://transportcorsica.ro/chitanta-descarca/' . $rezervare->cheie_unica)) }} ">
+                            <img src="data:image/png;base64, {{ base64_encode(\SimpleSoftwareIO\QrCode\Facades\QrCode::size(50)->generate('https://rezervari.transportcorsica.ro/chitanta-descarca/' . $rezervare->cheie_unica . '/export-pdf')) }} ">
                         </td>
                     </tr>
                     <tr>
@@ -293,7 +293,7 @@
                             
                         </td>
                         <td>
-                            <img src="data:image/png;base64, {{ base64_encode(\SimpleSoftwareIO\QrCode\Facades\QrCode::size(50)->generate('https://transportcorsica.ro/chitanta-descarca/' . $rezervare->cheie_unica)) }} ">
+                            <img src="data:image/png;base64, {{ base64_encode(\SimpleSoftwareIO\QrCode\Facades\QrCode::size(50)->generate('https://rezervari.transportcorsica.ro/chitanta-descarca/' . $rezervare->cheie_unica . '/export-pdf')) }} ">
                         </td>
                     </tr>
                     <tr>
