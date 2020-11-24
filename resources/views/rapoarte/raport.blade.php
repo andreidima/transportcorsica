@@ -7,12 +7,8 @@
                 <h4 class=" mb-0">
                     {{-- @php
                         dd($view_type);
-                    @endphp --}}
-                    @if ($view_type === "plecare")                                          
-                        <a href="/rapoarte/calatori/plecare"><i class="fas fa-book mr-1"></i>Rapoarte plecare</a> 
-                    @elseif ($view_type === "sosire")      
-                        <a href="/rapoarte/calatori/sosire"><i class="fas fa-book mr-1"></i>Rapoarte sosire</a>
-                    @endif                    
+                    @endphp --}}                                         
+                        <a href="/rapoarte/calatori/{{ $view_type }}"><i class="fas fa-book mr-1"></i>Rapoarte {{ $view_type }}</a>                 
                 </h4>
             </div> 
             <div class="col-lg-7" id="app1">
@@ -45,7 +41,7 @@
                             </button>
                         </div>
                         <div class="col-md-4 mb-2 px-1 d-flex align-items-center">
-                            <a class="btn btn-sm bg-secondary text-white col-md-12 border border-dark rounded-pill" href="/rapoarte" role="button">
+                            <a class="btn btn-sm bg-secondary text-white col-md-12 border border-dark rounded-pill" href="/rapoarte/{{ $tip_transport }}/{{ $view_type }}" role="button">
                                 <i class="far fa-trash-alt text-white mr-1"></i>Resetează căutarea
                             </a>
                         </div>
