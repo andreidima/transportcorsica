@@ -133,10 +133,10 @@ class RaportController extends Controller
             ->find($request->rezervari);
         
         // asezare rezervarilor in aceeasi ordine ca id-urile primite din request
-        $ids = $request->rezervari;
-        $rezervari = $rezervari->sortBy(function($model) use ($ids) {
-            return array_search($model->getKey(), $ids);
-        });
+        // $ids = $request->rezervari;
+        // $rezervari = $rezervari->sortBy(function($model) use ($ids) {
+        //     return array_search($model->getKey(), $ids);
+        // });
 
         // dd($rezervari, $ids);
         
