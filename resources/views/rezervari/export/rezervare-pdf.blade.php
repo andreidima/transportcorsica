@@ -121,7 +121,7 @@
 
             <table style="margin-bottom:40px">    
                 <tr style="text-align:center; font-weight:bold;">
-                    <td colspan="5" style="padding:0rem;">
+                    <td colspan="4" style="padding:0rem;">
                         <h3 style="background-color:#e7d790; color:black; margin:10px 0px 5px 0px; padding:5px 0px">
                         Informații Rezervare bilet
                         </h3>
@@ -146,9 +146,9 @@
                         <br>
                         <b>{{ $rezervare_tur->oras_sosire_nume->oras ?? '' }}</b>
                     </td>
-                    <td style="text-align: right">
+                    {{-- <td style="text-align: right">
                         <img src="data:image/png;base64, {{ base64_encode(\SimpleSoftwareIO\QrCode\Facades\QrCode::size(50)->generate('https://rezervari.transportcorsica.ro/chitanta-descarca/' . $rezervare_tur->cheie_unica . '/export-pdf')) }} ">
-                    </td>
+                    </td> --}}
                 </tr>
                 <tr>
                     <td>
@@ -176,9 +176,9 @@
                             <br>
                             <b>{{ $rezervare_retur->oras_plecare_nume->oras ?? '' }}</b>
                         </td>
-                        <td style="text-align: right">
+                        {{-- <td style="text-align: right">
                             <img src="data:image/png;base64, {{ base64_encode(\SimpleSoftwareIO\QrCode\Facades\QrCode::size(50)->generate('https://rezervari.transportcorsica.ro/chitanta-descarca/' . $rezervare_retur->cheie_unica . '/export-pdf')) }} ">
-                        </td>
+                        </td> --}}
                     </tr>
                 @endif
             </table>

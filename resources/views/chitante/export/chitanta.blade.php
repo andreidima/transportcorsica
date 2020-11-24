@@ -70,7 +70,7 @@
             
             Seria: MRW <br>
             Nr. {{ $rezervare->id }} <br>
-            Ruta: {{ $rezervare->oras_plecare_nume->oras ?? '' }} - {{ $rezervare->oras_sosire_nume->oras ?? '' }} <br><br><br>
+            Ruta: {{ $rezervare->oras_plecare ?? '' }} - {{ $rezervare->oras_sosire ?? '' }} <br><br><br>
 
             <h2 style="margin:5px">PREȚUL {{ $rezervare->valoare_lei + $rezervare->valoare_lei_tva }} lei</h2>
             <br>

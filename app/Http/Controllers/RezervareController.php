@@ -1343,16 +1343,35 @@ class RezervareController extends Controller
                     ->setPaper('a4', 'portrait');
                 return $pdf->download('Factura ' . $factura->cumparator . ' - ' . \Carbon\Carbon::parse($factura->created_at)->isoFormat('DD.MM.YYYY') . '.pdf');
         }
+    } 
+
+    public function chitantaSeteazaOraseGuest(Request $request, $cheie_unica = null)
+    {        
+        $rezervare = Rezervare::where('cheie_unica', $cheie_unica)->first();
+
+        return view('chitante.export.seteaza-orase', compact('rezervare', 'cheie_unica'));
     }  
+
+    public function postChitantaSeteazaOraseGuest(Request $request, $cheie_unica = null)
+    {      
+        // dd($request, $request->oras_plecare);
+
+        return redirect()->action(
+            [RezervareController::class, 'chitantaExportPDFGuest'], 
+            [
+                'cheie_unica' => $cheie_unica, 
+                'view_type' => 'export-html',
+                'oras_plecare' => $request->oras_plecare,
+                'oras_sosire' => $request->oras_sosire
+            ]
+        );
+    } 
 
     public function chitantaExportPDFGuest(Request $request, $cheie_unica = null)
     {        
         $rezervare = Rezervare::where('cheie_unica', $cheie_unica)->first();
-        // // use SimpleSoftwareIO\QrCode\Facades\QrCode;
-        // $QrCode = \SimpleSoftwareIO\QrCode\Facades\QrCode::size(50)->generate('Make me into a QrCode!');
-        // // $QrCode->size(50);
-        // echo $QrCode;
-        // dd($cheie_unica, $rezervare, $QrCode);
+        $rezervare->oras_plecare = $request->oras_plecare;
+        $rezervare->oras_sosire = $request->oras_sosire;
 
         if ($request->view_type === 'export-html') {
             return view('chitante.export.chitanta', compact('rezervare'));
