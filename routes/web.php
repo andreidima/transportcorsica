@@ -43,85 +43,85 @@ Route::get('/chitanta-descarca/{cheie_unica}/{view_type}', [RezervareController:
 // Extras date cu Axios
 Route::get('/orase_rezervari', [RezervareController::class, 'orase_rezervari']);
 
-Route::get('/teste-modale', [App\Http\Controllers\TesteController::class, 'testeModale']);
-Route::post('/teste-modale-apasa-buton', [App\Http\Controllers\TesteController::class, 'testeModaleApasaButon']);
-Route::post('/teste-modale-apasa-buton-2', [App\Http\Controllers\TesteController::class, 'testeModaleApasaButon2']);
-Route::get('/test-bnr-curs-euro', function () {
+// Route::get('/teste-modale', [App\Http\Controllers\TesteController::class, 'testeModale']);
+// Route::post('/teste-modale-apasa-buton', [App\Http\Controllers\TesteController::class, 'testeModaleApasaButon']);
+// Route::post('/teste-modale-apasa-buton-2', [App\Http\Controllers\TesteController::class, 'testeModaleApasaButon2']);
+// Route::get('/test-bnr-curs-euro', function () {
 
-    // $context  = stream_context_create(array('https' => array('header' => 'Accept: application/xml')));
-    // // $url = 'https://www.bnr.ro/nbrfxrates.xml ';
-    // $url = 'https://bjvrancea.ro/temp/nbrfxrates.xml';
+//     // $context  = stream_context_create(array('https' => array('header' => 'Accept: application/xml')));
+//     // // $url = 'https://www.bnr.ro/nbrfxrates.xml ';
+//     // $url = 'https://bjvrancea.ro/temp/nbrfxrates.xml';
 
-    // $xml = file_get_contents($url, false, $context);
-    // $xml = simplexml_load_string($xml);
+//     // $xml = file_get_contents($url, false, $context);
+//     // $xml = simplexml_load_string($xml);
 
-    $curs_bnr_euro = \App\Models\Variabila::where('nume', 'curs_bnr_euro')->first();
+//     $curs_bnr_euro = \App\Models\Variabila::where('nume', 'curs_bnr_euro')->first();
 
-    // dd(\Carbon\Carbon::parse($curs_bnr_euro->updated_at)->hour);
-    // dd(\Carbon\Carbon::today()->hour = 9);
-    // Cursul EURO se actualizeaza pe site-ul BNR in fiecare zi imediat dupa ora 13:00
-    if (\Carbon\Carbon::now()->hour >= 14) {
-        if (\Carbon\Carbon::parse($curs_bnr_euro->updated_at) < (\Carbon\Carbon::today()->hour(14))){
-            $xml=simplexml_load_file("https://www.bnr.ro/nbrfxrates.xml") or die("Error: Cannot create object");            
-            foreach($xml->Body->Cube->children() as $curs_bnr) {
-                if ((string) $curs_bnr['currency'] === 'EUR'){
-                    $curs_bnr_euro->valoare = $curs_bnr[0];
-                    $curs_bnr_euro->save();
-                }
-            }
-        }
-    } else {
-        if (\Carbon\Carbon::parse($curs_bnr_euro->updated_at) < (\Carbon\Carbon::yesterday()->hour(14))){
-            $xml=simplexml_load_file("https://www.bnr.ro/nbrfxrates.xml") or die("Error: Cannot create object");            
-            foreach($xml->Body->Cube->children() as $curs_bnr) {
-                if ((string) $curs_bnr['currency'] === 'EUR'){
-                    $curs_bnr_euro->valoare = $curs_bnr[0];
-                    $curs_bnr_euro->save();
-                }
-            }        
-        }
-    }
+//     // dd(\Carbon\Carbon::parse($curs_bnr_euro->updated_at)->hour);
+//     // dd(\Carbon\Carbon::today()->hour = 9);
+//     // Cursul EURO se actualizeaza pe site-ul BNR in fiecare zi imediat dupa ora 13:00
+//     if (\Carbon\Carbon::now()->hour >= 14) {
+//         if (\Carbon\Carbon::parse($curs_bnr_euro->updated_at) < (\Carbon\Carbon::today()->hour(14))){
+//             $xml=simplexml_load_file("https://www.bnr.ro/nbrfxrates.xml") or die("Error: Cannot create object");            
+//             foreach($xml->Body->Cube->children() as $curs_bnr) {
+//                 if ((string) $curs_bnr['currency'] === 'EUR'){
+//                     $curs_bnr_euro->valoare = $curs_bnr[0];
+//                     $curs_bnr_euro->save();
+//                 }
+//             }
+//         }
+//     } else {
+//         if (\Carbon\Carbon::parse($curs_bnr_euro->updated_at) < (\Carbon\Carbon::yesterday()->hour(14))){
+//             $xml=simplexml_load_file("https://www.bnr.ro/nbrfxrates.xml") or die("Error: Cannot create object");            
+//             foreach($xml->Body->Cube->children() as $curs_bnr) {
+//                 if ((string) $curs_bnr['currency'] === 'EUR'){
+//                     $curs_bnr_euro->valoare = $curs_bnr[0];
+//                     $curs_bnr_euro->save();
+//                 }
+//             }        
+//         }
+//     }
 
     
     
-    // $xml1=simplexml_load_file("https://bjvrancea.ro/temp/books.xml") or die("Error: Cannot create object");
-    // $xml=simplexml_load_file("https://bjvrancea.ro/temp/nbrfxrates.xml") or die("Error: Cannot create object");
-    // echo $xml->book[0]->title . "<br>";
-    // echo $xml->book[1]->title;
+//     // $xml1=simplexml_load_file("https://bjvrancea.ro/temp/books.xml") or die("Error: Cannot create object");
+//     // $xml=simplexml_load_file("https://bjvrancea.ro/temp/nbrfxrates.xml") or die("Error: Cannot create object");
+//     // echo $xml->book[0]->title . "<br>";
+//     // echo $xml->book[1]->title;
     
 
-    // $curs_bnr_euro = 0;
-    // foreach($xml->Body->Cube->children() as $curs_bnr) {
-    //     if ((string) $curs_bnr['currency'] === 'EUR'){
-    //         $curs_bnr_euro = $curs_bnr[0];
-    //     }
-    // }
-    // echo $curs_bnr_euro;
+//     // $curs_bnr_euro = 0;
+//     // foreach($xml->Body->Cube->children() as $curs_bnr) {
+//     //     if ((string) $curs_bnr['currency'] === 'EUR'){
+//     //         $curs_bnr_euro = $curs_bnr[0];
+//     //     }
+//     // }
+//     // echo $curs_bnr_euro;
 
-    // echo $curs_bnr['currency'];
-    // echo $books[0];
-    // print_r($books);
-    // echo "<br>";
-    // echo $curs_bnr['currency'];
-    // echo $books[0];
-    // echo "<br><br>";
-    // print_r($books['currency']);
-    // echo "<br>";
-    // print_r($books[0]);
-    // echo "<br>";
-    // print_r($books->attributes->currency[0]);
-    // echo "<br>";
-    // print_r($books['@attributes']);
-    // echo "<br>";
-    // echo $books->attributes . ", ";
-    // echo $books->Rate . ", ";
-    // echo $books->year . ", ";
-    // echo $books->price . "<br><br>";
+//     // echo $curs_bnr['currency'];
+//     // echo $books[0];
+//     // print_r($books);
+//     // echo "<br>";
+//     // echo $curs_bnr['currency'];
+//     // echo $books[0];
+//     // echo "<br><br>";
+//     // print_r($books['currency']);
+//     // echo "<br>";
+//     // print_r($books[0]);
+//     // echo "<br>";
+//     // print_r($books->attributes->currency[0]);
+//     // echo "<br>";
+//     // print_r($books['@attributes']);
+//     // echo "<br>";
+//     // echo $books->attributes . ", ";
+//     // echo $books->Rate . ", ";
+//     // echo $books->year . ", ";
+//     // echo $books->price . "<br><br>";
 
-    // dd($xml, $xml1, $xml1->book, $xml2->Body->Cube->Rate);
-    // print_r($xml, $xml['SimpleXMLElement']['cube']['rate']['10']);
-    // print_r($xml['Subject']);    
-});
+//     // dd($xml, $xml1, $xml1->book, $xml2->Body->Cube->Rate);
+//     // print_r($xml, $xml['SimpleXMLElement']['cube']['rate']['10']);
+//     // print_r($xml['Subject']);    
+// });
 Route::get('/test-file-download', function () {
     $clienti_neseriosi = \App\Models\ClientNeserios::pluck('nume')->all();
     $tip_lista = 'lista_plecare';
@@ -147,6 +147,11 @@ Route::get('/test-file-download', function () {
         '.pdf');
 });
 
+
+    Route::post('/rapoarte/extrage-rezervari/{view_type}', [RaportController::class, 'extrageRezervari']);
+    Route::any('/rapoarte/{tip_transport}/{view_type}', [RaportController::class, 'rapoarte'])->name('rapoarte');
+
+
 Route::group(['middleware' => 'auth'], function () {
     Route::get('rezervari/test', [RezervareController::class, 'test']);
     Route::get('rezervari/{rezervare}/duplica', [RezervareController::class, 'duplicaRezervare']);
@@ -158,8 +163,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('clienti-neseriosi', ClientNeseriosController::class,  ['parameters' => ['clienti-neseriosi' => 'client_neserios']]);
     
     Route::post('/rapoarte/{tip_transport}/muta-rezervari', [RaportController::class, 'mutaRezervari']);
-    Route::post('/rapoarte/extrage-rezervari/{view_type}', [RaportController::class, 'extrageRezervari']);
-    Route::any('/rapoarte/{tip_transport}/{view_type}', [RaportController::class, 'rapoarte'])->name('rapoarte');
+    // Route::post('/rapoarte/extrage-rezervari/{view_type}', [RaportController::class, 'extrageRezervari']);
+    // Route::any('/rapoarte/{tip_transport}/{view_type}', [RaportController::class, 'rapoarte'])->name('rapoarte');
 
     Route::resource('mesaje-trimise-sms', MesajTrimisSmsController::class,  ['parameters' => ['mesaje_trimise_sms' => 'mesaj_trimis_sms']]);
 
