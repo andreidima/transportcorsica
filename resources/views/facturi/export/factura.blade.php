@@ -129,7 +129,7 @@
                         </tr> 
                         <tr style="height:200px; vertical-align:top;">
                             <td>
-                                Servicii Transport Persoane <br><br>
+                                Servicii Transport Internațional Persoane <br><br>
                                 @isset ($factura->rezervare->retur)
                                     Bilete de călătorie:
                                     <ul style="margin: 0px">

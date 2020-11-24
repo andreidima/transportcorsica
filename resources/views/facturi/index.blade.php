@@ -47,6 +47,7 @@
                             <th>Nr. Reg. Com.</th>
                             <th>CIF</th>
                             <th>Sediul</th>
+                            <th>Data</th>
                             <th class="text-center">PDF</th>
                             {{-- <th class="text-center">Acțiuni</th> --}}
                         </tr>
@@ -88,6 +89,9 @@
                                 </td>
                                 <td>
                                     {{ $factura->sediul }}
+                                </td>
+                                <td>
+                                    {{ \Carbon\Carbon::parse($factura->created_at)->isoFormat('DD.MM.YYYY') ?? ''}}
                                 </td>
                                 <td class="text-center">
                                     <a href="/facturi/{{ $factura->id }}/export/export-pdf">

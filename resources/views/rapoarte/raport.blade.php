@@ -165,6 +165,9 @@
                                                         <button type="submit" name="action" value="lista_sofer" class="btn btn-sm bg-success text-white border border-light rounded-pill">
                                                             <i class="fas fa-file-pdf text-white mr-1"></i>Raport PDF
                                                         </button> 
+                                                        <button type="submit" name="action" value="lista_pasageri" class="btn btn-sm bg-success text-white border border-light rounded-pill">
+                                                            <i class="fas fa-file-pdf text-white mr-1"></i>Listă pasageri
+                                                        </button> 
                                                         <button type="submit" name="action" value="excel_nava" class="btn btn-sm bg-success text-white border border-light rounded-pill">
                                                             <i class="fas fa-file-pdf text-white mr-1"></i>Raport Navă
                                                         </button>
