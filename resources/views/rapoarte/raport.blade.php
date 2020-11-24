@@ -158,6 +158,9 @@
                                                             @endforeach
                                                         @endforeach
                                                             <input type="hidden" name="tip_lista" value="lista_plecare">  
+                                                        <a href="/rapoarte/{{ $search_data }}/{{ $rezervari_pe_trasee->first()->lista_plecare }}/lista-sofer/extrage-rezervari/raport-pdf" class="btn btn-sm bg-success text-white border border-light rounded-pill">
+                                                            <i class="fas fa-file-pdf text-white mr-1"></i>Raport nou PDF
+                                                        </a> 
                                                         <button type="submit" name="action" value="lista_sofer" class="btn btn-sm bg-success text-white border border-light rounded-pill">
                                                             <i class="fas fa-file-pdf text-white mr-1"></i>Raport PDF
                                                         </button> 

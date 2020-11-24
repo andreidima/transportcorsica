@@ -153,6 +153,9 @@ Route::get('/test-file-download', function () {
 
     Route::post('/rapoarte/extrage-rezervari/{view_type}', [RaportController::class, 'extrageRezervari']);
     Route::any('/rapoarte/{tip_transport}/{view_type}', [RaportController::class, 'rapoarte'])->name('rapoarte');
+    
+    //Tip nou de raport
+    Route::any('/rapoarte/{data}/{lista}/{tip_lista}/extrage-rezervari/{view_type}', [RaportController::class, 'extrageRezervariIphone'])->name('extrageRezervariIphone');
 
 
 Route::group(['middleware' => 'auth'], function () {
