@@ -16,8 +16,8 @@ use Illuminate\Database\Eloquent\Builder;
 class RaportController extends Controller
 {
     public function rapoarte(Request $request, $tip_transport = null){
-        // $search_data = \Request::get('search_data') ? \Request::get('search_data') : \Carbon\Carbon::today();
-        $search_data = \Request::get('search_data') ?? \Carbon\Carbon::parse('18.11.2020');
+        $search_data = \Request::get('search_data') ? \Request::get('search_data') : \Carbon\Carbon::today();
+        // $search_data = \Request::get('search_data') ?? \Carbon\Carbon::parse('18.11.2020');
         
         $rezervari = Rezervare::
             join('orase as orase_plecare', 'rezervari.oras_plecare', '=', 'orase_plecare.id')
