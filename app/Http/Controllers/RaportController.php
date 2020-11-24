@@ -138,7 +138,7 @@ class RaportController extends Controller
         //     return array_search($model->getKey(), $ids);
         // });
 
-        // dd($rezervari, $ids);
+        // dd($rezervari);
         
         $clienti_neseriosi = \App\Models\ClientNeserios::pluck('nume')->all();
 
@@ -154,7 +154,10 @@ class RaportController extends Controller
                         $pdf = \PDF::loadView('rapoarte.export.raport-pdf', compact('rezervari', 'clienti_neseriosi', 'tip_lista'))
                             ->setPaper('a4');
                             // return $pdf->stream('Rezervare ' . $rezervari->nume . '.pdf');
-                            return $pdf->download('Raport.pdf');
+                            return $pdf->download('Raport ' . 
+                                ($tip_lista === "lista_plecare" ? 'lista plecare ' : 'lista sosire ') . 
+                                \Carbon\Carbon::parse($rezervari->first()->data_cursa)->isoFormat('DD.MM.YYYY') . 
+                                '.pdf');
                         break;
                 }
                 break;
@@ -174,6 +177,139 @@ class RaportController extends Controller
                 }
                 break;
             case 'excel_nava':
+                $spreadsheet = new Spreadsheet();
+                $sheet = $spreadsheet->getActiveSheet();
+                $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(20);
+                $sheet->setCellValue('A1', 'Nume');
+                $sheet->setCellValue('B1', 'Prenume');
+                // $sheet->setCellValue('C1', 'Buletin');
+                $sheet->setCellValue('C1', 'Data de naștere');
+                $sheet->setCellValue('D1', 'Localitate naștere');
+                // $sheet->setCellValue('F1', 'Localitate domiciliu');
+                $sheet->setCellValue('E1', 'Sex');
+                $sheet->setCellValue('F1', 'Cetățenie');
+
+                // dd($rezervari, $rezervari->where('bilet_nava', 1));
+                
+                $nr_celula = 2;
+                foreach ($rezervari
+                        ->where('bilet_nava', 1) 
+                        as $rezervare){
+                    foreach ($rezervare->pasageri_relation as $pasager){
+                    // $array[$nr_celula][1] = strtok($pasager->nume, " ");
+                    // $array[$nr_celula][2] = substr(strstr($pasager->nume, " "), 1);
+                    // $array[$nr_celula][3] = $pasager->buletin;
+                    // $array[$nr_celula][4] = \Carbon\Carbon::parse($pasager->data_nastere)->isoFormat('DD.MM.YYYY');
+                    // $array[$nr_celula][5] = $pasager->localitate_nastere;
+                    // $array[$nr_celula][6] = $pasager->localitate_domiciliu;
+                    // $array[$nr_celula][7] = 'Română';
+                    $sheet->setCellValue('A' . ($nr_celula), strtok($pasager->nume, " "));
+                    $sheet->setCellValue('B' . ($nr_celula), (substr(strstr($pasager->nume, " "), 1) === false) ? '' : substr(strstr($pasager->nume, " "), 1));
+                    // $sheet->setCellValue('C' . ($nr_celula), $pasager->buletin);
+                    // $sheet->setCellValue('C' . ($nr_celula), \Carbon\Carbon::parse($pasager->data_nastere ?? '0')->isoFormat('DD.MM.YYYY'));
+                    $sheet->setCellValue('C' . ($nr_celula), ($pasager->data_nastere));
+                    $sheet->setCellValue('D' . ($nr_celula), $pasager->localitate_nastere);
+                    // $sheet->setCellValue('F' . ($nr_celula), $pasager->localitate_domiciliu);
+                    $sheet->setCellValue('E' . ($nr_celula), $pasager->sex);
+                    $sheet->setCellValue('F' . ($nr_celula), 'Română');
+                    $nr_celula++;
+                    }
+                }
+
+                // // redirect output to client browser
+                // header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+                // header('Content-Disposition: attachment;filename="Lista Navă.xlsx"');
+                // header('Cache-Control: max-age=0');
+
+                // // $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
+                // $writer = new Xlsx($spreadsheet);
+                // $writer->save('php://output');
+                
+                try {
+                    Storage::makeDirectory('fisiere_temporare');
+                    $writer = new Xlsx($spreadsheet);
+                    $writer->save(storage_path(
+                        'app/fisiere_temporare/' .
+                        'Lista Nava' . '.xlsx'
+                    ));
+                } catch (Exception $e) { }
+
+                return response()->download(storage_path(
+                    'app/fisiere_temporare/' .
+                    'Lista Nava' . '.xlsx'
+                ));
+
+                break;
+
+        }
+
+        return back();
+    
+    }
+
+    public function extrageRezervariIphone(Request $request){
+        // dd($request->data, $request->lista, $request->tip_lista, $request->view_type);
+        // cautarea rezervarilor dupa array-ul de id-uri primit din request
+        $rezervari = Rezervare::
+            join('orase as orase_plecare', 'rezervari.oras_plecare', '=', 'orase_plecare.id')
+            ->join('orase as orase_sosire', 'rezervari.oras_sosire', '=', 'orase_sosire.id')
+            ->with('pasageri_relation')
+            ->select(
+                'rezervari.*', 
+                'orase_plecare.tara as oras_plecare_tara',
+                'orase_plecare.oras as oras_plecare_nume',
+                'orase_plecare.traseu as oras_plecare_traseu',
+                'orase_sosire.tara as oras_sosire_tara',
+                'orase_sosire.oras as oras_sosire_nume',
+                'orase_sosire.traseu as oras_sosire_traseu'
+            )
+            ->take(10)->get();
+        
+        // asezare rezervarilor in aceeasi ordine ca id-urile primite din request
+        // $ids = $request->rezervari;
+        // $rezervari = $rezervari->sortBy(function($model) use ($ids) {
+        //     return array_search($model->getKey(), $ids);
+        // });
+
+        // dd($rezervari);
+        
+        $clienti_neseriosi = \App\Models\ClientNeserios::pluck('nume')->all();
+
+        $tip_lista = $request->tip_lista;
+
+        switch ($request->tip_lista) {
+            case 'lista-sofer':
+                switch($request->view_type) {
+                    case 'raport-html':
+                        return view('rapoarte.export.raport-pdf', compact('rezervari', 'clienti_neseriosi', 'tip_lista'));
+                        break;
+                    case 'raport-pdf':
+                        $pdf = \PDF::loadView('rapoarte.export.raport-pdf', compact('rezervari', 'clienti_neseriosi', 'tip_lista'))
+                            ->setPaper('a4');
+                            // return $pdf->stream('Rezervare ' . $rezervari->nume . '.pdf');
+                            return $pdf->download('Raport ' . 
+                                ($tip_lista === "lista_plecare" ? 'lista plecare ' : 'lista sosire ') . 
+                                \Carbon\Carbon::parse($rezervari->first()->data_cursa)->isoFormat('DD.MM.YYYY') . 
+                                '.pdf');
+                        break;
+                }
+                break;
+            case 'lista-pasageri':
+                switch ($request->view_type) {
+                    case 'raport-html':
+                        return view('rapoarte.export.lista-pasageri-pdf', compact('rezervari', 'clienti_neseriosi', 'tip_lista'));
+                        break;
+                    case 'raport-pdf':
+                        $pdf = \PDF::loadView('rapoarte.export.lista-pasageri-pdf', compact('rezervari', 'clienti_neseriosi', 'tip_lista'))
+                            ->setPaper('a4');
+                        // return $pdf->stream('Rezervare ' . $rezervari->nume . '.pdf');
+                        return $pdf->download('Raport lista pasageri' .
+                            \Carbon\Carbon::parse($rezervari->first()->data_cursa)->isoFormat('DD.MM.YYYY') .
+                            '.pdf');
+                        break;
+                }
+                break;
+            case 'excel-nava':
                 $spreadsheet = new Spreadsheet();
                 $sheet = $spreadsheet->getActiveSheet();
                 $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(20);

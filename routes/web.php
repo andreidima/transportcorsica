@@ -151,8 +151,16 @@ Route::get('/test-file-download', function () {
 });
 
 
+<<<<<<< HEAD
     // Route::post('/rapoarte/extrage-rezervari/{view_type}', [RaportController::class, 'extrageRezervari']);
     // Route::any('/rapoarte/{tip_transport}/{view_type}', [RaportController::class, 'rapoarte'])->name('rapoarte');
+=======
+    Route::post('/rapoarte/extrage-rezervari/{view_type}', [RaportController::class, 'extrageRezervari']);
+    Route::any('/rapoarte/{tip_transport}/{view_type}', [RaportController::class, 'rapoarte'])->name('rapoarte');
+    
+    //Tip nou de raport
+    Route::any('/rapoarte/{data}/{lista}/{tip_lista}/extrage-rezervari/{view_type}', [RaportController::class, 'extrageRezervariIphone'])->name('extrageRezervariIphone');
+>>>>>>> 0ce628e8154602e82a276ae63f9c7fe481f1eb61
 
 
 Route::group(['middleware' => 'auth'], function () {
