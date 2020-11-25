@@ -249,8 +249,7 @@ class RaportController extends Controller
     }
 
     public function extrageRezervariIphone(Request $request){
-        // dd($request->raport, $request->data, $request->lista, $request->tip_lista, $request->view_type);
-        // cautarea rezervarilor dupa array-ul de id-uri primit din request
+        $tip_transport = $request->tip_transport;
         $rezervari = Rezervare::
             join('orase as orase_plecare', 'rezervari.oras_plecare', '=', 'orase_plecare.id')
             ->join('orase as orase_sosire', 'rezervari.oras_sosire', '=', 'orase_sosire.id')
@@ -260,12 +259,25 @@ class RaportController extends Controller
                 'orase_plecare.tara as oras_plecare_tara',
                 'orase_plecare.oras as oras_plecare_nume',
                 'orase_plecare.traseu as oras_plecare_traseu',
+                'orase_plecare.ordine as oras_plecare_ordine',
                 'orase_sosire.tara as oras_sosire_tara',
                 'orase_sosire.oras as oras_sosire_nume',
-                'orase_sosire.traseu as oras_sosire_traseu'
+                'orase_sosire.traseu as oras_sosire_traseu',
+                'orase_sosire.ordine as oras_sosire_ordine',
             )
             ->whereDate('data_cursa', $request->data)
+            ->where(function (Builder $query) use ($tip_transport) {
+                $tip_transport === 'calatori' ?  $query->whereNotNull('nr_adulti') : $query->whereNull('nr_adulti');
+            })
+            ->where($request->tip_lista, $request->lista)
             ->get();
+
+        if ($rezervari->first()->oras_plecare_tara === 'Romania'){
+            $rezervari = $rezervari->sortBy('oras_plecare_nume')->sortBy('oras_plecare_ordine')->sortBy('oras_plecare_traseu');
+        } else {
+            $rezervari = $rezervari->sortByDesc('oras_plecare_traseu')->sortByDesc('oras_plecare_ordine')->sortBy('oras_plecare_nume');
+        }
+
         
         // asezare rezervarilor in aceeasi ordine ca id-urile primite din request
         // $ids = $request->rezervari;

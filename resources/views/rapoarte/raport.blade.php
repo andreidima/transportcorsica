@@ -162,7 +162,7 @@
                                                                 dd(auth()->user());
                                                             @endphp --}}
                                                         @if (auth()->user()->email === "adima@validsoftware.ro")
-                                                            <a href="/rapoarte/lista_sofer/{{ \Carbon\Carbon::parse($search_data)->isoFormat('YYYY-MM-DD') }}/{{ $rezervari_pe_trasee->first()->lista_plecare }}/lista_plecare/extrage-rezervari/raport-pdf" class="btn btn-sm bg-success text-white border border-light rounded-pill">
+                                                            <a href="/rapoarte/lista_sofer/{{ \Carbon\Carbon::parse($search_data)->isoFormat('YYYY-MM-DD') }}/{{ $rezervari_pe_trasee->first()->lista_plecare }}/lista_plecare/{{ $tip_transport }}/extrage-rezervari/raport-pdf" class="btn btn-sm bg-success text-white border border-light rounded-pill">
                                                                 <i class="fas fa-file-pdf text-white mr-1"></i>Raport test Iphone
                                                             </a> 
                                                         @endif
