@@ -58,7 +58,7 @@
 
 <body> 
     @switch($tip_lista)
-        @case ("lista-plecare")
+        @case ("lista_plecare")
             <div style="border:dashed #999;
                 width:690px; 
                 min-height:600px;            
@@ -224,7 +224,7 @@
                 </table>
             </div>
         @break
-        @case ("lista-sosire")
+        @case ("lista_sosire")
             <div style="border:dashed #999;
                 width:690px; 
                 min-height:600px;            

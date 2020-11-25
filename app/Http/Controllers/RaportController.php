@@ -133,10 +133,10 @@ class RaportController extends Controller
             ->find($request->rezervari);
         
         // asezare rezervarilor in aceeasi ordine ca id-urile primite din request
-        // $ids = $request->rezervari;
-        // $rezervari = $rezervari->sortBy(function($model) use ($ids) {
-        //     return array_search($model->getKey(), $ids);
-        // });
+        $ids = $request->rezervari;
+        $rezervari = $rezervari->sortBy(function($model) use ($ids) {
+            return array_search($model->getKey(), $ids);
+        });
 
         // dd($rezervari);
         
@@ -151,6 +151,7 @@ class RaportController extends Controller
                         return view('rapoarte.export.raport-pdf', compact('rezervari', 'clienti_neseriosi', 'tip_lista'));
                         break;
                     case 'raport-pdf':
+                        // dd('here');
                         $pdf = \PDF::loadView('rapoarte.export.raport-pdf', compact('rezervari', 'clienti_neseriosi', 'tip_lista'))
                             ->setPaper('a4');
                             // return $pdf->stream('Rezervare ' . $rezervari->nume . '.pdf');
@@ -278,7 +279,7 @@ class RaportController extends Controller
         $tip_lista = $request->tip_lista;
 
         switch ($request->tip_lista) {
-            case 'lista-sofer':
+            case 'lista_sofer':
                 switch($request->view_type) {
                     case 'raport-html':
                         return view('rapoarte.export.raport-pdf', compact('rezervari', 'clienti_neseriosi', 'tip_lista'));
@@ -294,7 +295,7 @@ class RaportController extends Controller
                         break;
                 }
                 break;
-            case 'lista-pasageri':
+            case 'lista_pasageri':
                 switch ($request->view_type) {
                     case 'raport-html':
                         return view('rapoarte.export.lista-pasageri-pdf', compact('rezervari', 'clienti_neseriosi', 'tip_lista'));
