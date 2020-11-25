@@ -249,7 +249,7 @@ class RaportController extends Controller
     }
 
     public function extrageRezervariIphone(Request $request){
-        // dd($request->data, $request->lista, $request->tip_lista, $request->view_type);
+        // dd($request->raport, $request->data, $request->lista, $request->tip_lista, $request->view_type);
         // cautarea rezervarilor dupa array-ul de id-uri primit din request
         $rezervari = Rezervare::
             join('orase as orase_plecare', 'rezervari.oras_plecare', '=', 'orase_plecare.id')
@@ -264,7 +264,8 @@ class RaportController extends Controller
                 'orase_sosire.oras as oras_sosire_nume',
                 'orase_sosire.traseu as oras_sosire_traseu'
             )
-            ->take(10)->get();
+            ->whereDate('data_cursa', $request->data)
+            ->get();
         
         // asezare rezervarilor in aceeasi ordine ca id-urile primite din request
         // $ids = $request->rezervari;
@@ -278,7 +279,7 @@ class RaportController extends Controller
 
         $tip_lista = $request->tip_lista;
 
-        switch ($request->tip_lista) {
+        switch ($request->raport) {
             case 'lista_sofer':
                 switch($request->view_type) {
                     case 'raport-html':
