@@ -46,4 +46,9 @@ class Rezervare extends Model
     {
         return $this->hasOne('App\Models\Factura', 'rezervare_id');
     }
+
+    public function factura_valida()
+    {
+        return $this->hasOne('App\Models\Factura', 'rezervare_id')->where('anulata', 0)->where('anulare_factura_id_originala', null);
+    }
 }

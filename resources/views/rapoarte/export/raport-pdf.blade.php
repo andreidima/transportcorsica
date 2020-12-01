@@ -70,7 +70,7 @@
                 <table style="background-color:darkcyan; color:white">
                     <tr style="background-color:darkcyan; color:white">
                         <td style="border-width:0px; padding:0rem; width:30%">
-                                <img src="{{ asset('images/logo.png') }}" width="150px">
+                                <img src="{{ asset('images/logo.png') }}" width="200px">
                         </td>
                         <td style="border-width:0px; padding:0rem; width:40%; font-size:16px; text-align:center">
                             <br>
@@ -95,16 +95,16 @@
 
 
 
-                <table style="">
+                <table style="width:690px;">
                     <tr style="background-color:darkcyan; color:white">
                         <th style="width: 20px">Nr crt</th>
-                        <th>Plecare</th>
-                        <th>Nume si prenume</th>
-                        <th>Telefon</th>
-                        <th>Destinație</th>
+                        <th style="">Plecare</th>
+                        <th style="">Nume si prenume</th>
+                        <th style="">Telefon</th>
+                        <th style="">Destinație</th>
                         <th style="width: 40px">Preț</th>
                         <th style="width: 30px">Nr. pers</th>
-                        <th style="width: 70px">Kg. bagaj</th>
+                        <th style="width: 67px">Kg. bagaj</th>
                         <th style="width: 50px">Bilet</th>
                     </tr>
                 @forelse ($rezervari as $rezervare)
@@ -119,7 +119,8 @@
                             {{ $rezervare->nume ?? $rezervare->pasageri_relation->first()->nume ?? '' }}                          
                         </td>
                         <td>
-                            {{ $rezervare->telefon }}
+                            {{ $rezervare->telefon }}&nbsp;
+                            {{-- {!! $rezervare->telefon !!} --}}
                         </td>
                         <td>
                             {{ $rezervare->oras_sosire_nume }}
@@ -240,12 +241,12 @@
                         </td>
                         <td style="border-width:0px; padding:0rem; width:40%; font-size:16px; text-align:center">
                             Listă sosire
-                            {{ $rezervari->first()->oras_sosire_tara }}
+                            {{ $rezervari->first()->oras_sosire_tara ?? '' }}
                         </td>
                         <td style="border-width:0px; padding:0rem; width:30%; font-size:16px; text-align:right">
                             {{-- Traseu {{ $rezervari->first()->oras_plecare_traseu }}
                             <br> --}}
-                            {{\Carbon\Carbon::parse($rezervari->first()->data_cursa)->isoFormat('DD.MM.YYYY')}}
+                            {{isset($rezervari->first()->data_cursa) ? \Carbon\Carbon::parse($rezervari->first()->data_cursa)->isoFormat('DD.MM.YYYY') : ''}}
 
                         </td>
                     </tr>

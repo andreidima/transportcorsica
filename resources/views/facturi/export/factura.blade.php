@@ -105,7 +105,10 @@
                 border-radius: 10px;">
             
             
-            <h2 style="text-align: center; color:teal; margin-bottom:0px">FACTURĂ</h2>
+            <h2 style="text-align: center; color:teal; margin-bottom:0px">
+                FACTURĂ 
+                {{-- {{($factura->anulare_factura_id_originala !== null) ? 'ANULATĂ' : ''}} --}}
+            </h2>
             <p style="text-align: center; margin-top:0px">
                 (de decont)
             </p>
@@ -117,6 +120,23 @@
                         <br>
                         Data: <b>{{ \Carbon\Carbon::parse($factura->created_at)->isoFormat('D.MM.YYYY') }}</b>
             </p>
+
+            @if ($factura->anulare_factura_id_originala !== null)
+                @php
+                    $factura_originala_anulata = \App\Models\Factura::find($factura->anulare_factura_id_originala);
+                    // dd($factura->anulare_factura_id_originala, $factura_originala_anulata);
+                @endphp
+                <b>
+                    Storno factură seria {{ $factura_originala_anulata->seria }} nr. {{ $factura_originala_anulata->numar }}, din data de {{ \Carbon\Carbon::parse($factura_originala_anulata->created_at)->isoFormat('DD.MM.YYYY') }}.
+                </b>
+            @endif
+
+            @if (!empty($factura->anulare_motiv))
+                <br>
+                <b>
+                    Motiv anulare: {{ $factura->anulare_motiv }}
+                </b>
+            @endif
         </div>
 
             
@@ -161,10 +181,10 @@
                                 1 EURO = {{ $factura->curs_bnr_euro }} 
                             </td>
                             <td style="text-align:center">
-                                1
+                                {{($factura->anulare_factura_id_originala !== null) ? '-' : ''}}1
                             </td>
                             <td style="text-align:right">
-                                {{ $factura->valoare_lei }}
+                                {{($factura->anulare_factura_id_originala !== null) ? (-1 * $factura->valoare_lei) : $factura->valoare_lei}}
                             </td>
                             <td style="text-align:right">
                                 {{ $factura->valoare_lei }}
@@ -180,12 +200,21 @@
                                 VALOARE TVA <br>
                                 <b>TOTAL</b>
                             </td>
+                        {{-- @if ($factura->anulata === 0) --}}
                             <td style="background-color:rgb(225, 255, 255); text-align:right">
                                 {{ $factura->valoare_lei }} <br>
                                 19% <br>
                                 {{ $factura->valoare_lei_tva }} <br>
                                 <b>{{ $factura->valoare_lei + $factura->valoare_lei_tva }}</b>
                             </td>
+                        {{-- @else
+                            <td style="background-color:rgb(225, 255, 255); text-align:right">
+                                -{{ $factura->valoare_lei }} <br>
+                                19% <br>
+                                -{{ $factura->valoare_lei_tva }} <br>
+                                <b>-{{ $factura->valoare_lei + $factura->valoare_lei_tva }}</b>
+                            </td>
+                        @endif --}}
                         </tr>
                     </table>
         

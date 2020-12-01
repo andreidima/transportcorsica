@@ -174,5 +174,6 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('facturi', FacturaController::class,  ['parameters' => ['facturi' => 'factura']])
         ->only(['index']);
+    Route::any('/facturi/{factura}/anuleaza', [FacturaController::class, 'anuleaza']);
     Route::get('/facturi/{factura}/export/{view_type}', [FacturaController::class, 'exportPDF']);
 });
