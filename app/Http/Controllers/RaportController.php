@@ -301,23 +301,50 @@ class RaportController extends Controller
             ->where(function (Builder $query) use ($request){
                 ($request->lista === 'toate') ? '' : $query->where($request->tip_lista, $request->lista);
             })
+            ->when($request, function ($query, $request) {
+                if ($request->tip_lista === "lista_plecare") {
+                    if ($request->tara_plecare === 'Romania') {
+                        return $query->orderBy('oras_plecare_traseu')->orderBy('oras_plecare_ordine')->orderBy('oras_plecare_nume');
+                    } else {
+                        return $query->orderBy('oras_plecare_traseu', 'desc')->orderBy('oras_plecare_ordine', 'desc')->orderBy('oras_plecare_nume', 'desc');
+                    }
+                } else if ($request->tip_lista === "lista_sosire") {
+                    // dd($rezervari);
+                    if ($request->tara_plecare === 'Corsica') {
+                        return $query->orderBy('oras_plecare_traseu')->orderBy('oras_plecare_ordine')->orderBy('oras_plecare_nume');
+                    } else {
+                        return $query->orderBy('oras_plecare_traseu', 'desc')->orderBy('oras_plecare_ordine', 'desc')->orderBy('oras_plecare_nume', 'desc');
+                    }
+                }
+        
+            })
             ->get();
-        // dd($rezervari, $request->tip_lista, $request->lista);
 
-        if($request->tip_lista === "lista_plecare"){
-            if ($rezervari->first()->oras_plecare_tara ?? '' === 'Romania'){
-                $rezervari = $rezervari->sortBy('oras_plecare_nume')->sortBy('oras_plecare_ordine')->sortBy('oras_plecare_traseu');
-            } else {
-                $rezervari = $rezervari->sortBy('oras_plecare_nume')->sortByDesc('oras_plecare_ordine')->sortByDesc('oras_plecare_traseu');
-            }
-        } else if ($request->tip_lista === "lista_sosire") {
-            // dd($rezervari);
-            if ($rezervari->first()->oras_sosire_tara ?? '' === 'Corsica') {
-                $rezervari = $rezervari->sortBy('oras_sosire_nume')->sortBy('oras_sosire_ordine')->sortBy('oras_sosire_traseu');
-            } else {
-                $rezervari = $rezervari->sortBy('oras_sosire_nume')->sortByDesc('oras_sosire_ordine')->sortByDesc('oras_sosire_traseu');
-            }
-        }
+        // foreach ($rezervari as $rezervare) {
+        //     echo $rezervare->oras_plecare_traseu . ' ' . $rezervare->oras_plecare_ordine;
+        //     echo '<br>';
+        // }
+        // dd($rezervari);
+
+        // if($request->tip_lista === "lista_plecare"){
+        //     if (($rezervari->first()->oras_plecare_tara ?? '') === 'Romania') {
+        //         $rezervari = $rezervari->sortBy('oras_plecare_nume')->sortBy('oras_plecare_ordine')->sortBy('oras_plecare_traseu');
+        //     } else {
+        //         $rezervari = $rezervari->sortByDesc('oras_plecare_nume')->sortByDesc('oras_plecare_ordine')->sortByDesc('oras_plecare_traseu');
+        //         foreach ($rezervari as $rezervare){
+        //             echo $rezervare->oras_plecare_traseu . ' ' . $rezervare->oras_plecare_ordine;
+        //             echo '<br>';
+        //         }
+        //         dd($rezervari);
+        //     }
+        // } else if ($request->tip_lista === "lista_sosire") {
+        //     // dd($rezervari);
+        //     if (($rezervari->first()->oras_sosire_tara ?? '') === 'Corsica') {
+        //         $rezervari = $rezervari->sortBy('oras_sosire_nume')->sortBy('oras_sosire_ordine')->sortBy('oras_sosire_traseu');
+        //     } else {
+        //         $rezervari = $rezervari->sortBy('oras_sosire_nume')->sortByDesc('oras_sosire_ordine')->sortByDesc('oras_sosire_traseu');
+        //     }
+        // }
         
         // asezare rezervarilor in aceeasi ordine ca id-urile primite din request
         // $ids = $request->rezervari;
