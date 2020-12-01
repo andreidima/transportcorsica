@@ -97,10 +97,10 @@
                                     </a>
                                 </td>
                                 <td>
-                                    {{-- {{ $rezervare->telefon }} --}}
-                                    {{ $rezervare->factura()->count() }}
+                                    {{ $rezervare->telefon }}
+                                    {{-- {{ $rezervare->factura()->count() }}
                                     <br>
-                                    {{ $rezervare->factura_valida()->count() }}
+                                    {{ $rezervare->factura_valida()->count() }} --}}
                                     {{-- @if (count($rezervare->factura()))
                                         sunt facturi
                                     @else
