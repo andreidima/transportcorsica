@@ -70,7 +70,7 @@
                 <table style="background-color:darkcyan; color:white">
                     <tr style="background-color:darkcyan; color:white">
                         <td style="border-width:0px; padding:0rem; width:30%">
-                                <img src="{{ asset('images/logo.png') }}" width="200px">
+                                <img src="{{ asset('images/logo.png') }}" width="170px" style="margin-left:5px">
                         </td>
                         <td style="border-width:0px; padding:0rem; width:40%; font-size:16px; text-align:center">
                             <br>
