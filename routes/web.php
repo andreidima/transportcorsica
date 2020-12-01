@@ -40,7 +40,7 @@ Route::get('/bilet-rezervat/{view_type}', [RezervareController::class, 'pdfExpor
 Route::get('/factura-descarca/{view_type}', [RezervareController::class, 'exportPDFGuest']);
 Route::get('/chitanta-descarca/{cheie_unica}/seteaza_orase', [RezervareController::class, 'chitantaSeteazaOraseGuest']);
 Route::post('/chitanta-descarca/{cheie_unica}/seteaza_orase', [RezervareController::class, 'postChitantaSeteazaOraseGuest']);
-Route::get('/chitanta-descarca/{cheie_unica}/{view_type}/{oras_plecare}/{oras_sosire}', [RezervareController::class, 'chitantaExportPDFGuest'])->name('chitanta-descarca');;
+Route::get('/chitanta-descarca/{cheie_unica}/{view_type}', [RezervareController::class, 'chitantaExportPDFGuest'])->name('chitanta-descarca');;
 // Route::get('/chitanta-descarca/{view_type}', [RezervareController::class, 'chitantaExportPDFGuest']);
 
 // Extras date cu Axios

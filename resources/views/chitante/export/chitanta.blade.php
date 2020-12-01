@@ -68,9 +68,9 @@
             MRW88 MAXARMONY S.R.L. <br>
             <h2 style="margin:5px">BILET DE CĂLĂTORIE</h2>
             
-            Seria: MRW <br>
-            Nr. {{ $rezervare->id }} <br>
-            Ruta: {{ $rezervare->oras_plecare ?? '' }} - {{ $rezervare->oras_sosire ?? '' }} <br><br><br>
+            Seria: {{ $rezervare->bilet_serie }} <br>
+            Nr. {{ $rezervare->bilet_numar }} <br>
+            Ruta: {{ $rezervare->oras_plecare_sofer ?? '' }} - {{ $rezervare->oras_sosire_sofer ?? '' }} <br><br><br>
 
             <h2 style="margin:5px">PREȚUL {{ $rezervare->valoare_lei + $rezervare->valoare_lei_tva }} lei</h2>
             <br>

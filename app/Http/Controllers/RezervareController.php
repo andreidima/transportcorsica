@@ -1323,23 +1323,33 @@ class RezervareController extends Controller
     } 
 
     public function chitantaSeteazaOraseGuest(Request $request, $cheie_unica = null)
-    {        
+    {
         $rezervare = Rezervare::where('cheie_unica', $cheie_unica)->first();
 
         return view('chitante.export.seteaza-orase', compact('rezervare', 'cheie_unica'));
     }  
 
     public function postChitantaSeteazaOraseGuest(Request $request, $cheie_unica = null)
-    {      
-        // dd($request, $request->oras_plecare);
+    {
+        $request->validate(
+            [
+                'oras_plecare' => 'required|max:100',
+                'oras_sosire' => 'required|max:100',
+            ]
+        );
+
+        $rezervare = Rezervare::where('cheie_unica', $cheie_unica)->first();
+        $rezervare->oras_plecare_sofer = $request->oras_plecare;
+        $rezervare->oras_sosire_sofer = $request->oras_sosire;
+        $rezervare->bilet_serie = 'MRW';
+        $rezervare->bilet_numar = $rezervare->bilet_numar ?? ((Rezervare::max('bilet_numar') ?? 0) + 1);
+        $rezervare->update();
 
         return redirect()->action(
             [RezervareController::class, 'chitantaExportPDFGuest'], 
             [
                 'cheie_unica' => $cheie_unica, 
-                'view_type' => 'export-html',
-                'oras_plecare' => $request->oras_plecare,
-                'oras_sosire' => $request->oras_sosire
+                'view_type' => 'export-pdf',
             ]
         );
     } 
@@ -1347,8 +1357,6 @@ class RezervareController extends Controller
     public function chitantaExportPDFGuest(Request $request, $cheie_unica = null)
     {        
         $rezervare = Rezervare::where('cheie_unica', $cheie_unica)->first();
-        $rezervare->oras_plecare = $request->oras_plecare;
-        $rezervare->oras_sosire = $request->oras_sosire;
 
         if ($request->view_type === 'export-html') {
             return view('chitante.export.chitanta', compact('rezervare'));
