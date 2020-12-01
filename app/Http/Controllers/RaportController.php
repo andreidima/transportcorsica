@@ -308,14 +308,14 @@ class RaportController extends Controller
             if ($rezervari->first()->oras_plecare_tara ?? '' === 'Romania'){
                 $rezervari = $rezervari->sortBy('oras_plecare_nume')->sortBy('oras_plecare_ordine')->sortBy('oras_plecare_traseu');
             } else {
-                $rezervari = $rezervari->sortBy('oras_plecare_nume')->sortByDesc('oras_plecare_ordine')->sortBy('oras_plecare_traseu');
+                $rezervari = $rezervari->sortBy('oras_plecare_nume')->sortByDesc('oras_plecare_ordine')->sortByDesc('oras_plecare_traseu');
             }
         } else if ($request->tip_lista === "lista_sosire") {
             // dd($rezervari);
             if ($rezervari->first()->oras_sosire_tara ?? '' === 'Corsica') {
                 $rezervari = $rezervari->sortBy('oras_sosire_nume')->sortBy('oras_sosire_ordine')->sortBy('oras_sosire_traseu');
             } else {
-                $rezervari = $rezervari->sortBy('oras_sosire_nume')->sortByDesc('oras_sosire_ordine')->sortBy('oras_sosire_traseu');
+                $rezervari = $rezervari->sortBy('oras_sosire_nume')->sortByDesc('oras_sosire_ordine')->sortByDesc('oras_sosire_traseu');
             }
         }
         
