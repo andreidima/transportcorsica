@@ -16,8 +16,35 @@ use Illuminate\Database\Eloquent\Builder;
 class RaportController extends Controller
 {
     public function rapoarte(Request $request, $tip_transport = null){
-        $search_data = \Request::get('search_data') ? \Request::get('search_data') : \Carbon\Carbon::today();
-        // $search_data = \Request::get('search_data') ?? \Carbon\Carbon::parse('18.11.2020');
+        // dd(\Request::get('search_data'), \Carbon\Carbon::today()->dayOfWeek, \Carbon\Carbon::today()->addDays(1));
+        if (\Request::get('search_data')){
+            $search_data = \Request::get('search_data');
+        } else {
+            switch (\Carbon\Carbon::today()->dayOfWeek){
+                case 0:
+                    $search_data = \Carbon\Carbon::today()->addDays(3);
+                    break;
+                case 1:
+                    $search_data = \Carbon\Carbon::today()->addDays(2);
+                    break;
+                case 2:
+                    $search_data = \Carbon\Carbon::today()->addDays(1);
+                    break;
+                case 3:
+                    $search_data = \Carbon\Carbon::today();
+                    break;
+                case 4:
+                    $search_data = \Carbon\Carbon::today()->addDays(2);
+                    break;
+                case 5:
+                    $search_data = \Carbon\Carbon::today()->addDays(1);
+                    break;
+                case 6:
+                    $search_data = \Carbon\Carbon::today();
+                    break;
+            }
+        }
+        // $search_data = \Request::get('search_data') ? \Request::get('search_data') : \Carbon\Carbon::today();
         
         $rezervari = Rezervare::
             join('orase as orase_plecare', 'rezervari.oras_plecare', '=', 'orase_plecare.id')
@@ -160,6 +187,7 @@ class RaportController extends Controller
                         $pdf = \PDF::loadView('rapoarte.export.raport-pdf', compact('rezervari', 'clienti_neseriosi', 'tip_lista'))
                             ->setPaper('a4');
                             // return $pdf->stream('Rezervare ' . $rezervari->nume . '.pdf');
+                        // dd($pdf);
                             return $pdf->download('Raport ' . 
                                 ($tip_lista === "lista_plecare" ? 'lista plecare ' : 'lista sosire ') . 
                                 \Carbon\Carbon::parse($rezervari->first()->data_cursa)->isoFormat('DD.MM.YYYY') . 
@@ -255,6 +283,7 @@ class RaportController extends Controller
 
     public function extrageRezervariIphone(Request $request){
         $tip_transport = $request->tip_transport;
+        $lista = $request->lista;
         $rezervari = Rezervare::
             join('orase as orase_plecare', 'rezervari.oras_plecare', '=', 'orase_plecare.id')
             ->join('orase as orase_sosire', 'rezervari.oras_sosire', '=', 'orase_sosire.id')
@@ -274,15 +303,53 @@ class RaportController extends Controller
             ->where(function (Builder $query) use ($tip_transport) {
                 $tip_transport === 'calatori' ?  $query->whereNotNull('nr_adulti') : $query->whereNull('nr_adulti');
             })
-            ->where($request->tip_lista, $request->lista)
+            ->where(function (Builder $query) use ($request){
+                ($request->lista === 'toate') ? '' : $query->where($request->tip_lista, $request->lista);
+            })
+            ->when($request, function ($query, $request) {
+                if ($request->tip_lista === "lista_plecare") {
+                    if ($request->tara_plecare === 'Romania') {
+                        return $query->orderBy('oras_plecare_traseu')->orderBy('oras_plecare_ordine')->orderBy('oras_plecare_nume');
+                    } else {
+                        return $query->orderBy('oras_plecare_traseu', 'desc')->orderBy('oras_plecare_ordine', 'desc')->orderBy('oras_plecare_nume', 'desc');
+                    }
+                } else if ($request->tip_lista === "lista_sosire") {
+                    // dd($rezervari);
+                    if ($request->tara_plecare === 'Corsica') {
+                        return $query->orderBy('oras_plecare_traseu')->orderBy('oras_plecare_ordine')->orderBy('oras_plecare_nume');
+                    } else {
+                        return $query->orderBy('oras_plecare_traseu', 'desc')->orderBy('oras_plecare_ordine', 'desc')->orderBy('oras_plecare_nume', 'desc');
+                    }
+                }
+        
+            })
             ->get();
 
-        if ($rezervari->first()->oras_plecare_tara === 'Romania'){
-            $rezervari = $rezervari->sortBy('oras_plecare_nume')->sortBy('oras_plecare_ordine')->sortBy('oras_plecare_traseu');
-        } else {
-            $rezervari = $rezervari->sortByDesc('oras_plecare_traseu')->sortByDesc('oras_plecare_ordine')->sortBy('oras_plecare_nume');
-        }
+        // foreach ($rezervari as $rezervare) {
+        //     echo $rezervare->oras_plecare_traseu . ' ' . $rezervare->oras_plecare_ordine;
+        //     echo '<br>';
+        // }
+        // dd($rezervari);
 
+        // if($request->tip_lista === "lista_plecare"){
+        //     if (($rezervari->first()->oras_plecare_tara ?? '') === 'Romania') {
+        //         $rezervari = $rezervari->sortBy('oras_plecare_nume')->sortBy('oras_plecare_ordine')->sortBy('oras_plecare_traseu');
+        //     } else {
+        //         $rezervari = $rezervari->sortByDesc('oras_plecare_nume')->sortByDesc('oras_plecare_ordine')->sortByDesc('oras_plecare_traseu');
+        //         foreach ($rezervari as $rezervare){
+        //             echo $rezervare->oras_plecare_traseu . ' ' . $rezervare->oras_plecare_ordine;
+        //             echo '<br>';
+        //         }
+        //         dd($rezervari);
+        //     }
+        // } else if ($request->tip_lista === "lista_sosire") {
+        //     // dd($rezervari);
+        //     if (($rezervari->first()->oras_sosire_tara ?? '') === 'Corsica') {
+        //         $rezervari = $rezervari->sortBy('oras_sosire_nume')->sortBy('oras_sosire_ordine')->sortBy('oras_sosire_traseu');
+        //     } else {
+        //         $rezervari = $rezervari->sortBy('oras_sosire_nume')->sortByDesc('oras_sosire_ordine')->sortByDesc('oras_sosire_traseu');
+        //     }
+        // }
         
         // asezare rezervarilor in aceeasi ordine ca id-urile primite din request
         // $ids = $request->rezervari;
@@ -308,7 +375,7 @@ class RaportController extends Controller
                             // return $pdf->stream('Rezervare ' . $rezervari->nume . '.pdf');
                             return $pdf->download('Raport ' . 
                                 ($tip_lista === "lista_plecare" ? 'lista plecare ' : 'lista sosire ') . 
-                                \Carbon\Carbon::parse($rezervari->first()->data_cursa)->isoFormat('DD.MM.YYYY') . 
+                                (isset($rezervari->first()->data_cursa) ? \Carbon\Carbon::parse($rezervari->first()->data_cursa)->isoFormat('DD.MM.YYYY') : '') . 
                                 '.pdf');
                         break;
                 }

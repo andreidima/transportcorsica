@@ -190,7 +190,7 @@
                                         </a>
                                         <a class="btn bg-primary text-white border border-dark rounded-pill" href="{{ route('rezervari.index') }}" role="button">
                                             Înapoi la Rezervări
-                                        </a>
+                                        </a> 
                                     </div>
 
                                 </div>  

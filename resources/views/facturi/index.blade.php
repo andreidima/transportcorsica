@@ -49,7 +49,7 @@
                             <th>Sediul</th>
                             <th>Data</th>
                             <th class="text-center">PDF</th>
-                            {{-- <th class="text-center">Acțiuni</th> --}}
+                            <th class="text-center">Acțiuni</th>
                         </tr>
                     </thead>
                     <tbody>               
@@ -98,6 +98,34 @@
                                         <i class="fas fa-file-pdf fa-lg bg-white text-danger"></i>
                                     </a>
                                 </td>
+                                <td class="text-right"> 
+                                    <div class="d-flex justify-content-end"> 
+                                        @if($factura->anulata === 1)
+                                            Anulată
+                                        @elseif($factura->anulare_factura_id_originala !== null)
+                                            Storno
+                                        @else
+                                            <div style="" class="">
+                                                <a 
+                                                    href="#" 
+                                                    data-toggle="modal" 
+                                                    data-target="#activeazaAnuleazaFactura{{ $factura->id }}"
+                                                    title="Activeaza Anuleaza Factura"
+                                                    >
+                                                        @if ($factura->anulata === 1)
+                                                            <span class="badge badge-primary">
+                                                                Activează
+                                                            </span>
+                                                        @else
+                                                            <span class="badge badge-warning">
+                                                                Anulează
+                                                            </span>
+                                                        @endif
+                                                </a>
+                                            </div> 
+                                        @endif
+                                    </div>
+                                </td>
                             </tr>  
                         @empty
                             {{-- <div>Nu s-au gasit rezervări în baza de date. Încearcă alte date de căutare</div> --}}
@@ -114,5 +142,65 @@
 
         </div>
     </div>
+
+
+    {{-- Modalele --}}
+        @forelse ($facturi as $factura)                             
+            {{-- Modal pentru butonul de stergere --}}
+            <div class="modal fade text-dark" id="activeazaAnuleazaFactura{{ $factura->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" 
+                {{-- data-backdrop="false" --}}
+            >
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                    <div class="modal-header bg-danger">
+                        <h5 class="modal-title text-white" id="exampleModalLabel">
+                            Factura pentru 
+                            <b>
+                                {{ $factura->cumparator }}
+                            </b>
+                        </h5>
+                        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <form method="POST" action="{{ $factura->path() }}/anuleaza">
+                        @method('PATCH')  
+                        @csrf
+                        
+                        <div class="modal-body" style="text-align:left;">
+                            @if ($factura->anulata === 1)
+                                Ești sigur ca vrei să activezi factura?
+                            @else
+                                Ești sigur ca vrei să anulezi factura?
+                                <div class="form-row">                              
+                                    <div class="form-group col-lg-12">  
+                                        <label for="anulare_motiv" class="mb-0 pl-3">Motiv anulare:</label>  
+                                        <textarea class="form-control {{ $errors->has('anulare_motiv') ? 'is-invalid' : '' }}" 
+                                            name="anulare_motiv"
+                                            rows="2"
+                                        >{{ old('anulare_motiv', ($factura->anulare_motiv ?? '')) }}</textarea>
+                                    </div>  
+                                </div> 
+                            @endif
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Renunță</button>
+                            
+                                <button 
+                                    type="submit" 
+                                    class="btn btn-danger"  
+                                    >
+                                    {{ ($factura->anulata === 1) ? 'Activează factura' : 'Anulează factura' }}
+                                </button>                           
+                        </div>                 
+                    </form>
+                    </div>
+                </div>
+            </div>                      
+        @empty
+            {{-- <div>Nu s-au gasit rezervări în baza de date. Încearcă alte date de căutare</div> --}}
+        @endforelse
+
 
 @endsection

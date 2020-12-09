@@ -40,7 +40,7 @@ Route::get('/bilet-rezervat/{view_type}', [RezervareController::class, 'pdfExpor
 Route::get('/factura-descarca/{view_type}', [RezervareController::class, 'exportPDFGuest']);
 Route::get('/chitanta-descarca/{cheie_unica}/seteaza_orase', [RezervareController::class, 'chitantaSeteazaOraseGuest']);
 Route::post('/chitanta-descarca/{cheie_unica}/seteaza_orase', [RezervareController::class, 'postChitantaSeteazaOraseGuest']);
-Route::get('/chitanta-descarca/{cheie_unica}/{view_type}/{oras_plecare}/{oras_sosire}', [RezervareController::class, 'chitantaExportPDFGuest'])->name('chitanta-descarca');;
+Route::get('/chitanta-descarca/{cheie_unica}/{view_type}', [RezervareController::class, 'chitantaExportPDFGuest'])->name('chitanta-descarca');;
 // Route::get('/chitanta-descarca/{view_type}', [RezervareController::class, 'chitantaExportPDFGuest']);
 
 // Extras date cu Axios
@@ -168,11 +168,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/rapoarte/{tip_transport}/muta-rezervari', [RaportController::class, 'mutaRezervari']);
     Route::post('/rapoarte/extrage-rezervari/{view_type}', [RaportController::class, 'extrageRezervari']);
     Route::any('/rapoarte/{tip_transport}/{view_type}', [RaportController::class, 'rapoarte'])->name('rapoarte');
-    Route::any('/rapoarte/{raport}/{data}/{lista}/{tip_lista}/{tip_transport}/extrage-rezervari/{view_type}', [RaportController::class, 'extrageRezervariIphone'])->name('rapoarteIphone');
+    Route::any('/rapoarte/{raport}/{tara_plecare}/{data}/{lista}/{tip_lista}/{tip_transport}/extrage-rezervari/{view_type}', [RaportController::class, 'extrageRezervariIphone'])->name('rapoarteIphone');
 
     Route::resource('mesaje-trimise-sms', MesajTrimisSmsController::class,  ['parameters' => ['mesaje_trimise_sms' => 'mesaj_trimis_sms']]);
 
     Route::resource('facturi', FacturaController::class,  ['parameters' => ['facturi' => 'factura']])
         ->only(['index']);
+    Route::any('/facturi/{factura}/anuleaza', [FacturaController::class, 'anuleaza']);
     Route::get('/facturi/{factura}/export/{view_type}', [FacturaController::class, 'exportPDF']);
 });

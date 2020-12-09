@@ -73,8 +73,8 @@
                         </td>
                         <td style="border-width:0px; padding:0rem; margin:0rem; width:60%; text-align:center; font-size:16px">
                             BILET REZERVAT
-                            <br>
-                            Cod bilet: RO{{ $rezervare_tur->id }}
+                            {{-- <br>
+                            Cod bilet: RO{{ $rezervare_tur->id }} --}}
                         </td>
                     </tr>
                 </table>

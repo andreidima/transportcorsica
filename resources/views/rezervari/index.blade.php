@@ -67,8 +67,8 @@
                             <th>Nr. pers.</th>
                             <th>Oraș plecare</th>
                             <th>Oraș sosire</th>
-                            <th class="text-center">Tur retur</th>
                             <th>Data cursă</th>
+                            <th class="text-center">Tur retur</th>
                             {{-- <th>Pret</th> --}}
                             <th class="text-center">Plătit</th>                         
                             <th class="text-center">Acțiuni</th>
@@ -98,6 +98,14 @@
                                 </td>
                                 <td>
                                     {{ $rezervare->telefon }}
+                                    {{-- {{ $rezervare->factura()->count() }}
+                                    <br>
+                                    {{ $rezervare->factura_valida()->count() }} --}}
+                                    {{-- @if (count($rezervare->factura()))
+                                        sunt facturi
+                                    @else
+                                        nu exista facturi
+                                    @endif --}}
                                 </td>
                                 <td>
                                     {{ $rezervare->nr_adulti + $rezervare->nr_copii }}
@@ -108,11 +116,18 @@
                                 <td>
                                     {{ $rezervare->oras_sosire_nume->oras ?? ''}}
                                 </td>
-                                <td class="text-center">
-                                    {{ ($rezervare->tur || $rezervare->retur) ? 'DA' : 'NU' }}
-                                </td>
                                 <td>
                                     {{ $rezervare->data_cursa ? \Carbon\Carbon::parse($rezervare->data_cursa)->isoFormat('DD.MM.YYYY') : '' }}
+                                </td>
+                                <td class="text-center">
+                                    {{-- {{ ($rezervare->tur || $rezervare->retur) ? 'DA' : 'NU' }} --}}
+                                    @if ($rezervare->retur)
+                                        @if (\App\Models\Rezervare::find($rezervare->retur)->data_cursa ?? false)
+                                            {{ \Carbon\Carbon::parse(\App\Models\Rezervare::find($rezervare->retur)->data_cursa)->isoFormat('DD.MM.YYYY') }}
+                                        @endif
+                                    @else
+                                        NU
+                                    @endif                                    
                                 </td>
                                 {{-- <td>
                                     {{ $rezervare->pret_total }}
