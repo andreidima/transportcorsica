@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ea57f4266d0978c13b4837748b7e2b54",
+    "content-hash": "f9eb4431afbb7f43093b7081570fc24b",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1938,6 +1938,48 @@
                 "time"
             ],
             "time": "2020-09-23T08:17:37+00:00"
+        },
+        {
+            "name": "netopia/payment",
+            "version": "v1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mobilpay/composer.git",
+                "reference": "f9693a44fd3f12086d6ebaa6222c8eac29490552"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mobilpay/composer/zipball/f9693a44fd3f12086d6ebaa6222c8eac29490552",
+                "reference": "f9693a44fd3f12086d6ebaa6222c8eac29490552",
+                "shasum": ""
+            },
+            "require": {
+                "ext-dom": "*",
+                "ext-simplexml": "*",
+                "php": ">=5.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Netopia\\Payment\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "AGPL-3.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "NETOPIA Payments",
+                    "email": "implementare@netopia-system.com"
+                }
+            ],
+            "description": "Set of library that give you the means to incorporate NETOPIA Payments functionality into your website applications and mobile apps.",
+            "support": {
+                "issues": "https://github.com/mobilpay/composer/issues",
+                "source": "https://github.com/mobilpay/composer/tree/v1.0.3"
+            },
+            "time": "2020-09-11T12:02:38+00:00"
         },
         {
             "name": "nikic/php-parser",
@@ -7423,5 +7465,6 @@
     "platform": {
         "php": "^7.3"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "2.0.0"
 }

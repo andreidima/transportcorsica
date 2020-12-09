@@ -142,6 +142,11 @@ class RaportController extends Controller
         
         $clienti_neseriosi = \App\Models\ClientNeserios::pluck('nume')->all();
 
+        // foreach ($rezervari as $rezervare){
+        //     echo $rezervare->telefon . '<br>';
+        // }
+        // dd('stop');
+
         $tip_lista = $request->tip_lista;
 
         switch ($request->input('action')) {

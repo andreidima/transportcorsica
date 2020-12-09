@@ -17,6 +17,7 @@
         }
 
         table{
+            /* table-layout:fixed; */
             border-collapse:collapse;
             /* margin: 0px 0px; */
             /* margin-left: 5px; */
@@ -98,10 +99,10 @@
                 <table style="">
                     <tr style="background-color:darkcyan; color:white">
                         <th style="width: 20px">Nr crt</th>
-                        <th>Plecare</th>
-                        <th>Nume si prenume</th>
-                        <th>Telefon</th>
-                        <th>Destinație</th>
+                        <th style="width: 90px">Plecare</th>
+                        <th style="width: 90px">Nume si prenume</th>
+                        <th style="width: 90px">Telefon</th>
+                        <th style="width: 90px">Destinație</th>
                         <th style="width: 40px">Preț</th>
                         <th style="width: 30px">Nr. pers</th>
                         <th style="width: 70px">Kg. bagaj</th>
@@ -116,7 +117,9 @@
                             <b>{{ $rezervare->oras_plecare_nume }}</b>
                         </td>
                         <td>
-                            {{ $rezervare->nume ?? $rezervare->pasageri_relation->first()->nume ?? '' }}                          
+                            {{ $rezervare->nume ?? $rezervare->pasageri_relation->first()->nume ?? '' }} 
+                            <br>
+                            {{ $rezervare->telefon }}                         
                         </td>
                         <td>
                             {{ $rezervare->telefon }}
