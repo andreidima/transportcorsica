@@ -7,6 +7,7 @@ use App\Http\Controllers\RaportController;
 use App\Http\Controllers\ClientNeseriosController;
 use App\Http\Controllers\MesajTrimisSmsController;
 use App\Http\Controllers\FacturaController;
+use App\Http\Controllers\PlataOnlineController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,8 +47,8 @@ Route::get('/chitanta-descarca/{cheie_unica}/{view_type}', [RezervareController:
 // Extras date cu Axios
 Route::get('/orase_rezervari', [RezervareController::class, 'orase_rezervari']);
 
-Route::get('/trimitere-catre-plata', 'PlataOnlineController@trimitereCatrePlata')->name('trimitere-catre-plata');
-Route::post('/confirmare-plata', 'PlataOnlineController@confirmarePlata')->name('confirmare-plata');
+Route::get('/trimitere-catre-plata', [PlataOnlineController::class, 'trimitereCatrePlata'])->name('trimitere-catre-plata');
+Route::post('/confirmare-plata', [PlataOnlineController::class, 'confirmarePlata'])->name('confirmare-plata');
 
 // Route::get('/teste-modale', [App\Http\Controllers\TesteController::class, 'testeModale']);
 // Route::post('/teste-modale-apasa-buton', [App\Http\Controllers\TesteController::class, 'testeModaleApasaButon']);
