@@ -50,7 +50,7 @@ class PlataOnlineController extends Controller
              */
             $paymentRequest->invoice = new Invoice();
             $paymentRequest->invoice->currency  = 'RON';
-            $paymentRequest->invoice->amount    = '20.00';
+            $paymentRequest->invoice->amount    = '1.00';
             $paymentRequest->invoice->tokenId   = null;
             $paymentRequest->invoice->details   = "Payment Via Composer library";
 
@@ -90,7 +90,7 @@ class PlataOnlineController extends Controller
              */
             $EnvKey = $paymentRequest->getEnvKey();
             $data   = $paymentRequest->getEncData();
-            dd($paymentRequest);
+            dd($paymentRequest, $EnvKey, $data);
         }catch (\Exception $e)
         {
             return "Oops, There is a problem!";
