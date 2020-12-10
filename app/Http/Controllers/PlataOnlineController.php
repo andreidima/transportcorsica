@@ -90,7 +90,7 @@ class PlataOnlineController extends Controller
              */
             $EnvKey = $paymentRequest->getEnvKey();
             $data   = $paymentRequest->getEncData();
-            // dd($paymentRequest);
+            dd($paymentRequest);
         }catch (\Exception $e)
         {
             return "Oops, There is a problem!";
