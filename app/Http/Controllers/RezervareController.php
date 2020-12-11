@@ -1255,7 +1255,7 @@ class RezervareController extends Controller
     {
         // Verificare plata online
         if ($request->has('orderId')) {            
-            $plata_online = \App\Models\PlataOnline::where('order_id', $request->orderId)->latest()->first();
+            // $plata_online = \App\Models\PlataOnline::where('order_id', $request->orderId)->latest()->first();
             // $rezervare_tur = \App\Models\Rezervare::where('id', $plata_online->rezervare_id)->first();
             $rezervare_tur = \App\Models\Rezervare::where('id', 6)->first();
         } else {
