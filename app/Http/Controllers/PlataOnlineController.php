@@ -100,20 +100,20 @@ class PlataOnlineController extends Controller
             // return Redirect::away($this->paymentUrl)->with(['env_key'=>$EnvKey, 'data'=>$data]);
             
             // return redirect()->away($this->paymentUrl)->with(['env_key'=>$EnvKey, 'data'=>$data]);
-        echo '
-        <p>
-            <form name="frmPaymentRedirect" method="post" action="' . $this->paymentUrl . ' ">
-            <input type="hidden" name="env_key" value="' . $EnvKey . '"/>
-            <input type="hidden" name="data" value="' . $data . '"/>
-            <p>
-                Vei redirectat catre pagina de plati securizata a mobilpay.ro
-            </p>
-            <p>
-                Pentru a continua apasa <input type="image" src="images/mobilpay.gif" />
-            </p>
-            </form>
-        </p>
-        ';
+        // echo '
+        // <p>
+        //     <form name="frmPaymentRedirect" method="post" action="' . $this->paymentUrl . ' ">
+        //     <input type="hidden" name="env_key" value="' . $EnvKey . '"/>
+        //     <input type="hidden" name="data" value="' . $data . '"/>
+        //     <p>
+        //         Vei redirectat catre pagina de plati securizata a mobilpay.ro
+        //     </p>
+        //     <p>
+        //         Pentru a continua apasa <input type="image" src="images/mobilpay.gif" />
+        //     </p>
+        //     </form>
+        // </p>
+        // ';
 
             return view('plata-online.redirect', compact('paymentUrl', 'EnvKey', 'data'));
             
