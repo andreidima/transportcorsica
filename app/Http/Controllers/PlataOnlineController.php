@@ -100,7 +100,7 @@ class PlataOnlineController extends Controller
             // return redirect()->away($this->paymentUrl)->with(['env_key'=>$EnvKey, 'data'=>$data]);
         echo '
         <p>
-            <form name="frmPaymentRedirect" method="post" action="<?php echo $paymentUrl;?>">
+            <form name="frmPaymentRedirect" method="post" action="' . $paymentUrl . ' ">
             <input type="hidden" name="env_key" value="<?php echo $objPmReqCard->getEnvKey();?>"/>
             <input type="hidden" name="data" value="<?php echo $objPmReqCard->getEncData();?>"/>
             <p>
