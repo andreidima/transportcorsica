@@ -1253,22 +1253,14 @@ class RezervareController extends Controller
      */
     public function adaugaRezervarePasul3(Request $request)
     {
-        // if ($request->has('orderId')) {
-        //     $plata_online = \App\PlataOnline::where('order_id', $request->orderId)->latest()->first();
-        //     $rezervare = \App\Rezervare::where('id', $plata_online->rezervare_id)->first();
-
-        //     $request->session()->put('plata_online', $plata_online);
-        //     $request->session()->forget('rezervare');
-        //     $request->session()->put('rezervare_id', $rezervare->id);
-
-        //     return view('rezervari.guest-create/adauga-rezervare-pasul-3', compact('rezervare', 'plata_online'));
-        // } else {
-        //     $rezervare = $request->session()->get('rezervare');
-
-        //     return view('rezervari.guest-create/adauga-rezervare-pasul-3', compact('rezervare'));
-        // }
-            dd($request);
-        $rezervare_tur = $request->session()->get('rezervare_tur');
+        // Verificare plata online
+        if ($request->has('orderId')) {            
+            $plata_online = \App\Models\PlataOnline::where('order_id', $request->orderId)->latest()->first();
+            // $rezervare_tur = \App\Models\Rezervare::where('id', $plata_online->rezervare_id)->first();
+            $rezervare_tur = \App\Models\Rezervare::where('id', 6)->first();
+        } else {
+            $rezervare_tur = $request->session()->get('rezervare_tur');
+        }
 
         if(!$rezervare_tur){
             return redirect('https://transportcorsica.ro');
