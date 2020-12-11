@@ -1,6 +1,6 @@
-@php
+{{-- @php
     dd($paymentUrl, $EnvKey, $data);
-@endphp
+@endphp --}}
 
 {{-- <meta http-equiv="refresh" content="5; URL={{ $paymentUrl }} "> --}}
 
