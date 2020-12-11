@@ -97,7 +97,9 @@ class PlataOnlineController extends Controller
 
             // return Redirect::away($this->paymentUrl)->with(['env_key'=>$EnvKey, 'data'=>$data]);
             
-            return redirect()->away($this->paymentUrl)->with(['env_key'=>$EnvKey, 'data'=>$data]);
+            // return redirect()->away($this->paymentUrl)->with(['env_key'=>$EnvKey, 'data'=>$data]);
+            return redirect()->away($this->paymentUrl);
+
 
         }catch (\Exception $e)
         {
