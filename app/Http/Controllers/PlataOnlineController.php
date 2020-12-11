@@ -8,7 +8,7 @@ use Netopia\Payment\Address;
 use Netopia\Payment\Invoice;
 use Netopia\Payment\Request\Card;
 
-use Illuminate\Support\Facades\Redirect;
+// use Illuminate\Support\Facades\Redirect;
 
 class PlataOnlineController extends Controller
 {
@@ -95,7 +95,9 @@ class PlataOnlineController extends Controller
 
             // dd($paymentRequest, $EnvKey, $data);
 
-            return Redirect::away($this->paymentUrl)->with(['env_key'=>$EnvKey, 'data'=>$data]);
+            // return Redirect::away($this->paymentUrl)->with(['env_key'=>$EnvKey, 'data'=>$data]);
+            
+            return redirect()->away($this->paymentUrl)->with(['env_key'=>$EnvKey, 'data'=>$data]);
 
         }catch (\Exception $e)
         {
