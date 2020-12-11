@@ -1267,7 +1267,7 @@ class RezervareController extends Controller
 
         //     return view('rezervari.guest-create/adauga-rezervare-pasul-3', compact('rezervare'));
         // }
-
+            dd($request);
         $rezervare_tur = $request->session()->get('rezervare_tur');
 
         if(!$rezervare_tur){
