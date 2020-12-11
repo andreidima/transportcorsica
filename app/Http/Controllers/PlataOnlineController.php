@@ -101,8 +101,8 @@ class PlataOnlineController extends Controller
         echo '
         <p>
             <form name="frmPaymentRedirect" method="post" action="' . $this->paymentUrl . ' ">
-            <input type="hidden" name="env_key" value="<?php echo $objPmReqCard->getEnvKey();?>"/>
-            <input type="hidden" name="data" value="<?php echo $objPmReqCard->getEncData();?>"/>
+            <input type="hidden" name="env_key" value="' . $EnvKey . '"/>
+            <input type="hidden" name="data" value="' . $data . '"/>
             <p>
                 Vei redirectat catre pagina de plati securizata a mobilpay.ro
             </p>
