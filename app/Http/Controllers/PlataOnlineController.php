@@ -98,12 +98,45 @@ class PlataOnlineController extends Controller
             // return Redirect::away($this->paymentUrl)->with(['env_key'=>$EnvKey, 'data'=>$data]);
             
             // return redirect()->away($this->paymentUrl)->with(['env_key'=>$EnvKey, 'data'=>$data]);
-            return redirect()->away($this->paymentUrl);
+        echo '
+        <p>
+            <form name="frmPaymentRedirect" method="post" action="<?php echo $paymentUrl;?>">
+            <input type="hidden" name="env_key" value="<?php echo $objPmReqCard->getEnvKey();?>"/>
+            <input type="hidden" name="data" value="<?php echo $objPmReqCard->getEncData();?>"/>
+            <p>
+                Vei redirectat catre pagina de plati securizata a mobilpay.ro
+            </p>
+            <p>
+                Pentru a continua apasa <input type="image" src="images/mobilpay.gif" />
+            </p>
+            </form>
+        </p>
+        ';
+            // return redirect()->away($this->paymentUrl);
 
 
         }catch (\Exception $e)
         {
             return "Oops, There is a problem!";
         }
+    }
+    
+    
+    public function trimitereCatrePlataTest()
+    {
+        echo '
+        <p>
+            <form name="frmPaymentRedirect" method="post" action="<?php echo $paymentUrl;?>">
+            <input type="hidden" name="env_key" value="<?php echo $objPmReqCard->getEnvKey();?>"/>
+            <input type="hidden" name="data" value="<?php echo $objPmReqCard->getEncData();?>"/>
+            <p>
+                Vei redirectat catre pagina de plati securizata a mobilpay.ro
+            </p>
+            <p>
+                Pentru a continua apasa <input type="image" src="images/mobilpay.gif" />
+            </p>
+            </form>
+        </p>
+        ';
     }
 }
