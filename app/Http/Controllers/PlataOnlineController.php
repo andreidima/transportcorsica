@@ -93,6 +93,8 @@ class PlataOnlineController extends Controller
             $EnvKey = $paymentRequest->getEnvKey();
             $data   = $paymentRequest->getEncData();
 
+
+            $paymentUrl = $this->paymentUrl;
             // dd($paymentRequest, $EnvKey, $data);
 
             // return Redirect::away($this->paymentUrl)->with(['env_key'=>$EnvKey, 'data'=>$data]);
@@ -113,7 +115,7 @@ class PlataOnlineController extends Controller
         </p>
         ';
 
-            return view('plata-online/')
+            return view('plata-online.redirect', compact('paymentUrl', 'EnvKey', 'data'));
             
             // return redirect()->away($this->paymentUrl);
 
