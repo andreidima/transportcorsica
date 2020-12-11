@@ -112,6 +112,9 @@ class PlataOnlineController extends Controller
             </form>
         </p>
         ';
+
+            return view('plata-online/')
+            
             // return redirect()->away($this->paymentUrl);
 
 
