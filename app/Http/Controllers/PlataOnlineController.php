@@ -258,7 +258,7 @@ class PlataOnlineController extends Controller
                         // 'processed_amount' => $data['objPmNotify']['processedAmount'],
                         'rezervare_id' => $paymentRequestIpn->objPmNotify->rezervare_id ?? '',
                         'nume' => $paymentRequestIpn->objPmNotify->params['rezervare_id'] ?? '',
-                        // 'telefon' => $paymentRequestIpn->objPmNotify->rezervare_id ?? '',
+                        'telefon' => json_encode($paymentRequestIpn->objPmNotify) ?? '',
                         // 'nume' => $data['objPmNotify']['customer']['firstName'],
                         // 'telefon' => $data['objPmNotify']['customer']['mobilePhone'],
                         // 'email' => $data['objPmNotify']['customer']['email'],
