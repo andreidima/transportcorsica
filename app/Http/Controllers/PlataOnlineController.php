@@ -134,7 +134,15 @@ class PlataOnlineController extends Controller
 
         $this->paymentUrl = config('mobilpay.payment_url', '');
         $this->x509FilePath = config('mobilpay.public_key_path', '');
-DB::table('rezervari')->where('id', 6)->update(['plata_efectuata' => 1]);
+
+DB::table('plata_online')->insert([
+                        'nume' => strcasecmp($_SERVER['REQUEST_METHOD'], 'post'),
+                        'telefon' => isset($_POST['env_key']),
+                        'email' => isset($_POST['data']),
+                        // 'adresa' => $data['objPmNotify']['customer']['address'],
+                        'created_at' => \Carbon\Carbon::now(),
+                    ]);
+
         if (strcasecmp($_SERVER['REQUEST_METHOD'], 'post') == 0){
             if(isset($_POST['env_key']) && isset($_POST['data'])){
                 try {
