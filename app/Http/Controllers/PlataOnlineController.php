@@ -244,17 +244,17 @@ class PlataOnlineController extends Controller
                         'error_code' => $this->errorCode ?? '',
                         'error_message' => $this->errorMessage ?? '',
                         'mesaj_personalizat' => $mesaj_personalizat ?? '',
-                        'notify_date' => $data['objPmNotify']['timestamp'],
-                        'original_amount' => $data['objPmNotify']['originalAmount'],
-                        'processed_amount' => $data['objPmNotify']['processedAmount'],
+                        'notify_date' => $paymentRequestIpn->objPmNotify->timestamp ?? '',
+                        'original_amount' => $paymentRequestIpn->objPmNotify->originalAmount ?? '',
+                        'processed_amount' => $paymentRequestIpn->objPmNotify->processedAmount ?? '',
                         'rezervare_id' => $paymentRequestIpn->rezervare_id ?? '',
                         'nume' => $paymentRequestIpn->params['rezervare_id'] ?? '',
-                        'text' => json_encode($paymentRequestIpn) ?? '',
                         // 'nume' => $data['objPmNotify']['customer']['firstName'],
                         // 'telefon' => $data['objPmNotify']['customer']['mobilePhone'],
                         // 'email' => $data['objPmNotify']['customer']['email'],
                         // 'adresa' => $data['objPmNotify']['customer']['address'],
                         'created_at' => \Carbon\Carbon::now(),
+                        'text' => json_encode($paymentRequestIpn) ?? '',
                     ]);
 
     }
