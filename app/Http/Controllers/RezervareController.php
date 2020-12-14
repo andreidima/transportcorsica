@@ -1223,19 +1223,15 @@ class RezervareController extends Controller
         // Cu sau fara plata online
         switch ($request->input('action')) {
             case 'cu_plata_online':
-                // if (stripos($rezervare->nume, 'Andrei Dima Test') !== false) {
-                //     if (stripos($rezervare->nume, 'fara plata') !== false) {
-                //         return redirect('/adauga-rezervare-pasul-3');
-                //     } else {
-                //         return redirect('/trimitere-catre-plata');
-                //     }
-                // } else {
-                //     $rezervare->tabel = 'rezervari';
-                //     $rezervare->currency = 'EUR';
-                //     $rezervare->return_url = 'https://aplicatie.alsimymondtravel.ro/adauga-rezervare-pasul-3';
-
-                //     return redirect('/trimitere-catre-plata');
-                // }
+                if (stripos($rezervare->nume, 'Andrei Dima Test') !== false) {
+                    if (stripos($rezervare->nume, 'fara plata') !== false) {
+                        return redirect('/adauga-rezervare-pasul-3');
+                    } else {
+                        return redirect('/trimitere-catre-plata', compact('rezervare_tur'));
+                    }
+                } else {
+                    return redirect('/trimitere-catre-plata', compact('rezervare_tur'));
+                }
                 return redirect('/adauga-rezervare-pasul-3');
             break;
             case 'fara_plata_online':

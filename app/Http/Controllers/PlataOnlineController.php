@@ -136,11 +136,7 @@ class PlataOnlineController extends Controller
             if(isset($_POST['env_key']) && isset($_POST['data'])){
                 try {
                     $paymentRequestIpn = PaymentAbstract::factoryFromEncrypted($_POST['env_key'],$_POST['data'],$this->x509FilePath);
-                    $rrn = $paymentRequestIpn->objPmNotify->rrn;
-                    
-                    // $plata_online = DB::table('plata_online')->where('rezervare_id', $paymentRequestIpn->objPmReq->params['rezervare_id'])->first();
-                    // DB::table('rezervari')->where('id', $plata_online->rezervare_id)->update(['plata_efectuata' => 1]);                    
-                    // DB::table('rezervari')->where('id', 6)->update(['plata_efectuata' => 1]);                    
+                    $rrn = $paymentRequestIpn->objPmNotify->rrn;                  
 
                     if ($paymentRequestIpn->objPmNotify->errorCode == 0) {
                         switch($paymentRequestIpn->objPmNotify->action){
@@ -224,39 +220,26 @@ class PlataOnlineController extends Controller
         /**
          * Salvare in baza de date
          */
-        
-                    DB::table('plata_online')->insert([
-                        // // 'order_id' => $data['orderId'],
-                        // 'action' => $data['objPmNotify']['action'],
-                        // 'error_code' => $data['objPmNotify']['errorCode'],
-                        // 'error_message' => $data['objPmNotify']['errorMessage'],
-                        // 'notify_date' => $data['objPmNotify']['timestamp'],
-                        // 'original_amount' => $data['objPmNotify']['originalAmount'],
-                        // 'processed_amount' => $data['objPmNotify']['processedAmount'],
-                        // 'rezervare_id' => $data['params']['orderId'],
-                        // 'nume' => $data['objPmNotify']['customer']['firstName'],
-                        // 'telefon' => $data['objPmNotify']['customer']['mobilePhone'],
-                        // 'email' => $data['objPmNotify']['customer']['email'],
-                        // 'adresa' => $data['objPmNotify']['customer']['address'],
-                        // 'created_at' => \Carbon\Carbon::now(),
-                        'order_id' => $paymentRequestIpn->orderId ?? '',
-                        'action' => $paymentRequestIpn->objPmNotify->action ?? '',
-                        'error_code' => $this->errorCode ?? '',
-                        'error_message' => $this->errorMessage ?? '',
-                        'mesaj_personalizat' => $mesaj_personalizat ?? '',
-                        'notify_date' => $paymentRequestIpn->timestamp ?? '',
-                        'original_amount' => $paymentRequestIpn->invoice->originalAmount ?? '',
-                        'processed_amount' => $paymentRequestIpn->invoice->processedAmount ?? '',
-                        'rezervare_id' => $paymentRequestIpn->params->rezervare_id ?? '',
-                        'nume' => $paymentRequestIpn->params['rezervare_id'] ?? '',
-                        // 'nume' => $paymentRequestIpn->objPmNotify->customer->firstName ?? '' . $paymentRequestIpn->objPmNotify->customer->lastName,
-                        'telefon' => $paymentRequestIpn->objPmNotify->customer->mobilePhone ?? '',
-                        'email' => $paymentRequestIpn->objPmNotify->customer->email ?? '',
-                        'adresa' => $paymentRequestIpn->objPmNotify->customer->address ?? '',
-                        'created_at' => \Carbon\Carbon::now(),
-                        'updated_at' => \Carbon\Carbon::now(),
-                        'text' => json_encode($paymentRequestIpn) ?? '',
-                    ]);
+        DB::table('plata_online')->insert([
+            'order_id' => $paymentRequestIpn->orderId ?? '',
+            'action' => $paymentRequestIpn->objPmNotify->action ?? '',
+            'error_code' => $this->errorCode ?? '',
+            'error_message' => $this->errorMessage ?? '',
+            'mesaj_personalizat' => $mesaj_personalizat ?? '',
+            'notify_date' => $paymentRequestIpn->timestamp ?? '',
+            'original_amount' => $paymentRequestIpn->invoice->originalAmount ?? '',
+            'processed_amount' => $paymentRequestIpn->invoice->processedAmount ?? '',
+            'rezervare_id' => $paymentRequestIpn->params['rezervare_id'] ?? '',
+            'nume' => $paymentRequestIpn->objPmNotify->customer->firstName ?? '' . $paymentRequestIpn->objPmNotify->customer->lastName,
+            'telefon' => $paymentRequestIpn->objPmNotify->customer->mobilePhone ?? '',
+            'email' => $paymentRequestIpn->objPmNotify->customer->email ?? '',
+            'adresa' => $paymentRequestIpn->objPmNotify->customer->address ?? '',
+            'created_at' => \Carbon\Carbon::now(),
+            'updated_at' => \Carbon\Carbon::now(),
+            'text' => json_encode($paymentRequestIpn) ?? '',
+        ]);
+
+        DB::table('rezervari')->where('id', $paymentRequestIpn->params['rezervare_id'])->update(['plata_efectuata' => 1]);                    
 
         /**
          * Ce contine $paymentRequestIpn (raspunsul de la Netopia)
