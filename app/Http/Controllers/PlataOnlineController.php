@@ -134,44 +134,45 @@ class PlataOnlineController extends Controller
 
         $this->paymentUrl = config('mobilpay.payment_url', '');
         $this->x509FilePath = config('mobilpay.public_key_path', '');
-        
-        DB::table('plata_online')->insert([
-            // // 'order_id' => $data['orderId'],
-            // 'action' => $data['objPmNotify']['action'],
-            // 'error_code' => $data['objPmNotify']['errorCode'],
-            // 'error_message' => $data['objPmNotify']['errorMessage'],
-            // 'notify_date' => $data['objPmNotify']['timestamp'],
-            // 'original_amount' => $data['objPmNotify']['originalAmount'],
-            // 'processed_amount' => $data['objPmNotify']['processedAmount'],
-            // 'rezervare_id' => $data['params']['orderId'],
-            // 'nume' => $data['objPmNotify']['customer']['firstName'],
-            // 'telefon' => $data['objPmNotify']['customer']['mobilePhone'],
-            // 'email' => $data['objPmNotify']['customer']['email'],
-            // 'adresa' => $data['objPmNotify']['customer']['address'],
-            // 'created_at' => \Carbon\Carbon::now(),
-            'order_id' => $paymentRequestIpn->objPmNotify->orderId,
-            'action' => $paymentRequestIpn->objPmNotify->action,
-            'error_code' => $paymentRequestIpn->objPmNotify->errorCode,
-            // 'error_message' => $data['objPmNotify']['errorMessage'],
-            // 'notify_date' => $data['objPmNotify']['timestamp'],
-            // 'original_amount' => $data['objPmNotify']['originalAmount'],
-            // 'processed_amount' => $data['objPmNotify']['processedAmount'],
-            'rezervare_id' => $paymentRequestIpn->objPmReq->params['rezervare_id'],
-            // 'nume' => $data['objPmNotify']['customer']['firstName'],
-            // 'telefon' => $data['objPmNotify']['customer']['mobilePhone'],
-            // 'email' => $data['objPmNotify']['customer']['email'],
-            // 'adresa' => $data['objPmNotify']['customer']['address'],
-            'created_at' => \Carbon\Carbon::now(),
-        ]);
-        
-        $plata_online = DB::table('plata_online')->where('rezervare_id', $data['orderId'])->first();
-        DB::table('rezervari')->where('id', $plata_online->rezervare_id)->update(['plata_efectuata' => 1]);
 
         if (strcasecmp($_SERVER['REQUEST_METHOD'], 'post') == 0){
             if(isset($_POST['env_key']) && isset($_POST['data'])){
                 try {
                     $paymentRequestIpn = PaymentAbstract::factoryFromEncrypted($_POST['env_key'],$_POST['data'],$this->x509FilePath);
                     $rrn = $paymentRequestIpn->objPmNotify->rrn;
+        
+                    DB::table('plata_online')->insert([
+                        // // 'order_id' => $data['orderId'],
+                        // 'action' => $data['objPmNotify']['action'],
+                        // 'error_code' => $data['objPmNotify']['errorCode'],
+                        // 'error_message' => $data['objPmNotify']['errorMessage'],
+                        // 'notify_date' => $data['objPmNotify']['timestamp'],
+                        // 'original_amount' => $data['objPmNotify']['originalAmount'],
+                        // 'processed_amount' => $data['objPmNotify']['processedAmount'],
+                        // 'rezervare_id' => $data['params']['orderId'],
+                        // 'nume' => $data['objPmNotify']['customer']['firstName'],
+                        // 'telefon' => $data['objPmNotify']['customer']['mobilePhone'],
+                        // 'email' => $data['objPmNotify']['customer']['email'],
+                        // 'adresa' => $data['objPmNotify']['customer']['address'],
+                        // 'created_at' => \Carbon\Carbon::now(),
+                        'order_id' => $paymentRequestIpn->objPmNotify->orderId,
+                        'action' => $paymentRequestIpn->objPmNotify->action,
+                        'error_code' => $paymentRequestIpn->objPmNotify->errorCode,
+                        // 'error_message' => $data['objPmNotify']['errorMessage'],
+                        // 'notify_date' => $data['objPmNotify']['timestamp'],
+                        // 'original_amount' => $data['objPmNotify']['originalAmount'],
+                        // 'processed_amount' => $data['objPmNotify']['processedAmount'],
+                        'rezervare_id' => $paymentRequestIpn->objPmReq->params['rezervare_id'],
+                        // 'nume' => $data['objPmNotify']['customer']['firstName'],
+                        // 'telefon' => $data['objPmNotify']['customer']['mobilePhone'],
+                        // 'email' => $data['objPmNotify']['customer']['email'],
+                        // 'adresa' => $data['objPmNotify']['customer']['address'],
+                        'created_at' => \Carbon\Carbon::now(),
+                    ]);
+                    
+                    $plata_online = DB::table('plata_online')->where('rezervare_id', $data['orderId'])->first();
+                    DB::table('rezervari')->where('id', $plata_online->rezervare_id)->update(['plata_efectuata' => 1]);                    
+
                     if ($paymentRequestIpn->objPmNotify->errorCode == 0) {
                         switch($paymentRequestIpn->objPmNotify->action){
                             case 'confirmed':
