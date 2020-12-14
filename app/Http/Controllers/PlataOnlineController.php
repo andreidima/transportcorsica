@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Netopia\Payment\Address;
 use Netopia\Payment\Invoice;
 use Netopia\Payment\Request\Card;
+use Netopia\Payment\Request\Notify;
+use Netopia\Payment\Request\PaymentAbstract;
 
 // use Illuminate\Support\Facades\Redirect;
 
