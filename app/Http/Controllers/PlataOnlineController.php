@@ -256,14 +256,13 @@ class PlataOnlineController extends Controller
                         // 'notify_date' => $data['objPmNotify']['timestamp'],
                         // 'original_amount' => $data['objPmNotify']['originalAmount'],
                         // 'processed_amount' => $data['objPmNotify']['processedAmount'],
-                        'rezervare_id' => $paymentRequestIpn->rezervare_id ?? '',
-                        'nume' => $paymentRequestIpn->params['rezervare_id'] ?? '',
-                        'text' => json_encode($paymentRequestIpn) ?? '',
+                        'rezervare_id' => $paymentRequestIpn->params['rezervare_id'] ?? '',
                         // 'nume' => $data['objPmNotify']['customer']['firstName'],
                         // 'telefon' => $data['objPmNotify']['customer']['mobilePhone'],
                         // 'email' => $data['objPmNotify']['customer']['email'],
                         // 'adresa' => $data['objPmNotify']['customer']['address'],
                         'created_at' => \Carbon\Carbon::now(),
+                        'text' => json_encode($paymentRequestIpn) ?? '',
                     ]);
 
     }
