@@ -257,6 +257,15 @@ DB::table('plata_online')->insert([
             // $plata_online->mesaj_personalizat = $this->errorMessage;
         }
 
+DB::table('plata_online')->insert([
+                        'error_code' => $this->errorCode,
+                        'error_message' => $this->errorMessage,
+                        // 'nume' => strcasecmp($_SERVER['REQUEST_METHOD'], 'post'),
+                        // 'telefon' => isset($_POST['env_key']),
+                        // 'email' => isset($_POST['data']),
+                        // 'adresa' => $data['objPmNotify']['customer']['address'],
+                        'created_at' => \Carbon\Carbon::now(),
+                    ]);
         /**
          * Communicate with NETOPIA Payments server
          */
