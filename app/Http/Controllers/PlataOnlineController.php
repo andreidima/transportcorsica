@@ -47,8 +47,9 @@ class PlataOnlineController extends Controller
     public $errorMessage;   
 
     
-    public function trimitereCatrePlata()
+    public function trimitereCatrePlata(Request $request)
     {
+        dd($request);
         $this->paymentUrl   = config('mobilpay.payment_url', '');
         $this->x509FilePath = config('mobilpay.public_key_path', '');
         try {
