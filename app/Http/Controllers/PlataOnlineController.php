@@ -244,18 +244,78 @@ class PlataOnlineController extends Controller
                         'error_code' => $this->errorCode ?? '',
                         'error_message' => $this->errorMessage ?? '',
                         'mesaj_personalizat' => $mesaj_personalizat ?? '',
-                        'notify_date' => $paymentRequestIpn->objPmNotify->timestamp ?? '',
-                        'original_amount' => $paymentRequestIpn->objPmNotify->originalAmount ?? '',
-                        'processed_amount' => $paymentRequestIpn->objPmNotify->processedAmount ?? '',
-                        'rezervare_id' => $paymentRequestIpn->rezervare_id ?? '',
+                        'notify_date' => $paymentRequestIpn->timestamp ?? '',
+                        'original_amount' => $paymentRequestIpn->invoice->originalAmount ?? '',
+                        'processed_amount' => $paymentRequestIpn->invoice->processedAmount ?? '',
+                        'rezervare_id' => $paymentRequestIpn->params->rezervare_id ?? '',
                         'nume' => $paymentRequestIpn->params['rezervare_id'] ?? '',
-                        // 'nume' => $data['objPmNotify']['customer']['firstName'],
-                        // 'telefon' => $data['objPmNotify']['customer']['mobilePhone'],
-                        // 'email' => $data['objPmNotify']['customer']['email'],
-                        // 'adresa' => $data['objPmNotify']['customer']['address'],
+                        // 'nume' => $paymentRequestIpn->objPmNotify->customer->firstName ?? '' . $paymentRequestIpn->objPmNotify->customer->lastName,
+                        'telefon' => $paymentRequestIpn->objPmNotify->customer->mobilePhone ?? '',
+                        'email' => $paymentRequestIpn->objPmNotify->customer->email ?? '',
+                        'adresa' => $paymentRequestIpn->objPmNotify->customer->address ?? '',
                         'created_at' => \Carbon\Carbon::now(),
+                        'updated_at' => \Carbon\Carbon::now(),
                         'text' => json_encode($paymentRequestIpn) ?? '',
                     ]);
 
+        /**
+         * Ce contine $paymentRequestIpn (raspunsul de la Netopia)
+         */
+            // "invoice":
+            //     {
+            //         "currency":"RON",
+            //         "amount":"1.00",
+            //         "details":"Payment Via Composer library",
+            //         "installments":null,
+            //         "selectedInstallments":null,
+            //         "tokenId":null,
+            //         "promotionCode":null
+            //     },
+            // "signature":"GM51-DR9M-KDM8-QXVT-JNRQ",
+            // "service":null,
+            // "orderId":"55a6b3643568786a6787bd7d27573028",
+            // "timestamp":null,
+            // "type":"card",
+            // "objPmNotify":
+            //     {
+            //         "purchaseId":"1164943",
+            //         "action":"confirmed",
+            //         "errorCode":"0",
+            //         "errorMessage":"Tranzactia aprobata",
+            //         "timestamp":"20201214165239",
+            //         "originalAmount":"1.00",
+            //         "processedAmount":"1.00",
+            //         "promotionAmount":null,
+            //         "pan_masked":"9****5098",
+            //         "token_id":null,
+            //         "token_expiration_date":null,
+            //         "customer_id":null,
+            //         "customer_type":null,
+            //         "customer":
+            //             {
+            //                 "type":"person",
+            //                 "firstName":"Billing name",
+            //                 "lastName":"Billing LastName",
+            //                 "address":"Bulevardul Ion Creang\u0103, Nr 00",
+            //                 "email":"test@billing.com",
+            //                 "mobilePhone":"0732123456"
+            //             },
+            //         "issuer":null,
+            //         "paidByPhone":null,
+            //         "validationCode":null,
+            //         "installments":null,
+            //         "rrn":"9991607",
+            //         "current_payment_count":"1",
+            //         "paymentInstrumentId":"41667",
+            //         "discounts":[],
+            //         "params":[]
+            //     },
+            // "returnUrl":"https:\/\/rezervari.transportcorsica.ro\/adauga-rezervare-pasul-3",
+            // "confirmUrl":"https:\/\/rezervari.transportcorsica.ro\/confirmare-plata",
+            // "params":
+            //     {
+            //         "rezervare_id":"6"
+            //     },
+            // "objReqNotify":null
     }
 }
