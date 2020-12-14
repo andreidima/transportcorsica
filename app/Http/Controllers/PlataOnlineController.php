@@ -244,19 +244,16 @@ class PlataOnlineController extends Controller
                         'error_code' => $this->errorCode ?? '',
                         'error_message' => $this->errorMessage ?? '',
                         'mesaj_personalizat' => $mesaj_personalizat ?? '',
-<<<<<<< HEAD
                         // 'notify_date' => $data['objPmNotify']['timestamp'],
                         // 'original_amount' => $data['objPmNotify']['originalAmount'],
                         // 'processed_amount' => $data['objPmNotify']['processedAmount'],
                         'rezervare_id' => $paymentRequestIpn->params['rezervare_id'] ?? '',
-=======
                         'notify_date' => $data['objPmNotify']['timestamp'],
                         'original_amount' => $data['objPmNotify']['originalAmount'],
                         'processed_amount' => $data['objPmNotify']['processedAmount'],
                         'rezervare_id' => $paymentRequestIpn->rezervare_id ?? '',
                         'nume' => $paymentRequestIpn->params['rezervare_id'] ?? '',
                         'text' => json_encode($paymentRequestIpn) ?? '',
->>>>>>> 38833f47c34a76a86510a449e3b5dd507dc40f34
                         // 'nume' => $data['objPmNotify']['customer']['firstName'],
                         // 'telefon' => $data['objPmNotify']['customer']['mobilePhone'],
                         // 'email' => $data['objPmNotify']['customer']['email'],
