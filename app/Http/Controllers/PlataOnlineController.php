@@ -68,8 +68,6 @@ class PlataOnlineController extends Controller
                 'rezervare_id'=>6
             );
 
-
-
             /*
              * Invoices info
              */
@@ -135,19 +133,106 @@ class PlataOnlineController extends Controller
         $this->paymentUrl = config('mobilpay.payment_url', '');
         $this->x509FilePath = config('mobilpay.private_key_path', '');
 
-DB::table('plata_online')->insert([
-                        'nume' => strcasecmp($_SERVER['REQUEST_METHOD'], 'post'),
-                        'telefon' => isset($_POST['env_key']),
-                        'email' => isset($_POST['data']),
-                        // 'adresa' => $data['objPmNotify']['customer']['address'],
-                        'created_at' => \Carbon\Carbon::now(),
-                    ]);
+// DB::table('plata_online')->insert([
+//                         'nume' => strcasecmp($_SERVER['REQUEST_METHOD'], 'post'),
+//                         'telefon' => isset($_POST['env_key']),
+//                         'email' => isset($_POST['data']),
+//                         // 'adresa' => $data['objPmNotify']['customer']['address'],
+//                         'created_at' => \Carbon\Carbon::now(),
+//                     ]);
 
         if (strcasecmp($_SERVER['REQUEST_METHOD'], 'post') == 0){
             if(isset($_POST['env_key']) && isset($_POST['data'])){
                 try {
                     $paymentRequestIpn = PaymentAbstract::factoryFromEncrypted($_POST['env_key'],$_POST['data'],$this->x509FilePath);
                     $rrn = $paymentRequestIpn->objPmNotify->rrn;
+                    
+                    // $plata_online = DB::table('plata_online')->where('rezervare_id', $paymentRequestIpn->objPmReq->params['rezervare_id'])->first();
+                    // DB::table('rezervari')->where('id', $plata_online->rezervare_id)->update(['plata_efectuata' => 1]);                    
+                    // DB::table('rezervari')->where('id', 6)->update(['plata_efectuata' => 1]);                    
+
+                    if ($paymentRequestIpn->objPmNotify->errorCode == 0) {
+                        switch($paymentRequestIpn->objPmNotify->action){
+                            case 'confirmed':
+                                //update DB, SET status = "confirmed/captured"
+                                $this->errorMessage = $paymentRequestIpn->objPmNotify->errorMessage;
+                                $mesaj_personalizat = 'Tranzacția a fost efectuată';
+                                break;
+                            case 'confirmed_pending':
+                                //update DB, SET status = "pending"
+                                $this->errorMessage = $paymentRequestIpn->objPmNotify->errorMessage;
+                                $mesaj_personalizat = 'Tranzacția este în curs de revizuire. După acest lucru, o nouă solicitare IPN va fi trimisă fie cu confirmare, fie cu anulare (confirmed_pending)';
+                                break;
+                            case 'paid_pending':
+                                //update DB, SET status = "pending"
+                                $this->errorMessage = $paymentRequestIpn->objPmNotify->errorMessage;
+                                $mesaj_personalizat = 'Tranzacția este în curs de revizuire. După acest lucru, o nouă solicitare IPN va fi trimisă fie cu confirmare, fie cu anulare (paid_pending)';
+                                break;
+                            case 'paid':
+                                //update DB, SET status = "open/preauthorized"
+                                $this->errorMessage = $paymentRequestIpn->objPmNotify->errorMessage;
+                                $mesaj_personalizat = 'Tranzacția este în curs de autorizare. După acest lucru, o nouă solicitare IPN va fi trimisă fie cu confirmare, fie cu anulare (paid)';
+                                break;
+                            case 'canceled':
+                                //update DB, SET status = "canceled"
+                                $this->errorMessage = $paymentRequestIpn->objPmNotify->errorMessage;
+                                $mesaj_personalizat = 'Tranzacția a fost anulată';
+                                break;
+                            case 'credit':
+                                //update DB, SET status = "refunded"
+                                $this->errorMessage = $paymentRequestIpn->objPmNotify->errorMessage;
+                                $mesaj_personalizat = 'Tranzacția a fost rambursată';
+                                break;
+                            default:
+                                $errorType = PaymentAbstract::CONFIRM_ERROR_TYPE_PERMANENT;
+                                $this->errorCode = PaymentAbstract::ERROR_CONFIRM_INVALID_ACTION;
+                                $this->errorMessage = 'mobilpay_refference_action paramaters is invalid';
+                                $mesaj_personalizat = $this->errorMessage;
+                        }
+                    }else{
+                        //update DB, SET status = "rejected"
+                        $this->errorMessage = $paymentRequestIpn->objPmNotify->errorMessage;
+                        $mesaj_personalizat = 'Tranzacția a fost respinsă';
+                    }
+                }catch (\Exception $e) {
+                    $this->errorType = PaymentAbstract::CONFIRM_ERROR_TYPE_TEMPORARY;
+                    $this->errorCode = $e->getCode();
+                    $this->errorMessage = $e->getMessage();
+                    $mesaj_personalizat = $this->errorMessage;
+    }
+
+            }else{
+                $this->errorType = PaymentAbstract::CONFIRM_ERROR_TYPE_PERMANENT;
+                $this->errorCode = PaymentAbstract::ERROR_CONFIRM_INVALID_POST_PARAMETERS;
+                $this->errorMessag = 'mobilpay.ro posted invalid parameters';
+                $mesaj_personalizat = $this->errorMessag;
+            }
+
+        } else {
+            $this->errorType = PaymentAbstract::CONFIRM_ERROR_TYPE_PERMANENT;
+            $this->errorCode = PaymentAbstract::ERROR_CONFIRM_INVALID_POST_METHOD;
+            $this->errorMessage = 'invalid request metod for payment confirmation';
+            $mesaj_personalizat = $this->errorMessage;
+        }
+
+        /**
+         * Communicate with NETOPIA Payments server
+         */
+
+        header('Content-type: application/xml');
+        echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
+        if($this->errorCode == 0)
+        {
+            echo "<crc>{$this->errorMessage}</crc>";
+        }
+        else
+        {
+            echo "<crc error_type=\"{$this->errorType}\" error_code=\"{$this->errorCode}\">{$this->errorMessage}</crc>";
+        }
+
+        /**
+         * Salvare in baza de date
+         */
         
                     DB::table('plata_online')->insert([
                         // // 'order_id' => $data['orderId'],
@@ -163,123 +248,21 @@ DB::table('plata_online')->insert([
                         // 'email' => $data['objPmNotify']['customer']['email'],
                         // 'adresa' => $data['objPmNotify']['customer']['address'],
                         // 'created_at' => \Carbon\Carbon::now(),
-                        // 'order_id' => $paymentRequestIpn->objPmNotify->orderId,
-                        // 'action' => $paymentRequestIpn->objPmNotify->action,
-                        // 'error_code' => $paymentRequestIpn->objPmNotify->errorCode,
-                        // 'error_message' => $data['objPmNotify']['errorMessage'],
+                        'order_id' => $paymentRequestIpn->objPmNotify->orderId ?? '',
+                        'action' => $paymentRequestIpn->objPmNotify->action ?? '',
+                        'error_code' => $this->errorCode ?? '',
+                        'error_message' => $this->errorMessage ?? '',
+                        'mesaj_personalizat' => $mesaj_personalizat ?? '',
                         // 'notify_date' => $data['objPmNotify']['timestamp'],
                         // 'original_amount' => $data['objPmNotify']['originalAmount'],
                         // 'processed_amount' => $data['objPmNotify']['processedAmount'],
-                        // 'rezervare_id' => $paymentRequestIpn->objPmReq->params['rezervare_id'],
+                        'rezervare_id' => $paymentRequestIpn->objPmReq->params['rezervare_id'] ?? '',
                         // 'nume' => $data['objPmNotify']['customer']['firstName'],
                         // 'telefon' => $data['objPmNotify']['customer']['mobilePhone'],
                         // 'email' => $data['objPmNotify']['customer']['email'],
                         // 'adresa' => $data['objPmNotify']['customer']['address'],
                         'created_at' => \Carbon\Carbon::now(),
                     ]);
-                    
-                    // $plata_online = DB::table('plata_online')->where('rezervare_id', $paymentRequestIpn->objPmReq->params['rezervare_id'])->first();
-                    // DB::table('rezervari')->where('id', $plata_online->rezervare_id)->update(['plata_efectuata' => 1]);                    
-                    DB::table('rezervari')->where('id', 6)->update(['plata_efectuata' => 1]);                    
-
-                    // if ($paymentRequestIpn->objPmNotify->errorCode == 0) {
-                    //     switch($paymentRequestIpn->objPmNotify->action){
-                    //         case 'confirmed':
-                    //             //update DB, SET status = "confirmed/captured"
-                    //             $this->errorMessage = $paymentRequestIpn->objPmNotify->errorMessage;
-                    //             $plata_online->error_message = $paymentRequestIpn->objPmNotify->errorMessage;
-                    //             $plata_online->mesaj_personalizat = 'Tranzacția a fost efectuată';
-                    //             break;
-                    //         case 'confirmed_pending':
-                    //             //update DB, SET status = "pending"
-                    //             $this->errorMessage = $paymentRequestIpn->objPmNotify->errorMessage;
-                    //             $plata_online->error_message = $paymentRequestIpn->objPmNotify->errorMessage;
-                    //             $plata_online->mesaj_personalizat = 'Tranzacția este în curs de revizuire. După acest lucru, o nouă solicitare IPN va fi trimisă fie cu confirmare, fie cu anulare (confirmed_pending)';
-                    //             break;
-                    //         case 'paid_pending':
-                    //             //update DB, SET status = "pending"
-                    //             $this->errorMessage = $paymentRequestIpn->objPmNotify->errorMessage;
-                    //             $plata_online->error_message = $paymentRequestIpn->objPmNotify->errorMessage;
-                    //             $plata_online->mesaj_personalizat = 'Tranzacția este în curs de revizuire. După acest lucru, o nouă solicitare IPN va fi trimisă fie cu confirmare, fie cu anulare (paid_pending)';
-                    //             break;
-                    //         case 'paid':
-                    //             //update DB, SET status = "open/preauthorized"
-                    //             $this->errorMessage = $paymentRequestIpn->objPmNotify->errorMessage;
-                    //             $plata_online->error_message = $paymentRequestIpn->objPmNotify->errorMessage;
-                    //             $plata_online->mesaj_personalizat = 'Tranzacția este în curs de autorizare. După acest lucru, o nouă solicitare IPN va fi trimisă fie cu confirmare, fie cu anulare (paid)';
-                    //             break;
-                    //         case 'canceled':
-                    //             //update DB, SET status = "canceled"
-                    //             $this->errorMessage = $paymentRequestIpn->objPmNotify->errorMessage;
-                    //             $plata_online->error_message = $paymentRequestIpn->objPmNotify->errorMessage;
-                    //             $plata_online->mesaj_personalizat = 'Tranzacția a fost anulată';
-                    //             break;
-                    //         case 'credit':
-                    //             //update DB, SET status = "refunded"
-                    //             $this->errorMessage = $paymentRequestIpn->objPmNotify->errorMessage;
-                    //             $plata_online->error_message = $paymentRequestIpn->objPmNotify->errorMessage;
-                    //             $plata_online->mesaj_personalizat = 'Tranzacția a fost rambursată';
-                    //             break;
-                    //         default:
-                    //             $errorType = PaymentAbstract::CONFIRM_ERROR_TYPE_PERMANENT;
-                    //             $this->errorCode = PaymentAbstract::ERROR_CONFIRM_INVALID_ACTION;
-                    //             $this->errorMessage = 'mobilpay_refference_action paramaters is invalid';
-                    //             $plata_online->error_message = $this->errorMessage;
-                    //             $plata_online->mesaj_personalizat = $this->errorMessage;
-                    //     }
-                    // }else{
-                    //     //update DB, SET status = "rejected"
-                    //     $this->errorMessage = $paymentRequestIpn->objPmNotify->errorMessage;
-                    //     $plata_online->error_message = $paymentRequestIpn->objPmNotify->errorMessage;
-                    //     $plata_online->mesaj_personalizat = 'Tranzacția a fost respinsă';
-                    // }
-                }catch (\Exception $e) {
-                    $this->errorType = PaymentAbstract::CONFIRM_ERROR_TYPE_TEMPORARY;
-                    $this->errorCode = $e->getCode();
-                    $this->errorMessage = $e->getMessage();
-                    // $plata_online->error_message = $this->errorMessage;
-                    // $plata_online->mesaj_personalizat = $this->errorMessage;
-    }
-
-            }else{
-                $this->errorType = PaymentAbstract::CONFIRM_ERROR_TYPE_PERMANENT;
-                $this->errorCode = PaymentAbstract::ERROR_CONFIRM_INVALID_POST_PARAMETERS;
-                $this->errorMessag = 'mobilpay.ro posted invalid parameters';
-                // $plata_online->error_message = $this->errorMessag;
-                // $plata_online->mesaj_personalizat = $this->errorMessag;
-            }
-
-        } else {
-            $this->errorType = PaymentAbstract::CONFIRM_ERROR_TYPE_PERMANENT;
-            $this->errorCode = PaymentAbstract::ERROR_CONFIRM_INVALID_POST_METHOD;
-            $this->errorMessage = 'invalid request metod for payment confirmation';
-            // $plata_online->error_message = $this->errorMessage;
-            // $plata_online->mesaj_personalizat = $this->errorMessage;
-        }
-
-DB::table('plata_online')->insert([
-                        'error_code' => $this->errorCode,
-                        'error_message' => $this->errorMessage,
-                        // 'nume' => strcasecmp($_SERVER['REQUEST_METHOD'], 'post'),
-                        // 'telefon' => isset($_POST['env_key']),
-                        // 'email' => isset($_POST['data']),
-                        // 'adresa' => $data['objPmNotify']['customer']['address'],
-                        'created_at' => \Carbon\Carbon::now(),
-                    ]);
-        /**
-         * Communicate with NETOPIA Payments server
-         */
-
-        header('Content-type: application/xml');
-        echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
-        if($this->errorCode == 0)
-        {
-            echo "<crc>{$this->errorMessage}</crc>";
-        }
-        else
-        {
-            echo "<crc error_type=\"{$this->errorType}\" error_code=\"{$this->errorCode}\">{$this->errorMessage}</crc>";
-        }
 
     }
 }
