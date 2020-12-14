@@ -155,14 +155,14 @@ class PlataOnlineController extends Controller
                         // 'email' => $data['objPmNotify']['customer']['email'],
                         // 'adresa' => $data['objPmNotify']['customer']['address'],
                         // 'created_at' => \Carbon\Carbon::now(),
-                        'order_id' => $paymentRequestIpn->objPmNotify->orderId,
-                        'action' => $paymentRequestIpn->objPmNotify->action,
-                        'error_code' => $paymentRequestIpn->objPmNotify->errorCode,
+                        'order_id' => 1,
+                        // 'action' => $paymentRequestIpn->objPmNotify->action,
+                        // 'error_code' => $paymentRequestIpn->objPmNotify->errorCode,
                         // 'error_message' => $data['objPmNotify']['errorMessage'],
                         // 'notify_date' => $data['objPmNotify']['timestamp'],
                         // 'original_amount' => $data['objPmNotify']['originalAmount'],
                         // 'processed_amount' => $data['objPmNotify']['processedAmount'],
-                        'rezervare_id' => $paymentRequestIpn->objPmReq->params['rezervare_id'],
+                        // 'rezervare_id' => $paymentRequestIpn->objPmReq->params['rezervare_id'],
                         // 'nume' => $data['objPmNotify']['customer']['firstName'],
                         // 'telefon' => $data['objPmNotify']['customer']['mobilePhone'],
                         // 'email' => $data['objPmNotify']['customer']['email'],
@@ -171,7 +171,7 @@ class PlataOnlineController extends Controller
                     ]);
                     
                     // $plata_online = DB::table('plata_online')->where('rezervare_id', $paymentRequestIpn->objPmReq->params['rezervare_id'])->first();
-                    DB::table('rezervari')->where('id', $plata_online->rezervare_id)->update(['plata_efectuata' => 1]);                    
+                    // DB::table('rezervari')->where('id', $plata_online->rezervare_id)->update(['plata_efectuata' => 1]);                    
 
                     // if ($paymentRequestIpn->objPmNotify->errorCode == 0) {
                     //     switch($paymentRequestIpn->objPmNotify->action){
