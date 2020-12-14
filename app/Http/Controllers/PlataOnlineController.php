@@ -141,34 +141,34 @@ class PlataOnlineController extends Controller
                     $paymentRequestIpn = PaymentAbstract::factoryFromEncrypted($_POST['env_key'],$_POST['data'],$this->x509FilePath);
                     $rrn = $paymentRequestIpn->objPmNotify->rrn;
         
-                    DB::table('plata_online')->insert([
-                        // // 'order_id' => $data['orderId'],
-                        // 'action' => $data['objPmNotify']['action'],
-                        // 'error_code' => $data['objPmNotify']['errorCode'],
-                        // 'error_message' => $data['objPmNotify']['errorMessage'],
-                        // 'notify_date' => $data['objPmNotify']['timestamp'],
-                        // 'original_amount' => $data['objPmNotify']['originalAmount'],
-                        // 'processed_amount' => $data['objPmNotify']['processedAmount'],
-                        // 'rezervare_id' => $data['params']['orderId'],
-                        // 'nume' => $data['objPmNotify']['customer']['firstName'],
-                        // 'telefon' => $data['objPmNotify']['customer']['mobilePhone'],
-                        // 'email' => $data['objPmNotify']['customer']['email'],
-                        // 'adresa' => $data['objPmNotify']['customer']['address'],
-                        // 'created_at' => \Carbon\Carbon::now(),
-                        'order_id' => 1,
-                        // 'action' => $paymentRequestIpn->objPmNotify->action,
-                        // 'error_code' => $paymentRequestIpn->objPmNotify->errorCode,
-                        // 'error_message' => $data['objPmNotify']['errorMessage'],
-                        // 'notify_date' => $data['objPmNotify']['timestamp'],
-                        // 'original_amount' => $data['objPmNotify']['originalAmount'],
-                        // 'processed_amount' => $data['objPmNotify']['processedAmount'],
-                        // 'rezervare_id' => $paymentRequestIpn->objPmReq->params['rezervare_id'],
-                        // 'nume' => $data['objPmNotify']['customer']['firstName'],
-                        // 'telefon' => $data['objPmNotify']['customer']['mobilePhone'],
-                        // 'email' => $data['objPmNotify']['customer']['email'],
-                        // 'adresa' => $data['objPmNotify']['customer']['address'],
-                        'created_at' => \Carbon\Carbon::now(),
-                    ]);
+                    // DB::table('plata_online')->insert([
+                    //     // // 'order_id' => $data['orderId'],
+                    //     // 'action' => $data['objPmNotify']['action'],
+                    //     // 'error_code' => $data['objPmNotify']['errorCode'],
+                    //     // 'error_message' => $data['objPmNotify']['errorMessage'],
+                    //     // 'notify_date' => $data['objPmNotify']['timestamp'],
+                    //     // 'original_amount' => $data['objPmNotify']['originalAmount'],
+                    //     // 'processed_amount' => $data['objPmNotify']['processedAmount'],
+                    //     // 'rezervare_id' => $data['params']['orderId'],
+                    //     // 'nume' => $data['objPmNotify']['customer']['firstName'],
+                    //     // 'telefon' => $data['objPmNotify']['customer']['mobilePhone'],
+                    //     // 'email' => $data['objPmNotify']['customer']['email'],
+                    //     // 'adresa' => $data['objPmNotify']['customer']['address'],
+                    //     // 'created_at' => \Carbon\Carbon::now(),
+                    //     'order_id' => 1,
+                    //     // 'action' => $paymentRequestIpn->objPmNotify->action,
+                    //     // 'error_code' => $paymentRequestIpn->objPmNotify->errorCode,
+                    //     // 'error_message' => $data['objPmNotify']['errorMessage'],
+                    //     // 'notify_date' => $data['objPmNotify']['timestamp'],
+                    //     // 'original_amount' => $data['objPmNotify']['originalAmount'],
+                    //     // 'processed_amount' => $data['objPmNotify']['processedAmount'],
+                    //     // 'rezervare_id' => $paymentRequestIpn->objPmReq->params['rezervare_id'],
+                    //     // 'nume' => $data['objPmNotify']['customer']['firstName'],
+                    //     // 'telefon' => $data['objPmNotify']['customer']['mobilePhone'],
+                    //     // 'email' => $data['objPmNotify']['customer']['email'],
+                    //     // 'adresa' => $data['objPmNotify']['customer']['address'],
+                    //     'created_at' => \Carbon\Carbon::now(),
+                    // ]);
                     
                     // $plata_online = DB::table('plata_online')->where('rezervare_id', $paymentRequestIpn->objPmReq->params['rezervare_id'])->first();
                     // DB::table('rezervari')->where('id', $plata_online->rezervare_id)->update(['plata_efectuata' => 1]);                    
@@ -228,24 +228,24 @@ class PlataOnlineController extends Controller
                     $this->errorType = PaymentAbstract::CONFIRM_ERROR_TYPE_TEMPORARY;
                     $this->errorCode = $e->getCode();
                     $this->errorMessage = $e->getMessage();
-                    $plata_online->error_message = $this->errorMessage;
-                    $plata_online->mesaj_personalizat = $this->errorMessage;
+                    // $plata_online->error_message = $this->errorMessage;
+                    // $plata_online->mesaj_personalizat = $this->errorMessage;
     }
 
             }else{
                 $this->errorType = PaymentAbstract::CONFIRM_ERROR_TYPE_PERMANENT;
                 $this->errorCode = PaymentAbstract::ERROR_CONFIRM_INVALID_POST_PARAMETERS;
                 $this->errorMessag = 'mobilpay.ro posted invalid parameters';
-                $plata_online->error_message = $this->errorMessag;
-                $plata_online->mesaj_personalizat = $this->errorMessag;
+                // $plata_online->error_message = $this->errorMessag;
+                // $plata_online->mesaj_personalizat = $this->errorMessag;
             }
 
         } else {
             $this->errorType = PaymentAbstract::CONFIRM_ERROR_TYPE_PERMANENT;
             $this->errorCode = PaymentAbstract::ERROR_CONFIRM_INVALID_POST_METHOD;
             $this->errorMessage = 'invalid request metod for payment confirmation';
-            $plata_online->error_message = $this->errorMessage;
-            $plata_online->mesaj_personalizat = $this->errorMessage;
+            // $plata_online->error_message = $this->errorMessage;
+            // $plata_online->mesaj_personalizat = $this->errorMessage;
         }
 
         /**
