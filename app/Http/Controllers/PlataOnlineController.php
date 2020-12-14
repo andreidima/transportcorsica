@@ -133,7 +133,7 @@ class PlataOnlineController extends Controller
         $this->errorMessage = '';
 
         $this->paymentUrl = config('mobilpay.payment_url', '');
-        $this->x509FilePath = config('mobilpay.public_key_path', '');
+        $this->x509FilePath = config('mobilpay.private_key_path', '');
 
 DB::table('plata_online')->insert([
                         'nume' => strcasecmp($_SERVER['REQUEST_METHOD'], 'post'),
