@@ -12,8 +12,10 @@ class VerifyCsrfToken extends Middleware
      * @var array
      */
     protected $except = [
-        'sandboxsecure.mobilpay/*',
-        'secure.mobilpay/*',
+        // 'sandboxsecure.mobilpay/*',
+        // 'secure.mobilpay/*',
+        'mobilpay/*',
+        'https://rezervari.transportcorsica.ro/confirmare-plata',
         //
     ];
 }
