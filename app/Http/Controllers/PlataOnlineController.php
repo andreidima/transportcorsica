@@ -172,6 +172,7 @@ class PlataOnlineController extends Controller
                     
                     // $plata_online = DB::table('plata_online')->where('rezervare_id', $paymentRequestIpn->objPmReq->params['rezervare_id'])->first();
                     // DB::table('rezervari')->where('id', $plata_online->rezervare_id)->update(['plata_efectuata' => 1]);                    
+                    DB::table('rezervari')->where('id', 6)->update(['plata_efectuata' => 1]);                    
 
                     // if ($paymentRequestIpn->objPmNotify->errorCode == 0) {
                     //     switch($paymentRequestIpn->objPmNotify->action){
