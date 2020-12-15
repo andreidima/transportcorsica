@@ -256,7 +256,7 @@
                     <tr style="background-color:#302700; color:#ffffff">
                         <th style="width: 20px">Nr crt</th>
                         <th>Destinație</th>
-                        <th style="width: 200px">Nume si prenume</th>
+                        <th style="width: 100px">Nume si prenume</th>
                         <th>Telefon</th>
                         <th>Plecare</th>
                         <th>Preț</th>
