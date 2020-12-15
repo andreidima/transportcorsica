@@ -273,7 +273,7 @@
                             <b>{{ $rezervare->oras_sosire_nume }}</b>
                         </td>
                         <td>
-                            {{ $rezervare->nume ?? $rezervare->pasageri_relation->first()->nume ?? '' }}                          
+                            {{ $rezervare->nume ?? $rezervare->pasageri_relation->first()->nume ?? '' }}&nbsp;                         
                         </td>
                         <td>
                             {{ $rezervare->telefon }}
