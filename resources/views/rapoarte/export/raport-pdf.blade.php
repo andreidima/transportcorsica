@@ -259,8 +259,8 @@
                         <th style="width: 100px">Nume si prenume</th>
                         <th>Telefon</th>
                         <th>Plecare</th>
-                        <th>Preț</th>
-                        <th>Nr. pers</th>
+                        <th style="width: 50px">Preț</th>
+                        <th style="width: 50px">Nr. pers</th>
                         <th>Kg. bagaj</th>
                         <th style="width: 50px">Bilet</th>
                     </tr>
