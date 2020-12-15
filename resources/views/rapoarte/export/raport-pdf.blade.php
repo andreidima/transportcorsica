@@ -96,11 +96,11 @@
                     <tr style="background-color:darkcyan; color:white">
                         <th style="width: 20px">Nr crt</th>
                         <th style="">Plecare</th>
-                        <th style="">Nume si prenume</th>
+                        <th style="width: 100px">Nume si prenume</th>
                         <th style="">Telefon</th>
                         <th style="">Destinație</th>
-                        <th style="width: 40px">Preț</th>
                         <th style="width: 30px">Nr. pers</th>
+                        <th style="width: 40px">Preț</th>
                         <th style="width: 67px">Kg. bagaj</th>
                         <th style="width: 50px">Bilet</th>
                     </tr>
@@ -123,10 +123,10 @@
                             {{ $rezervare->oras_sosire_nume }}
                         </td>
                         <td style="text-align:center">
-                            {{ $rezervare->pret_total }}
+                            {{ $rezervare->nr_adulti + $rezervare->nr_copii }}
                         </td>
                         <td style="text-align:center">
-                            {{ $rezervare->nr_adulti + $rezervare->nr_copii }}
+                            {{ $rezervare->pret_total }}
                         </td>
                         <td>
 
@@ -259,9 +259,9 @@
                         <th style="width: 100px">Nume si prenume</th>
                         <th>Telefon</th>
                         <th>Plecare</th>
-                        <th style="width: 50px">Preț</th>
-                        <th style="width: 50px">Nr. pers</th>
-                        <th>Kg. bagaj</th>
+                        <th style="width: 30px">Nr. pers</th>
+                        <th style="width: 40px">Preț</th>
+                        <th style="width: 67px">Kg. bagaj</th>
                         <th style="width: 50px">Bilet</th>
                     </tr>
                 @forelse ($rezervari as $rezervare)
@@ -282,10 +282,10 @@
                             {{ $rezervare->oras_plecare_nume }}
                         </td>
                         <td style="text-align:center">
-                            {{ $rezervare->pret_total }}
+                            {{ $rezervare->nr_adulti + $rezervare->nr_copii }}
                         </td>
                         <td style="text-align:center">
-                            {{ $rezervare->nr_adulti + $rezervare->nr_copii }}
+                            {{ $rezervare->pret_total }}
                         </td>
                         <td>
                             
