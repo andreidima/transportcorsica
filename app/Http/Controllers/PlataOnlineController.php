@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Rezervare;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -47,9 +49,9 @@ class PlataOnlineController extends Controller
     public $errorMessage;   
 
     
-    public function trimitereCatrePlata(Request $request)
+    public function trimitereCatrePlata(Request $request, Rezervare $rezervare_tur)
     {
-        dd($request);
+        dd($request, $rezervare_tur);
         $this->paymentUrl   = config('mobilpay.payment_url', '');
         $this->x509FilePath = config('mobilpay.public_key_path', '');
         try {
