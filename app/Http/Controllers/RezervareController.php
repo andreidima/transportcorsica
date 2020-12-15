@@ -1220,7 +1220,7 @@ class RezervareController extends Controller
         /**
          * Trimitere SMS
          */        
-        if (stripos($rezervare_tur->pasageri_relation->first()->nume ?? '', 'Andrei Dima Test') !== false) {
+        if (stripos($rezervare_tur->pasageri_relation->first()->nume ?? '', 'Andrei Dima test') !== false) {
             if (stripos($rezervare_tur->pasageri_relation->first()->nume ?? '', 'fara sms') !== false) {
                 // ...
             } else {
@@ -1235,7 +1235,7 @@ class RezervareController extends Controller
         // Cu sau fara plata online
         switch ($request->input('action')) {
             case 'cu_plata_online':
-                if (stripos($rezervare_tur->pasageri_relation->first()->nume ?? '', 'Andrei Dima Test') !== false) {
+                if (stripos($rezervare_tur->pasageri_relation->first()->nume ?? '', 'Andrei Dima test') !== false) {
                     if (stripos($rezervare_tur->pasageri_relation->first()->nume ?? '', 'fara plata') !== false) {
                         return redirect('/adauga-rezervare-pasul-3');
                     } else {
