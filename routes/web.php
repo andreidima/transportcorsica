@@ -154,6 +154,13 @@ Route::get('/test-file-download', function () {
         '.pdf');
 });
 
+Route::get('/test', function () {
+    $rezervare = App\Models\Rezervare::find(471);
+    dd($rezervare, $rezervare->pasageri_relation->first()->nume);
+    echo $rezervare->pasageri_relation->first->nume;
+});
+
+
 
     // Route::post('/rapoarte/extrage-rezervari/{view_type}', [RaportController::class, 'extrageRezervari']);
     // Route::any('/rapoarte/{tip_transport}/{view_type}', [RaportController::class, 'rapoarte'])->name('rapoarte');

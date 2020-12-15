@@ -51,7 +51,7 @@ class PlataOnlineController extends Controller
     
     public function trimitereCatrePlata(Request $request, Rezervare $rezervare_tur)
     {
-        dd($request, $rezervare_tur);
+        dd($request, $rezervare_tur, $rezervare->pasageri_relation->first);
         $this->paymentUrl   = config('mobilpay.payment_url', '');
         $this->x509FilePath = config('mobilpay.public_key_path', '');
         try {
@@ -67,7 +67,7 @@ class PlataOnlineController extends Controller
             $paymentRequest->params = array (
                 // 'var1'=>$val1,
                 // 'var2'=>$val2
-                'rezervare_id'=>6
+                'rezervare_id'=> $rezervare_tur->id
             );
 
             /*
@@ -75,32 +75,32 @@ class PlataOnlineController extends Controller
              */
             $paymentRequest->invoice = new Invoice();
             $paymentRequest->invoice->currency  = 'RON';
-            $paymentRequest->invoice->amount    = '1.00';
+            $paymentRequest->invoice->amount    = $rezervare_tur->pret_total + (($rezervare_tur->retur) ? Rezervare::find($rezervare_tur->retur)->pret_total : 0);
             $paymentRequest->invoice->tokenId   = null;
-            $paymentRequest->invoice->details   = "Payment Via Composer library";
+            $paymentRequest->invoice->details   = "Plata din www.rezervari.transportcorsica.ro";
 
             /*
              * Billing Info
              */
             $this->billingAddress = new Address();
-            $this->billingAddress->type         = "person"; //should be "person" / "company"
-            $this->billingAddress->firstName    = "Billing name";
-            $this->billingAddress->lastName     = "Billing LastName";
-            $this->billingAddress->address      = "Bulevardul Ion Creangă, Nr 00";
-            $this->billingAddress->email        = "test@billing.com";
-            $this->billingAddress->mobilePhone  = "0732123456";
+            $this->billingAddress->type         = "persoana"; //should be "person" / "company"
+            $this->billingAddress->firstName    = $rezervare->pasageri_relation->first()->nume ?? 'Nedefinit';
+            // $this->billingAddress->lastName     = "Billing LastName";
+            $this->billingAddress->address      = $rezervare->oras_plecare_nume->oras ?? 'Nedefinit';
+            $this->billingAddress->email        = $rezervare->email;
+            $this->billingAddress->mobilePhone  = $rezervare->telefon;
             $paymentRequest->invoice->setBillingAddress($this->billingAddress);
 
             /*
              * Shipping
              */
             $this->shippingAddress = new Address();
-            $this->shippingAddress->type        = "person"; //should be "person" / "company"
-            $this->shippingAddress->firstName   = "Shipping Name";
-            $this->shippingAddress->lastName    = "Shipping LastName";
-            $this->shippingAddress->address     = "Bulevardul Mihai Eminescu, Nr 00";
-            $this->shippingAddress->email       = "test@shipping.com";
-            $this->shippingAddress->mobilePhone = "0721234567";
+            $this->shippingAddress->type        = "persoana"; //should be "person" / "company"
+            $this->shippingAddress->firstName   = $rezervare->pasageri_relation->first()->nume ?? 'Nedefinit';
+            // $this->shippingAddress->lastName    = "Shipping LastName";
+            $this->shippingAddress->address     = $rezervare->oras_plecare_nume->oras ?? 'Nedefinit';
+            $this->shippingAddress->email       = $rezervare->email;
+            $this->shippingAddress->mobilePhone = $rezervare->telefon;
             $paymentRequest->invoice->setShippingAddress($this->shippingAddress);
 
             /*
