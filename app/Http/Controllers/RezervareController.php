@@ -1227,10 +1227,10 @@ class RezervareController extends Controller
                     if (stripos($rezervare->nume, 'fara plata') !== false) {
                         return redirect('/adauga-rezervare-pasul-3');
                     } else {
-                        return redirect()->route('/trimitere-catre-plata', ['rezervare_tur' => $rezervare_tur]);
+                        return redirect()->route('trimitere-catre-plata', ['rezervare_tur' => $rezervare_tur]);
                     }
                 } else {
-                    return redirect()->route('/trimitere-catre-plata', ['rezervare_tur' => $rezervare_tur]);
+                    return redirect()->route('trimitere-catre-plata', ['rezervare_tur' => $rezervare_tur]);
                 }
                 return redirect('/adauga-rezervare-pasul-3');
             break;
