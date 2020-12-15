@@ -1217,14 +1217,26 @@ class RezervareController extends Controller
 
         $mesaj = 'Rezervarea dumneavoastra a fost inregistrata cu succes in sistem. Veti fi contactat cu minim 12 ore inainte de plecare. Cu stima, MRW Transport +40761329420!';
 
-        // Trait continand functie cu argumentele: categorie(string), subcategorie(string), referinta_id(integer), telefoane(array), mesaj(string)
-        $this->trimiteSms('rezervari', null, $rezervare_tur->id, [$rezervare_tur->telefon], $mesaj);
+        /**
+         * Trimitere SMS
+         */        
+        if (stripos($rezervare->pasageri_relation->first()->nume, 'Andrei Dima Test') !== false) {
+            if (stripos($rezervare->pasageri_relation->first()->nume, 'fara sms') !== false) {
+                // ...
+            } else {
+                // Trait continand functie cu argumentele: categorie(string), subcategorie(string), referinta_id(integer), telefoane(array), mesaj(string)
+                $this->trimiteSms('rezervari', null, $rezervare_tur->id, [$rezervare_tur->telefon], $mesaj);
+            }
+        } else {
+            // Trait continand functie cu argumentele: categorie(string), subcategorie(string), referinta_id(integer), telefoane(array), mesaj(string)
+            $this->trimiteSms('rezervari', null, $rezervare_tur->id, [$rezervare_tur->telefon], $mesaj);
+        }
 
         // Cu sau fara plata online
         switch ($request->input('action')) {
             case 'cu_plata_online':
-                if (stripos($rezervare->nume, 'Andrei Dima Test') !== false) {
-                    if (stripos($rezervare->nume, 'fara plata') !== false) {
+                if (stripos($rezervare->pasageri_relation->first()->nume, 'Andrei Dima Test') !== false) {
+                    if (stripos($rezervare->pasageri_relation->first()->nume, 'fara plata') !== false) {
                         return redirect('/adauga-rezervare-pasul-3');
                     } else {
                         return redirect()->route('trimitere-catre-plata', ['rezervare_tur' => $rezervare_tur]);

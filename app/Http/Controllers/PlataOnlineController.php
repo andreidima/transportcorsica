@@ -51,7 +51,7 @@ class PlataOnlineController extends Controller
     
     public function trimitereCatrePlata(Request $request, Rezervare $rezervare_tur)
     {
-        dd($request, $rezervare_tur, $rezervare->pasageri_relation->first);
+        // dd($request, $rezervare_tur, $rezervare->pasageri_relation->first);
         $this->paymentUrl   = config('mobilpay.payment_url', '');
         $this->x509FilePath = config('mobilpay.public_key_path', '');
         try {
