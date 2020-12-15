@@ -1220,8 +1220,8 @@ class RezervareController extends Controller
         /**
          * Trimitere SMS
          */        
-        if (stripos($rezervare->pasageri_relation->first()->nume, 'Andrei Dima Test') !== false) {
-            if (stripos($rezervare->pasageri_relation->first()->nume, 'fara sms') !== false) {
+        if (stripos($rezervare_tur->pasageri_relation->first()->nume ?? '', 'Andrei Dima Test') !== false) {
+            if (stripos($rezervare_tur->pasageri_relation->first()->nume ?? '', 'fara sms') !== false) {
                 // ...
             } else {
                 // Trait continand functie cu argumentele: categorie(string), subcategorie(string), referinta_id(integer), telefoane(array), mesaj(string)
@@ -1235,8 +1235,8 @@ class RezervareController extends Controller
         // Cu sau fara plata online
         switch ($request->input('action')) {
             case 'cu_plata_online':
-                if (stripos($rezervare->pasageri_relation->first()->nume, 'Andrei Dima Test') !== false) {
-                    if (stripos($rezervare->pasageri_relation->first()->nume, 'fara plata') !== false) {
+                if (stripos($rezervare_tur->pasageri_relation->first()->nume ?? '', 'Andrei Dima Test') !== false) {
+                    if (stripos($rezervare_tur->pasageri_relation->first()->nume ?? '', 'fara plata') !== false) {
                         return redirect('/adauga-rezervare-pasul-3');
                     } else {
                         return redirect()->route('trimitere-catre-plata', ['rezervare_tur' => $rezervare_tur]);
