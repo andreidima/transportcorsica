@@ -196,7 +196,8 @@
                                     <div class="col-lg-12 d-flex justify-content-center mb-4">
                                     <form class="needs-validation" novalidate method="POST" action="/adauga-rezervare-pasul-2">
                                         @csrf    
-                                        <div class="row">   
+                                        <div class="row">  
+                                            @if ($rezervare->nr_adulti > 0) 
                                             <div class="col-lg-12 d-flex justify-content-center mb-4">  
                                                 <button type="submit" name="action" value="cu_plata_online"
                                                     class="btn btn-primary btn-lg mr-2 rounded-pill border border-white" style="border-width:3px !important;">
@@ -204,6 +205,7 @@
                                                     <img src="{{ asset('images/banner-no-operators.jpg') }}" height="49" class="mr-3 bg-white rounded-pill border border-white">
                                                 </button>                                                
                                             </div>
+                                            @endif
                                             <div class="col-lg-12 d-flex justify-content-center mb-4">  
                                                 <button type="submit" name="action" value="fara_plata_online"
                                                     class="btn btn-primary btn-lg mr-4 rounded-pill border border-white" style="border-width:3px !important;">
