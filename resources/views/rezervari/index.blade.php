@@ -133,7 +133,7 @@
                                     {{ $rezervare->pret_total }}
                                 </td> --}}
                                 <td class="text-center">
-                                    @if(isset($rezervare->plata_efectuata))
+                                    @if($rezervare->plata_efectuata === 1)
                                         <span class="text-success"
                                             title="{{ $rezervare->plataOnlineUltima->mesaj_personalizat ?? '' }}"
                                         >
