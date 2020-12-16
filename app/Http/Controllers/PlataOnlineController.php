@@ -135,16 +135,16 @@ class PlataOnlineController extends Controller
         $this->paymentUrl = config('mobilpay.payment_url', '');
         $this->x509FilePath = config('mobilpay.private_key_path', '');
 
-        /**
-         * Salvarea in baza de date a faptului ca s-a incercat plata
-         */
-        DB::table('rezervari')->where('id', $paymentRequestIpn->params['rezervare_id'])->update(['plata_efectuata' => 0]); 
-
         if (strcasecmp($_SERVER['REQUEST_METHOD'], 'post') == 0){
             if(isset($_POST['env_key']) && isset($_POST['data'])){
                 try {
                     $paymentRequestIpn = PaymentAbstract::factoryFromEncrypted($_POST['env_key'],$_POST['data'],$this->x509FilePath);
-                    $rrn = $paymentRequestIpn->objPmNotify->rrn;                  
+                    $rrn = $paymentRequestIpn->objPmNotify->rrn;  
+
+                    /**
+                     * Salvarea in baza de date a faptului ca s-a incercat plata
+                     */
+                    DB::table('rezervari')->where('id', $paymentRequestIpn->params['rezervare_id'])->update(['plata_efectuata' => 0]);                 
 
                     if ($paymentRequestIpn->objPmNotify->errorCode == 0) {
                         switch($paymentRequestIpn->objPmNotify->action){
