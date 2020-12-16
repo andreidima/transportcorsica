@@ -214,7 +214,9 @@
                                 <br>
                                 Plata: {{$rezervare_tur->plata_efectuata}}
                                 <br>
-                                Newsletter {{$rezervare_tur->acord_newsletter}}
+                                Newsletter: {{$rezervare_tur->acord_newsletter}}
+                                <br>
+                                Created at: {{$rezervare_tur->created_at}}
                                 @if($rezervare_tur->plata_efectuata == 1)
                                     <span>
                                         Plata a fost deja efectuată online
