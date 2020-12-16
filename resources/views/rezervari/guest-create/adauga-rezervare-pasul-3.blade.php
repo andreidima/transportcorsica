@@ -33,7 +33,7 @@
                                                 Rezervarea a fost înregistrată cu codul <b>RO{{ $rezervare_tur->id }}</b>
                                                 @if($rezervare_tur->plata_efectuata)
                                                     <br><br>
-                                                    Mesajul tranzacției plății online este: <b>{{ $rezervare_tur->plata_online->latest()->first()->mesaj_personalizat ?? '' }}</b>
+                                                    Mesajul tranzacției plății online este: <b>{{ $rezervare->plataOnlineUltima->mesaj_personalizat ?? '' }}</b>
                                                     <br>
                                                 @endif
                                                 <br>

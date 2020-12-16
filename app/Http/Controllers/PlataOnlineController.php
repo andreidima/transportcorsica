@@ -135,6 +135,11 @@ class PlataOnlineController extends Controller
         $this->paymentUrl = config('mobilpay.payment_url', '');
         $this->x509FilePath = config('mobilpay.private_key_path', '');
 
+        /**
+         * Salvarea in baza de date a faptului ca s-a incercat plata
+         */
+        DB::table('rezervari')->where('id', $paymentRequestIpn->params['rezervare_id'])->update(['plata_efectuata' => 0]); 
+
         if (strcasecmp($_SERVER['REQUEST_METHOD'], 'post') == 0){
             if(isset($_POST['env_key']) && isset($_POST['data'])){
                 try {
@@ -147,6 +152,12 @@ class PlataOnlineController extends Controller
                                 //update DB, SET status = "confirmed/captured"
                                 $this->errorMessage = $paymentRequestIpn->objPmNotify->errorMessage;
                                 $mesaj_personalizat = 'Tranzacția a fost efectuată';
+
+                                /**
+                                 * Salvarea in baza de date a faptului ca plata initiata a fost finalizata cu succes.
+                                 */
+                                DB::table('rezervari')->where('id', $paymentRequestIpn->params['rezervare_id'])->update(['plata_efectuata' => 1]); 
+
                                 break;
                             case 'confirmed_pending':
                                 //update DB, SET status = "pending"
@@ -221,7 +232,7 @@ class PlataOnlineController extends Controller
         }
 
         /**
-         * Salvare in baza de date
+         * Salvare in baza de date a datelor despre plata online
          */
         DB::table('plata_online')->insert([
             'order_id' => $paymentRequestIpn->orderId ?? '',
@@ -239,10 +250,8 @@ class PlataOnlineController extends Controller
             'adresa' => $paymentRequestIpn->objPmNotify->customer->address ?? '',
             'created_at' => \Carbon\Carbon::now(),
             'updated_at' => \Carbon\Carbon::now(),
-            'text' => json_encode($paymentRequestIpn) ?? '',
-        ]);
-
-        DB::table('rezervari')->where('id', $paymentRequestIpn->params['rezervare_id'])->update(['plata_efectuata' => 1]);                    
+            // 'text' => json_encode($paymentRequestIpn) ?? '',
+        ]);                   
 
         /**
          * Ce contine $paymentRequestIpn (raspunsul de la Netopia)
