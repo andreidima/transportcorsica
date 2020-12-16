@@ -135,7 +135,7 @@
                                 <td class="text-center">
                                     @if(isset($rezervare->plata_efectuata))
                                         <span class="text-success"
-                                            title="{{ $rezervare->plata_online->latest('created_at')->first()->mesaj_personalizat ?? '' }}"
+                                            title="{{ $rezervare->plataOnlineUltima->mesaj_personalizat ?? '' }}"
                                         >
                                             DA
                                         </span>
