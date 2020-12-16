@@ -87,7 +87,7 @@ class PlataOnlineController extends Controller
             $this->billingAddress->firstName    = $rezervare_tur->pasageri_relation->first()->nume ?? 'Nedefinit';
             // $this->billingAddress->lastName     = "Billing LastName";
             $this->billingAddress->address      = $rezervare_tur->oras_plecare_nume->oras ?? 'Nedefinit';
-            $this->billingAddress->email        = $rezervare_tur->email ??  'Nedefinit';
+            $this->billingAddress->email        = $rezervare_tur->email ?? 'Nedefinit';
             $this->billingAddress->mobilePhone  = $rezervare_tur->telefon ?? 'Nedefinit';
             $paymentRequest->invoice->setBillingAddress($this->billingAddress);
 
@@ -99,8 +99,8 @@ class PlataOnlineController extends Controller
             $this->shippingAddress->firstName   = $rezervare_tur->pasageri_relation->first()->nume ?? 'Nedefinit';
             // $this->shippingAddress->lastName    = "Shipping LastName";
             $this->shippingAddress->address     = $rezervare_tur->oras_plecare_nume->oras ?? 'Nedefinit';
-            $this->shippingAddress->email       = $rezervare_tur->email;
-            $this->shippingAddress->mobilePhone = $rezervare_tur->telefon;
+            $this->shippingAddress->email       = $rezervare_tur->email ?? 'Nedefinit';
+            $this->shippingAddress->mobilePhone = $rezervare_tur->telefon ?? 'Nedefinit';
             $paymentRequest->invoice->setShippingAddress($this->shippingAddress);
 
             /*
