@@ -212,6 +212,7 @@
                                 <br>
                                 sdfsdfsd
                                 {{$rezervare_tur->id}}{{$rezervare_tur->plata_efectuata}}
+                                {{$rezervare_tur->acord_newsletter}}
                                 @if($rezervare_tur->plata_efectuata == 1)
                                     <span>
                                         Plata a fost deja efectuată online
