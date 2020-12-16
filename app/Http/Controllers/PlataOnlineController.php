@@ -144,7 +144,8 @@ class PlataOnlineController extends Controller
                     /**
                      * Salvarea in baza de date a faptului ca s-a incercat plata
                      */
-                    $rezervare_tur = DB::table('rezervari')->where('id', $paymentRequestIpn->params['rezervare_id'])->update(['plata_efectuata' => 0]); 
+                    $rezervare_tur = \App\Models\Rezervare::where('id', $paymentRequestIpn->params['rezervare_id'])->first();
+                    $rezervare_tur->update(['plata_efectuata' => 0]); 
                     // $rezervare_tur = \App\Models\Rezervare::where('id', $plata_online->rezervare_id)->first();
                     if (!$rezervare_tur->retur){
                         $rezervare_retur = null;
@@ -162,7 +163,8 @@ class PlataOnlineController extends Controller
                                 /**
                                  * Salvarea in baza de date a faptului ca plata initiata a fost finalizata cu succes.
                                  */
-                                $rezervare_tur = DB::table('rezervari')->where('id', $paymentRequestIpn->params['rezervare_id'])->update(['plata_efectuata' => 1]); 
+                                $rezervare_tur = \App\Models\Rezervare::where('id', $paymentRequestIpn->params['rezervare_id'])->first();
+                                $rezervare_tur->update(['plata_efectuata' => 1]);
                                 // $rezervare_tur = \App\Models\Rezervare::where('id', $plata_online->rezervare_id)->first();
                                 if (!$rezervare_tur->retur){
                                     $rezervare_retur = null;
