@@ -211,6 +211,7 @@
                                 @endif
                                 <br>
                                 sdfsdfsd
+                                {{$rezervare_tur->plata_efectuata}}
                                 @if($rezervare_tur->plata_efectuata == 1)
                                     <span>
                                         Plata a fost deja efectuată online
