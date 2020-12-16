@@ -209,19 +209,13 @@
                                         Preț total: <b>{{ $rezervare_tur->pret_total }}Euro</b>
                                     </span>
                                 @endif
-                                <br>                                
-                                ID: {{$rezervare_tur->id}}
-                                <br>
-                                Plata: {{$rezervare_tur->plata_efectuata}}
-                                <br>
-                                Newsletter: {{$rezervare_tur->acord_newsletter}}
-                                <br>
-                                Created at: {{$rezervare_tur->created_at}}
+                                <br>                          
                                 @if($rezervare_tur->plata_efectuata == 1)
                                     <span>
-                                        Plata a fost deja efectuată online
+                                        <b>Plata a fost deja efectuată online</b>
                                     </span>
                                 @endif
+                                <br> 
                             </td>
                         </tr>
                         <tr>
