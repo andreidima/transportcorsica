@@ -87,8 +87,8 @@ class PlataOnlineController extends Controller
             $this->billingAddress->firstName    = $rezervare_tur->pasageri_relation->first()->nume ?? 'Nedefinit';
             $this->billingAddress->lastName     = "";
             $this->billingAddress->address      = $rezervare_tur->oras_plecare_nume->oras ?? 'Nedefinit';
-            $this->billingAddress->email        = $rezervare_tur->email ?? 'Nedefinit';
-            $this->billingAddress->mobilePhone  = $rezervare_tur->telefon ?? 'Nedefinit';
+            $this->billingAddress->email        = $rezervare_tur->email ?? '';
+            $this->billingAddress->mobilePhone  = $rezervare_tur->telefon ?? '';
             $paymentRequest->invoice->setBillingAddress($this->billingAddress);
 
             /*
