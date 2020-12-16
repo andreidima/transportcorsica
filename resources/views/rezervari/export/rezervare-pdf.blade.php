@@ -209,7 +209,7 @@
                                         Preț total: <b>{{ $rezervare_tur->pret_total }}Euro</b>
                                     </span>
                                 @endif
-                                @if($rezervare_tur->plata_efectuata === 1)
+                                @if($rezervare_tur->plata_efectuata == 1)
                                     <span>
                                         Plata a fost deja efectuată online
                                     </span>
