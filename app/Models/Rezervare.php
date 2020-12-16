@@ -51,4 +51,9 @@ class Rezervare extends Model
     {
         return $this->hasOne('App\Models\Factura', 'rezervare_id')->where('anulata', 0)->where('anulare_factura_id_originala', null);
     }
+
+    public function plata_online()
+    {
+        return $this->hasMany('App\Models\PlataOnline', 'rezervare_id');
+    }
 }

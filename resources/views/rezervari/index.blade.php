@@ -134,7 +134,11 @@
                                 </td> --}}
                                 <td class="text-center">
                                     @if(isset($rezervare->plata_efectuata))
-                                        <span class="text-success">DA</span>
+                                        <span class="text-success"
+                                            title="{{ $rezervare->plata_online->last()->mesaj_personalizat ?? '' }}"
+                                        >
+                                            DA
+                                        </span>
                                     @else
                                         <span class="text-danger">NU</span>
                                     @endif

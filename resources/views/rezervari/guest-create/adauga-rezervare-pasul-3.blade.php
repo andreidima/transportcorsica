@@ -31,6 +31,9 @@
                                         <div class="col-lg-11 px-0 border rounded-lg">
                                             <h5 class="bg-warning p-1 m-0 text-center">
                                                 Rezervarea a fost înregistrată cu codul <b>RO{{ $rezervare_tur->id }}</b>
+                                                @if($rezervare_tur->plata_efectuata)
+                                                    Mesajul tranzacției plății online este: <b>{{ $rezervare_tur->plata_online->last()->mesaj_personalizat ?? '' }}</b>
+                                                @endif
                                                 <br>
                                                 @isset($rezervare_tur->nr_adulti)
                                                     Pasageri:
