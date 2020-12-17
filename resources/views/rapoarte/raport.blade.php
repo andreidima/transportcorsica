@@ -103,6 +103,43 @@
                                     {{ $rezervari_pe_tara->first()->oras_plecare_tara }}
                                 </th>
                             </tr>
+                            {{-- Lista Nava finala completa - Array pentru scoaterea tuturor rezervarilor pe tara --}}
+                            @php
+                                $rezervari_toate_pe_tara = [];
+                            @endphp
+
+                                @if ( $tip_transport === 'calatori')
+                                    <tr>
+                                        <td colspan="5" class="py-1">
+                                            <div class="d-flex flex-row justify-content-center">                                                
+                                                <div class="mr-4">
+                                                    <b>
+                                                        Total pasageri în toate listele:
+                                                        {{ $rezervari_pe_tara->sum('nr_adulti') + $rezervari_pe_tara->sum('nr_copii') }}
+                                                    </b>
+                                                </div>
+                                                <div class="mr-4">
+                                                    <a href="/rapoarte/excel-nava/{{ $rezervari_pe_tara->first()->oras_plecare_tara }}/{{ \Carbon\Carbon::parse($search_data)->isoFormat('YYYY-MM-DD') }}/toate/lista_plecare/{{ $tip_transport }}/extrage-rezervari/raport-pdf" class="btn btn-sm bg-success text-white border border-light rounded-pill">
+                                                        <i class="fas fa-file-pdf text-white mr-1"></i>Raport Navă Iphone
+                                                    </a>
+                                                </div>
+                                                {{-- <div class=""> 
+                                                    <form class="needs-validation" novalidate method="POST" action="/rapoarte/extrage-rezervari/raport-pdf">
+                                                        @csrf
+                                                        
+                                                        @foreach ($rezervari_toate_pe_tara as $rezervare_nava) 
+                                                            <input type="hidden" name="rezervari[]" value="{{ $rezervare_nava }}">
+                                                        @endforeach
+                                                                <input type="hidden" name="tip_lista" value="lista_plecare">  
+                                                            <button type="submit" name="action" value="excel_nava" class="btn btn-sm bg-success text-white border border-light rounded-pill">
+                                                                <i class="fas fa-file-pdf text-white mr-1"></i>Raport Navă
+                                                            </button>
+                                                    </form>
+                                                </div> --}}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endif
                             <tr class="" style="padding:2rem">
                                 <th class="w-50">Pasageri</th>
                                 <th class="text-center">Traseu</th>
@@ -112,10 +149,6 @@
                             </tr>
                         </thead>
                         <tbody> 
-                            {{-- Lista Nava finala completa - Array pentru scoaterea tuturor rezervarilor pe tara --}}
-                            @php
-                                $rezervari_toate_pe_tara = [];
-                            @endphp
 
                             @foreach ($rezervari_pe_tara->where('oras_plecare_tara', $rezervari_pe_tara->first()->oras_plecare_tara)->sortBy('lista_plecare')->groupBy('lista_plecare') as $rezervari_pe_trasee)
                                     <tr>
@@ -379,6 +412,16 @@
                                     {{ $rezervari_pe_tara->first()->oras_sosire_tara }}
                                 </th>
                             </tr>
+                                @if ( $tip_transport === 'calatori')
+                                    <tr>
+                                        <td colspan="5" class="text-center">
+                                            <b>
+                                                Total pasageri în toate listele:
+                                                {{ $rezervari_pe_tara->sum('nr_adulti') + $rezervari_pe_tara->sum('nr_copii') }}
+                                            </b>
+                                        </td>
+                                    </tr>
+                                @endif
                             <tr class="" style="padding:2rem">
                                 <th class="w-50">Pasageri</th>
                                 <th class="text-center">Traseu</th>

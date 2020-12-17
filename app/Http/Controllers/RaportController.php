@@ -314,17 +314,17 @@ class RaportController extends Controller
                         return $query->orderBy('oras_plecare_traseu', 'desc')->orderBy('oras_plecare_ordine', 'desc')->orderBy('oras_plecare_nume', 'desc');
                     }
                 } else if ($request->tip_lista === "lista_sosire") {
-                    // dd($rezervari);
-                    if ($request->tara_plecare === 'Corsica') {
-                        return $query->orderBy('oras_plecare_traseu')->orderBy('oras_plecare_ordine')->orderBy('oras_plecare_nume');
+                    if ($request->tara_plecare === 'Romania') {
+                        // dd('da');
+                        return $query->orderBy('oras_sosire_traseu')->orderBy('oras_sosire_ordine')->orderBy('oras_sosire_nume');
                     } else {
-                        return $query->orderBy('oras_plecare_traseu', 'desc')->orderBy('oras_plecare_ordine', 'desc')->orderBy('oras_plecare_nume', 'desc');
+                        return $query->orderBy('oras_sosire_traseu', 'desc')->orderBy('oras_sosire_ordine', 'desc')->orderBy('oras_sosire_nume', 'desc');
                     }
                 }
         
             })
             ->get();
-
+        // dd($rezervari);
         // foreach ($rezervari as $rezervare) {
         //     echo $rezervare->oras_plecare_traseu . ' ' . $rezervare->oras_plecare_ordine;
         //     echo '<br>';

@@ -202,7 +202,7 @@
                                                 <button type="submit" name="action" value="cu_plata_online"
                                                     class="btn btn-primary btn-lg mr-2 rounded-pill border border-white" style="border-width:3px !important;">
                                                     Plătește rezervarea
-                                                    <img src="{{ asset('images/banner-no-operators.jpg') }}" height="49" class="mr-3 bg-white rounded-pill border border-white">
+                                                    <img src="{{ asset('images/netopia_banner_blue.jpg') }}" height="49" class="mr-3 bg-white rounded-pill border border-white">
                                                 </button>                                                
                                             </div>
                                             @endif
