@@ -933,7 +933,7 @@
                                                 {{ old('acord_de_confidentialitate', ($rezervare->acord_de_confidentialitate ?? "0")) === "1" ? 'checked' : '' }}>
                                                 <label class="form-check-label" for="acord_de_confidentialitate">
                                                     *Sunt de acord cu colectarea și prelucrarea datelor cu caracter personal - 
-                                                    <a href="https://transportcorsica.ro/politica-de-confidentialitate/" target="_blank">
+                                                    <a href="https://transportcorsica.ro/termeni-si-conditii#politica-de-confidentialitate" target="_blank">
                                                         <span class="badge badge-primary border border-dark"
                                                             style="background-color:yellow; color:black"
                                                         >
