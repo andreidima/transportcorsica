@@ -50,6 +50,7 @@ Route::get('/orase_rezervari', [RezervareController::class, 'orase_rezervari']);
 Route::get('/trimitere-catre-plata/{rezervare_tur}', [PlataOnlineController::class, 'trimitereCatrePlata'])->name('trimitere-catre-plata');
 Route::post('/confirmare-plata', [PlataOnlineController::class, 'confirmarePlata'])->name('confirmare-plata');
 
+
 // Route::get('/teste-modale', [App\Http\Controllers\TesteController::class, 'testeModale']);
 // Route::post('/teste-modale-apasa-buton', [App\Http\Controllers\TesteController::class, 'testeModaleApasaButon']);
 // Route::post('/teste-modale-apasa-buton-2', [App\Http\Controllers\TesteController::class, 'testeModaleApasaButon2']);

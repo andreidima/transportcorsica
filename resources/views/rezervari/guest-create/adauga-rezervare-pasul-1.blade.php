@@ -950,7 +950,16 @@
                                             <div class="form-check">
                                                 <input type="checkbox" class="form-check-input" name="termeni_si_conditii" value="1" required
                                                 {{ old('termeni_si_conditii', ($rezervare->termeni_si_conditii ?? "0")) === "1" ? 'checked' : '' }}>
-                                                <label class="form-check-label" for="termeni_si_conditii">*Sunt de acord cu condițiile generale de transport persoane.</label> 
+                                                <label class="form-check-label" for="termeni_si_conditii">
+                                                    *Sunt de acord cu condițiile generale de transport persoane -                                                                                      
+                                                    <a href="https://transportcorsica.ro/termeni-si-conditii/" target="_blank">
+                                                        <span class="badge badge-primary border border-dark"
+                                                            style="background-color:red; color:white"
+                                                        >
+                                                            Termeni și condiții
+                                                        </span>
+                                                    </a>
+                                                </label> 
                                             </div>
                                         </div>
                                     </div> 
