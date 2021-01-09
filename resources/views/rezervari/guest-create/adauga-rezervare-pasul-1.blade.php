@@ -234,12 +234,14 @@
                                             Plecarile din Corsica au loc săptămânal, sâmbăta, în funcție de plecările navelor și de locația dumneavoastră .
                                         </div>
                                         <div class="form-group col-lg-12 border-left border-warning" style="border-width:5px !important">
-                                            Pentru informații complete, vă rugăm să citiți 
+                                            Pentru informații complete, vă rugăm să citiți                                            
+                                                    <a href="https://transportcorsica.ro/termeni-si-conditii/" target="_blank">
                                                         <span class="badge badge-primary border border-dark"
                                                             style="background-color:red; color:white"
                                                         >
                                                             Termeni și condiții
                                                         </span>
+                                                    </a>
                                             sau apelați telefon
                                                         <span class="badge badge-primary border border-dark"
                                                             style="background-color:blue; color:white"
@@ -931,7 +933,7 @@
                                                 {{ old('acord_de_confidentialitate', ($rezervare->acord_de_confidentialitate ?? "0")) === "1" ? 'checked' : '' }}>
                                                 <label class="form-check-label" for="acord_de_confidentialitate">
                                                     *Sunt de acord cu colectarea și prelucrarea datelor cu caracter personal - 
-                                                    <a href="#" target="_blank">
+                                                    <a href="https://transportcorsica.ro/politica-de-confidentialitate/" target="_blank">
                                                         <span class="badge badge-primary border border-dark"
                                                             style="background-color:yellow; color:black"
                                                         >
