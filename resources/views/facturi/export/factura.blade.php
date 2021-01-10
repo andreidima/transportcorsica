@@ -184,10 +184,14 @@
                                 {{($factura->anulare_factura_id_originala !== null) ? '-' : ''}}1
                             </td>
                             <td style="text-align:right">
-                                {{($factura->anulare_factura_id_originala !== null) ? (-1 * $factura->valoare_lei) : $factura->valoare_lei}}
+                                {{
+                                    ($factura->anulare_factura_id_originala !== null) ? 
+                                        (-1 * ($factura->valoare_lei + $factura->valoare_lei_tva)) 
+                                        : ($factura->valoare_lei + $factura->valoare_lei_tva)
+                                }}
                             </td>
                             <td style="text-align:right">
-                                {{ $factura->valoare_lei }}
+                                {{ $factura->valoare_lei + $factura->valoare_lei_tva }}
                             </td>
                         </tr>
                         <tr>
@@ -195,16 +199,16 @@
                                 Vă mulțumim pentru colaborare!
                             </td>
                             <td colspan="2" style="background-color:rgb(225, 255, 255)">
-                                SUBTOTAL <br>
+                                {{-- SUBTOTAL <br>
                                 % TVA <br>
-                                VALOARE TVA <br>
+                                VALOARE TVA <br> --}}
                                 <b>TOTAL</b>
                             </td>
                         {{-- @if ($factura->anulata === 0) --}}
                             <td style="background-color:rgb(225, 255, 255); text-align:right">
-                                {{ $factura->valoare_lei }} <br>
+                                {{-- {{ $factura->valoare_lei }} <br>
                                 19% <br>
-                                {{ $factura->valoare_lei_tva }} <br>
+                                {{ $factura->valoare_lei_tva }} <br> --}}
                                 <b>{{ $factura->valoare_lei + $factura->valoare_lei_tva }}</b>
                             </td>
                         {{-- @else
