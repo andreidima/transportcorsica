@@ -74,7 +74,7 @@ class PlataOnlineController extends Controller
              * Invoices info
              */
             $paymentRequest->invoice = new Invoice();
-            $paymentRequest->invoice->currency  = 'RON';
+            $paymentRequest->invoice->currency  = 'EUR';
             $paymentRequest->invoice->amount    = $rezervare_tur->pret_total + (($rezervare_tur->retur) ? Rezervare::find($rezervare_tur->retur)->pret_total : 0);
             $paymentRequest->invoice->tokenId   = null;
             $paymentRequest->invoice->details   = "Plata din www.rezervari.transportcorsica.ro";
