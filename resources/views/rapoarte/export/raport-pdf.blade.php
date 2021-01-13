@@ -285,7 +285,7 @@
                             {{ $rezervare->nr_adulti + $rezervare->nr_copii }}
                         </td>
                         <td style="text-align:center">
-                            {{ $rezervare->pret_total }}
+                            {{ ($rezervare->plata_efectuata === 1) ? 0 : $rezervare->pret_total }}
                         </td>
                         <td>
                             
