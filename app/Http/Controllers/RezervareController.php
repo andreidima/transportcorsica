@@ -431,7 +431,11 @@ class RezervareController extends Controller
             $client_neserios->save();
         }
 
-        return back()->with('status', 'Pasagerii au fost introduși cu succes în lista de „Clienți Neserioși”!');
+        
+        // Trimitere catre stergere rezervare
+        $this->destroy($rezervare);
+
+        return back()->with('status', 'Pasagerii au fost introduși cu succes în lista de „Clienți Neserioși”, iar apoi au fost șterși!');
     }
 
 
