@@ -126,7 +126,7 @@
                             {{ $rezervare->nr_adulti + $rezervare->nr_copii }}
                         </td>
                         <td style="text-align:center">
-                            {{ $rezervare->pret_total }}
+                            {{ ($rezervare->plata_efectuata === 1) ? 0 : $rezervare->pret_total }}
                         </td>
                         <td>
 
@@ -206,10 +206,10 @@
                             <b>Total</b>
                         </td>
                         <td style="text-align:center">
-                            <b>{{ $rezervari->sum('pret_total') }}</b>
+                            <b>{{ $rezervari->sum('nr_adulti') + $rezervari->sum('nr_copii') }}</b>
                         </td>
                         <td style="text-align:center">
-                            <b>{{ $rezervari->sum('nr_adulti') + $rezervari->sum('nr_copii') }}</b>
+                            <b>{{ $rezervari->where('plata_efectuata', '<>', 1)->sum('pret_total') }}</b>
                         </td>
                         <td>
                             
@@ -343,7 +343,7 @@
                             <b>Total</b>
                         </td>
                         <td style="text-align:center">
-                            <b>{{ $rezervari->sum('pret_total') }}</b>
+                            <b>{{ $rezervari->where('plata_efectuata', '<>', 1)->sum('pret_total') }}</b>
                         </td>
                         <td style="text-align:center">
                             <b>{{ $rezervari->sum('nr_adulti') + $rezervari->sum('nr_copii') }}</b>
