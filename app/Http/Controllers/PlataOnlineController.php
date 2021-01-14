@@ -74,7 +74,7 @@ class PlataOnlineController extends Controller
              * Invoices info
              */
             $paymentRequest->invoice = new Invoice();
-            $paymentRequest->invoice->currency  = 'EUR';
+            $paymentRequest->invoice->currency  = 'RON';
             $paymentRequest->invoice->amount    = 
                 (stripos($rezervare_tur->pasageri_relation->first()->nume ?? '', 'Andrei Dima test') !== false) ?
                     0.05
