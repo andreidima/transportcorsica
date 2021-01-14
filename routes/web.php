@@ -50,23 +50,23 @@ Route::get('/orase_rezervari', [RezervareController::class, 'orase_rezervari']);
 Route::get('/trimitere-catre-plata/{rezervare_tur}', [PlataOnlineController::class, 'trimitereCatrePlata'])->name('trimitere-catre-plata');
 Route::post('/confirmare-plata', [PlataOnlineController::class, 'confirmarePlata'])->name('confirmare-plata');
 
-Route::get('/test-sum-model', function () {
-    $rezervare_tur = \App\Models\Rezervare::find(740);
+// Route::get('/test-sum-model', function () {
+//     $rezervare_tur = \App\Models\Rezervare::find(740);
 
     
-            $paymentRequest    = 
-                (stripos($rezervare_tur->pasageri_relation->first()->nume ?? '', 'Andrei Dima test') !== false) ?
-                        0.05
-                        :
-                        ( 
-                            $rezervare_tur->valoare_lei + $rezervare_tur->valoare_lei_tva + 
-                            (($rezervare_tur->retur) ? (\App\Models\Rezervare::find($rezervare_tur->retur)->valoare_lei + \App\Models\Rezervare::find($rezervare_tur->retur)->valoare_lei_tva) : 0 )
-                        );
+//             $paymentRequest    = 
+//                 (stripos($rezervare_tur->pasageri_relation->first()->nume ?? '', 'Andrei Dima test') !== false) ?
+//                         0.05
+//                         :
+//                         ( 
+//                             $rezervare_tur->valoare_lei + $rezervare_tur->valoare_lei_tva + 
+//                             (($rezervare_tur->retur) ? (\App\Models\Rezervare::find($rezervare_tur->retur)->valoare_lei + \App\Models\Rezervare::find($rezervare_tur->retur)->valoare_lei_tva) : 0 )
+//                         );
             
         
-    return($paymentRequest);
+//     return($paymentRequest);
 
-});
+// });
 
 // Route::get('/teste-modale', [App\Http\Controllers\TesteController::class, 'testeModale']);
 // Route::post('/teste-modale-apasa-buton', [App\Http\Controllers\TesteController::class, 'testeModaleApasaButon']);
