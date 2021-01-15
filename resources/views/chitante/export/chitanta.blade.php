@@ -13,7 +13,7 @@
         body { 
             font-family: DejaVu Sans, sans-serif;
             /* font-family: Arial, Helvetica, sans-serif; */
-            font-size: 12px;
+            font-size: 14px;
             margin: 0px;
         }
 
@@ -58,26 +58,29 @@
 <body>
     {{-- <div style="width:730px; height: 1030px; border-style: dashed ; border-width:2px; border-radius: 15px;">      --}}
     <div style="
-        width:400px;
+        width:550px;
         margin:0px 0px;
             -moz-border-radius: 3px;
             -webkit-border-radius: 3px;
             border-radius: 3px;
         text-align:center
-        ">                  
+        ">               
             <p style="text-align:left; margin:0px;">
                 <b>MRW88 MAXARMONY S.R.L.</b> <br>
-                Nr. ord. reg. com./an: J39/570/29.09.2015 <br>
-                CIF: RO35059906 <br>
-                Sediul: Str. Șoseaua Națională nr. 22, Et:1, Sat Ceardac, com. Golești, Județ Vrancea <br>
+                ORC: J39/570/29.09.2015 | CIF: RO35059906 <br>
+                Sediul: Str. Șoseaua Națională nr. 22, Et:1, Sat Ceardac, Golești, Vrancea <br>
                 Banca: Transilvania <br>
                 Cod IBAN EURO: RO83BTRLEURCRT0319122801 <br>
                 Cod IBAN LEI: RO36BTRLRONCRT0319122801 <br>
             </p>
+   
+            <br>
 
             <h2 style="margin:5px">BILET DE CĂLĂTORIE</h2>
             
-            <h2 style="margin:5px">Seria și număr: {{ $rezervare->bilet_serie }} {{ $rezervare->bilet_numar }} </h2>            
+            <h2 style="margin:5px">Seria și număr: {{ $rezervare->bilet_serie }} {{ $rezervare->bilet_numar }} </h2>  
+               
+            <br><br>          
                             
             <table style="margin-bottom:0px">
                 <tr style="text-align:center; font-weight:bold;">
@@ -114,6 +117,8 @@
                 </tr>
                 @endisset
             </table>
+   
+            <br><br>
 
             <table style="margin-bottom:0px">    
                 <tr style="text-align:center; font-weight:bold;">
@@ -144,7 +149,9 @@
                     </td>
                 </tr>
             </table>
-                            
+                           
+            <br><br>
+
             <table style="margin-bottom:10px">
                 <tr style="text-align:center; font-weight:bold;">
                     <td colspan="3" style="border-width:0px; padding:0rem;">
@@ -175,7 +182,7 @@
                         </tr>
                         <tr>
                             <td style="border: solid 1px gray">
-                                Nume:
+                                Nume
                             </td>
                             <td style="border: solid 1px gray">
                                 Data naștere
@@ -209,7 +216,7 @@
                     @endif              
             </table>
             
-            <br>
+            <br><br>
             Păstrați biletul pentru control
 
             {{-- <h2 style="margin:5px">BILET DE CĂLĂTORIE</h2>
