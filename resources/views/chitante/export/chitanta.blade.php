@@ -76,7 +76,7 @@
    
             <br>
 
-            {{-- <h2 style="margin:5px">BILET DE CĂLĂTORIE</h2>
+            <h2 style="margin:5px">BILET DE CĂLĂTORIE</h2>
             
             <h2 style="margin:5px">Seria și număr: {{ $rezervare->bilet_serie }} {{ $rezervare->bilet_numar }} </h2>  
                
@@ -120,7 +120,7 @@
    
             <br><br>
 
-            <table style="margin-bottom:0px">    
+            {{-- <table style="margin-bottom:0px">    
                 <tr style="text-align:center; font-weight:bold;">
                     <td colspan="4" style="padding:0rem;">
                         <h3 style="background-color:#e7d790; color:black; margin:10px 0px 5px 0px; padding:5px 0px">
