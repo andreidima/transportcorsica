@@ -76,7 +76,7 @@
    
             <br>
 
-            <h2 style="margin:5px">BILET DE CĂLĂTORIE</h2>
+            {{-- <h2 style="margin:5px">BILET DE CĂLĂTORIE</h2>
             
             <h2 style="margin:5px">Seria și număr: {{ $rezervare->bilet_serie }} {{ $rezervare->bilet_numar }} </h2>  
                
@@ -217,7 +217,7 @@
             </table>
             
             <br><br>
-            Păstrați biletul pentru control
+            Păstrați biletul pentru control --}}
 
             {{-- <h2 style="margin:5px">BILET DE CĂLĂTORIE</h2>
             
