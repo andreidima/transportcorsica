@@ -255,21 +255,11 @@
                                                     @else
                                                         Rezervare bagaj
                                                     @endif
-                                                {{-- @php
-                                                    $nr_crt = 0;
-                                                @endphp
-                                                @foreach ($rezervare->pasageri_relation as $pasager)
-                                                    @if (in_array($pasager->nume, $clienti_neseriosi))
-                                                        @php
-                                                            $nr_crt++; 
-                                                        @endphp
-                                                        @if ($nr_crt === 1)
-                                                            | Clienți neserioși:
-                                                        @endif
-                                                        {{ \App\Models\ClientNeserios::where('nume', $pasager->nume)->first()->nume }} - 
-                                                        {{ \App\Models\ClientNeserios::where('nume', $pasager->nume)->first()->observatii }};
+                                                    
+                                                    @if ($rezervare->observatii)
+                                                        <br>
+                                                        Observatii: {{ $rezervare->observatii }}
                                                     @endif
-                                                @endforeach --}}
                                             </td>
                                             <td class="text-center">
                                                 {{ $rezervare->oras_plecare_traseu ?? ''}}
@@ -281,6 +271,13 @@
                                                 {{ $rezervare->nr_adulti + $rezervare->nr_copii }}
                                             </td>
                                             <td class="d-flex justify-content-end">
+                                                <div style="" class="mr-1">
+                                                    <a href="{{ $rezervare->path() }}/modifica"
+                                                        class="flex mr-1"    
+                                                    >
+                                                        <span class="badge badge-primary">Modifică</span>
+                                                    </a>
+                                                </div>
                                                 <div style="" class="mr-1">
                                                     <a 
                                                         href="#" 
@@ -302,7 +299,7 @@
                                                     </a>
                                                 </div>
                                             </td>
-                                        </tr>                                       
+                                        </tr>                                      
                                         @empty
                                         @endforelse                                               
                                     @empty
@@ -528,7 +525,14 @@
                                             <td class="text-center">
                                                 {{ $rezervare->nr_adulti + $rezervare->nr_copii }}
                                             </td>
-                                            <td>
+                                            <td class="d-flex justify-content-end">
+                                                <div style="" class="mr-1">
+                                                    <a href="{{ $rezervare->path() }}/modifica"
+                                                        class="flex mr-1"    
+                                                    >
+                                                        <span class="badge badge-primary">Modifică</span>
+                                                    </a>
+                                                </div>
                                                 <div style="" class="mr-1">
                                                     <a 
                                                         href="#" 

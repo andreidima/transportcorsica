@@ -17,6 +17,11 @@
                             id="search_nume" name="search_nume" placeholder="Client"
                                     value="{{ $search_nume }}">
                         </div>
+                        <div class="col-md-2 mb-2 px-1 d-flex align-items-center">
+                            <input type="text" class="form-control form-control-sm border rounded-pill mb-0 py-0" 
+                            id="search_bilet_numar" name="search_bilet_numar" placeholder="Nr. bilet"
+                                    value="{{ $search_bilet_numar }}">
+                        </div>
                         <div class="col-md-4 mb-2 px-1 d-flex align-items-center">
                             <label for="search_data" class="mb-0 align-self-center mr-1">Data:</label>
                             <vue2-datepicker

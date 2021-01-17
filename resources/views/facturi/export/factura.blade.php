@@ -177,7 +177,7 @@
                                 <br><br>
                                 Preț în EURO: {{ round($factura->valoare_euro) }}&euro; 
                                 <br><br>
-                                Curs valutar BNR la data de {{ \Carbon\Carbon::parse($factura->created_at)->isoFormat('DD.MM.YYYY') }}: <br>
+                                Curs valutar BNR la data rezervării biletului de călătorie: {{ \Carbon\Carbon::parse($factura->rezervare->created_at)->isoFormat('DD.MM.YYYY') }}: <br>
                                 1 EURO = {{ $factura->curs_bnr_euro }} 
                             </td>
                             <td style="text-align:center">

@@ -137,7 +137,7 @@
                     <td style="text-align: center">
                         Oraș plecare:
                         <br>
-                        <b>{{ $rezervare->oras_plecare_nume->oras ?? '' }}</b>
+                        <b>{{ $rezervare->oras_plecare_sofer ?? '' }}</b>
                     </td>
                     <td style="text-align: center">
                         <img src="{{ asset('images/sageata dreapta.jpg') }}" width="50px">
@@ -145,7 +145,7 @@
                     <td style="text-align: center">
                         Oraș sosire:
                         <br>
-                        <b>{{ $rezervare->oras_sosire_nume->oras ?? '' }}</b>
+                        <b>{{ $rezervare->oras_sosire_sofer ?? '' }}</b>
                     </td>
                 </tr>
             </table>
@@ -169,7 +169,14 @@
                                     <span>
                                         Preț în Euro: <b>{{ $rezervare->pret_total }} Euro</b>
                                         <br/>
+                                        
+                                        Curs valutar BNR la data rezervării biletului de călătorie {{ \Carbon\Carbon::parse($rezervare->created_at)->isoFormat('DD.MM.YYYY') }}: <br>
+                                        1 EURO = {{ $rezervare->curs_bnr_euro }}
+
+                                        <br/>
+
                                         Preț în Lei: {{ $rezervare->valoare_lei + $rezervare->valoare_lei_tva }} lei
+                                        
                                     </span>
                                 <br>                          
                                 @if($rezervare->plata_efectuata == 1)

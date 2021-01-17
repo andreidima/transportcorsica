@@ -31,6 +31,7 @@ class RezervareController extends Controller
     public function index()
     {
         $search_nume = \Request::get('search_nume');
+        $search_bilet_numar = \Request::get('search_bilet_numar');
         $search_data = \Request::get('search_data');
 
         $rezervari = Rezervare::with('oras_plecare_nume', 'oras_sosire_nume')
@@ -44,14 +45,21 @@ class RezervareController extends Controller
                     $query->where('nume', 'like', '%' . $search_nume . '%');
                 });
             })
+            // Daca se cauta dupa bilet, se afiseaza chiar daca este retur, pentru ca altfel e posibil sa nu apara nici o rezervare
+            // Daca nu se cauta dupa bilet, se afiseaza doar turul rezervarilor
+            ->when($search_bilet_numar, function ($query, $search_bilet_numar) {
+                return $query->where('bilet_numar', $search_bilet_numar);
+            }, function ($query) {
+                    return $query->whereNull('tur');
+            })
             ->when($search_data, function ($query, $search_data) {
                 return $query->whereDate('data_cursa', '=', $search_data);
             })
-            ->whereNull('tur')
+            // ->whereNull('tur')
             ->orderBy('rezervari.created_at', 'desc')
             ->simplePaginate(25);
 
-        return view('rezervari.index', compact('rezervari', 'search_nume', 'search_data'));
+        return view('rezervari.index', compact('rezervari', 'search_nume', 'search_data', 'search_bilet_numar'));
     }
 
     /**
@@ -347,7 +355,7 @@ class RezervareController extends Controller
                     $factura->nr_reg_com = $request->nr_reg_com;
                     $factura->cif = $request->cif;
                     $factura->sediul = $request->sediul;
-                    $factura->seria = Factura::select('seria')->latest()->first()->seria ?? 'MRW';
+                    $factura->seria = Factura::select('seria')->latest()->first()->seria ?? 'MRW88';
                     $factura->numar = (Factura::select('numar')->latest()->first()->numar ?? 0) + 1;
                     // dd($rezervare_tur->pret_total, $rezervare_retur->pret_total ?? 0);
                     $factura->valoare_euro = $rezervare_tur->pret_total + ($rezervare_retur->pret_total ?? 0);
@@ -373,40 +381,27 @@ class RezervareController extends Controller
      */
     public function destroy(Rezervare $rezervare)
     {
-        // stergere pasageri - daca nu mai sunt alte rezervari (tur, retur) continand acesti pasageri 
-        foreach ($rezervare->pasageri_relation as $pasager) {
-            // if ($pasager->rezervari->count() < 2) {
-                $pasager->delete();
-            // }
-        }
-
-        $rezervare->pasageri_relation()->detach();
-        $rezervare->delete();
-
-        // if($rezervare->tur){
-        //     $rezervare_tur = Rezervare::find($rezervare->tur);
-        //     if ($rezervare->tur){
-        //         $rezervare_tur->retur = null;
-        //         $rezervare_tur->save();
-        //     }
-        // } elseif ($rezervare->retur){
-        //     $rezervare_retur = Rezervare::find($rezervare->retur);
-        //     if ($rezervare->retur){
-        //         $rezervare_retur->tur = null;
-        //         $rezervare_retur->save();
-        //     }
-        // }
-
-        if ($rezervare->retur){
-            $rezervare_retur = Rezervare::find($rezervare->retur);
-            if ($rezervare->retur){
-                $rezervare_retur->pasageri_relation()->detach();
-                $rezervare_retur->delete();
+        if (is_null($rezervare->bilet_numar)){
+            // stergere pasageri - daca nu mai sunt alte rezervari (tur, retur) continand acesti pasageri 
+            foreach ($rezervare->pasageri_relation as $pasager) {
+                    $pasager->delete();
             }
-        }
 
-        // return redirect('/rezervari')->with('status', 'Rezervarea a fost ștearsă cu succes!');
-        return back()->with('status', 'Rezervarea a fost ștearsă cu succes!');
+            $rezervare->pasageri_relation()->detach();
+            $rezervare->delete();
+
+            if ($rezervare->retur){
+                $rezervare_retur = Rezervare::find($rezervare->retur);
+                if ($rezervare->retur){
+                    $rezervare_retur->pasageri_relation()->detach();
+                    $rezervare_retur->delete();
+                }
+            }
+
+            return back()->with('status', 'Rezervarea a fost ștearsă cu succes!');
+        } else {
+            return back()->with('error', 'Rezervarea nu poate fi ștearsă pentru că are deja bilet emis!');
+        }
     }
 
 
@@ -431,11 +426,14 @@ class RezervareController extends Controller
             $client_neserios->save();
         }
 
-        
-        // Trimitere catre stergere rezervare
-        $this->destroy($rezervare);
+        if (is_null($rezervare->bilet_numar)) {        
+            // Trimitere catre stergere rezervare
+            $this->destroy($rezervare);
 
-        return back()->with('status', 'Pasagerii au fost introduși cu succes în lista de „Clienți Neserioși”, iar apoi au fost șterși!');
+            return back()->with('status', 'Pasagerii au fost introduși cu succes în lista de „Clienți Neserioși”, iar apoi au fost șterși!');
+        } else {
+            return back()->with('warning', 'Pasagerii au fost introduși cu succes în lista de „Clienți Neserioși”, dar Rezervarea nu poate fi ștearsă pentru că are deja bilet emis!');
+        }
     }
 
 
@@ -1160,7 +1158,7 @@ class RezervareController extends Controller
             $factura->nr_reg_com = $rezervare->nr_reg_com;
             $factura->cif = $rezervare->cif;
             $factura->sediul = $rezervare->sediul;
-            $factura->seria = Factura::select('seria')->latest()->first()->seria ?? 'MRW';
+            $factura->seria = Factura::select('seria')->latest()->first()->seria ?? 'MRW88';
             $factura->numar = (Factura::select('numar')->latest()->first()->numar ?? 0) + 1;
             $factura->valoare_euro = $rezervare->pret_total_tur + $rezervare->pret_total_retur;
 
@@ -1353,7 +1351,7 @@ class RezervareController extends Controller
         $rezervare = Rezervare::where('cheie_unica', $cheie_unica)->first();
         $rezervare->oras_plecare_sofer = $request->oras_plecare;
         $rezervare->oras_sosire_sofer = $request->oras_sosire;
-        $rezervare->bilet_serie = 'MRW';
+        $rezervare->bilet_serie = 'MRW88';
         $rezervare->bilet_numar = $rezervare->bilet_numar ?? ((Rezervare::max('bilet_numar') ?? 0) + 1);
         $rezervare->update();
 
