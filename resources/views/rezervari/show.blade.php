@@ -184,9 +184,12 @@
                                     </div>
                                 @endif
 
-                                    <div class="col-lg-12 mb-0 d-flex justify-content-center">    
-                                        <a class="btn bg-success text-white border border-dark rounded-pill mr-1" href="/bilet-rezervat-user-logat/rezervare-pdf/{{ $rezervare_tur->id }}/{{ $rezervare_retur->id ?? ''}}" role="button">
+                                    <div class="col-lg-12 mb-0 d-flex justify-content-center">   
+                                        <a class="btn bg-success text-white border border-dark rounded-pill mr-1" href="/chitanta-descarca/{{ $rezervare_tur->cheie_unica }}/export-pdf" target="_target" role="button">
                                             Descarcă bilet
+                                        </a> 
+                                        <a class="btn bg-success text-white border border-dark rounded-pill mr-1" href="/bilet-rezervat-user-logat/rezervare-pdf/{{ $rezervare_tur->id }}/{{ $rezervare_retur->id ?? ''}}" role="button">
+                                            Descarcă rezervare
                                         </a>
                                         <a class="btn bg-primary text-white border border-dark rounded-pill" href="{{ route('rezervari.index') }}" role="button">
                                             Înapoi la Rezervări

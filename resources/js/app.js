@@ -123,6 +123,14 @@ if (document.querySelector('#adauga-rezervare')) {
 
             data_plecare_veche: dataPlecareVeche,
             data_intoarcere_veche: dataIntoarcereVeche,
+
+            // Autocomplete
+            cumparator: cumparatorVechi,
+            nr_reg_com: nr_reg_comVechi,
+            cif: cifVechi,
+            sediul: sediulVechi,
+            cumparatori: '',
+
         },
         watch: {
             traseu: function () {
@@ -422,7 +430,19 @@ if (document.querySelector('#adauga-rezervare')) {
             },
 
 
-
+            autoComplete: function () {
+                app1.cumparatori = '';
+                if (app1.cumparator.length > 2) {
+                    axios.get('/vuejs/autocomplete/search', {
+                        params: {
+                            cumparator: app1.cumparator 
+                        } 
+                    })
+                        .then(function (response) {
+                        app1.cumparatori = response.data;
+                    });
+                }
+            },
         }
     });
 }

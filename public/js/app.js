@@ -94963,7 +94963,13 @@ if (document.querySelector('#adauga-rezervare')) {
       data2: '',
       diferenta_date: '',
       data_plecare_veche: dataPlecareVeche,
-      data_intoarcere_veche: dataIntoarcereVeche
+      data_intoarcere_veche: dataIntoarcereVeche,
+      // Autocomplete
+      cumparator: cumparatorVechi,
+      nr_reg_com: nr_reg_comVechi,
+      cif: cifVechi,
+      sediul: sediulVechi,
+      cumparatori: ''
     },
     watch: {
       traseu: function traseu() {
@@ -95232,6 +95238,19 @@ if (document.querySelector('#adauga-rezervare')) {
       // allow positive whole numbers
       hasOnlyDigits: function hasOnlyDigits(value) {
         return /^\d+$/.test(value);
+      },
+      autoComplete: function autoComplete() {
+        _app.cumparatori = '';
+
+        if (_app.cumparator.length > 2) {
+          axios.get('/vuejs/autocomplete/search', {
+            params: {
+              cumparator: _app.cumparator
+            }
+          }).then(function (response) {
+            _app.cumparatori = response.data;
+          });
+        }
       }
     }
   });
@@ -95578,8 +95597,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\laragon\www\transport-franta-corsica\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! D:\laragon\www\transport-franta-corsica\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! E:\laragon\www\transportcorsica\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! E:\laragon\www\transportcorsica\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

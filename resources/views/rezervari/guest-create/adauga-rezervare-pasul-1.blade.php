@@ -878,20 +878,51 @@
                                         <div class="form-group col-lg-12 mb-2">
                                                 <span>*Completați aceste câmpuri doar dacă doriți factură.</h5>
                                         </div>
-                                        <div class="form-group col-lg-3 mb-2">
+                                        <div class="form-group col-lg-3 mb-2">        
+                                <div class="panel panel-default">
+                                <div class="panel-body">                                    
+                                            <script type="application/javascript"> 
+                                                cumparatorVechi={!! json_encode(old('cumparator', ($rezervare->cumparator ?? ''))) !!} 
+                                                nr_reg_comVechi={!! json_encode(old('nr_reg_com', ($rezervare->nr_reg_com ?? ''))) !!}
+                                                cifVechi={!! json_encode(old('cif', ($rezervare->cif ?? ''))) !!}
+                                                sediulVechi={!! json_encode(old('sediul', ($rezervare->sediul ?? ''))) !!}
+                                            </script>
                                             <label for="cumparator" class="mb-0">Cumpărător:</label>                                        
                                             <input 
                                                 type="text" 
+                                                v-model="cumparator" 
+                                                v-on:keyup="autoComplete()"
                                                 class="form-control form-control-sm {{ $errors->has('cumparator') ? 'is-invalid' : '' }}" 
                                                 name="cumparator" 
                                                 placeholder="" 
                                                 value="{{ old('cumparator', ($rezervare->cumparator ?? '')) }}"
+                                                autocomplete="off"
                                                 required> 
+                                            <div class="panel-footer" v-if="cumparatori.length">
+                                                <ul class="list-group">
+                                                    <li class="list-group-item button" 
+                                                        v-for="client in cumparatori">
+                                                        <button type="button" 
+                                                            v-on:click="
+                                                                cumparator = client.cumparator; 
+                                                                nr_reg_com = client.nr_reg_com;
+                                                                cif = client.cif;
+                                                                sediul = client.sediul; 
+                                                                cumparatori = ''
+                                                            ">
+                                                                @{{ client.cumparator }}
+                                                        </button>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                </div>
+                                </div>
                                         </div>
                                         <div class="form-group col-lg-3 mb-2">
                                             <label for="nr_reg_com" class="mb-0">Nr. Reg. Com.:</label>                                        
                                             <input 
                                                 type="text" 
+                                                v-model="nr_reg_com" 
                                                 class="form-control form-control-sm {{ $errors->has('nr_reg_com') ? 'is-invalid' : '' }}" 
                                                 name="nr_reg_com" 
                                                 placeholder="" 
@@ -902,6 +933,7 @@
                                             <label for="cif" class="mb-0">CIF:</label>                                        
                                             <input 
                                                 type="text" 
+                                                v-model="cif" 
                                                 class="form-control form-control-sm {{ $errors->has('cif') ? 'is-invalid' : '' }}" 
                                                 name="cif" 
                                                 placeholder="" 
@@ -912,6 +944,7 @@
                                             <label for="sediul" class="mb-0">Sediul:</label>                                        
                                             <input 
                                                 type="text" 
+                                                v-model="sediul" 
                                                 class="form-control form-control-sm {{ $errors->has('sediul') ? 'is-invalid' : '' }}" 
                                                 name="sediul" 
                                                 placeholder="" 

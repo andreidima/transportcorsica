@@ -8,6 +8,7 @@ use App\Http\Controllers\ClientNeseriosController;
 use App\Http\Controllers\MesajTrimisSmsController;
 use App\Http\Controllers\FacturaController;
 use App\Http\Controllers\PlataOnlineController;
+use App\Http\Controllers\VueJSController;
 
 /*
 |--------------------------------------------------------------------------
@@ -205,4 +206,7 @@ Route::group(['middleware' => 'auth'], function () {
         ->only(['index']);
     Route::any('/facturi/{factura}/anuleaza', [FacturaController::class, 'anuleaza']);
     Route::get('/facturi/{factura}/export/{view_type}', [FacturaController::class, 'exportPDF']);
+
+    Route::get('vuejs/autocomplete', [VueJSController::class, 'autocomplete']);
+    Route::get('vuejs/autocomplete/search', [VueJSController::class, 'autocompleteSearch']);
 });
