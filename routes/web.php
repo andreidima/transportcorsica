@@ -196,6 +196,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('clienti-neseriosi', ClientNeseriosController::class,  ['parameters' => ['clienti-neseriosi' => 'client_neserios']]);
     
     Route::post('/rapoarte/{tip_transport}/muta-rezervari', [RaportController::class, 'mutaRezervari']);
+    Route::post('/rapoarte/{tip_transport}/muta-rezervare/{rezervare}', [RaportController::class, 'mutaRezervare']);
     Route::post('/rapoarte/extrage-rezervari/{view_type}', [RaportController::class, 'extrageRezervari']);
     Route::any('/rapoarte/{tip_transport}/{view_type}', [RaportController::class, 'rapoarte'])->name('rapoarte');
     Route::any('/rapoarte/{raport}/{tara_plecare}/{data}/{lista}/{tip_lista}/{tip_transport}/extrage-rezervari/{view_type}', [RaportController::class, 'extrageRezervariIphone'])->name('rapoarteIphone');

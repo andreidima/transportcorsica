@@ -142,6 +142,82 @@ class RaportController extends Controller
         // return redirect()->route('rapoarte', ['search_data' => $request->data_traseu]);
     }
 
+    public function mutaRezervare(Request $request, $tip_transport = null, Rezervare $rezervare){
+        $request->validate(
+            [
+                'lista' => ['required', 'numeric']
+            ],
+        );
+
+
+        // dd($rezervare, $request->tip_lista);
+
+        if ($request->tip_lista === "lista_plecare") {
+            $rezervare->lista_plecare = $request->lista;
+        } elseif ($request->tip_lista === "lista_sosire") {
+            $rezervare->lista_sosire = $request->lista;
+        }
+        
+        $rezervare->update();
+
+        return back();
+
+        //     $rezervari = Rezervare::
+        //         join('orase as orase_plecare', 'rezervari.oras_plecare', '=', 'orase_plecare.id')
+        //         // ->join('orase as orase_sosire', 'rezervari.oras_sosire', '=', 'orase_sosire.id')
+        //         // ->select(
+        //         //     'rezervari.*', 
+        //         //     'orase_plecare.traseu as oras_plecare_traseu'
+        //         // )
+        //         ->whereDate('data_cursa', '=', $request->data_cursa)
+        //         ->where('orase_plecare.traseu', $request->traseu)
+        //         ->where(function (Builder $query) use ($tip_transport) {
+        //             $tip_transport === 'calatori' ?  $query->whereNotNull('nr_adulti') : $query->whereNull('nr_adulti');
+        //         })
+        //         ->update(['lista_plecare' => $request->lista]);
+
+        //     return redirect()
+        //         ->action([\App\Http\Controllers\RaportController::class , 'rapoarte'], 
+        //             ['search_data' => $request->data_cursa, 'tip_transport' => $tip_transport, 'view_type' => 'plecare']);
+        // } elseif ($request->tip_lista === "lista_sosire") {
+        //     $rezervari = Rezervare::
+        //         // join('orase as orase_plecare', 'rezervari.oras_plecare', '=', 'orase_plecare.id')
+        //         join('orase as orase_sosire', 'rezervari.oras_sosire', '=', 'orase_sosire.id')
+        //         // ->select(
+        //         //     'rezervari.*',
+        //         //     'orase_plecare.traseu as oras_plecare_traseu'
+        //         // )
+        //         ->whereDate('data_cursa', '=', $request->data_cursa)
+        //         ->where('orase_sosire.traseu', $request->traseu)
+        //         ->where(function (Builder $query) use ($tip_transport) {
+        //             $tip_transport === 'calatori' ?  $query->whereNotNull('nr_adulti') : $query->whereNull('nr_adulti');
+        //         })
+        //         ->update(['lista_sosire' => $request->lista]);
+
+        //     return redirect()
+        //         ->action(
+        //             [\App\Http\Controllers\RaportController::class, 'rapoarte'],
+        //             ['search_data' => $request->data_cursa, 'tip_transport' => $tip_transport, 'view_type' => 'sosire']
+        //         );
+        // }
+
+        // $request->validate(
+        //     [
+        //         'lista_noua' => ['required', 'numeric']
+        //     ],
+        // );
+
+        // if($request->tip_lista === "lista_plecare"){
+        //     $rezervari = Rezervare::whereIn('id', $request->rezervari)
+        //         ->update(['lista_plecare' => $request->lista_noua]);
+        // } elseif ($request->tip_lista === "lista_sosire"){
+        //     $rezervari = Rezervare::whereIn('id', $request->rezervari)
+        //         ->update(['lista_sosire' => $request->lista_noua]);
+        // }
+        
+        // return redirect()->route('rapoarte', ['search_data' => $request->data_traseu]);
+    }
+
     public function extrageRezervari(Request $request){
         // cautarea rezervarilor dupa array-ul de id-uri primit din request
         $rezervari = Rezervare::
