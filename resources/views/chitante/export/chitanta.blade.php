@@ -187,29 +187,29 @@
                                 <br> 
                             </td>
                         </tr>
-                        <tr>
-                            <td style="">
+                        {{-- <tr>
+                            <td style="border: solid 3px black">
                                 Nume
                             </td>
-                            <td style="">
+                            <td style="border: solid 3px black">
                                 Data naștere
                             </td>
-                            <td style="">
+                            <td style="border: solid 3px black">
                                 Localitate naștere
                             </td>
                         </tr>
                         @foreach ($rezervare->pasageri_relation as $pasager)
                         <tr>
-                            <td style="">
+                            <td style="border: solid 3px black">
                                 {{ $pasager->nume }}
                             </td>
-                            <td style="">
+                            <td style="border: solid 3px black">
                                 {{ $pasager->data_nastere }}
                             </td>
-                            <td style="">
+                            <td style="border: solid 3px black">
                                 {{ $pasager->localitate_nastere }}
                             </td>
-                        </tr> 
+                        </tr>  --}}
                         @endforeach    
                     @else
                         <tr>
