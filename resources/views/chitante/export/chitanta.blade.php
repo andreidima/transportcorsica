@@ -59,7 +59,7 @@
     {{-- <div style="width:730px; height: 1030px; border-style: dashed ; border-width:2px; border-radius: 15px;">      --}}
     <div style="
         width:1050px;
-        margin:0px 0px;
+        margin:0px 10px;
             -moz-border-radius: 3px;
             -webkit-border-radius: 3px;
             border-radius: 3px;
@@ -155,7 +155,7 @@
             <table style="margin-bottom:10px">
                 <tr style="text-align:center; font-weight:bold;">
                     <td colspan="3" style="border-width:0px; padding:0rem;">
-                        <h3 style="background-color:#e7d790; color:black; margin:10px 0px 5px 0px; padding:5px 0px">
+                        <h3 style="background-color:#ece7cf; color:black; margin:10px 0px 5px 0px; padding:5px 0px">
                         Călătorie | Tarif
                         </h3>
                     </td>
@@ -187,8 +187,8 @@
                                 <br> 
                             </td>
                         </tr>
-                        {{-- <tr>
-                            <td style="border: solid 3px black">
+                        <tr style="margin:5px 5px ">
+                            <td style="border: solid 3px black; margin:5px">
                                 Nume
                             </td>
                             <td style="border: solid 3px black">
@@ -210,7 +210,7 @@
                                 {{ $pasager->localitate_nastere }}
                             </td>
                         </tr> 
-                        @endforeach     --}}
+                        @endforeach    
                     @else
                         <tr>
                             <td colspan="4">
