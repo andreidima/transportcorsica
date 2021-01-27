@@ -209,8 +209,8 @@
                             <td style="border: solid 3px black">
                                 {{ $pasager->localitate_nastere }}
                             </td>
-                        </tr>  --}}
-                        @endforeach    
+                        </tr> 
+                        @endforeach     --}}
                     @else
                         <tr>
                             <td colspan="4">
