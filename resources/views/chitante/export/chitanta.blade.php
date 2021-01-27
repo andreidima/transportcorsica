@@ -187,7 +187,7 @@
                                 <br> 
                             </td>
                         </tr>
-                        {{-- <tr>
+                        <tr>
                             <td style="border: solid 1px gray">
                                 Nume
                             </td>
@@ -210,7 +210,7 @@
                                 {{ $pasager->localitate_nastere }}
                             </td>
                         </tr> 
-                        @endforeach     --}}
+                        @endforeach    
                     @else
                         <tr>
                             <td colspan="4">
@@ -221,10 +221,10 @@
                         </tr>
                     @endif              
             </table>
-            {{-- 
+            
             <br><br>
             Păstrați biletul pentru control
-             --}}
+            
              
         </div>
     </div>
