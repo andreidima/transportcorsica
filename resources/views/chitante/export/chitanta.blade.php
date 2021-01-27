@@ -228,7 +228,7 @@
             <br><br>
             Păstrați biletul pentru control
             
-            <br><br>
+            {{-- <br><br>
             Păstrați biletul pentru control
             
             <br><br>
@@ -238,7 +238,7 @@
             Păstrați biletul pentru control
             
             <br><br>
-            Păstrați biletul pentru control
+            Păstrați biletul pentru control --}}
             
              
         </div>
