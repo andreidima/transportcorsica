@@ -190,7 +190,7 @@
             </table>
 
             <table>
-                        <tr>
+                        {{-- <tr>
                             <td style="border: solid 3px black">
                                 Nume
                             </td>
@@ -200,7 +200,7 @@
                             <td style="border: solid 3px black">
                                 Localitate naștere
                             </td>
-                        </tr>
+                        </tr> --}}
                         {{-- @foreach ($rezervare->pasageri_relation as $pasager)
                         <tr>
                             <td style="border: solid 3px black">
