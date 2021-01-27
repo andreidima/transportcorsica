@@ -13,7 +13,7 @@
         body { 
             font-family: DejaVu Sans, sans-serif;
             /* font-family: Arial, Helvetica, sans-serif; */
-            font-size: 14px;
+            font-size: 26px;
             margin: 0px;
         }
 
@@ -58,7 +58,7 @@
 <body>
     {{-- <div style="width:730px; height: 1030px; border-style: dashed ; border-width:2px; border-radius: 15px;">      --}}
     <div style="
-        width:1020px;
+        width:1050px;
         margin:0px 0px;
             -moz-border-radius: 3px;
             -webkit-border-radius: 3px;
@@ -188,25 +188,25 @@
                             </td>
                         </tr>
                         <tr>
-                            <td style="border: solid 1px gray">
+                            <td style="border: solid 3px black">
                                 Nume
                             </td>
-                            <td style="border: solid 1px gray">
+                            <td style="border: solid 3px black">
                                 Data naștere
                             </td>
-                            <td style="border: solid 1px gray">
+                            <td style="border: solid 3px black">
                                 Localitate naștere
                             </td>
                         </tr>
                         @foreach ($rezervare->pasageri_relation as $pasager)
                         <tr>
-                            <td style="border: solid 1px gray">
+                            <td style="border: solid 3px black">
                                 {{ $pasager->nume }}
                             </td>
-                            <td style="border: solid 1px gray">
+                            <td style="border: solid 3px black">
                                 {{ $pasager->data_nastere }}
                             </td>
-                            <td style="border: solid 1px gray">
+                            <td style="border: solid 3px black">
                                 {{ $pasager->localitate_nastere }}
                             </td>
                         </tr> 
