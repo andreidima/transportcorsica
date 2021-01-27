@@ -120,7 +120,7 @@
    
             <br><br>
 
-            {{-- <table style="margin-bottom:0px">    
+            <table style="margin-bottom:0px">    
                 <tr style="text-align:center; font-weight:bold;">
                     <td colspan="4" style="padding:0rem;">
                         <h3 style="background-color:#e7d790; color:black; margin:10px 0px 5px 0px; padding:5px 0px">
@@ -222,7 +222,7 @@
                         </tr>
                     @endif              
             </table>
-            
+            {{-- 
             <br><br>
             Păstrați biletul pentru control
              --}}
