@@ -74,15 +74,15 @@
                 Cod IBAN LEI: RO36BTRLRONCRT0319122801 <br>
             </p>
    
-            <br>
+            {{-- <br>
 
             <h2 style="margin:5px">BILET DE CĂLĂTORIE</h2>
             
             <h2 style="margin:5px">Seria și număr: {{ $rezervare->bilet_serie }} {{ $rezervare->bilet_numar }} </h2>  
                
-            <br><br>          
+            <br><br>           --}}
                             
-            <table style="margin-bottom:0px">
+            {{-- <table style="margin-bottom:0px">
                 <tr style="text-align:center; font-weight:bold;">
                     <td colspan="3" style="border-width:0px; padding:0rem;">
                         <h3 style="background-color:#e7d790; color:black; margin:0px 0px 5px 0px; padding:5px 0px;">
@@ -224,22 +224,6 @@
             </table>
             
             <br><br>
-            Păstrați biletul pentru control
-
-            {{-- <h2 style="margin:5px">BILET DE CĂLĂTORIE</h2>
-            
-            Seria și număr: {{ $rezervare->bilet_serie }} {{ $rezervare->bilet_numar }} <br>
-            Plecare din : {{ $rezervare->oras_plecare_sofer ?? '' }} - {{ $rezervare->oras_sosire_sofer ?? '' }} <br><br><br>
-
-            Data începerii călătoriei: {{ \Carbon\Carbon::now()->isoFormat('DD.MM.YYYY HH:mm') }} <br><br>
-
-            Preț în Euro: {{ $rezervare->pret_total }} <br>
-            <h2 style="margin:5px">
-                Preț în Lei: {{ $rezervare->valoare_lei + $rezervare->valoare_lei_tva }} lei 
-            </h2>
-
-            <h2 style="margin:5px">PREȚUL {{ $rezervare->valoare_lei + $rezervare->valoare_lei_tva }} lei</h2>
-            <br>
             Păstrați biletul pentru control --}}
             
              
