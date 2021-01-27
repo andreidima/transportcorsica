@@ -152,7 +152,7 @@
                            
             <br><br>
 
-            <table style="margin-bottom:10px">
+            {{-- <table style="margin-bottom:10px">
                 <tr style="text-align:center; font-weight:bold;">
                     <td colspan="3" style="border-width:0px; padding:0rem;">
                         <h3 style="background-color:#ece7cf; color:black; margin:10px 0px 5px 0px; padding:5px 0px">
@@ -187,7 +187,7 @@
                                 <br> 
                             </td>
                         </tr>
-            </table>
+            </table> --}}
 
             <table>
                         {{-- <tr>
