@@ -58,7 +58,7 @@
 <body>
     {{-- <div style="width:730px; height: 1030px; border-style: dashed ; border-width:2px; border-radius: 15px;">      --}}
     <div style="
-        width:550px;
+        width:520px;
         margin:0px 0px;
             -moz-border-radius: 3px;
             -webkit-border-radius: 3px;
