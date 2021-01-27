@@ -188,7 +188,7 @@
                             </td>
                         </tr>
             </table>
-            
+
             <table>
                         <tr>
                             <td style="border: solid 3px black">
@@ -216,7 +216,7 @@
                         @endforeach    
                     @else
                         <tr>
-                            <td colspan="4">
+                            <td colspan="3">
                                 Descriere bagaj: {{ $rezervare->bagaje_descriere }}
                                 <br>
                                 <b>Cantitate: {{ $rezervare->bagaje_kg }}Kg</b>
