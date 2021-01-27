@@ -74,7 +74,7 @@
                 Cod IBAN LEI: RO36BTRLRONCRT0319122801 <br>
             </p>
    
-            <br>
+            {{-- <br>
 
             <h2 style="margin:5px">BILET DE CĂLĂTORIE</h2>
             
@@ -118,7 +118,7 @@
                 @endisset
             </table>
    
-            <br><br>
+            <br><br> --}}
 
             {{-- <table style="margin-bottom:0px">    
                 <tr style="text-align:center; font-weight:bold;">
