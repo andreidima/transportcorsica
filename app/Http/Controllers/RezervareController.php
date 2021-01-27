@@ -1383,6 +1383,14 @@ class RezervareController extends Controller
         $rezervare_tur = $rezervare;
         $rezervare_retur = Rezervare::find($rezervare_tur->retur);
         
+        // Stergere serie si numar bilet
+        $rezervare_tur->bilet_serie = NULL;
+        $rezervare_tur->bilet_numar = NULL;
+        if (isset($clone_rezervare_retur)) {
+            $rezervare_retur->bilet_serie = NULL;
+            $rezervare_retur->bilet_numar = NULL;
+        }
+
         $clone_rezervare = $rezervare_tur->replicate();
         (isset($rezervare_retur)) ? $clone_rezervare_retur = $rezervare_retur->replicate() : '';
 
