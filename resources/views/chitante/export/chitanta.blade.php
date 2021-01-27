@@ -187,26 +187,26 @@
                                 <br> 
                             </td>
                         </tr>
-                        <tr style="margin:5px 5px ">
-                            <td style="border: solid 3px black; margin:5px">
+                        <tr>
+                            <td style="">
                                 Nume
                             </td>
-                            <td style="border: solid 3px black">
+                            <td style="">
                                 Data naștere
                             </td>
-                            <td style="border: solid 3px black">
+                            <td style="">
                                 Localitate naștere
                             </td>
                         </tr>
                         @foreach ($rezervare->pasageri_relation as $pasager)
                         <tr>
-                            <td style="border: solid 3px black">
+                            <td style="">
                                 {{ $pasager->nume }}
                             </td>
-                            <td style="border: solid 3px black">
+                            <td style="">
                                 {{ $pasager->data_nastere }}
                             </td>
-                            <td style="border: solid 3px black">
+                            <td style="">
                                 {{ $pasager->localitate_nastere }}
                             </td>
                         </tr> 
