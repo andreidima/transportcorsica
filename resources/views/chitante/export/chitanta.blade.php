@@ -187,7 +187,10 @@
                                 <br> 
                             </td>
                         </tr>
-                        {{-- <tr>
+            </table>
+            
+            <table>
+                        <tr>
                             <td style="border: solid 3px black">
                                 Nume
                             </td>
@@ -210,7 +213,7 @@
                                 {{ $pasager->localitate_nastere }}
                             </td>
                         </tr> 
-                        @endforeach     --}}
+                        @endforeach    
                     @else
                         <tr>
                             <td colspan="4">
