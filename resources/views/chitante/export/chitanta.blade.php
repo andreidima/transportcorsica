@@ -187,9 +187,6 @@
                                 <br> 
                             </td>
                         </tr>
-            </table>
-
-            {{-- <table>
                         <tr>
                             <td style="border: solid 3px black">
                                 Nume
@@ -222,11 +219,11 @@
                                 <b>Cantitate: {{ $rezervare->bagaje_kg }}Kg</b>
                             </td>
                         </tr>
-                    @endif              
-            </table> --}}
+                    @endif   
+            </table>   
             
-            {{-- <br><br>
-            Păstrați biletul pentru control --}}
+            <br><br>
+            Păstrați biletul pentru control
             
             {{-- <br><br>
             Păstrați biletul pentru control
