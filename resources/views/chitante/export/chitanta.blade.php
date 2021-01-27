@@ -189,8 +189,8 @@
                         </tr>
             </table> --}}
 
-            <table>
-                        {{-- <tr>
+            {{-- <table>
+                        <tr>
                             <td style="border: solid 3px black">
                                 Nume
                             </td>
@@ -200,8 +200,8 @@
                             <td style="border: solid 3px black">
                                 Localitate naștere
                             </td>
-                        </tr> --}}
-                        {{-- @foreach ($rezervare->pasageri_relation as $pasager)
+                        </tr>
+                        @foreach ($rezervare->pasageri_relation as $pasager)
                         <tr>
                             <td style="border: solid 3px black">
                                 {{ $pasager->nume }}
@@ -213,7 +213,7 @@
                                 {{ $pasager->localitate_nastere }}
                             </td>
                         </tr> 
-                        @endforeach     --}}
+                        @endforeach    
                     @else
                         <tr>
                             <td colspan="3">
@@ -223,7 +223,7 @@
                             </td>
                         </tr>
                     @endif              
-            </table>
+            </table> --}}
             
             <br><br>
             Păstrați biletul pentru control
