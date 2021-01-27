@@ -13,7 +13,7 @@
         body { 
             font-family: DejaVu Sans, sans-serif;
             /* font-family: Arial, Helvetica, sans-serif; */
-            font-size: 63px;
+            font-size: 14px;
             margin: 0px;
         }
 
@@ -58,8 +58,8 @@
 <body>
     {{-- <div style="width:730px; height: 1030px; border-style: dashed ; border-width:2px; border-radius: 15px;">      --}}
     <div style="
-        width:2350px;
-        margin:0px 10px;
+        width:550px;
+        margin:0px 0px;
             -moz-border-radius: 3px;
             -webkit-border-radius: 3px;
             border-radius: 3px;
