@@ -227,7 +227,7 @@
             <a href="print://escpos.org/escpos/bt/print?srcTp=uri
    &srcObj=html
    &numCopies=1 //added in version 2.3.2
-   &src='https://loopedlabs.com/web-print/bill.html'">Print Me !</a>
+   &src='https://rezervari.transportcorsica.ro/chitanta-descarca/tur600825b6d3542/export-pdf'">Print Me !</a>
              
         </div>
     </div>
