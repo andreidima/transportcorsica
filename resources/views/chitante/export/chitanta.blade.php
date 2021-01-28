@@ -74,18 +74,19 @@
                 Cod IBAN LEI: RO36BTRLRONCRT0319122801 <br>
             </p>
    
-            <br>
+            {{-- <br> --}}
 
             <h2 style="margin:5px">BILET DE CĂLĂTORIE</h2>
             
             <h2 style="margin:5px">Seria și număr: {{ $rezervare->bilet_serie }} {{ $rezervare->bilet_numar }} </h2>  
                
-            <br><br>          
+            {{-- <br> --}}
+            {{-- <br>           --}}
                             
             <table style="margin-bottom:0px">
                 <tr style="text-align:center; font-weight:bold;">
                     <td colspan="3" style="border-width:0px; padding:0rem;">
-                        <h3 style="background-color:#e7d790; color:black; margin:0px 0px 5px 0px; padding:5px 0px;">
+                        <h3 style="background-color:#ece7cf; color:black; margin:0px 0px 5px 0px; padding:5px 0px;">
                         Informații Client
                         </h3>
                     </td>
@@ -123,7 +124,7 @@
             <table style="margin-bottom:0px">    
                 <tr style="text-align:center; font-weight:bold;">
                     <td colspan="4" style="padding:0rem;">
-                        <h3 style="background-color:#e7d790; color:black; margin:10px 0px 5px 0px; padding:5px 0px">
+                        <h3 style="background-color:#ece7cf; color:black; margin:10px 0px 5px 0px; padding:5px 0px">
                         Informații Rezervare bilet
                         </h3>
                     </td>
@@ -162,26 +163,24 @@
                 </tr>
                     @if ($rezervare->nr_adulti > 0)
                         <tr>
+                            <td style="width:33%">
+                                <b style="font-size:larger">Pasageri: {{ $rezervare->nr_adulti + $rezervare->nr_copii }}</b>
+                            </td>
+                            <td style="width:33%; text-align: center">
+                                Preț în Euro: <b style="font-size:larger">{{ $rezervare->pret_total }} Euro</b>
+                            </td>
+                            <td style="width:33%; text-align: right">
+                                Preț în Lei: <b style="font-size:larger">{{ $rezervare->valoare_lei + $rezervare->valoare_lei_tva }} lei</b>
+                            </td>
+                        </tr>
+                        <tr>
                             <td colspan="3" style="text-align: center">
-                                <span style="margin-right:0px">
-                                    Pasageri: <b>{{ $rezervare->nr_adulti + $rezervare->nr_copii }}</b>
-                                </span>
-                                    <span>
-                                        Preț în Euro: <b>{{ $rezervare->pret_total }} Euro</b>
-                                        <br/>
-                                        
-                                        Curs valutar BNR la data rezervării biletului de călătorie {{ \Carbon\Carbon::parse($rezervare->created_at)->isoFormat('DD.MM.YYYY') }}: <br>
+                                        Curs valutar BNR la data rezervării biletului de călătorie {{ \Carbon\Carbon::parse($rezervare->created_at)->isoFormat('DD.MM.YYYY') }}: 
                                         1 EURO = {{ $rezervare->curs_bnr_euro }}
-
-                                        <br/>
-
-                                        Preț în Lei: {{ $rezervare->valoare_lei + $rezervare->valoare_lei_tva }} lei
-                                        
-                                    </span>
                                 <br>                          
                                 @if($rezervare->plata_efectuata == 1)
                                     <span>
-                                        <b>Plata a fost deja efectuată online</b>
+                                        <b>Plata a fost efectuată online</b>
                                     </span>
                                 @endif
                                 <br> 
