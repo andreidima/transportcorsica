@@ -221,7 +221,7 @@
                     @endif   
             </table>   
             
-            <br>
+            {{-- <br> --}}
             Păstrați biletul pentru control
             
             
