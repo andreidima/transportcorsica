@@ -1368,15 +1368,15 @@ class RezervareController extends Controller
     {        
         $rezervare = Rezervare::where('cheie_unica', $cheie_unica)->first();
 
-        // if ($request->view_type === 'export-html') {
-        //     return view('chitante.export.chitanta', compact('rezervare'));
-        // } elseif ($request->view_type === 'export-pdf') {
-        //         $pdf = \PDF::loadView('chitante.export.chitanta', compact('rezervare'))
-        //             // ->setPaper([0,0,420,1000]);
-        //             ->setPaper('a5', 'portrait');
-        //         return $pdf->stream();
-        //         // return $pdf->download('Chitanta.pdf');
-        // }
+        if ($request->view_type === 'export-html') {
+            return view('chitante.export.chitanta', compact('rezervare'));
+        } elseif ($request->view_type === 'export-pdf') {
+                $pdf = \PDF::loadView('chitante.export.chitanta', compact('rezervare'))
+                    // ->setPaper([0,0,420,1000]);
+                    ->setPaper('a5', 'portrait');
+                return $pdf->stream();
+                // return $pdf->download('Chitanta.pdf');
+        }
 
         return view('chitante.export.chitanta', compact('rezervare'));
     }
