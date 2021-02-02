@@ -78,43 +78,7 @@
                 Banca: Transilvania <br>
                 Cod IBAN EURO: RO83BTRLEURCRT0319122801 <br>
                 Cod IBAN LEI: RO36BTRLRONCRT0319122801 <br>
-                <b>MRW88 MAXARMONY S.R.L.</b> <br>
-                ORC: J39/570/29.09.2015 | CIF: RO35059906 <br>
-                Sediul: Str. Șoseaua Națională nr. 22, Et:1, Sat Ceardac, Golești, Vrancea <br>
-                Banca: Transilvania <br>
-                Cod IBAN EURO: RO83BTRLEURCRT0319122801 <br>
-                Cod IBAN LEI: RO36BTRLRONCRT0319122801 <br>
-                <b>MRW88 MAXARMONY S.R.L.</b> <br>
-                ORC: J39/570/29.09.2015 | CIF: RO35059906 <br>
-                Sediul: Str. Șoseaua Națională nr. 22, Et:1, Sat Ceardac, Golești, Vrancea <br>
-                Banca: Transilvania <br>
-                Cod IBAN EURO: RO83BTRLEURCRT0319122801 <br>
-                Cod IBAN LEI: RO36BTRLRONCRT0319122801 <br>
-                <b>MRW88 MAXARMONY S.R.L.</b> <br>
-                ORC: J39/570/29.09.2015 | CIF: RO35059906 <br>
-                Sediul: Str. Șoseaua Națională nr. 22, Et:1, Sat Ceardac, Golești, Vrancea <br>
-                Banca: Transilvania <br>
-                Cod IBAN EURO: RO83BTRLEURCRT0319122801 <br>
-                Cod IBAN LEI: RO36BTRLRONCRT0319122801 <br>
                 <div style="page-break-after: always"></div>
-                <b>MRW88 MAXARMONY S.R.L.</b> <br>
-                ORC: J39/570/29.09.2015 | CIF: RO35059906 <br>
-                Sediul: Str. Șoseaua Națională nr. 22, Et:1, Sat Ceardac, Golești, Vrancea <br>
-                Banca: Transilvania <br>
-                Cod IBAN EURO: RO83BTRLEURCRT0319122801 <br>
-                Cod IBAN LEI: RO36BTRLRONCRT0319122801 <br>
-                <b>MRW88 MAXARMONY S.R.L.</b> <br>
-                ORC: J39/570/29.09.2015 | CIF: RO35059906 <br>
-                Sediul: Str. Șoseaua Națională nr. 22, Et:1, Sat Ceardac, Golești, Vrancea <br>
-                Banca: Transilvania <br>
-                Cod IBAN EURO: RO83BTRLEURCRT0319122801 <br>
-                Cod IBAN LEI: RO36BTRLRONCRT0319122801 <br>
-                <b>MRW88 MAXARMONY S.R.L.</b> <br>
-                ORC: J39/570/29.09.2015 | CIF: RO35059906 <br>
-                Sediul: Str. Șoseaua Națională nr. 22, Et:1, Sat Ceardac, Golești, Vrancea <br>
-                Banca: Transilvania <br>
-                Cod IBAN EURO: RO83BTRLEURCRT0319122801 <br>
-                Cod IBAN LEI: RO36BTRLRONCRT0319122801 <br>
                 <b>MRW88 MAXARMONY S.R.L.</b> <br>
                 ORC: J39/570/29.09.2015 | CIF: RO35059906 <br>
                 Sediul: Str. Șoseaua Națională nr. 22, Et:1, Sat Ceardac, Golești, Vrancea <br>
