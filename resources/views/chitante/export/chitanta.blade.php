@@ -72,58 +72,9 @@
                 Banca: Transilvania <br>
                 Cod IBAN EURO: RO83BTRLEURCRT0319122801 <br>
                 Cod IBAN LEI: RO36BTRLRONCRT0319122801 <br>
-                <b>MRW88 MAXARMONY S.R.L.</b> <br>
-                ORC: J39/570/29.09.2015 | CIF: RO35059906 <br>
-                Sediul: Str. Șoseaua Națională nr. 22, Et:1, Sat Ceardac, Golești, Vrancea <br>
-                Banca: Transilvania <br>
-                Cod IBAN EURO: RO83BTRLEURCRT0319122801 <br>
-                Cod IBAN LEI: RO36BTRLRONCRT0319122801 <br>
-                <b>MRW88 MAXARMONY S.R.L.</b> <br>
-                ORC: J39/570/29.09.2015 | CIF: RO35059906 <br>
-                Sediul: Str. Șoseaua Națională nr. 22, Et:1, Sat Ceardac, Golești, Vrancea <br>
-                Banca: Transilvania <br>
-                Cod IBAN EURO: RO83BTRLEURCRT0319122801 <br>
-                Cod IBAN LEI: RO36BTRLRONCRT0319122801 <br>
-                <b>MRW88 MAXARMONY S.R.L.</b> <br>
-                ORC: J39/570/29.09.2015 | CIF: RO35059906 <br>
-                Sediul: Str. Șoseaua Națională nr. 22, Et:1, Sat Ceardac, Golești, Vrancea <br>
-                Banca: Transilvania <br>
-                Cod IBAN EURO: RO83BTRLEURCRT0319122801 <br>
-                Cod IBAN LEI: RO36BTRLRONCRT0319122801 <br>
-                <div style="page-break-after: always"></div>
-                <b>MRW88 MAXARMONY S.R.L.</b> <br>
-                ORC: J39/570/29.09.2015 | CIF: RO35059906 <br>
-                Sediul: Str. Șoseaua Națională nr. 22, Et:1, Sat Ceardac, Golești, Vrancea <br>
-                Banca: Transilvania <br>
-                Cod IBAN EURO: RO83BTRLEURCRT0319122801 <br>
-                Cod IBAN LEI: RO36BTRLRONCRT0319122801 <br>
-                <b>MRW88 MAXARMONY S.R.L.</b> <br>
-                ORC: J39/570/29.09.2015 | CIF: RO35059906 <br>
-                Sediul: Str. Șoseaua Națională nr. 22, Et:1, Sat Ceardac, Golești, Vrancea <br>
-                Banca: Transilvania <br>
-                Cod IBAN EURO: RO83BTRLEURCRT0319122801 <br>
-                Cod IBAN LEI: RO36BTRLRONCRT0319122801 <br>
-                <b>MRW88 MAXARMONY S.R.L.</b> <br>
-                ORC: J39/570/29.09.2015 | CIF: RO35059906 <br>
-                Sediul: Str. Șoseaua Națională nr. 22, Et:1, Sat Ceardac, Golești, Vrancea <br>
-                Banca: Transilvania <br>
-                Cod IBAN EURO: RO83BTRLEURCRT0319122801 <br>
-                Cod IBAN LEI: RO36BTRLRONCRT0319122801 <br>
-                <b>MRW88 MAXARMONY S.R.L.</b> <br>
-                ORC: J39/570/29.09.2015 | CIF: RO35059906 <br>
-                Sediul: Str. Șoseaua Națională nr. 22, Et:1, Sat Ceardac, Golești, Vrancea <br>
-                Banca: Transilvania <br>
-                Cod IBAN EURO: RO83BTRLEURCRT0319122801 <br>
-                Cod IBAN LEI: RO36BTRLRONCRT0319122801 <br>
-                <b>MRW88 MAXARMONY S.R.L.</b> <br>
-                ORC: J39/570/29.09.2015 | CIF: RO35059906 <br>
-                Sediul: Str. Șoseaua Națională nr. 22, Et:1, Sat Ceardac, Golești, Vrancea <br>
-                Banca: Transilvania <br>
-                Cod IBAN EURO: RO83BTRLEURCRT0319122801 <br>
-                Cod IBAN LEI: RO36BTRLRONCRT0319122801 <br>
             </p>
    
-            {{-- <br>
+            <br>
 
             <h2 style="margin:5px">BILET DE CĂLĂTORIE</h2>
             
@@ -271,12 +222,12 @@
             </table>   
             
             <br>
-            Păstrați biletul pentru control --}}
+            Păstrați biletul pentru control
             
-            <a href="print://escpos.org/escpos/bt/print?srcTp=uri
+            {{-- <a href="print://escpos.org/escpos/bt/print?srcTp=uri
    &srcObj=html
    &numCopies=1 //added in version 2.3.2
-   &src='https://rezervari.transportcorsica.ro/chitanta-descarca/tur600825b6d3542/export-pdf'">Print Me !</a>
+   &src='https://rezervari.transportcorsica.ro/chitanta-descarca/tur600825b6d3542/export-pdf'">Print Me !</a> --}}
              
         </div>
     </div>

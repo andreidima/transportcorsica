@@ -1126,16 +1126,20 @@ class RezervareController extends Controller
                     }
                 }
             }
+            // Dupa actualizarea cursului euro, variabila $curs_bnr_euro se transforma intr-o variabila de tip simpleXML, ce va da eroare mai departe in aplicatie, motiv pentru care necesita reinitializare
+            $curs_bnr_euro = \App\Models\Variabila::where('nume', 'curs_bnr_euro')->first();
         } else {
             if (\Carbon\Carbon::parse($curs_bnr_euro->updated_at) < (\Carbon\Carbon::yesterday()->hour(14))){
                 $xml=simplexml_load_file("https://www.bnr.ro/nbrfxrates.xml") or die("Error: Cannot create object");            
                 foreach($xml->Body->Cube->children() as $curs_bnr) {
                     if ((string) $curs_bnr['currency'] === 'EUR'){
-                        $curs_bnr_euro->valoare = $curs_bnr[0];
+                        $curs_bnr_euro->valoare = $curs_bnr;
                         $curs_bnr_euro->save();
                     }
                 }        
             }
+            // Dupa actualizarea cursului euro, variabila $curs_bnr_euro se transforma intr-o variabila de tip simpleXML, ce va da eroare mai departe in aplicatie, motiv pentru care necesita reinitializare
+            $curs_bnr_euro = \App\Models\Variabila::where('nume', 'curs_bnr_euro')->first();
         }
 
         // Salvarea preturilor in lei in tabelul de rezervari, pentru a emite chitante
@@ -1373,7 +1377,7 @@ class RezervareController extends Controller
         } elseif ($request->view_type === 'export-pdf') {
                 $pdf = \PDF::loadView('chitante.export.chitanta', compact('rezervare'))
                     // ->setPaper([0,0,420,1000]);
-                    ->setPaper('a4', 'portrait');
+                    ->setPaper('a5', 'portrait');
                 return $pdf->stream();
                 // return $pdf->download('Chitanta.pdf');
         }
