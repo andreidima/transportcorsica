@@ -873,7 +873,6 @@ class RezervareController extends Controller
      */
     public function postAdaugaRezervarePasul1(Request $request)
     {
-        // dd($request);
         if(empty($request->session()->get('rezervare'))){
             $rezervare = new Rezervare();
             $rezervare->fill($this->validateRequest($request));
@@ -913,9 +912,12 @@ class RezervareController extends Controller
      */
     public function adaugaRezervarePasul2(Request $request)
     {
-        $rezervare = $request->session()->get('rezervare');
-        // dd($rezervare);
-        return view('rezervari.guest-create/adauga-rezervare-pasul-2', compact('rezervare'));
+        if(empty($request->session()->get('rezervare'))){
+            return redirect('/adauga-rezervare-noua');
+        }else{
+            $rezervare = $request->session()->get('rezervare');
+            return view('rezervari.guest-create/adauga-rezervare-pasul-2', compact('rezervare'));
+        }
     }
 
     /**
@@ -1267,7 +1269,7 @@ class RezervareController extends Controller
      */
     public function adaugaRezervarePasul3(Request $request)
     {
-        // Verificare plata online
+        // Verificare plata online, si cautarea rezervarii
         if ($request->has('orderId')) {            
             $plata_online = \App\Models\PlataOnline::where('order_id', $request->orderId)->latest()->first();
             $rezervare_tur = \App\Models\Rezervare::where('id', $plata_online->rezervare_id)->first();
@@ -1282,18 +1284,16 @@ class RezervareController extends Controller
                 $request->session()->put('rezervare_retur', $rezervare_retur);
             }
         } else {
+            // Daca a fost fara plata online, se cauta rezervarea in sesiune
             $rezervare_tur = $request->session()->get('rezervare_tur');
-            if (!$rezervare_tur->retur){
-                $rezervare_retur = null;
-            } else {
-                $rezervare_retur = $request->session()->get('rezervare_retur');
-            }
+            $rezervare_retur = $request->session()->get('rezervare_retur');
         }
 
+        // Daca nu a fost platita online, si nici in sesiune nu se gaseste rezervarea, atunci $rezervare_tur si $rezervare_retur vor fi null
         if(!$rezervare_tur){
-            return redirect('https://transportcorsica.ro');
+            return redirect('adauga-rezervare-noua');
         } else{
-            return view('rezervari.guest-create/adauga-rezervare-pasul-3', compact('rezervare_tur', 'rezervare_retur'));
+            return view('adauga-rezervare-pasul-3', compact('rezervare_tur', 'rezervare_retur'));
         }
     }
 
