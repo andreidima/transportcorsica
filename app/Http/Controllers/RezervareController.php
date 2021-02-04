@@ -1293,7 +1293,7 @@ class RezervareController extends Controller
         if(!$rezervare_tur){
             return redirect('adauga-rezervare-noua');
         } else{
-            return view('adauga-rezervare-pasul-3', compact('rezervare_tur', 'rezervare_retur'));
+            return view('rezervari.guest-create/adauga-rezervare-pasul-3', compact('rezervare_tur', 'rezervare_retur'));
         }
     }
 
