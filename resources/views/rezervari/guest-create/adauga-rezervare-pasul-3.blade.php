@@ -123,7 +123,7 @@
                                                             Telefon: 0761 329 420
                                                         </li>
                                                         <li>
-                                                            Email: <a href="mailto:manolache_viorel@yahoo.com">manolache_viorel@yahoo.com</a>
+                                                            Email: <a href="mailto:office@transportcorsica.ro">office@transportcorsica.ro</a>
                                                         </li>
                                                     </ul>
                                                 </div>
