@@ -225,7 +225,7 @@
             Păstrați biletul pentru control
             <br>
             <a class="btn btn-primary btn-cta" onclick="return checkAndroid();" 
-                href="intent:
+                href="intent://
                         {{-- Hello,%20World!%10%10 --}}
                         https://rezervari.transportcorsica.ro/chitanta-descarca/tur5ff97b920cbb8/export-html
                     #Intent;scheme=rawbt;package=ru.a402d.rawbtprinter;end;">
