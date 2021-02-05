@@ -1363,7 +1363,7 @@ class RezervareController extends Controller
             [RezervareController::class, 'chitantaExportPDFGuest'], 
             [
                 'cheie_unica' => $cheie_unica, 
-                'view_type' => 'export-pdf',
+                'view_type' => 'export-html',
             ]
         );
     } 
