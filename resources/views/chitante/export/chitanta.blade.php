@@ -58,7 +58,7 @@
 <body>
     {{-- <div style="width:730px; height: 1030px; border-style: dashed ; border-width:2px; border-radius: 15px;">      --}}
     <div style="
-        width:550px;
+        width:384px;
         margin:0px 0px;
             -moz-border-radius: 3px;
             -webkit-border-radius: 3px;
@@ -175,7 +175,9 @@
                         </tr>
                         <tr>
                             <td colspan="3" style="text-align: center">
+                                        <br>
                                         Curs valutar BNR la data rezervării biletului de călătorie {{ \Carbon\Carbon::parse($rezervare->created_at)->isoFormat('DD.MM.YYYY') }}: 
+                                        <br>
                                         1 EURO = {{ $rezervare->curs_bnr_euro }}
                                 <br>                          
                                 @if($rezervare->plata_efectuata == 1)
