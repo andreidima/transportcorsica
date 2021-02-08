@@ -13,7 +13,7 @@
         body { 
             font-family: DejaVu Sans, sans-serif;
             /* font-family: Arial, Helvetica, sans-serif; */
-            font-size: 14px;
+            font-size: 10px;
             margin: 0px;
         }
 
