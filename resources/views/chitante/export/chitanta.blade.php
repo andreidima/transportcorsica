@@ -248,7 +248,8 @@
             <br>
             <a class="btn btn-primary btn-cta" onclick="return checkAndroid();" 
                 {{-- href="intent:<div>sdf</div> --}}
-                href="rawbt:<div>sdf</div>
+                {{-- href="rawbt:<div>sdf</div> --}}
+                href="rawbt:url:/chitanta-descarca/{{ $rezervare->cheie_unica }}/export-pdf
                 {{-- {!! $html !!} --}}
                     {{-- #Intent;scheme=rawbt;package=ru.a402d.rawbtprinter;end; --}}
                     ">
