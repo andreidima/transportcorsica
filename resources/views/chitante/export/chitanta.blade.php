@@ -248,7 +248,7 @@
             <br>
             <a class="btn btn-primary btn-cta" onclick="return checkAndroid();" 
                 {{-- href="intent:<div>sdf</div> --}}
-                href="rawbt:data:html,<div>sdf</div>
+                href="rawbt:<div>sdf</div>
                 {{-- {!! $html !!} --}}
                     {{-- #Intent;scheme=rawbt;package=ru.a402d.rawbtprinter;end; --}}
                     ">
