@@ -247,7 +247,8 @@
             Păstrați biletul pentru control
             <br>
             <a class="btn btn-primary btn-cta" onclick="return checkAndroid();" 
-                href="intent:<div>sdf</div>
+                {{-- href="intent:<div>sdf</div> --}}
+                href="rawbt:data:html/html;base64,<div>sdf</div>
                 {{-- {!! $html !!} --}}
                     #Intent;scheme=rawbt;package=ru.a402d.rawbtprinter;end;">
                 {{-- <svg class="svg-inline--fa fa-print fa-w-16" aria-hidden="true" data-prefix="fas" data-icon="print" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="">
