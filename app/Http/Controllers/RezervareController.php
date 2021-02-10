@@ -1359,7 +1359,7 @@ class RezervareController extends Controller
         $rezervare->bilet_numar = $rezervare->bilet_numar ?? ((Rezervare::max('bilet_numar') ?? 0) + 1);
         $rezervare->update();
 
-        return redirect('rawbt:url:https://rezervari.transportcorsica.ro/chitanta-descarca/' . $rezervare->cheie_unica . '/export-html');
+        return redirect()->away('rawbt:url:https://rezervari.transportcorsica.ro/chitanta-descarca/' . $rezervare->cheie_unica . '/export-html');
 
         // return redirect()->action(
         //     [RezervareController::class, 'chitantaExportPDFGuest'], 
