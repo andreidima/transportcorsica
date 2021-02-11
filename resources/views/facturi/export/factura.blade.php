@@ -154,14 +154,17 @@
                                     Bilete de călătorie:
                                     <ul style="margin: 0px">
                                         <li>
-                                            MRW {{ $factura->rezervare->id }} | Dată transport: {{ \Carbon\Carbon::parse($factura->rezervare->data_cursa)->isoFormat('DD.MM.YYYY') }};
+                                            {{ $factura->rezervare->bilet_serie ?? '' }} {{ $factura->rezervare->bilet_numar ?? '' }} | Dată transport: {{ \Carbon\Carbon::parse($factura->rezervare->data_cursa)->isoFormat('DD.MM.YYYY') }};
                                         </li>
                                         <li>
-                                            MRW {{ $factura->rezervare->retur }} | Dată transport: {{ \Carbon\Carbon::parse(App\Models\Rezervare::find($factura->rezervare->retur)->data_cursa)->isoFormat('DD.MM.YYYY') }}. <br>
+                                            @php
+                                                $rezervare_retur = App\Models\Rezervare::find($factura->rezervare->retur);
+                                            @endphp
+                                            {{ $rezervare_retur->bilet_serie ?? '' }} {{ $rezervare_retur->bilet_numar ?? '' }} | Dată transport: {{ \Carbon\Carbon::parse($rezervare_retur->data_cursa)->isoFormat('DD.MM.YYYY') }}. <br>
                                         </li>
                                     </ul>
                                 @else
-                                    Bilet de călătorie: MRW {{ $factura->rezervare->id }} | Dată transport: {{ \Carbon\Carbon::parse($factura->rezervare->data_cursa)->isoFormat('DD.MM.YYYY') }}. <br>                                
+                                    Bilet de călătorie: {{ $factura->rezervare->bilet_serie ?? '' }} {{ $factura->rezervare->bilet_numar ?? '' }} | Dată transport: {{ \Carbon\Carbon::parse($factura->rezervare->data_cursa ?? '')->isoFormat('DD.MM.YYYY') }}. <br>                                
                                 @endisset
                                 <br>
                                 Pasageri:                                

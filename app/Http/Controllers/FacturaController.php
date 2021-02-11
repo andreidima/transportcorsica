@@ -65,6 +65,7 @@ class FacturaController extends Controller
 
     public function exportPDF(Request $request, Factura $factura = null, $view_type = null)
     {        
+        // dd ($factura);
         if ($view_type === 'export-html') {
             return view('facturi.export.factura', compact('factura'));
         } elseif ($view_type === 'export-pdf') {
