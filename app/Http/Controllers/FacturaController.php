@@ -65,7 +65,10 @@ class FacturaController extends Controller
 
     public function exportPDF(Request $request, Factura $factura = null, $view_type = null)
     {        
-        // dd ($factura);
+        if (!$factura->rezervare()->exists()){
+            return back()->with('error', 'Rezervarea acestei facturi a fost stearsa!');
+        }
+
         if ($view_type === 'export-html') {
             return view('facturi.export.factura', compact('factura'));
         } elseif ($view_type === 'export-pdf') {
