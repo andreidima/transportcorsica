@@ -1313,6 +1313,10 @@ class RezervareController extends Controller
 
         $rezervare_tur = $request->session()->get('rezervare_tur');
 
+        if(!$rezervare_tur){
+            return redirect('adauga-rezervare-noua');
+        }
+
         if (!$rezervare_tur->retur){
             $rezervare_retur = null;
         } else {
