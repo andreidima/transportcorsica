@@ -298,6 +298,7 @@ class RaportController extends Controller
                 // $sheet->setCellValue('F1', 'Localitate domiciliu');
                 $sheet->setCellValue('E1', 'Sex');
                 $sheet->setCellValue('F1', 'Cetățenie');
+                $sheet->setCellValue('G1', 'Categorie');
 
                 // dd($rezervari, $rezervari->where('bilet_nava', 1));
                 
@@ -322,6 +323,7 @@ class RaportController extends Controller
                     // $sheet->setCellValue('F' . ($nr_celula), $pasager->localitate_domiciliu);
                     $sheet->setCellValue('E' . ($nr_celula), $pasager->sex);
                     $sheet->setCellValue('F' . ($nr_celula), 'Română');
+                    // $sheet->setCellValue('G' . ($nr_celula), $pasager->categorie);
                     $nr_celula++;
                     }
                 }
@@ -483,6 +485,7 @@ class RaportController extends Controller
                 // $sheet->setCellValue('F1', 'Localitate domiciliu');
                 $sheet->setCellValue('E1', 'Sex');
                 $sheet->setCellValue('F1', 'Cetățenie');
+                $sheet->setCellValue('G1', 'Categorie');
 
                 // dd($rezervari, $rezervari->where('bilet_nava', 1));
                 
@@ -507,6 +510,10 @@ class RaportController extends Controller
                     // $sheet->setCellValue('F' . ($nr_celula), $pasager->localitate_domiciliu);
                     $sheet->setCellValue('E' . ($nr_celula), $pasager->sex);
                     $sheet->setCellValue('F' . ($nr_celula), 'Română');
+                    $sheet->setCellValue('G' . ($nr_celula), $pasager->categorie);
+                        if ($pasager->categorie === "Copil"){
+                            $sheet->getStyle('G' . ($nr_celula))->getFont()->getColor()->setARGB(\PhpOffice\PhpSpreadsheet\Style\Color::COLOR_RED);
+                        }
                     $nr_celula++;
                     }
                 }
