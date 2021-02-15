@@ -52,19 +52,27 @@ Route::get('/trimitere-catre-plata/{rezervare_tur}', [PlataOnlineController::cla
 Route::post('/confirmare-plata', [PlataOnlineController::class, 'confirmarePlata'])->name('confirmare-plata');
 
 Route::middleware(['role:administrator,sofer'])->group(function () {
-    Route::view('/home', 'home');
+    // Route::view('/home', 'home');
+    Route::resource('rezervari', RezervareController::class,  ['parameters' => ['rezervari' => 'rezervare']]);
+    // Route::resource('rezervari', RezervareController::class,  ['parameters' => ['rezervari' => 'rezervare']])->only([
+    //     'index', 'show'
+    // ]);
     Route::post('/rapoarte/extrage-rezervari/{view_type}', [RaportController::class, 'extrageRezervari']);
     Route::any('/rapoarte/{tip_transport}/{view_type}', [RaportController::class, 'rapoarte'])->name('rapoarte');
     Route::any('/rapoarte/{raport}/{tara_plecare}/{data}/{lista}/{tip_lista}/{tip_transport}/extrage-rezervari/{view_type}', [RaportController::class, 'extrageRezervariIphone'])->name('rapoarteIphone');
+
+    Route::get('/bilet-rezervat-user-logat/{view_type}/{rezervare_tur}/{rezervare_retur?}', [RezervareController::class, 'pdfExport']);
 });
 
 Route::middleware(['role:administrator'])->group(function () {
     Route::get('rezervari/test', [RezervareController::class, 'test']);
     Route::get('rezervari/{rezervare}/duplica', [RezervareController::class, 'duplicaRezervare']);
     Route::post('rezervari/{rezervare}/pasageri-neseriosi', [RezervareController::class, 'insereazaPasageriNeseriosi'])->name('insereaza-pasageri-neseriosi');
-    Route::resource('rezervari', RezervareController::class,  ['parameters' => ['rezervari' => 'rezervare']]);
 
-    Route::get('/bilet-rezervat-user-logat/{view_type}/{rezervare_tur}/{rezervare_retur?}', [RezervareController::class, 'pdfExport']);
+    // Route::resource('rezervari', RezervareController::class,  ['parameters' => ['rezervari' => 'rezervare']])->only([
+    //     'create', 'store', 'update', 'destroy'
+    // ]);
+
 
     Route::resource('clienti-neseriosi', ClientNeseriosController::class,  ['parameters' => ['clienti-neseriosi' => 'client_neserios']]);
     

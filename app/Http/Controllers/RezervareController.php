@@ -56,6 +56,13 @@ class RezervareController extends Controller
                 return $query->whereDate('data_cursa', '=', $search_data);
             })
             // ->whereNull('tur')
+            ->where(function ($query) {
+                if ((auth()->user()->role === 'administrator') || (auth()->user()->role === 'superadmin')){
+                    return;
+                } elseif (auth()->user()->role === 'sofer'){
+                    return $query->where('user_id', '=', auth()->user()->id);
+                }
+            })
             ->orderBy('rezervari.created_at', 'desc')
             ->simplePaginate(25);
 
@@ -881,11 +888,11 @@ class RezervareController extends Controller
     {
         if(empty($request->session()->get('rezervare'))){
             $rezervare = new Rezervare();
-            $rezervare->fill($this->validateRequest($request));
         }else{
             $rezervare = $request->session()->get('rezervare');
-            $rezervare->fill($this->validateRequest($request));
         }
+        $rezervare->fill($this->validateRequest($request));
+        $rezervare->user_id = auth()->user()->id ?? null;
 
         // Recalcularea pretului total pentru siguranta
         if (!Auth::check()) {

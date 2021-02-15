@@ -37,7 +37,6 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     
                         <!-- Left Side Of Navbar -->
-                    @if ((auth()->user()->role == 'superadmin') || (auth()->user()->role == 'administrator'))
                         <ul class="navbar-nav mr-auto">
                             <li class="nav-item active mr-4">
                                 <a class="nav-link" href="{{ route('rezervari.index') }}">
@@ -64,6 +63,7 @@
                                     {{-- <a class="dropdown-item" href="#">Raport Retur</a> --}}
                                 </div>
                             </li>
+                    @if ((auth()->user()->role == 'superadmin') || (auth()->user()->role == 'administrator'))
                             <li class="nav-item active mr-4 dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-bars mr-1"></i>Utile
@@ -75,32 +75,8 @@
                                     {{-- <a class="dropdown-item" href="#">Raport Retur</a> --}}
                                 </div>
                             </li>
-
-                        </ul>
-                    @elseif(auth()->user()->role == 'sofer')
-                        <ul class="navbar-nav mr-auto">
-                            <li class="nav-item active mr-4 dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-book mr-1"></i>Rapoarte Călători
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="/rapoarte/calatori/plecare">Rapoarte plecare</a>
-                                    <a class="dropdown-item" href="/rapoarte/calatori/sosire">Rapoarte sosire</a>
-                                    {{-- <a class="dropdown-item" href="#">Raport Retur</a> --}}
-                                </div>
-                            </li>
-                            <li class="nav-item active mr-4 dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-book mr-1"></i>Rapoarte Bagaje
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="/rapoarte/bagaje/plecare">Rapoarte plecare</a>
-                                    <a class="dropdown-item" href="/rapoarte/bagaje/sosire">Rapoarte sosire</a>
-                                    {{-- <a class="dropdown-item" href="#">Raport Retur</a> --}}
-                                </div>
-                            </li>
-                        </ul>                        
                     @endif
+                        </ul>
 
                         <!-- Right Side Of Navbar -->
                         <ul class="navbar-nav ml-auto text-white">
