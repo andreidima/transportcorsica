@@ -105,7 +105,7 @@
                         <b>{{ $rezervare->email }}</b>
                     </td>
                 </tr>
-                @isset ($rezervare->observatii)
+                {{-- @isset ($rezervare->observatii)
                 <tr>
                     <td colspan="3" style="height: 10px">
 
@@ -116,7 +116,7 @@
                         Observații: {{ $rezervare->observatii }}
                     </td>
                 </tr>
-                @endisset
+                @endisset --}}
             </table>
    
             <br>
@@ -223,26 +223,6 @@
                     @endif   
             </table>   
             
-            @php
-                $html = '    <div style="
-        width:360px;
-        margin:0px 0px;
-            -moz-border-radius: 3px;
-            -webkit-border-radius: 3px;
-            border-radius: 3px;
-        text-align:center
-        ">               
-            <p style="text-align:left; margin:0px;">
-                <b>MRW88 MAXARMONY S.R.L.</b> <br>
-                ORC: J39/570/29.09.2015 | CIF: RO35059906 <br>
-                Sediul: Str. Șoseaua Națională nr. 22, Et:1, Sat Ceardac, Golești, Vrancea <br>
-                Banca: Transilvania <br>
-                Cod IBAN EURO: RO83BTRLEURCRT0319122801 <br>
-                Cod IBAN LEI: RO36BTRLRONCRT0319122801 <br>
-            </p>
-            </div>';
-            @endphp
-
             <br>
             Păstrați biletul pentru control
             {{-- <br> --}}

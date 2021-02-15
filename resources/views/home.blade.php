@@ -13,8 +13,12 @@
                             {{ session('status') }}
                         </div>
                     @endif
-
-                    {{ __('You are logged in!') }}
+                    
+                    Bine ai venit <b>{{ auth()->user()->name ?? '' }}</b>!
+                    <br><br><br>
+                        <p class="text-center">
+                            {{ \Illuminate\Foundation\Inspiring::quote() }}
+                        </p>
                 </div>
             </div>
         </div>
