@@ -160,7 +160,6 @@
                                         >
                                             <span class="badge badge-primary">Modifică</span>
                                         </a> 
-                                    @if ((auth()->user()->role == 'superadmin') || (auth()->user()->role == 'administrator'))
                                         <a href="{{ $rezervare->path() }}/duplica"
                                             class="flex mr-1"    
                                         >
@@ -175,8 +174,7 @@
                                                 >
                                                 <span class="badge badge-danger">Neserioși</span>
                                             </a>
-                                        </div> 
-                                    @endif     
+                                        </div>   
                                         <div style="" class="">
                                             <a 
                                                 href="#" 

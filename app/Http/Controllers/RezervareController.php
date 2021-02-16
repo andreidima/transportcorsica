@@ -56,13 +56,13 @@ class RezervareController extends Controller
                 return $query->whereDate('data_cursa', '=', $search_data);
             })
             // ->whereNull('tur')
-            ->where(function ($query) {
-                if ((auth()->user()->role === 'administrator') || (auth()->user()->role === 'superadmin')){
-                    return;
-                } elseif (auth()->user()->role === 'sofer'){
-                    return $query->where('user_id', '=', auth()->user()->id);
-                }
-            })
+            // ->where(function ($query) {
+            //     if ((auth()->user()->role === 'administrator') || (auth()->user()->role === 'superadmin')){
+            //         return;
+            //     } elseif (auth()->user()->role === 'sofer'){
+            //         return $query->where('user_id', '=', auth()->user()->id);
+            //     }
+            // })
             ->orderBy('rezervari.created_at', 'desc')
             ->simplePaginate(25);
 

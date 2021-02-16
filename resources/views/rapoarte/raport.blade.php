@@ -47,7 +47,6 @@
                         </div>
                     </div>
                 </form>
-            @if ((auth()->user()->role == 'superadmin') || (auth()->user()->role == 'administrator'))
                 <form class="needs-validation" novalidate method="POST" action="/rapoarte/{{ $tip_transport }}/muta-rezervari">
                     @csrf
 
@@ -79,7 +78,6 @@
                                 </div>
                     </div>
                 </form>
-            @endif
             </div>
             {{-- <div class="col-lg-3 text-right align-self-center">
                 <a class="btn btn-sm bg-success text-white border border-dark rounded-pill col-md-8" href="{{ route('rezervari.create') }}" role="button">
@@ -278,7 +276,6 @@
                                                 {{ $rezervare->nr_adulti + $rezervare->nr_copii }}
                                             </td>
                                             <td class="text-center">
-                                            @if ((auth()->user()->role == 'superadmin') || (auth()->user()->role == 'administrator'))
                                                 <form  class="needs-validation" novalidate method="POST" action="/rapoarte/{{ $tip_transport }}/muta-rezervare/{{ $rezervare->id}}">
                                                     @csrf
 
@@ -302,10 +299,8 @@
                                                         </div>
                                                     </div>
                                                 </form>
-                                            @endif
                                             </td>
                                             <td class="text-right">
-                                            @if ((auth()->user()->role == 'superadmin') || (auth()->user()->role == 'administrator'))
                                                     <a href="{{ $rezervare->path() }}/modifica"
                                                     >
                                                         <span class="badge badge-primary">Modifică</span>
@@ -326,7 +321,6 @@
                                                         >
                                                         <span class="badge badge-danger">Șterge</span>
                                                     </a>
-                                                @endif
                                             </td>
                                         </tr>                                      
                                         @empty
@@ -558,7 +552,6 @@
                                                 {{ $rezervare->nr_adulti + $rezervare->nr_copii }}
                                             </td>
                                             <td class="text-center px-2">
-                                            @if ((auth()->user()->role == 'superadmin') || (auth()->user()->role == 'administrator'))
                                                 <form  class="needs-validation" novalidate method="POST" action="/rapoarte/{{ $tip_transport }}/muta-rezervare/{{ $rezervare->id}}">
                                                     @csrf
 
@@ -582,10 +575,8 @@
                                                         </div>
                                                     </div>
                                                 </form>
-                                            @endif
                                             </td>
                                             <td class="text-right">
-                                                @if ((auth()->user()->role == 'superadmin') || (auth()->user()->role == 'administrator'))
                                                     <a href="{{ $rezervare->path() }}/modifica"
                                                     >
                                                         <span class="badge badge-primary">Modifică</span>
@@ -606,7 +597,6 @@
                                                         >
                                                         <span class="badge badge-danger">Șterge</span>
                                                     </a>
-                                                @endif
                                             </td>
                                         </tr>                                       
                                         @empty
