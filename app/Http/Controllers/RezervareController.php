@@ -395,7 +395,7 @@ class RezervareController extends Controller
     public function destroy(Rezervare $rezervare)
     {
         $this->authorize('update', $rezervare);
-        
+
         // Daca exista factura emisa, se blocheaza stergerea rezervarii
         if ($rezervare->factura()->exists()){
             return back()->with('error', 'Rezervarea nu poate fi ștearsă pentru că are deja factură emisă!');
@@ -1417,12 +1417,14 @@ class RezervareController extends Controller
         $rezervare_tur = $rezervare;
         $rezervare_retur = Rezervare::find($rezervare_tur->retur);
         
-        // Stergere serie si numar bilet
+        // Stergere serie si numar bilet si plata_efectuata
         $rezervare_tur->bilet_serie = NULL;
         $rezervare_tur->bilet_numar = NULL;
+        $rezervare_tur->plata_efectuata = NULL;
         if (isset($clone_rezervare_retur)) {
             $rezervare_retur->bilet_serie = NULL;
             $rezervare_retur->bilet_numar = NULL;
+            $rezervare_retur->plata_efectuata = NULL;
         }
 
         $clone_rezervare = $rezervare_tur->replicate();
