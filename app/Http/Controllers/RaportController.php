@@ -61,6 +61,13 @@ class RaportController extends Controller
                 'orase_sosire.ordine as oras_sosire_ordine',
             )
             ->whereDate('data_cursa', '=', $search_data)
+            ->where(function ($query) {
+                if ((auth()->user()->role === 'administrator') || (auth()->user()->role === 'superadmin')) {
+                    return;
+                } elseif (auth()->user()->role === 'sofer') {
+                    return $query->whereBetween('data_cursa', [\Carbon\Carbon::now()->startOfWeek(), \Carbon\Carbon::now()->endOfWeek()]);
+                }
+            })
             ->where(function (Builder $query) use ($tip_transport) {
                 $tip_transport === 'calatori' ?  $query->whereNotNull('nr_adulti') : $query->whereNull('nr_adulti');
             })

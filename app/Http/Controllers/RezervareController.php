@@ -56,13 +56,13 @@ class RezervareController extends Controller
                 return $query->whereDate('data_cursa', '=', $search_data);
             })
             // ->whereNull('tur')
-            // ->where(function ($query) {
-            //     if ((auth()->user()->role === 'administrator') || (auth()->user()->role === 'superadmin')){
-            //         return;
-            //     } elseif (auth()->user()->role === 'sofer'){
-            //         return $query->where('user_id', '=', auth()->user()->id);
-            //     }
-            // })
+            ->where(function ($query) {
+                if ((auth()->user()->role === 'administrator') || (auth()->user()->role === 'superadmin')){
+                    return;
+                } elseif (auth()->user()->role === 'sofer'){
+                    return $query->whereBetween('data_cursa', [\Carbon\Carbon::now()->startOfWeek(), \Carbon\Carbon::now()->endOfWeek()]);
+                }
+            })
             ->orderBy('rezervari.created_at', 'desc')
             ->simplePaginate(25);
 
@@ -98,6 +98,8 @@ class RezervareController extends Controller
      */
     public function show(Rezervare $rezervare)
     {
+        $this->authorize('update', $rezervare);
+
         $rezervare_tur = $rezervare;
         $rezervare_retur = Rezervare::find($rezervare->retur);
         return view('rezervari.show', compact('rezervare_tur', 'rezervare_retur'));
@@ -111,6 +113,8 @@ class RezervareController extends Controller
      */
     public function edit(Request $request, Rezervare $rezervare)
     {
+        $this->authorize('update', $rezervare);
+
         // In cazul in care se intra pe modificare retur, se cauta si se deschide turul, pentru a se pastra logica de lucru cu datele de plecare si intoarcere
         $rezervare = (!$rezervare->tur) ? $rezervare : Rezervare::find($rezervare->tur);
 
@@ -192,6 +196,8 @@ class RezervareController extends Controller
      */
     public function update(Request $request, Rezervare $rezervare)
     {
+        $this->authorize('update', $rezervare);
+
         $rezervare_tur = (!$rezervare->tur) ? $rezervare : Rezervare::find($rezervare->tur);
         if (!$rezervare_retur = Rezervare::find($rezervare->retur)){
             if ($request->tur_retur === "true"){
@@ -388,6 +394,8 @@ class RezervareController extends Controller
      */
     public function destroy(Rezervare $rezervare)
     {
+        $this->authorize('update', $rezervare);
+        
         // Daca exista factura emisa, se blocheaza stergerea rezervarii
         if ($rezervare->factura()->exists()){
             return back()->with('error', 'Rezervarea nu poate fi ștearsă pentru că are deja factură emisă!');
