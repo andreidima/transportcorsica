@@ -32,17 +32,19 @@
                 @endif
 
                         <div class="form-row mb-0 d-flex justify-content-center border-radius: 0px 0px 40px 40px">
+
                             <div class="form-group col-lg-12 px-2 mb-0">
                                 
                                 <div class="form-row mb-4 d-flex justify-content-center">
                                         <script type="application/javascript"> 
                                             tipCalatorieVeche={!! json_encode(old('tip_calatorie', ($rezervare->tip_calatorie ?? ''))) !!} 
                                         </script>
+                                @auth
                                     <div class="col-lg-10 pl-3">
                                         Selectează tip cursă:
                                     </div>
                                     <div class="col-lg-10 btn-group btn-group-toggle">
-                                        <label class="btn btn-sm btn-success col-lg-6 border" v-bind:class="[tip_calatorie=='Calatori' ? active : '']">
+                                        <label class="col-lg-6 border" v-bind:class="[tip_calatorie=='Calatori' ? 'btn btn-sm btn-success' : 'btn btn-sm btn-secondary']">
                                             <input type="radio" class="btn-group-toggle" name="tip_calatorie" id="tip_calatorie1" autocomplete="off"
                                                 v-model="tip_calatorie" value="Calatori"
                                                 {{-- v-on:change="setTaraPlecare();getJudetePlecareInitial();getJudeteSosireInitial();setPreturi();" --}}
@@ -54,7 +56,7 @@
                                                         Transport Călători
                                                     </span>
                                         </label>
-                                        <label class="btn btn-sm btn-success col-lg-6 border" v-bind:class="[tip_calatorie=='Bagaje' ? active : '']">
+                                        <label class="col-lg-6 border" v-bind:class="[tip_calatorie=='Bagaje' ? 'btn btn-sm btn-success' : 'btn btn-sm btn-secondary']">
                                             <input type="radio" class="btn-group-toggle" name="tip_calatorie" id="tip_calatorie2" autocomplete="off"
                                                 v-model="tip_calatorie" value="Bagaje"
                                                 {{-- v-on:change="setTaraPlecare();getJudetePlecareInitial();getJudeteSosireInitial();setPreturi();" --}}
@@ -67,6 +69,12 @@
                                                     </span>
                                         </label>
                                     </div>
+                                @else
+                                        <script type="application/javascript"> 
+                                            tipCalatorieVeche={!! json_encode(old('tip_calatorie', ($rezervare->tip_calatorie ?? 'Calatori'))) !!} 
+                                        </script>
+                                    <input type="hidden" name="tip_calatorie" value="Calatori" />
+                                @endauth
                                 </div>
                             <div v-cloak v-if="tip_calatorie">
                                 <div class="form-row mb-1 d-flex justify-content-center">
@@ -77,7 +85,7 @@
                                         Selectează traseu:
                                     </div>
                                     <div class="col-lg-7 mb-4 btn-group btn-group-toggle">
-                                        <label class="btn btn-success btn-sm border" v-bind:class="[traseu=='Romania-Corsica' ? active : '']">
+                                        <label class="border" v-bind:class="[traseu=='Romania-Corsica' ? 'btn btn-sm btn-success' : 'btn btn-sm btn-secondary']">
                                             <input type="radio" class="btn-group-toggle" name="traseu" id="traseu1" autocomplete="off"
                                                 v-model="traseu" value="Romania-Corsica"
                                                 {{-- v-on:change="setTaraPlecare();getOrasePlecare();getOraseSosire();setPreturi()" --}}
@@ -87,7 +95,7 @@
                                                         România -> Corsica
                                                     </span>
                                         </label>
-                                        <label class="btn btn-success btn-sm border" v-bind:class="[traseu=='Corsica-Romania' ? active : '']">
+                                        <label class="border" v-bind:class="[traseu=='Corsica-Romania' ? 'btn btn-sm btn-success' : 'btn btn-sm btn-secondary']">
                                             <input type="radio" class="btn-group-toggle" name="traseu" id="traseu2" autocomplete="off"
                                                 v-model="traseu" value="Corsica-Romania"
                                                 {{-- v-on:change="setTaraPlecare();getOrasePlecare();getOraseSosire();setPreturi();" --}}

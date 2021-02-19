@@ -63,7 +63,8 @@
             margin:0px 0px;
                 -moz-border-radius: 10px;
                 -webkit-border-radius: 10px;
-                border-radius: 10px;">
+                border-radius: 10px;
+                ">
 
                       
             <table style="">

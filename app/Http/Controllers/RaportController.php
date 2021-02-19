@@ -60,6 +60,7 @@ class RaportController extends Controller
                 'orase_sosire.traseu as oras_sosire_traseu',
                 'orase_sosire.ordine as oras_sosire_ordine',
             )
+            ->withCount('factura')
             ->whereDate('data_cursa', '=', $search_data)
             ->where(function ($query) {
                 if ((auth()->user()->role === 'administrator') || (auth()->user()->role === 'superadmin')) {
@@ -373,6 +374,7 @@ class RaportController extends Controller
             join('orase as orase_plecare', 'rezervari.oras_plecare', '=', 'orase_plecare.id')
             ->join('orase as orase_sosire', 'rezervari.oras_sosire', '=', 'orase_sosire.id')
             ->with('pasageri_relation')
+            ->with('pasageri_relation')
             ->select(
                 'rezervari.*', 
                 'orase_plecare.tara as oras_plecare_tara',
@@ -548,6 +550,36 @@ class RaportController extends Controller
                     'Lista Nava' . '.xlsx'
                 ));
 
+                break;
+            case 'chitante':
+                switch ($request->view_type) {
+                    case 'raport-html':
+                        return view('rapoarte.export.chitante-pdf', compact('rezervari', 'clienti_neseriosi', 'tip_lista'));
+                        break;
+                    case 'raport-pdf':
+                        $pdf = \PDF::loadView('rapoarte.export.chitante-pdf', compact('rezervari', 'clienti_neseriosi', 'tip_lista'))
+                            ->setPaper('a4');
+                        // return $pdf->stream('Rezervare ' . $rezervari->nume . '.pdf');
+                        return $pdf->download('Raport bilete pasageri' .
+                            \Carbon\Carbon::parse($rezervari->first()->data_cursa)->isoFormat('DD.MM.YYYY') .
+                            '.pdf');
+                        break;
+                }
+                break;
+            case 'facturi':
+                switch ($request->view_type) {
+                    case 'raport-html':
+                        return view('rapoarte.export.facturi-pdf', compact('rezervari', 'clienti_neseriosi', 'tip_lista'));
+                        break;
+                    case 'raport-pdf':
+                        $pdf = \PDF::loadView('rapoarte.export.facturi-pdf', compact('rezervari', 'clienti_neseriosi', 'tip_lista'))
+                            ->setPaper('a4');
+                        // return $pdf->stream('Rezervare ' . $rezervari->nume . '.pdf');
+                        return $pdf->stream('Raport facturi' .
+                            \Carbon\Carbon::parse($rezervari->first()->data_cursa)->isoFormat('DD.MM.YYYY') .
+                            '.pdf');
+                        break;
+                }
                 break;
 
         }
