@@ -113,6 +113,7 @@ class RezervareController extends Controller
      */
     public function edit(Request $request, Rezervare $rezervare)
     {
+        // dd($rezervare);
         $this->authorize('update', $rezervare);
 
         // In cazul in care se intra pe modificare retur, se cauta si se deschide turul, pentru a se pastra logica de lucru cu datele de plecare si intoarcere
@@ -1416,15 +1417,59 @@ class RezervareController extends Controller
     {
         $rezervare_tur = $rezervare;
         $rezervare_retur = Rezervare::find($rezervare_tur->retur);
-        
-        // Stergere serie si numar bilet si plata_efectuata
+
+        // Cursul EURO se actualizeaza pe site-ul BNR in fiecare zi imediat dupa ora 13:00
+        $curs_bnr_euro = \App\Models\Variabila::where('nume', 'curs_bnr_euro')->first();
+        if (\Carbon\Carbon::now()->hour >= 14) {
+            if (\Carbon\Carbon::parse($curs_bnr_euro->updated_at) < (\Carbon\Carbon::today()->hour(14))) {
+                $xml = simplexml_load_file("https://www.bnr.ro/nbrfxrates.xml") or die("Error: Cannot create object");
+                foreach ($xml->Body->Cube->children() as $curs_bnr) {
+                    if ((string) $curs_bnr['currency'] === 'EUR') {
+                        $curs_bnr_euro->valoare = $curs_bnr[0];
+                        $curs_bnr_euro->save();
+                    }
+                }
+            }
+            // Dupa actualizarea cursului euro, variabila $curs_bnr_euro se transforma intr-o variabila de tip simpleXML, ce va da eroare mai departe in aplicatie, motiv pentru care necesita reinitializare
+            $curs_bnr_euro = \App\Models\Variabila::where('nume', 'curs_bnr_euro')->first();
+        } else {
+            if (\Carbon\Carbon::parse($curs_bnr_euro->updated_at) < (\Carbon\Carbon::yesterday()->hour(14))) {
+                $xml = simplexml_load_file("https://www.bnr.ro/nbrfxrates.xml") or die("Error: Cannot create object");
+                foreach ($xml->Body->Cube->children() as $curs_bnr) {
+                    if ((string) $curs_bnr['currency'] === 'EUR') {
+                        $curs_bnr_euro->valoare = $curs_bnr;
+                        $curs_bnr_euro->save();
+                    }
+                }
+            }
+            // Dupa actualizarea cursului euro, variabila $curs_bnr_euro se transforma intr-o variabila de tip simpleXML, ce va da eroare mai departe in aplicatie, motiv pentru care necesita reinitializare
+            $curs_bnr_euro = \App\Models\Variabila::where('nume', 'curs_bnr_euro')->first();
+        }
+
+        // Stergere din datele care nu trebuie sa se duplice, si actualizarea celor care trebuie sa fie diferite
+        $rezervare_tur->oras_plecare_sofer = NULL;
+        $rezervare_tur->oras_sosire_sofer = NULL;
+        $rezervare_tur->curs_bnr_euro = $curs_bnr_euro->valoare;
+        $rezervare_tur->valoare_lei_tva = ($rezervare_tur->pret_total * $rezervare_tur->curs_bnr_euro) * 0.19;
+        $rezervare_tur->valoare_lei = ($rezervare_tur->pret_total * $rezervare_tur->curs_bnr_euro) - $rezervare_tur->valoare_lei_tva;
         $rezervare_tur->bilet_serie = NULL;
         $rezervare_tur->bilet_numar = NULL;
+        $rezervare_tur->lista_plecare = Oras::find($rezervare_tur->oras_plecare)->traseu ?? null;
+        $rezervare_tur->lista_sosire = Oras::find($rezervare_tur->oras_sosire)->traseu ?? null;
         $rezervare_tur->plata_efectuata = NULL;
-        if (isset($clone_rezervare_retur)) {
+        $rezervare_tur->user_id = auth()->user()->id;
+        if (isset($rezervare_retur)) {
+            $rezervare_retur->oras_plecare_sofer = NULL;
+            $rezervare_retur->oras_sosire_sofer = NULL;
+            $rezervare_retur->curs_bnr_euro = $curs_bnr_euro->valoare;
+            $rezervare_retur->valoare_lei_tva = ($rezervare_retur->pret_total * $rezervare_retur->curs_bnr_euro) * 0.19;
+            $rezervare_retur->valoare_lei = ($rezervare_retur->pret_total * $rezervare_retur->curs_bnr_euro) - $rezervare_retur->valoare_lei_tva;
             $rezervare_retur->bilet_serie = NULL;
             $rezervare_retur->bilet_numar = NULL;
+            $rezervare_retur->lista_plecare = Oras::find($rezervare_retur->oras_plecare)->traseu ?? null;
+            $rezervare_retur->lista_sosire = Oras::find($rezervare_retur->oras_sosire)->traseu ?? null;
             $rezervare_retur->plata_efectuata = NULL;
+            $rezervare_retur->user_id = auth()->user()->id;
         }
 
         $clone_rezervare = $rezervare_tur->replicate();
