@@ -75,7 +75,8 @@
                             <th>Data cursă</th>
                             <th class="text-center">Tur retur</th>
                             {{-- <th>Pret</th> --}}
-                            <th class="text-center">Plătit</th>                         
+                            <th class="text-center">Plătit</th>  
+                            <th class="">Utilizator</th>                        
                             <th class="text-center">Acțiuni</th>
                         </tr>
                     </thead>
@@ -147,6 +148,9 @@
                                     @else
                                         <span class="text-danger">NU</span>
                                     @endif
+                                </td>
+                                <td>
+                                    {{ $rezervare->user->name ?? 'SITE'}}
                                 </td>
                                 <td class="text-right"> 
                                     <div class="d-flex justify-content-end">

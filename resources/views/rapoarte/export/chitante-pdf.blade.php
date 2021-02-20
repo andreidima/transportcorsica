@@ -7,14 +7,14 @@
     <title>Bilet</title>
     <style>
         html { 
-            margin: 0px 0px 0px 0px;
+            margin: 30px 30px 30px 30px;
         }
 
         body { 
             font-family: DejaVu Sans, sans-serif;
             /* font-family: Arial, Helvetica, sans-serif; */
-            font-size: 10px;
-            margin: 0px;
+            font-size: 8px;
+            /* margin: 0px; */
         }
 
         * {
@@ -57,18 +57,21 @@
 
 <body>
     {{-- <div style="width:730px; height: 1030px; border-style: dashed ; border-width:2px; border-radius: 15px;">      --}}
-    <div style="width:690px;">
-        <table>
-            @foreach($rezervari as $rezervare)
-    {{-- <div style="
-        width:360px;
+    <div style="
+        width:730px; 
+        min-height:600px;            
+        padding: 3px 3px 3px 3px;
         margin:0px 0px;
-            -moz-border-radius: 3px;
-            -webkit-border-radius: 3px;
-            border-radius: 3px;
-        text-align:center;
-        float:left
-        ">               
+            -moz-border-radius: 10px;
+            -webkit-border-radius: 10px;
+            border-radius: 10px;">
+        <table style="border:1px black solid;">
+            @foreach($rezervari as $rezervare)
+                @if($loop->index %3 === 0)
+                    </tr>
+                    <tr style="border:1px black solid;">
+                @endif
+                        <td style="width:33%; vertical-align: baseline; padding:5px; border:1px black solid;">
             <p style="text-align:left; margin:0px;">
                 <b>MRW88 MAXARMONY S.R.L.</b> <br>
                 ORC: J39/570/29.09.2015 | CIF: RO35059906 <br>
@@ -78,14 +81,13 @@
                 Cod IBAN LEI: RO36BTRLRONCRT0319122801 <br>
             </p>
    
-            <br>
 
-            <h2 style="margin:5px">BILET DE CĂLĂTORIE</h2>
+            <h2 style="margin:0px; text-align:center">BILET DE CĂLĂTORIE</h2>
             
-            <h2 style="margin:5px">Seria și număr: {{ $rezervare->bilet_serie }} {{ $rezervare->bilet_numar }} </h2>  
-               
-            <br>
-            <br>          
+            <h2 style="margin:0px; text-align:center">Seria și număr: {{ $rezervare->bilet_serie }} {{ $rezervare->bilet_numar }} </h2>  
+            
+            <h2 style="margin:0px; text-align:center">DUPLICAT</h2>
+                   
                             
             <table style="margin-bottom:0px">
                 <tr style="text-align:center; font-weight:bold;">
@@ -111,8 +113,6 @@
                 </tr>
             </table>
    
-            <br>
-
             <table style="margin-bottom:0px">    
                 <tr style="text-align:center; font-weight:bold;">
                     <td colspan="4" style="padding:0rem;">
@@ -142,10 +142,8 @@
                     </td>
                 </tr>
             </table>
-                           
-            <br>
-
-            <table style="margin-bottom:10px">
+                    
+            <table style="margin-bottom:0px">
                 <tr style="text-align:center; font-weight:bold;">
                     <td colspan="3" style="border-width:0px; padding:0rem;">
                         <h3 style="background-color:#ece7cf; color:black; margin:10px 0px 5px 0px; padding:5px 0px">
@@ -169,7 +167,6 @@
                             <td colspan="3" style="text-align: center">
                                         <br>
                                         Curs valutar BNR la data rezervării biletului de călătorie {{ \Carbon\Carbon::parse($rezervare->created_at)->isoFormat('DD.MM.YYYY') }}: 
-                                        <br>
                                         1 EURO = {{ $rezervare->curs_bnr_euro }}
                                 <br>                          
                                 @if($rezervare->plata_efectuata == 1)
@@ -181,25 +178,25 @@
                             </td>
                         </tr>
                         <tr>
-                            <td style="border: solid 3px black">
+                            <td style="border: solid 2px black">
                                 Nume
                             </td>
-                            <td style="border: solid 3px black">
+                            <td style="border: solid 2px black">
                                 Data naștere
                             </td>
-                            <td style="border: solid 3px black">
+                            <td style="border: solid 2px black">
                                 Localitate naștere
                             </td>
                         </tr>
                         @foreach ($rezervare->pasageri_relation as $pasager)
                         <tr>
-                            <td style="border: solid 3px black">
+                            <td style="border: solid 2px black">
                                 {{ $pasager->nume }}
                             </td>
-                            <td style="border: solid 3px black">
+                            <td style="border: solid 2px black">
                                 {{ $pasager->data_nastere }}
                             </td>
-                            <td style="border: solid 3px black">
+                            <td style="border: solid 2px black">
                                 {{ $pasager->localitate_nastere }}
                             </td>
                         </tr> 
@@ -214,27 +211,24 @@
                         </tr>
                     @endif   
             </table>   
-            
-            <br>
-            Păstrați biletul pentru control
+            <p style="text-align:center; margin:0rem">
+                Păstrați biletul pentru control
+            </p>
              
-        </div>
+        {{-- </div>
     </div> --}}
-                @if($loop->odd)
-                    <tr>
-                        <td style="vertical-align: baseline; padding:18px; border:1px black solid;">
-                            @include('chitante.export.chitanta', ['rezervare' => $rezervare])
                         </td>
-                @endif
-                @if($loop->even)
-                        <td style="vertical-align: baseline; padding:18px; border:1px black solid;">
-                            @include('chitante.export.chitanta', ['rezervare' => $rezervare])
-                        </td>
+
+                @if($loop->last)
+                    @if($rezervari->count() == 1)
+                            <td style="width:33%;"></td>
+                            <td style="width:33%;"></td>
+                    @elseif($rezervari->count() == 2)
+                            <td style="width:33%;"></td>
+                    @endif
                     </tr>
                 @endif
-        {{-- <div style="width: 360px; display: inline-block;">
-            @include('chitante.export.chitanta', ['rezervare' => $rezervare])
-        </div> --}}
+
             @endforeach
         </table>
     </div>
