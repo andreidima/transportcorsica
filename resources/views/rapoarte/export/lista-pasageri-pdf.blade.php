@@ -270,10 +270,10 @@
                             {{ $pasager->nume }}
                         </td>
                         <td style="text-align:center">
-                            MRW
+                            {{ $rezervare->bilet_serie }}
                         </td>
                         <td style="text-align:center">
-                            {{ $rezervare->id }}
+                            {{ $rezervare->bilet_numar }}
                         </td>
                     </tr>
                     @endforeach
