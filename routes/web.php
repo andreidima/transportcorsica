@@ -9,6 +9,8 @@ use App\Http\Controllers\MesajTrimisSmsController;
 use App\Http\Controllers\FacturaController;
 use App\Http\Controllers\PlataOnlineController;
 use App\Http\Controllers\VueJSController;
+use App\Http\Controllers\SmsBulkController;
+use App\Http\Controllers\Test;
 
 /*
 |--------------------------------------------------------------------------
@@ -86,4 +88,6 @@ Route::middleware(['role:administrator,sofer'])->group(function () {
 
     Route::get('vuejs/autocomplete', [VueJSController::class, 'autocomplete']);
     Route::get('vuejs/autocomplete/search', [VueJSController::class, 'autocompleteSearch']);
+
+    Route::get('sms-bulk/test', [SmsBulkController::class, 'test']);
 });
