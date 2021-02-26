@@ -418,14 +418,14 @@ class RezervareController extends Controller
                     $rezervare_retur->pasageri_relation()->detach();
                     $rezervare_retur->delete();
                 }
-            } elseif ($rezervare->tur){
-                $rezervare_tur = Rezervare::find($rezervare->tur);
-                if($rezervare_tur){
-                    $rezervare_tur->pasageri_relation()->detach();
-                    $rezervare_tur->delete();
-                }
-            }
-//1gddssdff
+            } 
+            // elseif ($rezervare->tur){
+            //     $rezervare_tur = Rezervare::find($rezervare->tur);
+            //     if($rezervare_tur){
+            //         $rezervare_tur->pasageri_relation()->detach();
+            //         $rezervare_tur->delete();
+            //     }
+            // }
             return back()->with('status', 'Rezervarea a fost ștearsă cu succes!');
         } else {
             return back()->with('error', 'Rezervarea nu poate fi ștearsă pentru că are deja bilet emis!');
