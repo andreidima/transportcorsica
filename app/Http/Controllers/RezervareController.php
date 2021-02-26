@@ -425,7 +425,7 @@ class RezervareController extends Controller
                     $rezervare_tur->delete();
                 }
             }
-//1g
+//1gd
             return back()->with('status', 'Rezervarea a fost ștearsă cu succes!');
         } else {
             return back()->with('error', 'Rezervarea nu poate fi ștearsă pentru că are deja bilet emis!');
