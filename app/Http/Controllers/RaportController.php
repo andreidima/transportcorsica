@@ -581,6 +581,21 @@ class RaportController extends Controller
                         break;
                 }
                 break;
+            case 'trimite_sms':
+                switch ($request->view_type) {
+                    case 'raport-html':
+                        return view('rapoarte.export.facturi-pdf', compact('rezervari', 'clienti_neseriosi', 'tip_lista'));
+                        break;
+                    case 'raport-pdf':
+                        $pdf = \PDF::loadView('rapoarte.export.facturi-pdf', compact('rezervari', 'clienti_neseriosi', 'tip_lista'))
+                            ->setPaper('a4');
+                        // return $pdf->stream('Rezervare ' . $rezervari->nume . '.pdf');
+                        return $pdf->download('Raport facturi' .
+                            \Carbon\Carbon::parse($rezervari->first()->data_cursa)->isoFormat('DD.MM.YYYY') .
+                            '.pdf');
+                        break;
+                }
+                break;
 
         }
 
