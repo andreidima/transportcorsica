@@ -25,6 +25,7 @@
             word-wrap:break-word;
             /* word-break: break-all; */
             /* table-layout: fixed; */
+            page-break-inside:auto;
         }
         
         th, td {
@@ -39,6 +40,7 @@
             /* text-align:; */
             /* border-style: solid;
             border-width:1px; */
+            page-break-after:auto
         }
         hr { 
             display: block;
@@ -56,26 +58,27 @@
 <body> 
     @switch($tip_lista)
         @case ("lista_plecare")
-            <div style="border:dashed #999;
-                width:690px; 
+            <div style="
+                
+                width:680px; 
                 min-height:600px;            
-                padding: 15px 10px 15px 10px;
+                padding: 0px;
                 margin:0px 0px;
                     -moz-border-radius: 10px;
                     -webkit-border-radius: 10px;
                     border-radius: 10px;">
-                <table style="background-color:darkcyan; color:white">
+                <table>
                     <tr style="background-color:darkcyan; color:white">
-                        <td style="border-width:0px; padding:0rem; width:30%">
+                        <td colspan="3" style="border-width:0px; padding:0rem;">
                                 <img src="{{ asset('images/logo.png') }}" width="170px" style="margin-left:5px">
                         </td>
-                        <td style="border-width:0px; padding:0rem; width:40%; font-size:16px; text-align:center">
+                        <td colspan="4" style="border-width:0px; padding:0rem; font-size:16px; text-align:left">
                             <br>
                             Listă plecare
                             {{ $rezervari->first()->oras_plecare_tara }}
                             <br><br>
                         </td>
-                        <td style="border-width:0px; padding:0rem; width:30%; font-size:16px; text-align:right">
+                        <td colspan="2" style="border-width:0px; padding:0rem; font-size:16px; text-align:right">
                             {{-- Traseu {{ $rezervari->first()->oras_plecare_traseu }}
                             <br> --}}
                             <br>
@@ -83,16 +86,7 @@
                             <br><br>
                         </td>
                     </tr>
-                    {{-- <tr>
-                        <td colspan="3">
-                            <br><br><br>
-                        </td>
-                    </tr> --}}
-                </table>
 
-
-
-                <table style="width:690px;">
                     <tr style="background-color:darkcyan; color:white">
                         <th style="width: 20px">Nr crt</th>
                         <th style="">Plecare</th>
