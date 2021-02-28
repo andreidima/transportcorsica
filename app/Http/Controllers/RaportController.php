@@ -460,7 +460,7 @@ class RaportController extends Controller
                         $pdf = \PDF::loadView('rapoarte.export.raport-pdf', compact('rezervari', 'clienti_neseriosi', 'tip_lista'))
                             ->setPaper('a4');
                             // return $pdf->stream('Rezervare ' . $rezervari->nume . '.pdf');
-                            return $pdf->stream('Raport ' . 
+                            return $pdf->download('Raport ' . 
                                 ($tip_lista === "lista_plecare" ? 'lista plecare ' : 'lista sosire ') . 
                                 (isset($rezervari->first()->data_cursa) ? \Carbon\Carbon::parse($rezervari->first()->data_cursa)->isoFormat('DD.MM.YYYY') : '') . 
                                 '.pdf');
