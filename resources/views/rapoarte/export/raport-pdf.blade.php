@@ -7,7 +7,7 @@
     <title>Raport</title>
     <style>
         body { 
-            font-family: DejaVu Sans, sans-serif; 
+            font-family: DejaVu Sans, sans-serif;
             font-size: 12px;
         }
         * {
@@ -71,7 +71,7 @@
                         </td>
                         <td style="border-width:0px; padding:0rem; width:40%; font-size:16px; text-align:center">
                             <br>
-                            Listă plecare
+                            Listă plecare € ??????X Ponuka číslo € černý Češký ----- $
                             {{ $rezervari->first()->oras_plecare_tara }}
                             <br><br>
                         </td>

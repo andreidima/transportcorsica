@@ -16,14 +16,14 @@ class FacturaController extends Controller
     {
         // $search_nume = \Request::get('search_nume');
         // $search_telefon = \Request::get('search_telefon');
-        $facturi = Factura::
+        $facturi = Factura::with('rezervare', 'rezervare.pasageri_relation')
             // when($search_nume, function ($query, $search_nume) {
             //     return $query->where('nume', 'like', '%' . $search_nume . '%');
             // })
             // ->when($search_telefon, function ($query, $search_telefon) {
             //     return $query->where('telefon', 'like', '%' . $search_telefon . '%');
             // })
-            latest()
+            ->latest()
             ->simplePaginate(25);
             
         // return view('facturi.index', compact('facturi', 'search_nume', 'search_telefon'));

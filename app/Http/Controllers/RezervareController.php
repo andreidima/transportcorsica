@@ -34,7 +34,7 @@ class RezervareController extends Controller
         $search_bilet_numar = \Request::get('search_bilet_numar');
         $search_data = \Request::get('search_data');
 
-        $rezervari = Rezervare::with('oras_plecare_nume', 'oras_sosire_nume')
+        $rezervari = Rezervare::with('oras_plecare_nume', 'oras_sosire_nume', 'pasageri_relation', 'user')
             // ->join('pasageri_rezervari as pasageri_rezervari', 'rezervari.id', '=', 'pasageri_rezervari.rezervare_id')
             // ->join('pasageri as pasageri', 'pasageri_rezervari.pasager_id', '=', 'pasageri.id')
             // ->when($search_nume, function ($query, $search_nume) {
