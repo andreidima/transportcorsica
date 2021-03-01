@@ -74,7 +74,12 @@
                         </td>
                         <td colspan="4" style="border-width:0px; padding:0rem; font-size:16px; text-align:left">
                             <br>
-                            Listă plecare € ??????X Ponuka číslo € černý Češký ----- $
+                            Listă plecare 
+                            € ??????X Ponuka číslo € černý Češký ----- $
+                            The euro character:  €  &#0128;  &euro;  &#8364;
+                            <br>
+                            € - euro sign
+                            € € 
                             {{ $rezervari->first()->oras_plecare_tara }}
                             <br><br>
                         </td>
