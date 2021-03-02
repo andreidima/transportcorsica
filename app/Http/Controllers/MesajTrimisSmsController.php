@@ -10,8 +10,9 @@ class MesajTrimisSmsController extends Controller
 {
     public function index()
     {
-        $mesaje_sms = MesajTrimisSms::latest()
-            ->simplePaginate(100);
+        $mesaje_sms = MesajTrimisSms::with('rezervare', 'rezervare.pasageri_relation')
+            ->latest()
+            ->simplePaginate(25);
 
         return view('mesaje-trimise-sms.index', compact('mesaje_sms'));
     }

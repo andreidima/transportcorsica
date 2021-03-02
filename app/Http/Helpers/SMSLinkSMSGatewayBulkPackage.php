@@ -327,7 +327,7 @@ class SMSLinkSMSGatewayBulkPackage
             $this->packageValidation["hashMD5"]["contentCompressed"] = md5($this->packageFile["contentCompressed"]);
             
             // $temporaryFilename = tempnam($this->temporaryDirectory, "sms-package-");
-            $temporaryFilename = tempnam(storage_path('app/fisiere_temporare/'), "sms-package-");
+            $temporaryFilename = tempnam(storage_path('app/fisiere_temporare/sms_bulk/'), "sms-package-");
             
             if ($temporaryFilename != false)
             {

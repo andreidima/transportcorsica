@@ -8,6 +8,7 @@
     <style>
         body { 
             font-family: DejaVu Sans, sans-serif;
+            /* font-family: Verdana, Tahoma, "DejaVu Sans", sans-serif; */
             font-size: 12px;
         }
         * {
@@ -75,11 +76,6 @@
                         <td colspan="4" style="border-width:0px; padding:0rem; font-size:16px; text-align:left">
                             <br>
                             Listă plecare 
-                            € ??????X Ponuka číslo € černý Češký ----- $
-                            The euro character:  €  &#0128;  &euro;  &#8364;
-                            <br>
-                            € - euro sign
-                            € € 
                             {{ $rezervari->first()->oras_plecare_tara }}
                             <br><br>
                         </td>
@@ -157,7 +153,7 @@
                     <tr>
                         <td style="border-top:0rem; border-bottom:0rem"></td>
                         <td colspan="8">
-                            Observații: {{ $rezervare->observatii }}
+                            Observații: {{ str_replace('€', 'E', $rezervare->observatii) }}
                         </td>
                     </tr>
                     @endif

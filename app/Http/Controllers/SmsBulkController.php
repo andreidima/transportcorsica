@@ -9,7 +9,7 @@ use App\Http\Helpers\Test;
 
 class SmsBulkController extends Controller
 {
-    public function trimiteSmsBulk(){
+    public function trimiteSmsBulk($rezervari){
         /**
          *
          *
@@ -61,6 +61,13 @@ class SmsBulkController extends Controller
         {
             foreach ($BulkSMSPackage->remoteMessageIDs as $key => $value)
             {
+            $smsTrimis = new \App\Models\MesajTrimisSms;
+            $smsTrimis->categorie = $categorie;
+            $smsTrimis->subcategorie = $subcategorie;
+            $smsTrimis->referinta_id = $referinta_id;
+            $smsTrimis->telefon = $telefon;
+            $smsTrimis->mesaj = $mesaj;
+            $smsTrimis->content = $content;
                 switch ($value["messageStatus"])
                 {
                     /**

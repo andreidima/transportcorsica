@@ -162,10 +162,17 @@
                             <td style="width:33%; text-align: right">
                                 Preț în Lei: <b style="font-size:larger">{{ $rezervare->valoare_lei + $rezervare->valoare_lei_tva }} lei</b>
                             </td>
-                        </tr>
+                        </tr>                        
+                    @if ($rezervare->pret_total == 0)
                         <tr>
                             <td colspan="3" style="text-align: center">
-                                        <br>
+                                <h3 style="margin:0px">REDUCERE 100%</h3>
+                            </td>
+                        </tr>
+                    @endif
+                        <tr>
+                            <td colspan="3" style="text-align: center">
+                                        {{-- <br> --}}
                                         Curs valutar BNR la data rezervării biletului de călătorie {{ \Carbon\Carbon::parse($rezervare->created_at)->isoFormat('DD.MM.YYYY') }}: 
                                         1 EURO = {{ $rezervare->curs_bnr_euro }}
                                 <br>                          

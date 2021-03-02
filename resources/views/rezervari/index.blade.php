@@ -126,14 +126,14 @@
                                     {{ $rezervare->data_cursa ? \Carbon\Carbon::parse($rezervare->data_cursa)->isoFormat('DD.MM.YYYY') : '' }}
                                 </td>
                                 <td class="text-center">
-                                    {{-- {{ ($rezervare->tur || $rezervare->retur) ? 'DA' : 'NU' }} --}}
-                                    @if ($rezervare->retur)
+                                    {{ $rezervare->retur_relation ? \Carbon\Carbon::parse($rezervare->retur_relation->data_cursa)->isoFormat('DD.MM.YYYY') : 'NU' }}
+                                    {{-- @if ($rezervare->retur)
                                         @if (\App\Models\Rezervare::find($rezervare->retur)->data_cursa ?? false)
                                             {{ \Carbon\Carbon::parse(\App\Models\Rezervare::find($rezervare->retur)->data_cursa)->isoFormat('DD.MM.YYYY') }}
                                         @endif
                                     @else
                                         NU
-                                    @endif                                    
+                                    @endif                                     --}}
                                 </td>
                                 {{-- <td>
                                     {{ $rezervare->pret_total }}

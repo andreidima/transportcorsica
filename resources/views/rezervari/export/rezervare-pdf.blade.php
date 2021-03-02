@@ -113,7 +113,7 @@
                 </tr>
                 <tr>
                     <td colspan="3">                    
-                        Observații: {{ $rezervare_tur->observatii }}
+                        Observații: {{ str_replace('€', 'E', $rezervare_tur->observatii) }}
                     </td>
                 </tr>
                 @endisset

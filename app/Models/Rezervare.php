@@ -61,4 +61,9 @@ class Rezervare extends Model
     {
         return $this->belongsTo('App\Models\User', 'user_id');
     }
+
+    public function retur_relation()
+    {
+        return $this->belongsTo('App\Models\Rezervare', 'retur');
+    }
 }
