@@ -125,12 +125,12 @@
                                                         <i class="fas fa-file-pdf text-white mr-1"></i>Raport Navă 
                                                         {{-- Iphone --}}
                                                     </a>
-                                                @if ((auth()->user()->role === 'administrator') || (auth()->user()->role === 'superadmin'))
+                                                {{-- @if ((auth()->user()->role === 'administrator') || (auth()->user()->role === 'superadmin'))
                                                     <a href="/rapoarte/trimite-sms/{{ $rezervari_pe_tara->first()->oras_plecare_tara }}/{{ \Carbon\Carbon::parse($search_data)->isoFormat('YYYY-MM-DD') }}/toate/lista_plecare/{{ $tip_transport }}/extrage-rezervari/raport-pdf" class="btn btn-sm bg-primary text-dark border border-light rounded-pill">
                                                         <i class="fas fa-sms mr-1"></i>Trimite SMS 
-                                                        {{-- Iphone --}}
+                                                        
                                                     </a>
-                                                @endif
+                                                @endif --}}
                                                 </div>
                                                 {{-- <div class=""> 
                                                     <form class="needs-validation" novalidate method="POST" action="/rapoarte/extrage-rezervari/raport-pdf">
@@ -235,11 +235,11 @@
                                                                 </span>
                                                             {{-- Iphone --}}
                                                         </a> 
-                                                    @if ((auth()->user()->role === 'administrator') || (auth()->user()->role === 'superadmin'))
+                                                    {{-- @if ((auth()->user()->role === 'administrator') || (auth()->user()->role === 'superadmin'))
                                                         <a href="/rapoarte/trimite-sms/{{ $rezervari_pe_tara->first()->oras_plecare_tara }}/{{ \Carbon\Carbon::parse($search_data)->isoFormat('YYYY-MM-DD') }}/{{ $rezervari_pe_trasee->first()->lista_plecare }}/lista_plecare/{{ $tip_transport }}/extrage-rezervari/raport-pdf" class="btn btn-sm bg-primary text-white border border-light rounded-pill">
                                                             <i class="fas fa-sms mr-1"></i>Trimite SMS
                                                         </a> 
-                                                    @endif
+                                                    @endif --}}
                                                         {{-- <button type="submit" name="action" value="excel_nava" class="btn btn-sm bg-success text-white border border-light rounded-pill">
                                                             <i class="fas fa-file-pdf text-white mr-1"></i>Raport Navă
                                                         </button> --}}
@@ -539,12 +539,12 @@
                                                                 </span>
                                                             {{-- Iphone --}}
                                                         </a>
-                                                    @if ((auth()->user()->role === 'administrator') || (auth()->user()->role === 'superadmin'))
+                                                    {{-- @if ((auth()->user()->role === 'administrator') || (auth()->user()->role === 'superadmin'))
                                                         <a href="/rapoarte/trimite-sms/{{ $rezervari_pe_tara->first()->oras_plecare_tara }}/{{ \Carbon\Carbon::parse($search_data)->isoFormat('YYYY-MM-DD') }}/{{ $rezervari_pe_trasee->first()->lista_sosire }}/lista_sosire/{{ $tip_transport }}/extrage-rezervari/raport-pdf" class="btn btn-sm bg-primary text-white border border-light rounded-pill">
                                                             <i class="fas fa-sms mr-1"></i>Trimite SMS
-                                                            {{-- Iphone --}}
+                                                            
                                                         </a> 
-                                                    @endif
+                                                    @endif --}}
                                                 </form>
                                             </div>
                                         </td>
