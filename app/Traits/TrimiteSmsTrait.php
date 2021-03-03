@@ -11,8 +11,8 @@ trait TrimiteSmsTrait {
         // }
         // dd($categorie, $subcategorie, $referinta_id, $telefoane, $mesaj);
         // Setarea trimiterii live sau testarea sms-ului
-        $test = 1; // sms-ul nu se trimite
-        // $test = 0; // sms-ul se trimite  
+        // $test = 1; // sms-ul nu se trimite
+        $test = 0; // sms-ul se trimite  
 
         foreach ($telefoane as $telefon) {
 
