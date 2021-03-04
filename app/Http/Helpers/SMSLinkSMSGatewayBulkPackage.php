@@ -256,7 +256,8 @@ class SMSLinkSMSGatewayBulkPackage
     {
         if (!is_numeric($localMessageId))
             return false;
-                    
+        
+        $receiverNumber = str_replace("+", "00", $receiverNumber);       // Converts + to 00
         $receiverNumber = preg_replace("/[^0-9]/", "", $receiverNumber); // Remove all non-numeric characters
         
         if (!is_numeric($receiverNumber))

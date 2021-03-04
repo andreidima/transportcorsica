@@ -593,255 +593,256 @@ class RaportController extends Controller
                 ]);
                 $mesaj = $request->text_sms;
                 // dd($mesaj, $rezervari->count());
+                // foreach ($rezervari as $rezervare)
+                // {
+                //     $this->trimiteSms('rezervari', null, $rezervare->id, [$rezervare->telefon], $mesaj);
+                // }
+
+                // return back()->with('status', 'SMS-ul a fost trimis către ' . $rezervari->count() . ' rezervări');
+
+
+
+                // Mesaje Bulk
+                /**
+                 *
+                 *
+                 *     Usage Examples for the SMSLinkSMSGatewayBulkPackage() class
+                 *
+                 *
+                 *
+                 */
+
+                /*
+                *
+                *
+                *     Initialize SMS Gateway Bulk Package
+                *
+                *       Get your SMSLink / SMS Gateway Connection ID and Password from
+                *       https://www.smslink.ro/get-api-key/
+                *
+                *
+                *
+                */
+                $BulkSMSPackage = new \App\Http\Helpers\SMSLinkSMSGatewayBulkPackage(config('sms_link.connection_id'), config('sms_link.password'), false);
+
+                /*
+                * 
+                *    Insert Messages to SMS Package
+                *    
+                */
                 foreach ($rezervari as $rezervare)
-                {
-                    $this->trimiteSms('rezervari', null, $rezervare->id, [$rezervare->telefon], $mesaj);
+                {                    
+                    $smsTrimis = new \App\Models\MesajTrimisSms;
+                    $smsTrimis->categorie = 'rezervari';
+                    $smsTrimis->subcategorie = NULL;
+                    $smsTrimis->referinta_id = $rezervare->id;
+                    $smsTrimis->telefon = $rezervare->telefon;
+                    // $smsTrimis->mesaj = $mesaj;
+                    $smsTrimis->mesaj = $mesaj;
+                    $smsTrimis->save();
+
+                    $BulkSMSPackage->insertMessage($smsTrimis->id, $smsTrimis->telefon, "numeric", $smsTrimis->mesaj);
                 }
 
-                return back()->with('status', 'SMS-ul a fost trimis către ' . $rezervari->count() . ' rezervări');
+                /*
+                * 
+                *    Send SMS Package to SMSLink
+                *    
+                */
+                $BulkSMSPackage->sendPackage();
 
+                /*
+                * 
+                *    Process Result
+                *    
+                */
+                echo "Remote Package ID: ".$BulkSMSPackage->remotePackageID."<br />";
 
+                // $statusCounters = array();
 
-            //     // Mesaje Bulk
-            //     /**
-            //      *
-            //      *
-            //      *     Usage Examples for the SMSLinkSMSGatewayBulkPackage() class
-            //      *
-            //      *
-            //      *
-            //      */
-
-            //     /*
-            //     *
-            //     *
-            //     *     Initialize SMS Gateway Bulk Package
-            //     *
-            //     *       Get your SMSLink / SMS Gateway Connection ID and Password from
-            //     *       https://www.smslink.ro/get-api-key/
-            //     *
-            //     *
-            //     *
-            //     */
-            //     $BulkSMSPackage = new \App\Http\Helpers\SMSLinkSMSGatewayBulkPackage(config('sms_link.connection_id'), config('sms_link.password'), true);
-
-            //     /*
-            //     * 
-            //     *    Insert Messages to SMS Package
-            //     *    
-            //     */
-            //     foreach ($rezervari as $rezervare)
-            //     {                    
-            //         $smsTrimis = new \App\Models\MesajTrimisSms;
-            //         $smsTrimis->categorie = 'rezervari';
-            //         $smsTrimis->subcategorie = NULL;
-            //         $smsTrimis->referinta_id = $rezervare->id;
-            //         $smsTrimis->telefon = $rezervare->telefon;
-            //         // $smsTrimis->mesaj = $mesaj;
-            //         $smsTrimis->mesaj = 'Salut';
-            //         $smsTrimis->save();
-
-            //         $BulkSMSPackage->insertMessage($smsTrimis->id, $smsTrimis->telefon, "numeric", $smsTrimis->mesaj);
-            //     }
-
-            //     /*
-            //     * 
-            //     *    Send SMS Package to SMSLink
-            //     *    
-            //     */
-            //     $BulkSMSPackage->sendPackage();
-
-            //     /*
-            //     * 
-            //     *    Process Result
-            //     *    
-            //     */
-            //     echo "Remote Package ID: ".$BulkSMSPackage->remotePackageID."<br />";
-
-            //     // $statusCounters = array();
-
-            //     if (sizeof($BulkSMSPackage->remoteMessageIDs) > 0)
-            //     {
-            //         foreach ($BulkSMSPackage->remoteMessageIDs as $key => $value)
-            //         {
-            //             switch ($value["messageStatus"])
-            //             {
-            //                 /**
-            //                  * 
-            //                  * 
-            //                  *     Message Status:     1 
-            //                  *     Status Description: Sender Failed
-            //                  *     
-            //                  *     
-            //                  */            
-            //                 case 1:
-            //                     $timestamp_send = -1;
+                if (sizeof($BulkSMSPackage->remoteMessageIDs) > 0)
+                {
+                    foreach ($BulkSMSPackage->remoteMessageIDs as $key => $value)
+                    {
+                        switch ($value["messageStatus"])
+                        {
+                            /**
+                             * 
+                             * 
+                             *     Message Status:     1 
+                             *     Status Description: Sender Failed
+                             *     
+                             *     
+                             */            
+                            case 1:
+                                $timestamp_send = -1;
                                 
-            //                     /* 
+                                /* 
                                 
-            //                         .. do something .. 
-            //                         for example check the sender because is incorrect
+                                    .. do something .. 
+                                    for example check the sender because is incorrect
                                     
-            //                     */
+                                */
                                 
-            //                     echo "Error for Local Message ID: ".$value["localMessageId"]." (Sender Failed).<br />";
+                                echo "Error for Local Message ID: ".$value["localMessageId"]." (Sender Failed).<br />";
                                 
-            //                     // $statusCounters["failedSenderCounter"]++;
+                                // $statusCounters["failedSenderCounter"]++;
 
-            //                     // return back()->with('status', "Error for Local Message ID: ".$value["localMessageId"]." (Sender Failed).<br />");
+                                // return back()->with('status', "Error for Local Message ID: ".$value["localMessageId"]." (Sender Failed).<br />");
 
-            //                     $smsTrimis = \App\Models\MesajTrimisSms::find($value["localMessageId"]);
-            //                     $smsTrimis->trimis = 0;
-            //                     $smsTrimis->mesaj_id = $value["remoteMessageId"];
-            //                     $smsTrimis->raspuns = "Eroare! (Sender Failed)";
-            //                     $smsTrimis->save();
+                                $smsTrimis = \App\Models\MesajTrimisSms::find($value["localMessageId"]);
+                                $smsTrimis->trimis = 0;
+                                $smsTrimis->mesaj_id = $value["remoteMessageId"];
+                                $smsTrimis->raspuns = "Eroare! (Sender Failed)";
+                                $smsTrimis->save();
                                 
-            //                     break;
-            //                 /**
-            //                  * 
-            //                  * 
-            //                  *     Message Status:     2 
-            //                  *     Status Description: Number Failed
-            //                  *     
-            //                  *     
-            //                  */                                   
-            //                 case 2:
-            //                     $timestamp_send = -2;
+                                break;
+                            /**
+                             * 
+                             * 
+                             *     Message Status:     2 
+                             *     Status Description: Number Failed
+                             *     
+                             *     
+                             */                                   
+                            case 2:
+                                $timestamp_send = -2;
                                 
-            //                     /* 
+                                /* 
                                 
-            //                         .. do something .. 
-            //                         for example check the number because is incorrect    
+                                    .. do something .. 
+                                    for example check the number because is incorrect    
                                     
-            //                     */
+                                */
                                 
-            //                     echo "Error for Local Message ID: ".$value["localMessageId"]." (Incorrect Number).<br />";
+                                echo "Error for Local Message ID: ".$value["localMessageId"]." (Incorrect Number).<br />";
                                 
-            //                     // $statusCounters["failedNumberCounter"]++;
+                                // $statusCounters["failedNumberCounter"]++;
 
-            //                     // return back()->with('status', "Error for Local Message ID: ".$value["localMessageId"]." (Incorrect Number).<br />");
+                                // return back()->with('status', "Error for Local Message ID: ".$value["localMessageId"]." (Incorrect Number).<br />");
                                 
-            //                     $smsTrimis = \App\Models\MesajTrimisSms::find($value["localMessageId"]);
-            //                     $smsTrimis->trimis = 0;
-            //                     $smsTrimis->mesaj_id = $value["remoteMessageId"];
-            //                     $smsTrimis->raspuns = "Eroare! (Incorrect Number)";
-            //                     $smsTrimis->save();
+                                $smsTrimis = \App\Models\MesajTrimisSms::find($value["localMessageId"]);
+                                $smsTrimis->trimis = 0;
+                                $smsTrimis->mesaj_id = $value["remoteMessageId"];
+                                $smsTrimis->raspuns = "Eroare! (Incorrect Number)";
+                                $smsTrimis->save();
 
-            //                     break;
-            //                 /**
-            //                  * 
-            //                  * 
-            //                  *     Message Status:     3
-            //                  *     Status Description: Success
-            //                  *     
-            //                  *     
-            //                  */            
-            //                 case 3:
-            //                     $timestamp_send = date("U");
-            //                     /* 
+                                break;
+                            /**
+                             * 
+                             * 
+                             *     Message Status:     3
+                             *     Status Description: Success
+                             *     
+                             *     
+                             */            
+                            case 3:
+                                $timestamp_send = date("U");
+                                /* 
                                 
-            //                         .. do something .. 
+                                    .. do something .. 
 
-            //                         Save in database the Remote Message ID, sent in variabile: $value["RemoteMessageID"].
-            //                         Delivery  reports will  identify  your SMS  using our Message ID. Data type  for the 
-            //                         variabile should be considered to be hundred milions (example: 220000000)                    
+                                    Save in database the Remote Message ID, sent in variabile: $value["RemoteMessageID"].
+                                    Delivery  reports will  identify  your SMS  using our Message ID. Data type  for the 
+                                    variabile should be considered to be hundred milions (example: 220000000)                    
                                     
-            //                     */
+                                */
                                 
-            //                     echo "Succes for Local Message ID: ".
-            //                         $value["localMessageId"].
-            //                         ", Remote Message ID: ".
-            //                         $value["remoteMessageId"].
-            //                         "<br />";
+                                echo "Succes for Local Message ID: ".
+                                    $value["localMessageId"].
+                                    ", Remote Message ID: ".
+                                    $value["remoteMessageId"].
+                                    "<br />";
                                 
-            //                     // $statusCounters["successCounter"]++;
+                                // $statusCounters["successCounter"]++;
                                                                 
-            //                     $smsTrimis = \App\Models\MesajTrimisSms::find($value["localMessageId"]);
-            //                     $smsTrimis->trimis = 1;
-            //                     $smsTrimis->mesaj_id = $value["remoteMessageId"];
-            //                     $smsTrimis->raspuns = "Succes!";
-            //                     $smsTrimis->save();
+                                $smsTrimis = \App\Models\MesajTrimisSms::find($value["localMessageId"]);
+                                $smsTrimis->trimis = 1;
+                                $smsTrimis->mesaj_id = $value["remoteMessageId"];
+                                $smsTrimis->raspuns = "Succes!";
+                                $smsTrimis->save();
                                 
-            //                     break;
-            //                 /**
-            //                  * 
-            //                  * 
-            //                  *     Message Status:     4 
-            //                  *     Status Description: Internal Error or Number Blacklisted
-            //                  *     
-            //                  *     
-            //                  */                            
-            //                 case 4:
-            //                     $timestamp_send = -4;
+                                break;
+                            /**
+                             * 
+                             * 
+                             *     Message Status:     4 
+                             *     Status Description: Internal Error or Number Blacklisted
+                             *     
+                             *     
+                             */                            
+                            case 4:
+                                $timestamp_send = -4;
                                 
-            //                     /* 
+                                /* 
                                 
-            //                         .. do something .. 
-            //                         for example try again later
+                                    .. do something .. 
+                                    for example try again later
 
-            //                         Internal Error may occur in the following circumstances:
+                                    Internal Error may occur in the following circumstances:
 
-            //                         (1) Number is Blacklisted (please check the Blacklist associated to your account), or
-            //                         (2) An error occured at SMSLink (our technical support team is automatically notified)
+                                    (1) Number is Blacklisted (please check the Blacklist associated to your account), or
+                                    (2) An error occured at SMSLink (our technical support team is automatically notified)
                                     
-            //                     */
+                                */
                                 
-            //                     echo "Error for Local Message ID: ".$value["localMessageId"]." (Internal Error or Number Blacklisted).<br />";
+                                echo "Error for Local Message ID: ".$value["localMessageId"]." (Internal Error or Number Blacklisted).<br />";
                                 
-            //                     // $statusCounters["failedInternalCounter"]++;
+                                // $statusCounters["failedInternalCounter"]++;
                                                                 
-            //                     $smsTrimis = \App\Models\MesajTrimisSms::find($value["localMessageId"]);
-            //                     $smsTrimis->trimis = 0;
-            //                     $smsTrimis->mesaj_id = $value["remoteMessageId"];
-            //                     $smsTrimis->raspuns = "Eroare! (Internal Error or Number Blacklisted)";
-            //                     $smsTrimis->save();
+                                $smsTrimis = \App\Models\MesajTrimisSms::find($value["localMessageId"]);
+                                $smsTrimis->trimis = 0;
+                                $smsTrimis->mesaj_id = $value["remoteMessageId"];
+                                $smsTrimis->raspuns = "Eroare! (Internal Error or Number Blacklisted)";
+                                $smsTrimis->save();
                                 
-            //                     break;
-            //                 /**
-            //                  * 
-            //                  * 
-            //                  *     Message Status:     5 
-            //                  *     Status Description: Insufficient Credit
-            //                  *     
-            //                  *     
-            //                  */            
-            //                 case 5:
-            //                     $timestamp_send = -5;
+                                break;
+                            /**
+                             * 
+                             * 
+                             *     Message Status:     5 
+                             *     Status Description: Insufficient Credit
+                             *     
+                             *     
+                             */            
+                            case 5:
+                                $timestamp_send = -5;
                                 
-            //                     /* 
+                                /* 
                                 
-            //                         .. do something .. 
-            //                         for example top-up the account
+                                    .. do something .. 
+                                    for example top-up the account
                                     
-            //                     */
+                                */
                             
-            //                     echo "Error for Local Message ID: ".$value["localMessageId"]." (Insufficient Credit).<br />";
+                                echo "Error for Local Message ID: ".$value["localMessageId"]." (Insufficient Credit).<br />";
                                                                 
-            //                     $smsTrimis = \App\Models\MesajTrimisSms::find($value["localMessageId"]);
-            //                     $smsTrimis->trimis = 0;
-            //                     $smsTrimis->mesaj_id = $value["remoteMessageId"];
-            //                     $smsTrimis->raspuns = "Eroare! (Insufficient Credit)";
-            //                     $smsTrimis->save();
+                                $smsTrimis = \App\Models\MesajTrimisSms::find($value["localMessageId"]);
+                                $smsTrimis->trimis = 0;
+                                $smsTrimis->mesaj_id = $value["remoteMessageId"];
+                                $smsTrimis->raspuns = "Eroare! (Insufficient Credit)";
+                                $smsTrimis->save();
                             
-            //                     // $statusCounters["failedInsufficientCredit"]++;
+                                // $statusCounters["failedInsufficientCredit"]++;
                             
-            //                     break;
-            //             }
+                                break;
+                        }
                         
-            //             // $statusCounters["totalCounter"]++;
+                        // $statusCounters["totalCounter"]++;
                         
-            //         }
+                    }
                         
-            //     }
-            //     else
-            //     {
-            //         echo "Error Transmitting Package to SMSLink: ".$BulkSMSPackage->errorMessage."<br />";
-            //         return back()->with('eroare', 'Sms-urile catre cele ' . $rezervari->count() . ' rezervări au fost trimise cu success!');
-            //     }
-            //     // $rezervari = '123';
-            //     // dd($rezervari);
-            //     // return redirect()->action([\App\Http\Controllers\SmsBulkController::class, 'trimiteSmsBulk'], ['rezervari' => $rezervari]);
-            //     return back()->with('status', 'Sms-urile catre cele ' . $rezervari->count() . ' rezervări au fost trimise cu success!');
+                }
+                else
+                {
+                    echo "Error Transmitting Package to SMSLink: ".$BulkSMSPackage->errorMessage."<br />";
+                    return back()->with('eroare', 'Error Transmitting Package to SMSLink: ' . $BulkSMSPackage->errorMessage);
+                }
+                // $rezervari = '123';
+                // dd($rezervari);
+                // return redirect()->action([\App\Http\Controllers\SmsBulkController::class, 'trimiteSmsBulk'], ['rezervari' => $rezervari]);
+                return back()->with('status', 'Sms-urile catre cele ' . $rezervari->count() . ' rezervări au fost trimise cu success!');
+            
                 break;
 
             // // return redirect()
