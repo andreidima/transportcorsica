@@ -446,3 +446,19 @@ if (document.querySelector('#adauga-rezervare')) {
         }
     });
 }
+
+if (document.querySelector('#text-sms')) {
+    const app = new Vue({
+        el: '#text-sms',
+        data: {
+            text_sms: '',
+            nr_caractere: 0
+        },
+        computed: {
+            caractere() {
+                var char = this.text_sms.length;
+                return char;
+            }
+        }
+    });
+}

@@ -95256,6 +95256,22 @@ if (document.querySelector('#adauga-rezervare')) {
   });
 }
 
+if (document.querySelector('#text-sms')) {
+  var app = new Vue({
+    el: '#text-sms',
+    data: {
+      text_sms: '',
+      nr_caractere: 0
+    },
+    computed: {
+      caractere: function caractere() {
+        var _char = this.text_sms.length;
+        return _char;
+      }
+    }
+  });
+}
+
 /***/ }),
 
 /***/ "./resources/js/bootstrap.js":

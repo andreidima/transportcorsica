@@ -125,12 +125,25 @@
                                                         <i class="fas fa-file-pdf text-white mr-1"></i>Raport Navă 
                                                         {{-- Iphone --}}
                                                     </a>
-                                                {{-- @if ((auth()->user()->role === 'administrator') || (auth()->user()->role === 'superadmin'))
-                                                    <a href="/rapoarte/trimite-sms/{{ $rezervari_pe_tara->first()->oras_plecare_tara }}/{{ \Carbon\Carbon::parse($search_data)->isoFormat('YYYY-MM-DD') }}/toate/lista_plecare/{{ $tip_transport }}/extrage-rezervari/raport-pdf" class="btn btn-sm bg-primary text-dark border border-light rounded-pill">
+                                                @if ((auth()->user()->role === 'administrator') || (auth()->user()->role === 'superadmin'))
+                                                    @php
+                                                        $lista = "toate";
+                                                        $tip_lista = "toate";
+                                                    @endphp
+                                                    <a 
+                                                        class="btn btn-sm bg-warning border border-light rounded-pill" style="color: black !important"
+                                                        href="#" 
+                                                        data-toggle="modal" 
+                                                        data-target="#trimite-sms-toate"
+                                                        title="Trimite SMS"
+                                                        >
+                                                        <i class="fas fa-sms mr-1"></i>Trimite SMS
+                                                    </a>
+                                                    {{-- <a href="/rapoarte/trimite-sms/{{ $rezervari_pe_tara->first()->oras_plecare_tara }}/{{ \Carbon\Carbon::parse($search_data)->isoFormat('YYYY-MM-DD') }}/toate/lista_plecare/{{ $tip_transport }}/extrage-rezervari/raport-pdf" class="btn btn-sm bg-warning border border-light rounded-pill" style="color: black !important">
                                                         <i class="fas fa-sms mr-1"></i>Trimite SMS 
                                                         
-                                                    </a>
-                                                @endif --}}
+                                                    </a> --}}
+                                                @endif
                                                 </div>
                                                 {{-- <div class=""> 
                                                     <form class="needs-validation" novalidate method="POST" action="/rapoarte/extrage-rezervari/raport-pdf">
@@ -235,11 +248,21 @@
                                                                 </span>
                                                             {{-- Iphone --}}
                                                         </a> 
-                                                    {{-- @if ((auth()->user()->role === 'administrator') || (auth()->user()->role === 'superadmin'))
-                                                        <a href="/rapoarte/trimite-sms/{{ $rezervari_pe_tara->first()->oras_plecare_tara }}/{{ \Carbon\Carbon::parse($search_data)->isoFormat('YYYY-MM-DD') }}/{{ $rezervari_pe_trasee->first()->lista_plecare }}/lista_plecare/{{ $tip_transport }}/extrage-rezervari/raport-pdf" class="btn btn-sm bg-primary text-white border border-light rounded-pill">
+                                                    @if ((auth()->user()->role === 'administrator') || (auth()->user()->role === 'superadmin'))
+                                                        <a 
+                                                            class="btn btn-sm bg-warning border border-light rounded-pill" style="color: black !important"
+                                                            href="#" 
+                                                            data-toggle="modal" 
+                                                            data-target="#trimite-sms-{{ $rezervari_pe_trasee->first()->lista_plecare }}-lista_plecare"
+                                                            {{-- data-target="#trimite-sms" --}}
+                                                            title="Trimite SMS"
+                                                            >
                                                             <i class="fas fa-sms mr-1"></i>Trimite SMS
-                                                        </a> 
-                                                    @endif --}}
+                                                        </a>
+                                                        {{-- <a href="/rapoarte/trimite-sms/{{ $rezervari_pe_tara->first()->oras_plecare_tara }}/{{ \Carbon\Carbon::parse($search_data)->isoFormat('YYYY-MM-DD') }}/{{ $rezervari_pe_trasee->first()->lista_plecare }}/lista_plecare/{{ $tip_transport }}/extrage-rezervari/raport-pdf"  class="btn btn-sm bg-warning border border-light rounded-pill" style="color: black !important">
+                                                            <i class="fas fa-sms mr-1"></i>Trimite SMS
+                                                        </a>  --}}
+                                                    @endif
                                                         {{-- <button type="submit" name="action" value="excel_nava" class="btn btn-sm bg-success text-white border border-light rounded-pill">
                                                             <i class="fas fa-file-pdf text-white mr-1"></i>Raport Navă
                                                         </button> --}}
@@ -539,12 +562,21 @@
                                                                 </span>
                                                             {{-- Iphone --}}
                                                         </a>
-                                                    {{-- @if ((auth()->user()->role === 'administrator') || (auth()->user()->role === 'superadmin'))
-                                                        <a href="/rapoarte/trimite-sms/{{ $rezervari_pe_tara->first()->oras_plecare_tara }}/{{ \Carbon\Carbon::parse($search_data)->isoFormat('YYYY-MM-DD') }}/{{ $rezervari_pe_trasee->first()->lista_sosire }}/lista_sosire/{{ $tip_transport }}/extrage-rezervari/raport-pdf" class="btn btn-sm bg-primary text-white border border-light rounded-pill">
+                                                    @if ((auth()->user()->role === 'administrator') || (auth()->user()->role === 'superadmin'))
+                                                        <a 
+                                                            class="btn btn-sm bg-warning border border-light rounded-pill" style="color: black !important"
+                                                            href="#" 
+                                                            data-toggle="modal" 
+                                                            data-target="#trimite-sms-{{ $rezervari_pe_trasee->first()->lista_sosire }}-lista_sosire"
+                                                            {{-- data-target="#trimite-sms" --}}
+                                                            title="Trimite SMS"
+                                                            >
                                                             <i class="fas fa-sms mr-1"></i>Trimite SMS
-                                                            
-                                                        </a> 
-                                                    @endif --}}
+                                                        </a>
+                                                        {{-- <a href="/rapoarte/trimite-sms/{{ $rezervari_pe_tara->first()->oras_plecare_tara }}/{{ \Carbon\Carbon::parse($search_data)->isoFormat('YYYY-MM-DD') }}/{{ $rezervari_pe_trasee->first()->lista_sosire }}/lista_sosire/{{ $tip_transport }}/extrage-rezervari/raport-pdf"  class="btn btn-sm bg-warning border border-light rounded-pill" style="color: black !important">
+                                                            <i class="fas fa-sms mr-1"></i>Trimite SMS                                                            
+                                                        </a>  --}}
+                                                    @endif
                                                 </form>
                                             </div>
                                         </td>
@@ -729,117 +761,292 @@
 
 
     {{-- Modalele --}}
-                        @forelse ($rezervari as $rezervare) 
-                                                {{-- Modal pentru butonul de neseriosi --}}
-                                                <div class="modal fade text-dark" id="neseriosiRezervare{{ $rezervare->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog" role="document">
-                                                        <div class="modal-content">
-                                                        <div class="modal-header bg-danger">
-                                                            <h5 class="modal-title text-white" id="exampleModalLabel">
-                                                                Rezervare: 
-                                                                <b>
-                                                                    @isset($rezervare->nr_adulti)
-                                                                        @foreach ($rezervare->pasageri_relation as $pasager)
-                                                                            @if(!$loop->last)
-                                                                                {{ $pasager->nume }},
-                                                                            @else
-                                                                                {{ $pasager->nume }}
-                                                                            @endif
-                                                                        @endforeach
-                                                                    @else
-                                                                        Rezervare bagaj
-                                                                    @endif
-                                                                </b>
-                                                            </h5>
-                                                            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
 
-                                                    <form method="POST" action="{{ route('insereaza-pasageri-neseriosi', ['rezervare' => $rezervare->id]) }}">
-                                                        {{-- @method('DELETE')   --}}
-                                                        @csrf  
+        {{-- Modale pentru SMS --}}
 
-                                                        <div class="modal-body" style="text-align:left;">
-                                                            <p>
-                                                                Ești sigur ca vrei să adaugi pasagerii în lista de Clienți neserioși?
-                                                            </p>
-                                                        
-                                                            <div class="form-row">                              
-                                                                <div class="form-group col-lg-12">  
-                                                                    <label for="observatii" class="mb-0 pl-3">Observații:</label>  
-                                                                    <textarea class="form-control {{ $errors->has('observatii') ? 'is-invalid' : '' }}" 
-                                                                        name="observatii"
-                                                                        rows="2"
-                                                                    >{{ old('observatii') }}</textarea>
-                                                                </div>  
-                                                            </div> 
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Renunță</button>                                                              
-                                                                <button 
-                                                                    type="submit" 
-                                                                    class="btn btn-danger"  
-                                                                    >
-                                                                    Adaugă
-                                                                </button>  
-                                                        </div>                  
-                                                    </form>                                                        
-                                                        </div>
-                                                    </div>
-                                                </div>
+        <div id="text-sms">
+        {{-- Rapoarte plecare --}}
+        @foreach ($rezervari->groupBy('oras_plecare_tara') as $rezervari_pe_tara)
+        {{-- Modal pentru butonul de trimitere sms la toate cursele de pe o zi --}}
+            <div class="modal fade text-dark"  
+                id="trimite-sms-toate" 
+                tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                    <div class="modal-header bg-warning">
+                        <h5 class="modal-title" id="exampleModalLabel">
+                            Trimite SMS către <b> {{ $rezervari_pe_tara->count() }}</b> rezervări
+                        </h5>
+                        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
 
-                            
-                                                {{-- Modal pentru butonul de stergere --}}
-                                                <div class="modal fade text-dark" id="stergeRezervare{{ $rezervare->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" 
-                                                    {{-- data-backdrop="false" --}}
-                                                >
-                                                    <div class="modal-dialog" role="document">
-                                                        <div class="modal-content">
-                                                        <div class="modal-header bg-danger">
-                                                            <h5 class="modal-title text-white" id="exampleModalLabel">
-                                                                Rezervare: 
-                                                                <b>
-                                                                    @isset($rezervare->nr_adulti)
-                                                                        @foreach ($rezervare->pasageri_relation as $pasager)
-                                                                            @if(!$loop->last)
-                                                                                {{ $pasager->nume }},
-                                                                            @else
-                                                                                {{ $pasager->nume }}
-                                                                            @endif
-                                                                        @endforeach
-                                                                    @else
-                                                                        Rezervare bagaj
-                                                                    @endif
-                                                                </b>
-                                                            </h5>
-                                                            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body" style="text-align:left;">
-                                                            Ești sigur ca vrei să ștergi Rezervarea?
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Renunță</button>
-                                                            
-                                                            <form method="POST" action="{{ $rezervare->path() }}">
-                                                                @method('DELETE')  
-                                                                @csrf   
-                                                                <button 
-                                                                    type="submit" 
-                                                                    class="btn btn-danger"  
-                                                                    >
-                                                                    Șterge Rezervarea
-                                                                </button>                    
-                                                            </form>
-                                                        
-                                                        </div>
-                                                        </div>
-                                                    </div>
-                                                </div>                      
-                        @empty
-                            {{-- <div>Nu s-au gasit rezervări în baza de date. Încearcă alte date de căutare</div> --}}
-                        @endforelse
+                <form method="POST" 
+                    action="/rapoarte/trimite-sms/{{ $rezervari_pe_tara->first()->oras_plecare_tara }}/{{ \Carbon\Carbon::parse($search_data)->isoFormat('YYYY-MM-DD') }}/toate/lista_plecare/{{ $tip_transport }}/extrage-rezervari/raport-pdf">
+                    
+                    @csrf  
+
+                    <div class="modal-body" style="text-align:left;">                
+                        <div class="form-row">                              
+                            <div class="form-group col-lg-12">  
+                                <label for="text_sms" class="mb-0 pl-3">Text SMS:</label>  
+                                <textarea class="form-control mb-1 {{ $errors->has('text_sms') ? 'is-invalid' : '' }}" 
+                                    name="text_sms"
+                                    rows="4"
+                                    v-model="text_sms"
+                                ></textarea>
+                                <div class="text-right">
+                                    <label for="nr_caractere" class="mb-0 pl-3">Nr. caractere:</label>
+                                    <input class="text-right" 
+                                        style="width:40px"
+                                        v-model="caractere" 
+                                        readonly>
+                                </div>
+                            </div>  
+                        </div> 
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Renunță</button>                                                              
+                            <button 
+                                type="submit" 
+                                class="btn btn-warning"  
+                                >
+                                Trimite SMS
+                            </button>  
+                    </div>                  
+                </form>                                                        
+                    </div>
+                </div>
+            </div>
+            
+            @foreach ($rezervari_pe_tara->where('oras_plecare_tara', $rezervari_pe_tara->first()->oras_plecare_tara)->sortBy('lista_plecare')->groupBy('lista_plecare') as $rezervari_pe_trasee)
+                {{-- Modale pentru butoanele de trimitere sms la fiecare cursa in parte --}}
+                <div class="modal fade text-dark"  
+                    id="trimite-sms-{{ $rezervari_pe_trasee->first()->lista_plecare }}-lista_plecare" 
+                    tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                        <div class="modal-header bg-warning">
+                            <h5 class="modal-title" id="exampleModalLabel">
+                                Trimite SMS către <b>{{ $rezervari_pe_trasee->count() }}</b> rezervări
+                            </h5>
+                            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                    <form method="POST" 
+                        action="/rapoarte/trimite-sms/{{ $rezervari_pe_tara->first()->oras_plecare_tara }}/{{ \Carbon\Carbon::parse($search_data)->isoFormat('YYYY-MM-DD') }}/{{ $rezervari_pe_trasee->first()->lista_plecare }}/lista_plecare/{{ $tip_transport }}/extrage-rezervari/raport-pdf">
+                        
+                        @csrf  
+
+                        <div class="modal-body" style="text-align:left;">                
+                            <div class="form-row">                              
+                                <div class="form-group col-lg-12">  
+                                    <label for="text_sms" class="mb-0 pl-3">Text SMS:</label>  
+                                    <textarea class="form-control mb-1 {{ $errors->has('text_sms') ? 'is-invalid' : '' }}" 
+                                        name="text_sms"
+                                        rows="4"
+                                        v-model="text_sms"
+                                    ></textarea>
+                                    <div class="text-right">
+                                        <label for="nr_caractere" class="mb-0 pl-3">Nr. caractere:</label>
+                                        <input class="text-right" 
+                                            style="width:40px"
+                                            v-model="caractere" 
+                                            readonly>
+                                    </div>
+                                </div>  
+                            </div> 
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Renunță</button>                                                              
+                                <button 
+                                    type="submit" 
+                                    class="btn btn-warning"  
+                                    >
+                                    Trimite SMS
+                                </button>  
+                        </div>                  
+                    </form>                                                        
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        @endforeach
+
+        {{-- Rapoarte sosire --}}
+        @foreach ($rezervari->groupBy('oras_sosire_tara') as $rezervari_pe_tara)
+            @foreach ($rezervari_pe_tara->where('oras_sosire_tara', $rezervari_pe_tara->first()->oras_sosire_tara)->sortBy('lista_sosire')->groupBy('lista_sosire') as $rezervari_pe_trasee)
+                {{-- Modale pentru butoanele de trimitere sms la fiecare cursa in parte --}}
+                <div class="modal fade text-dark"  
+                    id="trimite-sms-{{ $rezervari_pe_trasee->first()->lista_sosire }}-lista_sosire" 
+                    tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                        <div class="modal-header bg-warning">
+                            <h5 class="modal-title" id="exampleModalLabel">
+                                Trimite SMS către <b>{{ $rezervari_pe_trasee->count() }}</b> rezervări
+                            </h5>
+                            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                    <form method="POST" 
+                        action="/rapoarte/trimite-sms/{{ $rezervari_pe_tara->first()->oras_plecare_tara }}/{{ \Carbon\Carbon::parse($search_data)->isoFormat('YYYY-MM-DD') }}/{{ $rezervari_pe_trasee->first()->lista_sosire }}/lista_sosire/{{ $tip_transport }}/extrage-rezervari/raport-pdf">
+                        
+                        @csrf  
+
+                        <div class="modal-body" style="text-align:left;">                
+                            <div class="form-row">                              
+                                <div class="form-group col-lg-12">  
+                                    <label for="text_sms" class="mb-0 pl-3">Text SMS:</label>  
+                                    <textarea class="form-control mb-1 {{ $errors->has('text_sms') ? 'is-invalid' : '' }}" 
+                                        name="text_sms"
+                                        rows="4"
+                                        v-model="text_sms"
+                                    ></textarea>
+                                    <div class="text-right">
+                                        <label for="nr_caractere" class="mb-0 pl-3">Nr. caractere:</label>
+                                        <input class="text-right" 
+                                            style="width:40px"
+                                            v-model="caractere" 
+                                            readonly>
+                                    </div>
+                                </div>  
+                            </div> 
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Renunță</button>                                                              
+                                <button 
+                                    type="submit" 
+                                    class="btn btn-warning"  
+                                    >
+                                    Trimite SMS
+                                </button>  
+                        </div>                  
+                    </form>                                                        
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        @endforeach
+        </div>
+
+
+    @forelse ($rezervari as $rezervare)         
+        {{-- Modal pentru butonul de neseriosi --}}
+        <div class="modal fade text-dark" id="neseriosiRezervare{{ $rezervare->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                <div class="modal-header bg-danger">
+                    <h5 class="modal-title text-white" id="exampleModalLabel">
+                        Rezervare: 
+                        <b>
+                            @isset($rezervare->nr_adulti)
+                                @foreach ($rezervare->pasageri_relation as $pasager)
+                                    @if(!$loop->last)
+                                        {{ $pasager->nume }},
+                                    @else
+                                        {{ $pasager->nume }}
+                                    @endif
+                                @endforeach
+                            @else
+                                Rezervare bagaj
+                            @endif
+                        </b>
+                    </h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+            <form method="POST" action="{{ route('insereaza-pasageri-neseriosi', ['rezervare' => $rezervare->id]) }}">
+                {{-- @method('DELETE')   --}}
+                @csrf  
+
+                <div class="modal-body" style="text-align:left;">
+                    <p>
+                        Ești sigur ca vrei să adaugi pasagerii în lista de Clienți neserioși?
+                    </p>
+                
+                    <div class="form-row">                              
+                        <div class="form-group col-lg-12">  
+                            <label for="observatii" class="mb-0 pl-3">Observații:</label>  
+                            <textarea class="form-control {{ $errors->has('observatii') ? 'is-invalid' : '' }}" 
+                                name="observatii"
+                                rows="2"
+                            >{{ old('observatii') }}</textarea>
+                        </div>  
+                    </div> 
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Renunță</button>                                                              
+                        <button 
+                            type="submit" 
+                            class="btn btn-danger"  
+                            >
+                            Adaugă
+                        </button>  
+                </div>                  
+            </form>                                                        
+                </div>
+            </div>
+        </div>
+
+
+        {{-- Modal pentru butonul de stergere --}}
+        <div class="modal fade text-dark" id="stergeRezervare{{ $rezervare->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" 
+            {{-- data-backdrop="false" --}}
+        >
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                <div class="modal-header bg-danger">
+                    <h5 class="modal-title text-white" id="exampleModalLabel">
+                        Rezervare: 
+                        <b>
+                            @isset($rezervare->nr_adulti)
+                                @foreach ($rezervare->pasageri_relation as $pasager)
+                                    @if(!$loop->last)
+                                        {{ $pasager->nume }},
+                                    @else
+                                        {{ $pasager->nume }}
+                                    @endif
+                                @endforeach
+                            @else
+                                Rezervare bagaj
+                            @endif
+                        </b>
+                    </h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="text-align:left;">
+                    Ești sigur ca vrei să ștergi Rezervarea?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Renunță</button>
+                    
+                    <form method="POST" action="{{ $rezervare->path() }}">
+                        @method('DELETE')  
+                        @csrf   
+                        <button 
+                            type="submit" 
+                            class="btn btn-danger"  
+                            >
+                            Șterge Rezervarea
+                        </button>                    
+                    </form>
+                
+                </div>
+                </div>
+            </div>
+        </div>                      
+    @empty
+        {{-- <div>Nu s-au gasit rezervări în baza de date. Încearcă alte date de căutare</div> --}}
+    @endforelse
 
 @endsection

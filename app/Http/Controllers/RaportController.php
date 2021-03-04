@@ -587,12 +587,18 @@ class RaportController extends Controller
                         break;
                 }
                 break;
-            case 'trimite-sms':
-                $mesaj = "!!!";
+            case 'trimite-sms':                
+                $request->validate([
+                    'text_sms' => 'required|min:1|max:500',
+                ]);
+                $mesaj = $request->text_sms;
+                // dd($mesaj, $rezervari->count());
                 foreach ($rezervari as $rezervare)
                 {
                     $this->trimiteSms('rezervari', null, $rezervare->id, [$rezervare->telefon], $mesaj);
                 }
+
+                return back()->with('status', 'SMS-ul a fost trimis către ' . $rezervari->count() . ' rezervări');
 
 
 
