@@ -75,9 +75,7 @@ Route::middleware(['role:administrator,sofer'])->group(function () {
     //     'create', 'store', 'update', 'destroy'
     // ]);
 
-
     Route::resource('clienti-neseriosi', ClientNeseriosController::class,  ['parameters' => ['clienti-neseriosi' => 'client_neserios']]);
-    
 
     Route::resource('mesaje-trimise-sms', MesajTrimisSmsController::class,  ['parameters' => ['mesaje_trimise_sms' => 'mesaj_trimis_sms']]);
 

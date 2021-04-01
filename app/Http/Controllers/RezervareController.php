@@ -25,7 +25,7 @@ class RezervareController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    
+
     use TrimiteSmsTrait;
 
     public function index()
@@ -134,12 +134,12 @@ class RezervareController extends Controller
 
         // Incarcare pasageri in rezervare
         $adulti = [
-            'nume' => [], 
-            // 'buletin' => [], 
-            'data_nastere' => [], 
+            'nume' => [],
+            // 'buletin' => [],
+            'data_nastere' => [],
             'localitate_nastere' => [],
             // 'localitate_domiciliu' => []
-            'sex' => [], 
+            'sex' => [],
         ];
         $i = 1;
         foreach ($rezervare->pasageri_relation_adulti as $adult){
@@ -154,7 +154,7 @@ class RezervareController extends Controller
         $rezervare->adulti = $adulti;
         $copii = [
             'nume' => [],
-            // 'buletin' => [], 
+            // 'buletin' => [],
             'data_nastere' => [],
             'localitate_nastere' => [],
             // 'localitate_domiciliu' => []
@@ -185,7 +185,10 @@ class RezervareController extends Controller
         // Se foloseste acelasi formular ca si la adaugare, asa ca este necesara aceasta variabila pentru diferentiere
         $tip_operatie = "modificare";
 
-        return view('rezervari.guest-create/adauga-rezervare-pasul-1', compact('rezervare', 'tarife', 'tip_operatie'));
+        // salvarea ultimului URL, pentru intoarcerea la Rapoarte daca de acolo s-a initiat modificarea
+        $last_url = url()->previous();
+
+        return view('rezervari.guest-create/adauga-rezervare-pasul-1', compact('rezervare', 'tarife', 'tip_operatie', 'last_url'));
     }
 
     /**
@@ -217,7 +220,7 @@ class RezervareController extends Controller
         }
         $rezervare_tur->pasageri_relation()->detach();
         isset($rezervare_retur) ? $rezervare_retur->pasageri_relation()->detach() : '';
-        
+
         // // dd($request->request, $rezervare_tur, $rezervare_retur, $rezervare);
 
         $rezervare_tur->lista_plecare = ($rezervare_tur->oras_plecare != $request->oras_plecare) ? (Oras::find($request->oras_plecare)->traseu ?? null) : $rezervare_tur->lista_plecare;
@@ -257,7 +260,7 @@ class RezervareController extends Controller
             $rezervare_retur->acord_newsletter = $request->acord_newsletter;
             $rezervare_retur->updated_at = \Carbon\Carbon::now();
         }
-        
+
         if($request->tip_calatorie === "Calatori"){
             $rezervare_tur->nr_adulti = $request->nr_adulti;
             $rezervare_tur->nr_copii = $request->nr_copii;
@@ -384,7 +387,8 @@ class RezervareController extends Controller
             }
         }
 
-        return redirect('/rezervari')->with('status', 'Rezervarea a fost modificată cu succes!');
+        return redirect($request->last_url)->with('status', 'Rezervarea a fost modificată cu succes!');
+        // return back()->with('status', 'Rezervarea a fost modificată cu succes! sasdf');
     }
 
     /**
@@ -404,7 +408,7 @@ class RezervareController extends Controller
 
         // Daca exista bilet emis, se blocheaza stergerea rezervarii.
         if (is_null($rezervare->bilet_numar)){
-            // stergere pasageri - daca nu mai sunt alte rezervari (tur, retur) continand acesti pasageri 
+            // stergere pasageri - daca nu mai sunt alte rezervari (tur, retur) continand acesti pasageri
             foreach ($rezervare->pasageri_relation as $pasager) {
                     $pasager->delete();
             }
@@ -418,7 +422,7 @@ class RezervareController extends Controller
                     $rezervare_retur->pasageri_relation()->detach();
                     $rezervare_retur->delete();
                 }
-            } 
+            }
             // elseif ($rezervare->tur){
             //     $rezervare_tur = Rezervare::find($rezervare->tur);
             //     if($rezervare_tur){
@@ -454,7 +458,7 @@ class RezervareController extends Controller
             $client_neserios->save();
         }
 
-        if (is_null($rezervare->bilet_numar)) {        
+        if (is_null($rezervare->bilet_numar)) {
             // Trimitere catre stergere rezervare
             $this->destroy($rezervare);
 
@@ -667,8 +671,8 @@ class RezervareController extends Controller
                             // }),
                         ],
                     'telefon' => [
-                        'nullable', 
-                        // 'regex:/^[0-9 ]+$/', 
+                        'nullable',
+                        // 'regex:/^[0-9 ]+$/',
                         'max: 100'
                     ],
                     'email' => ['nullable', 'email', 'max:100'],
@@ -785,7 +789,7 @@ class RezervareController extends Controller
                     ],
                     'data_intoarcere' => [
                         'required_if:tur_retur,true',
-                        'after:data_plecare', 
+                        'after:data_plecare',
                         'max:50'
                         // function ($attribute, $value, $fail) use ($request) {
                         //     $data_plecare = \Carbon\Carbon::parse($request->data_plecare);
@@ -812,8 +816,8 @@ class RezervareController extends Controller
                             }),
                         ],
                     'telefon' => [
-                        'required', 
-                        // 'regex:/^[0-9 ]+$/', 
+                        'required',
+                        // 'regex:/^[0-9 ]+$/',
                         'max: 100'
                     ],
                     'email' => ['nullable', 'email', 'max:100'],
@@ -858,7 +862,7 @@ class RezervareController extends Controller
         //     return $pdf->download($registru->id.'.pdf');
         // }
         // else{
-        // } 
+        // }
     }
 
 
@@ -972,7 +976,7 @@ class RezervareController extends Controller
                 $request_verificare_duplicate,
                 [
                     'adulti.nume.*' => [
-                        'nullable', 'max:100',                        
+                        'nullable', 'max:100',
                         function ($attribute, $value, $fail) use ($request_verificare_duplicate) {
                             if (!empty($request_verificare_duplicate->data_plecare)) {
                                 $pasageri = Pasager::whereHas('rezervari', function (Builder $query) use ($request_verificare_duplicate) {
@@ -1053,7 +1057,7 @@ class RezervareController extends Controller
             $rezervare_unset->acord_de_confidentialitate,
             $rezervare_unset->termeni_si_conditii
         );
-        
+
         if($rezervare->tip_calatorie === "Calatori"){
             unset($rezervare_unset->bagaje_kg,
                 $rezervare_unset->bagaje_descriere
@@ -1061,7 +1065,7 @@ class RezervareController extends Controller
         }else{
             unset(
                 $rezervare_unset->nr_adulti,
-                $rezervare_unset->nr_copii       
+                $rezervare_unset->nr_copii
             );
         }
 
@@ -1148,7 +1152,7 @@ class RezervareController extends Controller
         $curs_bnr_euro = \App\Models\Variabila::where('nume', 'curs_bnr_euro')->first();
         if (\Carbon\Carbon::now()->hour >= 14) {
             if (\Carbon\Carbon::parse($curs_bnr_euro->updated_at) < (\Carbon\Carbon::today()->hour(14))){
-                $xml=simplexml_load_file("https://www.bnr.ro/nbrfxrates.xml") or die("Error: Cannot create object");            
+                $xml=simplexml_load_file("https://www.bnr.ro/nbrfxrates.xml") or die("Error: Cannot create object");
                 foreach($xml->Body->Cube->children() as $curs_bnr) {
                     if ((string) $curs_bnr['currency'] === 'EUR'){
                         $curs_bnr_euro->valoare = $curs_bnr[0];
@@ -1160,13 +1164,13 @@ class RezervareController extends Controller
             $curs_bnr_euro = \App\Models\Variabila::where('nume', 'curs_bnr_euro')->first();
         } else {
             if (\Carbon\Carbon::parse($curs_bnr_euro->updated_at) < (\Carbon\Carbon::yesterday()->hour(14))){
-                $xml=simplexml_load_file("https://www.bnr.ro/nbrfxrates.xml") or die("Error: Cannot create object");            
+                $xml=simplexml_load_file("https://www.bnr.ro/nbrfxrates.xml") or die("Error: Cannot create object");
                 foreach($xml->Body->Cube->children() as $curs_bnr) {
                     if ((string) $curs_bnr['currency'] === 'EUR'){
                         $curs_bnr_euro->valoare = $curs_bnr;
                         $curs_bnr_euro->save();
                     }
-                }        
+                }
             }
             // Dupa actualizarea cursului euro, variabila $curs_bnr_euro se transforma intr-o variabila de tip simpleXML, ce va da eroare mai departe in aplicatie, motiv pentru care necesita reinitializare
             $curs_bnr_euro = \App\Models\Variabila::where('nume', 'curs_bnr_euro')->first();
@@ -1197,7 +1201,7 @@ class RezervareController extends Controller
             $factura->valoare_euro = $rezervare->pret_total_tur + $rezervare->pret_total_retur;
 
             $factura->curs_bnr_euro = $curs_bnr_euro->valoare;
-            
+
             $factura->valoare_lei_tva = $rezervare_tur->valoare_lei_tva;
             $factura->valoare_lei = $rezervare_tur->valoare_lei;
 
@@ -1235,7 +1239,7 @@ class RezervareController extends Controller
             }
         }
 
-        //Trimitere sms           
+        //Trimitere sms
         // $mesaj = 'Buna ziua! ';
         // if($rezervare->tip_calatorie === "Calatori"){
         //     $mesaj .= 'Rezervarea pentru pasagerii: ';
@@ -1255,7 +1259,7 @@ class RezervareController extends Controller
 
         /**
          * Trimitere SMS
-         */        
+         */
         if (stripos($rezervare_tur->pasageri_relation->first()->nume ?? '', 'Andrei Dima test') !== false) {
             if (stripos($rezervare_tur->pasageri_relation->first()->nume ?? '', 'fara sms') !== false) {
                 // ...
@@ -1286,7 +1290,7 @@ class RezervareController extends Controller
                 return redirect('/adauga-rezervare-pasul-3');
             case 'modificare_rezervare':
                 return redirect('/adauga-rezervare-pasul-1');
-            break; 
+            break;
         }
     }
 
@@ -1298,7 +1302,7 @@ class RezervareController extends Controller
     public function adaugaRezervarePasul3(Request $request)
     {
         // Verificare plata online, si cautarea rezervarii
-        if ($request->has('orderId')) {            
+        if ($request->has('orderId')) {
             $plata_online = \App\Models\PlataOnline::where('order_id', $request->orderId)->latest()->first();
             $rezervare_tur = \App\Models\Rezervare::where('id', $plata_online->rezervare_id)->first();
             $request->session()->forget('rezervare_tur');
@@ -1352,10 +1356,10 @@ class RezervareController extends Controller
                 ->setPaper('a4');
             return $pdf->download('Rezervare ' . $rezervare_tur->nume . '.pdf');
         }
-    }    
+    }
 
     public function exportPDFGuest(Request $request)
-    {        
+    {
         $rezervare_tur = $request->session()->get('rezervare_tur');
         $factura = $rezervare_tur->factura;
 
@@ -1366,14 +1370,14 @@ class RezervareController extends Controller
                     ->setPaper('a4', 'portrait');
                 return $pdf->download('Factura ' . $factura->cumparator . ' - ' . \Carbon\Carbon::parse($factura->created_at)->isoFormat('DD.MM.YYYY') . '.pdf');
         }
-    } 
+    }
 
     public function chitantaSeteazaOraseGuest(Request $request, $cheie_unica = null)
     {
         $rezervare = Rezervare::where('cheie_unica', $cheie_unica)->first();
 
         return view('chitante.export.seteaza-orase', compact('rezervare', 'cheie_unica'));
-    }  
+    }
 
     public function postChitantaSeteazaOraseGuest(Request $request, $cheie_unica = null)
     {
@@ -1394,16 +1398,16 @@ class RezervareController extends Controller
         return redirect()->away('rawbt:url:https://rezervari.transportcorsica.ro/chitanta-descarca/' . $rezervare->cheie_unica . '/export-html');
 
         // return redirect()->action(
-        //     [RezervareController::class, 'chitantaExportPDFGuest'], 
+        //     [RezervareController::class, 'chitantaExportPDFGuest'],
         //     [
-        //         'cheie_unica' => $cheie_unica, 
+        //         'cheie_unica' => $cheie_unica,
         //         'view_type' => 'export-html',
         //     ]
         // );
-    } 
+    }
 
     public function chitantaExportPDFGuest(Request $request, $cheie_unica = null)
-    {        
+    {
         $rezervare = Rezervare::where('cheie_unica', $cheie_unica)->first();
 
         if ($request->view_type === 'export-html') {
@@ -1500,8 +1504,8 @@ class RezervareController extends Controller
         // dd($rezervare_tur->pasageri_relation, $rezervare_retur, $clone_rezervare, $clone_rezervare_retur);
         // salvare pasageri si atasare la rezervari
         // if ($rezervare_tur->pasageri_relation->exists()){
-            foreach ($rezervare_tur->pasageri_relation as $pasager) {            
-                $clone_pasager = $pasager->replicate();            
+            foreach ($rezervare_tur->pasageri_relation as $pasager) {
+                $clone_pasager = $pasager->replicate();
                 $clone_pasager->save();
 
                 $clone_rezervare->pasageri_relation()->attach($clone_pasager->id);
