@@ -4,8 +4,8 @@ namespace App\Http\Helpers;
 
 /**
  *
- *   SMS Gateway (BULK) (Version 3) integration with SMSLink.ro 
- *   
+ *   SMS Gateway (BULK) (Version 3) integration with SMSLink.ro
+ *
  *     using SMS Gateway (BULK) Version 3 Endpoint (New)
  *
  *     Supports HTTP and HTTPS protocols
@@ -18,11 +18,11 @@ namespace App\Http\Helpers;
  *   System Requirements:
  *
  *     PHP 5 with
- *     
+ *
  *         PHP cURL
- *         
+ *
  *         Optional, for transmission compression the following compression libraries are needed:
- *         
+ *
  *             for Zlib Gzip compression PHP is required to be compiled --with-zlib[=DIR] [and/or]
  *             for bzip2 compression PHP is required to be compiled --with-bz2[=DIR] [and/or]
  *             for LZF compression PHP is required to be compiled --with-lzf[=DIR]
@@ -40,49 +40,49 @@ namespace App\Http\Helpers;
  */
 
 class SMSLinkSMSGatewayBulkPackage
-{    
+{
     private $connection_id = null;
     private $password      = null;
-        
-    private $doHTTPS       = true;        
-    private $testMode      = false;
-    
+
+    private $doHTTPS       = true;
+    private $testMode      = true;
+
     protected $endpointHTTP  = "http://www.smslink.ro/sms/gateway/communicate/bulk-v3.php";
     protected $endpointHTTPS = "https://secure.smslink.ro/sms/gateway/communicate/bulk-v3.php";
-            
-    private $temporaryDirectory = "/tmp";           
-    
+
+    private $temporaryDirectory = "/tmp";
+
     public $remotePackageID  = 0;
     public $remoteMessageIDs = array();
     public $errorMessage     = "";
     public $transactionTime  = 0;
-    
+
     private $packageContents = array();
     private $packageStatus = 0;
-    
+
     private $packageFile = array(
             "contentPlain"      => "",
             "contentCompressed" => ""
         );
-    
+
     private $packageValidation = array(
             "hashMD5" => array(
                 "contentPlain"      => "",
                 "contentCompressed" => ""
             )
         );
-    
+
     protected $clientVersion = 2.0;
-    
+
     protected $compressionMethods = array(
             0 => array("CompressionID" => 0, "Compression" => "No Compression"),
             1 => array("CompressionID" => 1, "Compression" => "Compression using Zlib Gzip"),
             2 => array("CompressionID" => 2, "Compression" => "Compression using bzip2"),
             3 => array("CompressionID" => 3, "Compression" => "Compression using LZF"),
         );
-    
+
     private $compressionMethod = 1;
-    
+
     /**
      *   Initialize SMSLink - SMS Gateway
      *
@@ -99,31 +99,31 @@ class SMSLinkSMSGatewayBulkPackage
     {
         if (!is_null($connection_id))
             $this->connection_id = $connection_id;
-    
+
         if (!is_null($password))
             $this->password = $password;
-         
+
         if (($testMode == true) or ($testMode == false))
             $this->testMode = $testMode;
-        
+
         if ((is_null($this->connection_id)) or (is_null($this->password)))
             exit("SMS Gateway initialization failed, credentials not provided. Please see documentation.");
-    
+
     }
-    
+
     public function __destruct()
     {
         $this->connection_id = null;
         $this->password = null;
-    
-        $this->doHTTPS = true;        
+
+        $this->doHTTPS = true;
     }
 
     /**
      *   Sets the compression method to be used during sending
      *
      *   @param int    $compressionMethod    the following values are accepted:
-     *   
+     *
      *                                          0 for No Compression (default)
      *                                          1 for Zlib Gzip (requires PHP to be compiled --with-zlib[=DIR])
      *                                          2 for bzip2     (requires PHP to be compiled --with-bz2[=DIR])
@@ -137,18 +137,18 @@ class SMSLinkSMSGatewayBulkPackage
         {
             if (array_key_exists($compressionMethod, $this->compressionMethods))
                 $this->compressionMethod = $compressionMethod;
-            
-            return true;               
+
+            return true;
         }
-        
-        return false;        
+
+        return false;
     }
-    
+
     private function applyCompression($contentPlain)
     {
         $contentCompressed = "";
 
-        switch ($this->compressionMethod) 
+        switch ($this->compressionMethod)
         {
             case 0:
                 $contentCompressed = $contentPlain;
@@ -163,16 +163,16 @@ class SMSLinkSMSGatewayBulkPackage
                 $contentCompressed = lzf_compress($contentPlain);
                 break;
         }
-        
-        return $contentCompressed;        
-    }    
+
+        return $contentCompressed;
+    }
 
     private function microtimeFloat()
     {
         list($usec, $sec) = explode(" ", microtime());
         return ((float)$usec + (float)$sec);
     }
-    
+
     /**
      *   Sets the protocol that will be used by SMS Gateway (HTTPS or HTTP).
      *
@@ -183,14 +183,14 @@ class SMSLinkSMSGatewayBulkPackage
     public function setProtocol($protocolName = "HTTPS")
     {
         $protocolName = strtoupper($protocolName);
-    
+
         if ($protocolName == "HTTPS") $this->doHTTPS = true;
             elseif ($protocolName == "HTTP") $this->doHTTPS = false;
             else return false;
-    
+
         return true;
     }
-    
+
     /**
      *   Returns the protocol that is used by SMS Gateway (HTTPS or HTTP)
      *
@@ -200,28 +200,28 @@ class SMSLinkSMSGatewayBulkPackage
     {
         return ($this->doHTTPS) ? "HTTPS" : "HTTP";
     }
-    
+
     private function structureCharactersEncode($messageText)
     {
         $messageText = str_replace("\n", "%0A", $messageText);
         $messageText = str_replace(";",  "%3B", $messageText);
-        
+
         return $messageText;
     }
-    
+
     private function cleanCharacters($messageText)
     {
         $messageText = str_replace("\t", "", $messageText); // Tab
         $messageText = str_replace("\r", "", $messageText); // Carriage Return
-        
+
         return $messageText;
     }
-    
+
     /**
      *   Inserts a SMS to SMS Bulk Package
      *
      *   @param int       $localMessageId           Local Message ID from Your System
-     *   
+     *
      *   @param string    $receiverNumber           Receiver mobile phone number. Phone numbers should be formatted as a Romanian national mobile phone number (07xyzzzzzz)
      *                                              or as an International mobile phone number (00 + Country Code + Phone Number, example 0044zzzzzzzzz).
      *
@@ -232,10 +232,10 @@ class SMSLinkSMSGatewayBulkPackage
      *
      *                                                 Any other preapproved alphanumeric sender assigned to your account:
      *
-     *                                                     Your alphanumeric sender list:        
+     *                                                     Your alphanumeric sender list:
      *                                                             http://www.smslink.ro/sms/sender-list.php
      *
-     *                                                     Your alphanumeric sender application: 
+     *                                                     Your alphanumeric sender application:
      *                                                             http://www.smslink.ro/sms/sender-id.php
      *
      *                                                 Please Note:
@@ -250,24 +250,24 @@ class SMSLinkSMSGatewayBulkPackage
      *
      *   @param int       $timestampProgrammed    (Optional) Should be 0 (zero) for immediate sending or other UNIX timestamp in the future for future sending
      *
-     *   @return bool     true on success or false on failure     
-     */    
+     *   @return bool     true on success or false on failure
+     */
     public function insertMessage($localMessageId, $receiverNumber, $senderId, $messageText, $timestampProgrammed = 0)
     {
         if (!is_numeric($localMessageId))
             return false;
-        
+
         $receiverNumber = str_replace("+", "00", $receiverNumber);       // Converts + to 00
         $receiverNumber = preg_replace("/[^0-9]/", "", $receiverNumber); // Remove all non-numeric characters
-        
+
         if (!is_numeric($receiverNumber))
             return false;
-            
+
         $messageText = trim($messageText);                               // Strip whitespace from the beginning and end of the message
-        $messageText = str_replace("\r\n", "\n", $messageText);          // Converts Carriage Return + Line Feed to Line Feed        
+        $messageText = str_replace("\r\n", "\n", $messageText);          // Converts Carriage Return + Line Feed to Line Feed
         $messageText = $this->structureCharactersEncode($messageText);   // Encode structure characters
-        $messageText = $this->cleanCharacters($messageText);             // Clean unsuported characters                        
-        
+        $messageText = $this->cleanCharacters($messageText);             // Clean unsuported characters
+
         $this->packageContents[] = array(
                 "localMessageId"      => $localMessageId,
                 "receiverNumber"      => $receiverNumber,
@@ -275,34 +275,34 @@ class SMSLinkSMSGatewayBulkPackage
                 "messageText"         => $messageText,
                 "timestampProgrammed" => $timestampProgrammed
             );
-            
-        return true;            
+
+        return true;
     }
 
     /**
      *   Removes a SMS from SMS Bulk Package
      *
      *   @param int       $localMessageId           Local Message ID from Your System
-     *   
-     *   @return void     
+     *
+     *   @return void
      */
     public function removeMessage($localMessageId)
     {
         foreach ($this->packageContents as $messageKey => $messageData)
             if ($messageData["localMessageId"] == $localMessageId)
-                unset($this->packageContents[$messageKey]);                
+                unset($this->packageContents[$messageKey]);
     }
-    
+
     /**
      *   Returns the Size of the SMS Bulk Package
-     *   
+     *
      *   @return int
      */
     public function packageSize()
     {
-        return sizeof($this->packageContents);        
+        return sizeof($this->packageContents);
     }
-    
+
     /**
      *   Sends the SMS Bulk Package to SMSLink
      *
@@ -311,10 +311,10 @@ class SMSLinkSMSGatewayBulkPackage
     public function sendPackage()
     {
         $timestampStart = $this->microtimeFloat();
-        
+
         $this->remoteMessageIDs = array();
         $this->errorMessage = "";
-        
+
         if (($this->packageStatus == 0) and ($this->packageSize() > 0))
         {
             $temporaryFile = array();
@@ -323,17 +323,17 @@ class SMSLinkSMSGatewayBulkPackage
 
             $this->packageFile["contentPlain"] = implode("\r\n", $temporaryFile);
             $this->packageValidation["hashMD5"]["contentPlain"] = md5($this->packageFile["contentPlain"]);
-            
+
             $this->packageFile["contentCompressed"] = $this->applyCompression($this->packageFile["contentPlain"]);
             $this->packageValidation["hashMD5"]["contentCompressed"] = md5($this->packageFile["contentCompressed"]);
-            
+
             // $temporaryFilename = tempnam($this->temporaryDirectory, "sms-package-");
-            $temporaryFilename = tempnam(storage_path('app/fisiere_temporare/sms_bulk/'), "sms-package-");
-            
+            $temporaryFilename = @tempnam(storage_path('app/fisiere_temporare/sms_bulk/'), "sms-package-");
+
             if ($temporaryFilename != false)
             {
                 file_put_contents($temporaryFilename, $this->packageFile["contentCompressed"]);
-                
+
                 $requestData = array(
                         "connection_id"  => $this->connection_id,
                         "password"       => $this->password,
@@ -345,16 +345,16 @@ class SMSLinkSMSGatewayBulkPackage
                         "SizeCompressed" => strlen($this->packageFile["contentCompressed"]),
                         "Timestamp"      => date("U"),
                         "Buffering"      => 1,
-                        "Version"        => $this->clientVersion,                        
+                        "Version"        => $this->clientVersion,
                         "Receivers"      => $this->packageSize(),
                         "Package"        => "@".$temporaryFilename
                     );
-                    
+
                 $ch = curl_init((($this->doHTTPS == true) ? $this->endpointHTTPS : $this->endpointHTTP)."?timestamp=".date("U"));
 
                 curl_setopt($ch, CURLOPT_POST, 1);
 
-                if ((version_compare(PHP_VERSION, '5.5') >= 0)) 
+                if ((version_compare(PHP_VERSION, '5.5') >= 0))
                 {
                     $requestData["Package"] = new \CURLFile($temporaryFilename);
                     curl_setopt($ch, CURLOPT_SAFE_UPLOAD, true);
@@ -364,10 +364,10 @@ class SMSLinkSMSGatewayBulkPackage
                 curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
                 curl_setopt($ch, CURLOPT_HEADER, 0);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-                
+
                 curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 0);
                 curl_setopt($ch, CURLOPT_TIMEOUT, 0);
-                                
+
                 if ($this->doHTTPS == true)
                 {
                     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -375,25 +375,25 @@ class SMSLinkSMSGatewayBulkPackage
                 }
 
                 $requestResponse = curl_exec($ch);
-                
+
                 $connectionErrorCode    = curl_errno($ch);
                 $connectionErrorMessage = curl_error($ch);
                 $requestStatusCode      = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-                
+
                 if ($connectionErrorCode == 0)
                 {
                     if (($requestStatusCode >= 200) and ($requestStatusCode <= 299))
                     {
-                        $requestResponse = explode(";", $requestResponse);                 
-                
+                        $requestResponse = explode(";", $requestResponse);
+
                         if ((is_array($requestResponse)) and (sizeof($requestResponse) >= 3))
                         {
                             if ($requestResponse[0] == "MESSAGE")
-                            {            
+                            {
                                 $this->remotePackageID = $requestResponse[3];
-                                
+
                                 $messagesAssoc = explode(",", $requestResponse[4]);
-                                
+
                                 for($i = 0; $i < sizeof($messagesAssoc); $i++)
                                 {
                                     $temporaryMessageData = explode(":", $messagesAssoc[$i]);
@@ -403,23 +403,23 @@ class SMSLinkSMSGatewayBulkPackage
                                             "messageStatus"   => $temporaryMessageData[2]
                                         );
                                 }
-                                
+
                                 $this->packageStatus = 1;
-                                
+
                                 $timestampEnd = $this->microtimeFloat();
                                 $this->transactionTime = round($timestampEnd - $timestampStart, 2);
-                                
-                                return true;                    
+
+                                return true;
                             }
-                            else 
+                            else
                             {
-                                $this->errorMessage = implode(";", $requestResponse);                        
+                                $this->errorMessage = implode(";", $requestResponse);
                             }
                         }
                         else
                         {
                             $this->errorMessage = "ERROR;0;Unexpected response format";
-                        }                        
+                        }
                     }
                     else
                     {
@@ -430,13 +430,13 @@ class SMSLinkSMSGatewayBulkPackage
                 {
                     $this->errorMessage = "ERROR;0;".$connectionErrorMessage;
                 }
-                
+
                 curl_close($ch);
-            }            
+            }
         }
-        
-        return false;        
-    }    
+
+        return false;
+    }
 }
 
 ?>

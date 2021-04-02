@@ -86,6 +86,4 @@ Route::middleware(['role:administrator,sofer'])->group(function () {
 
     Route::get('vuejs/autocomplete', [VueJSController::class, 'autocomplete']);
     Route::get('vuejs/autocomplete/search', [VueJSController::class, 'autocompleteSearch']);
-
-    Route::get('sms-bulk/{rezervari}', [SmsBulkController::class, 'trimiteSmsBulk']);
 });
