@@ -1,23 +1,23 @@
 @extends ('layouts.app')
 
-@section('content')   
+@section('content')
 <div class="container card" style="border-radius: 40px 40px 40px 40px;">
         <div class="row card-header justify-content-between py-1" style="border-radius: 40px 40px 0px 0px;">
             <div class="col-lg-3 align-self-center mb-2">
                 <h4 class=" mb-0">
                     {{-- @php
                         dd($view_type);
-                    @endphp --}}                                         
-                        <a href="/rapoarte/calatori/{{ $view_type }}"><i class="fas fa-book mr-1"></i>Rapoarte {{ $view_type }}</a>                 
+                    @endphp --}}
+                        <a href="/rapoarte/calatori/{{ $view_type }}"><i class="fas fa-book mr-1"></i>Rapoarte {{ $view_type }}</a>
                 </h4>
-            </div> 
+            </div>
             <div class="col-lg-7" id="app1">
-                @if ($view_type === "plecare")                                          
-                    <form class="needs-validation" novalidate method="GET" action="/rapoarte/{{ $tip_transport }}/plecare"> 
-                @elseif ($view_type === "sosire")      
+                @if ($view_type === "plecare")
+                    <form class="needs-validation" novalidate method="GET" action="/rapoarte/{{ $tip_transport }}/plecare">
+                @elseif ($view_type === "sosire")
                     <form class="needs-validation" novalidate method="GET" action="/rapoarte/{{ $tip_transport }}/sosire">
-                @endif  
-                    @csrf                    
+                @endif
+                    @csrf
                     <div class="row mb-2 input-group custom-search-form justify-content-center" style="border-bottom:2px solid black">
                         <div class="col-md-4 mb-2 px-1 d-flex align-items-center">
                             <label for="search_data" class="mb-0 align-self-center mr-1">Data:</label>
@@ -53,26 +53,26 @@
 
                     <div class="row input-group custom-search-form justify-content-center">
                                 <div class="col-lg-6 px-0 mb-2 d-flex align-items-center">
-                                    <label class="mb-0">Mută rezervările traseului:</label> 
-                                    <input type="text" class="form-control form-control-sm border rounded-pill mb-0 py-0 mx-2 {{ $errors->has('traseu') ? 'is-invalid' : '' }}" 
+                                    <label class="mb-0">Mută rezervările traseului:</label>
+                                    <input type="text" class="form-control form-control-sm border rounded-pill mb-0 py-0 mx-2 {{ $errors->has('traseu') ? 'is-invalid' : '' }}"
                                         id="traseu" name="traseu" placeholder=""
                                             style="width:50px"
                                             value="{{ old('traseu') }}">
                                 </div>
                                 <div class="col-lg-3 px-0 mb-2 d-flex align-items-center">
                                     în lista:
-                                    <input type="text" class="form-control form-control-sm border rounded-pill mb-0 py-0 mx-2 {{ $errors->has('lista') ? 'is-invalid' : '' }}" 
+                                    <input type="text" class="form-control form-control-sm border rounded-pill mb-0 py-0 mx-2 {{ $errors->has('lista') ? 'is-invalid' : '' }}"
                                         id="lista" name="lista" placeholder=""
                                             style="width:50px"
                                             value="{{ old('lista') }}">
-                                    <input type="hidden" name="data_cursa" value="{{ $search_data }}">  
-                                    @if ($view_type === "plecare")                                          
-                                        <input type="hidden" name="tip_lista" value="lista_plecare"> 
-                                    @elseif ($view_type === "sosire")      
+                                    <input type="hidden" name="data_cursa" value="{{ $search_data }}">
+                                    @if ($view_type === "plecare")
+                                        <input type="hidden" name="tip_lista" value="lista_plecare">
+                                    @elseif ($view_type === "sosire")
                                         <input type="hidden" name="tip_lista" value="lista_sosire">
                                     @endif
                                 </div>
-                                <div class="col-lg-3 px-0 mb-2">                            
+                                <div class="col-lg-3 px-0 mb-2">
                                     <button class="btn btn-sm btn-primary col-md-12 border border-dark rounded-pill" type="submit">
                                         <i class="fas fa-exchange-alt text-white mr-1"></i>Mută
                                     </button>
@@ -91,13 +91,12 @@
         <div class="card-body px-0 py-3">
 
             @include('errors')
-            
 
-        @if ($view_type === "plecare") 
+        @if ($view_type === "plecare")
             @foreach ($rezervari->groupBy('oras_plecare_tara') as $rezervari_pe_tara)
 
                 <div class="table-responsive-sm rounded mb-5">
-                    <table class="table table-striped table-hover table-sm rounded"> 
+                    <table class="table table-striped table-hover table-sm rounded">
                         <thead class="text-white rounded" style="background-color:#e66800;">
                             <tr>
                                 <th colspan="6" class="text-center" style="font-size: 20px">
@@ -113,7 +112,7 @@
                                 @if ( $tip_transport === 'calatori')
                                     <tr>
                                         <td colspan="6" class="py-1">
-                                            <div class="d-flex flex-row justify-content-center">                                                
+                                            <div class="d-flex flex-row justify-content-center">
                                                 <div class="mr-4">
                                                     <b>
                                                         Total pasageri în toate listele:
@@ -122,7 +121,7 @@
                                                 </div>
                                                 <div class="mr-4">
                                                     <a href="/rapoarte/excel-nava/{{ $rezervari_pe_tara->first()->oras_plecare_tara }}/{{ \Carbon\Carbon::parse($search_data)->isoFormat('YYYY-MM-DD') }}/toate/lista_plecare/{{ $tip_transport }}/extrage-rezervari/raport-pdf" class="btn btn-sm bg-success text-white border border-light rounded-pill">
-                                                        <i class="fas fa-file-pdf text-white mr-1"></i>Raport Navă 
+                                                        <i class="fas fa-file-pdf text-white mr-1"></i>Raport Navă
                                                         {{-- Iphone --}}
                                                     </a>
                                                 @if ((auth()->user()->role === 'administrator') || (auth()->user()->role === 'superadmin'))
@@ -130,29 +129,29 @@
                                                         $lista = "toate";
                                                         $tip_lista = "toate";
                                                     @endphp
-                                                    <a 
+                                                    <a
                                                         class="btn btn-sm bg-warning border border-light rounded-pill" style="color: black !important"
-                                                        href="#" 
-                                                        data-toggle="modal" 
+                                                        href="#"
+                                                        data-toggle="modal"
                                                         data-target="#trimite-sms-toate"
                                                         title="Trimite SMS"
                                                         >
                                                         <i class="fas fa-sms mr-1"></i>Trimite SMS
                                                     </a>
                                                     {{-- <a href="/rapoarte/trimite-sms/{{ $rezervari_pe_tara->first()->oras_plecare_tara }}/{{ \Carbon\Carbon::parse($search_data)->isoFormat('YYYY-MM-DD') }}/toate/lista_plecare/{{ $tip_transport }}/extrage-rezervari/raport-pdf" class="btn btn-sm bg-warning border border-light rounded-pill" style="color: black !important">
-                                                        <i class="fas fa-sms mr-1"></i>Trimite SMS 
-                                                        
+                                                        <i class="fas fa-sms mr-1"></i>Trimite SMS
+
                                                     </a> --}}
                                                 @endif
                                                 </div>
-                                                {{-- <div class=""> 
+                                                {{-- <div class="">
                                                     <form class="needs-validation" novalidate method="POST" action="/rapoarte/extrage-rezervari/raport-pdf">
                                                         @csrf
-                                                        
-                                                        @foreach ($rezervari_toate_pe_tara as $rezervare_nava) 
+
+                                                        @foreach ($rezervari_toate_pe_tara as $rezervare_nava)
                                                             <input type="hidden" name="rezervari[]" value="{{ $rezervare_nava }}">
                                                         @endforeach
-                                                                <input type="hidden" name="tip_lista" value="lista_plecare">  
+                                                                <input type="hidden" name="tip_lista" value="lista_plecare">
                                                             <button type="submit" name="action" value="excel_nava" class="btn btn-sm bg-success text-white border border-light rounded-pill">
                                                                 <i class="fas fa-file-pdf text-white mr-1"></i>Raport Navă
                                                             </button>
@@ -171,16 +170,16 @@
                                 <th class="text-right">Acțiuni</th>
                             </tr>
                         </thead>
-                        <tbody> 
+                        <tbody>
 
                             @foreach ($rezervari_pe_tara->where('oras_plecare_tara', $rezervari_pe_tara->first()->oras_plecare_tara)->sortBy('lista_plecare')->groupBy('lista_plecare') as $rezervari_pe_trasee)
                                     <tr>
                                         <td colspan="2" class="text-white" style="background-color:lightslategrey">
                                             <b>
-                                                {{-- <a class="btn btn-sm btn-light" data-toggle="collapse" 
-                                                    href="#collapseLista{{$rezervari_pe_trasee->first()->lista_plecare}}" 
-                                                    role="button" 
-                                                    aria-expanded="false" 
+                                                {{-- <a class="btn btn-sm btn-light" data-toggle="collapse"
+                                                    href="#collapseLista{{$rezervari_pe_trasee->first()->lista_plecare}}"
+                                                    role="button"
+                                                    aria-expanded="false"
                                                     aria-controls="collapseLista{{$rezervari_pe_trasee->first()->lista_plecare}}"> --}}
                                                         Lista {{$rezervari_pe_trasee->first()->lista_plecare}}
                                                 {{-- </a> --}}
@@ -191,21 +190,21 @@
                                                 <form class="needs-validation" novalidate method="POST" action="/rapoarte/extrage-rezervari/raport-pdf">
                                                     @csrf
 
-                                                        @forelse (                                                        
+                                                        @forelse (
                                                                 ($rezervari_pe_tara->first()->oras_plecare_tara === 'Romania' ?
-                                                                    $rezervari_pe_trasee->sortBy('oras_plecare_traseu')->groupBy('oras_plecare_traseu') 
+                                                                    $rezervari_pe_trasee->sortBy('oras_plecare_traseu')->groupBy('oras_plecare_traseu')
                                                                     :
                                                                     $rezervari_pe_trasee->sortByDesc('oras_plecare_traseu')->groupBy('oras_plecare_traseu')
                                                                 )
-                                                                as $rezervari_pe_trasee_pe_traseu_initial) 
-                                                            @forelse (                                                      
+                                                                as $rezervari_pe_trasee_pe_traseu_initial)
+                                                            @forelse (
                                                                     ($rezervari_pe_tara->first()->oras_plecare_tara === 'Romania' ?
-                                                                        $rezervari_pe_trasee_pe_traseu_initial->sortBy('oras_plecare_ordine')->groupBy('oras_plecare_ordine') 
+                                                                        $rezervari_pe_trasee_pe_traseu_initial->sortBy('oras_plecare_ordine')->groupBy('oras_plecare_ordine')
                                                                         :
                                                                         $rezervari_pe_trasee_pe_traseu_initial->sortByDesc('oras_plecare_ordine')->groupBy('oras_plecare_ordine')
                                                                     )
-                                                                    as $rezervari_pe_trasee_pe_traseu_initial_pe_oras) 
-                                                                @forelse ($rezervari_pe_trasee_pe_traseu_initial_pe_oras->sortBy('oras_plecare_nume') as $rezervare) 
+                                                                    as $rezervari_pe_trasee_pe_traseu_initial_pe_oras)
+                                                                @forelse ($rezervari_pe_trasee_pe_traseu_initial_pe_oras->sortBy('oras_plecare_nume') as $rezervare)
                                                                     @php
                                                                         $rezervari_toate_pe_tara[] = $rezervare->id;
                                                                     @endphp
@@ -213,46 +212,46 @@
                                                                 @endforeach
                                                             @endforeach
                                                         @endforeach
-                                                            <input type="hidden" name="tip_lista" value="lista_plecare">  
+                                                            <input type="hidden" name="tip_lista" value="lista_plecare">
                                                             {{-- @php
                                                                 dd(auth()->user());
                                                             @endphp --}}
                                                         {{-- @if (auth()->user()->email === "adima@validsoftware.ro") --}}
                                                             <a href="/rapoarte/lista_sofer/{{ $rezervari_pe_tara->first()->oras_plecare_tara }}/{{ \Carbon\Carbon::parse($search_data)->isoFormat('YYYY-MM-DD') }}/{{ $rezervari_pe_trasee->first()->lista_plecare }}/lista_plecare/{{ $tip_transport }}/extrage-rezervari/raport-pdf" class="btn btn-sm bg-success text-white border border-light rounded-pill">
-                                                                <i class="fas fa-file-pdf text-white mr-1"></i>Raport PDF 
+                                                                <i class="fas fa-file-pdf text-white mr-1"></i>Raport PDF
                                                                 {{-- Iphone --}}
-                                                            </a> 
+                                                            </a>
                                                         {{-- @endif --}}
                                                         {{-- <button type="submit" name="action" value="lista_sofer" class="btn btn-sm bg-success text-white border border-light rounded-pill">
                                                             <i class="fas fa-file-pdf text-white mr-1"></i>Raport PDF
                                                         </button>  --}}
                                                         <a href="/rapoarte/lista_pasageri/{{ $rezervari_pe_tara->first()->oras_plecare_tara }}/{{ \Carbon\Carbon::parse($search_data)->isoFormat('YYYY-MM-DD') }}/{{ $rezervari_pe_trasee->first()->lista_plecare }}/lista_plecare/{{ $tip_transport }}/extrage-rezervari/raport-pdf" class="btn btn-sm bg-success text-white border border-light rounded-pill">
-                                                            <i class="fas fa-file-pdf text-white mr-1"></i>Listă pasageri 
+                                                            <i class="fas fa-file-pdf text-white mr-1"></i>Listă pasageri
                                                             {{-- Iphone --}}
-                                                        </a> 
+                                                        </a>
                                                         {{-- <button type="submit" name="action" value="lista_pasageri" class="btn btn-sm bg-success text-white border border-light rounded-pill">
                                                             <i class="fas fa-file-pdf text-white mr-1"></i>Listă pasageri
                                                         </button>  --}}
                                                         <a href="/rapoarte/excel-nava/{{ $rezervari_pe_tara->first()->oras_plecare_tara }}/{{ \Carbon\Carbon::parse($search_data)->isoFormat('YYYY-MM-DD') }}/{{ $rezervari_pe_trasee->first()->lista_plecare }}/lista_plecare/{{ $tip_transport }}/extrage-rezervari/raport-pdf" class="btn btn-sm bg-success text-white border border-light rounded-pill">
-                                                            <i class="fas fa-file-pdf text-white mr-1"></i>Raport Navă 
+                                                            <i class="fas fa-file-pdf text-white mr-1"></i>Raport Navă
                                                             {{-- Iphone --}}
-                                                        </a> 
+                                                        </a>
                                                         <a href="/rapoarte/chitante/{{ $rezervari_pe_tara->first()->oras_plecare_tara }}/{{ \Carbon\Carbon::parse($search_data)->isoFormat('YYYY-MM-DD') }}/{{ $rezervari_pe_trasee->first()->lista_plecare }}/lista_plecare/{{ $tip_transport }}/extrage-rezervari/raport-pdf" class="btn btn-sm bg-success text-white border border-light rounded-pill">
-                                                            <i class="fas fa-file-pdf text-white mr-1"></i>Raport Bilete 
+                                                            <i class="fas fa-file-pdf text-white mr-1"></i>Raport Bilete
                                                             {{-- Iphone --}}
-                                                        </a> 
+                                                        </a>
                                                         <a href="/rapoarte/facturi/{{ $rezervari_pe_tara->first()->oras_plecare_tara }}/{{ \Carbon\Carbon::parse($search_data)->isoFormat('YYYY-MM-DD') }}/{{ $rezervari_pe_trasee->first()->lista_plecare }}/lista_plecare/{{ $tip_transport }}/extrage-rezervari/raport-pdf" class="btn btn-sm bg-success text-white border border-light rounded-pill">
-                                                            <i class="fas fa-file-pdf text-white mr-1"></i>Raport Facturi 
+                                                            <i class="fas fa-file-pdf text-white mr-1"></i>Raport Facturi
                                                                 <span style="background-color:darkgreen; padding: 0px 2px">
                                                                     <b>{{ $rezervari_pe_trasee->sum('factura_count') }}</b>
                                                                 </span>
                                                             {{-- Iphone --}}
-                                                        </a> 
+                                                        </a>
                                                     @if ((auth()->user()->role === 'administrator') || (auth()->user()->role === 'superadmin'))
-                                                        <a 
+                                                        <a
                                                             class="btn btn-sm bg-warning border border-light rounded-pill" style="color: black !important"
-                                                            href="#" 
-                                                            data-toggle="modal" 
+                                                            href="#"
+                                                            data-toggle="modal"
                                                             data-target="#trimite-sms-{{ $rezervari_pe_trasee->first()->lista_plecare }}-lista_plecare"
                                                             {{-- data-target="#trimite-sms" --}}
                                                             title="Trimite SMS"
@@ -269,27 +268,27 @@
                                                 </form>
                                             </div>
                                         </td>
-                                    </tr>           
-                                @forelse (                                                        
+                                    </tr>
+                                @forelse (
                                         ($rezervari_pe_tara->first()->oras_plecare_tara === 'Romania' ?
-                                            $rezervari_pe_trasee->sortBy('oras_plecare_traseu')->groupBy('oras_plecare_traseu') 
+                                            $rezervari_pe_trasee->sortBy('oras_plecare_traseu')->groupBy('oras_plecare_traseu')
                                             :
                                             $rezervari_pe_trasee->sortByDesc('oras_plecare_traseu')->groupBy('oras_plecare_traseu')
                                         )
-                                        as $rezervari_pe_trasee_pe_traseu_initial) 
-                                    @forelse (                                                      
+                                        as $rezervari_pe_trasee_pe_traseu_initial)
+                                    @forelse (
                                             ($rezervari_pe_tara->first()->oras_plecare_tara === 'Romania' ?
-                                                $rezervari_pe_trasee_pe_traseu_initial->sortBy('oras_plecare_ordine')->groupBy('oras_plecare_ordine') 
+                                                $rezervari_pe_trasee_pe_traseu_initial->sortBy('oras_plecare_ordine')->groupBy('oras_plecare_ordine')
                                                 :
                                                 $rezervari_pe_trasee_pe_traseu_initial->sortByDesc('oras_plecare_ordine')->groupBy('oras_plecare_ordine')
                                             )
-                                            as $rezervari_pe_trasee_pe_traseu_initial_pe_oras) 
-                                        @forelse ($rezervari_pe_trasee_pe_traseu_initial_pe_oras->sortBy('oras_plecare_nume') as $rezervare) 
-                                        <tr 
+                                            as $rezervari_pe_trasee_pe_traseu_initial_pe_oras)
+                                        @forelse ($rezervari_pe_trasee_pe_traseu_initial_pe_oras->sortBy('oras_plecare_nume') as $rezervare)
+                                        <tr
                                             {{-- class="collapse" id="collapseLista{{$rezervari_pe_trasee->first()->lista_plecare}}" --}}
-                                            >      
+                                            >
                                             <td>
-                                                   
+
                                                     {{-- <b>{{ $rezervare->nume ?? $rezervare->pasageri_relation->first()->nume ?? '' }}</b> --}}
                                                     @isset($rezervare->nr_adulti)
                                                         @foreach ($rezervare->pasageri_relation as $pasager)
@@ -307,7 +306,7 @@
                                                     @else
                                                         Rezervare bagaj
                                                     @endif
-                                                    
+
                                                     @if ($rezervare->observatii)
                                                         <br>
                                                         Observatii: {{ $rezervare->observatii }}
@@ -330,16 +329,16 @@
                                                         <div class="col-lg-12 px-0 mb-2 d-flex align-items-center">
 
                                                             {{-- <label for="lista">în lista:</label> --}}
-                                                            <input type="text" class="form-control form-control-sm border rounded-pill mr-2 {{ $errors->has('lista') ? 'is-invalid' : '' }}" 
+                                                            <input type="text" class="form-control form-control-sm border rounded-pill mr-2 {{ $errors->has('lista') ? 'is-invalid' : '' }}"
                                                                 id="lista" name="lista" placeholder=""
                                                                     style="width:50px"
                                                                     value="{{ old('lista') }}">
                                                             {{-- <input type="hidden" name="data_cursa" value="{{ $search_data }}">   --}}
-                                                            @if ($view_type === "plecare")                                          
-                                                                <input type="hidden" name="tip_lista" value="lista_plecare"> 
-                                                            @elseif ($view_type === "sosire")      
+                                                            @if ($view_type === "plecare")
+                                                                <input type="hidden" name="tip_lista" value="lista_plecare">
+                                                            @elseif ($view_type === "sosire")
                                                                 <input type="hidden" name="tip_lista" value="lista_sosire">
-                                                            @endif                  
+                                                            @endif
                                                             <button class="btn btn-sm btn-primary border border-dark rounded-pill mr-2" type="submit">
                                                                 <i class="fas fa-exchange-alt text-white mr-1"></i>Mută
                                                             </button>
@@ -352,28 +351,28 @@
                                                     >
                                                         <span class="badge badge-primary">Modifică</span>
                                                     </a>
-                                                    <a 
-                                                        href="#" 
-                                                        data-toggle="modal" 
+                                                    <a
+                                                        href="#"
+                                                        data-toggle="modal"
                                                         data-target="#neseriosiRezervare{{ $rezervare->id }}"
                                                         title="Clienți neserioși"
                                                         >
                                                         <span class="badge badge-danger">Neserioși</span>
                                                     </a>
-                                                    <a 
-                                                        href="#" 
-                                                        data-toggle="modal" 
+                                                    <a
+                                                        href="#"
+                                                        data-toggle="modal"
                                                         data-target="#stergeRezervare{{ $rezervare->id }}"
                                                         title="Șterge Rezervare"
                                                         >
                                                         <span class="badge badge-danger">Șterge</span>
                                                     </a>
                                             </td>
-                                        </tr>                                      
+                                        </tr>
                                         @empty
-                                        @endforelse                                               
+                                        @endforelse
                                     @empty
-                                    @endforelse                                     
+                                    @endforelse
                                 @empty
                                 @endforelse
                                     <tr>
@@ -398,7 +397,7 @@
                                         </td>
                                     </tr> --}}
                                     {{-- <tr>
-                                        <td colspan="5">  
+                                        <td colspan="5">
                                             <form class="needs-validation" novalidate method="POST" action="/rapoarte/muta-rezervari">
                                                 @csrf
 
@@ -410,15 +409,15 @@
                                                             <label> Mută rezervările în lista</label>
                                                         </div>
                                                         <div class="col-lg-1 mb-2">
-                                                            <input type="text" class="form-control form-control-sm border rounded-pill mb-0 py-0 mx-2 {{ $errors->has('lista_noua') ? 'is-invalid' : '' }}" 
+                                                            <input type="text" class="form-control form-control-sm border rounded-pill mb-0 py-0 mx-2 {{ $errors->has('lista_noua') ? 'is-invalid' : '' }}"
                                                                 id="lista_noua" name="lista_noua" placeholder=""
                                                                     style="width:50px"
-                                                                    value="{{ old('lista_noua') }}">  
-                                                            <input type="hidden" name="tip_lista" value="lista_plecare">  
-                                                            <input type="hidden" class="form-control form-control-sm border rounded-pill mb-0 py-0 mx-2 {{ $errors->has('data_traseu') ? 'is-invalid' : '' }}" 
+                                                                    value="{{ old('lista_noua') }}">
+                                                            <input type="hidden" name="tip_lista" value="lista_plecare">
+                                                            <input type="hidden" class="form-control form-control-sm border rounded-pill mb-0 py-0 mx-2 {{ $errors->has('data_traseu') ? 'is-invalid' : '' }}"
                                                                 id="data_traseu" name="data_traseu" placeholder=""
                                                                     style="width:50px"
-                                                                    value="{{ $search_data }}">                    
+                                                                    value="{{ $search_data }}">
                                                         </div>
                                                         <div class="col-lg-2">
                                                             <button class="btn btn-sm btn-primary col-md-12 border border-dark rounded-pill" type="submit">
@@ -445,14 +444,14 @@
                                             <br>
                                             <a href="/rapoarte/excel-nava/{{ $rezervari_pe_tara->first()->oras_plecare_tara }}/{{ \Carbon\Carbon::parse($search_data)->isoFormat('YYYY-MM-DD') }}/toate/lista_plecare/{{ $tip_transport }}/extrage-rezervari/raport-pdf" class="btn btn-sm bg-success text-white border border-light rounded-pill">
                                                 <i class="fas fa-file-pdf text-white mr-1"></i>Raport Navă
-                                            </a> 
+                                            </a>
                                                 <form class="needs-validation" novalidate method="POST" action="/rapoarte/extrage-rezervari/raport-pdf">
                                                     @csrf
-                                                     
-                                                    @foreach ($rezervari_toate_pe_tara as $rezervare_nava) 
+
+                                                    @foreach ($rezervari_toate_pe_tara as $rezervare_nava)
                                                         <input type="hidden" name="rezervari[]" value="{{ $rezervare_nava }}">
                                                     @endforeach
-                                                            <input type="hidden" name="tip_lista" value="lista_plecare">  
+                                                            <input type="hidden" name="tip_lista" value="lista_plecare">
                                                         <button type="submit" name="action" value="excel_nava" class="btn btn-sm bg-success text-white border border-light rounded-pill">
                                                             <i class="fas fa-file-pdf text-white mr-1"></i>Raport Navă
                                                         </button>
@@ -467,11 +466,11 @@
             @endforeach
 
         @elseif ($view_type === "sosire")
-            
+
             @foreach ($rezervari->groupBy('oras_sosire_tara') as $rezervari_pe_tara)
 
                 <div class="table-responsive rounded mb-5">
-                    <table class="table table-striped table-hover table-sm rounded"> 
+                    <table class="table table-striped table-hover table-sm rounded">
                         <thead class="text-white rounded" style="background-color:#e66800;">
                             <tr>
                                 <th colspan="6" class="text-center" style="font-size: 20px">
@@ -498,15 +497,15 @@
                                 <th class="text-right">Acțiuni</th>
                             </tr>
                         </thead>
-                        <tbody> 
+                        <tbody>
                             @foreach ($rezervari_pe_tara->where('oras_sosire_tara', $rezervari_pe_tara->first()->oras_sosire_tara)->sortBy('lista_sosire')->groupBy('lista_sosire') as $rezervari_pe_trasee)
                                     <tr>
                                         <td colspan="2" class="text-white" style="background-color:lightslategrey">
                                             <b>
-                                                {{-- <a class="btn btn-sm btn-light" data-toggle="collapse" 
-                                                    href="#collapseLista{{$rezervari_pe_trasee->first()->lista_sosire}}" 
-                                                    role="button" 
-                                                    aria-expanded="false" 
+                                                {{-- <a class="btn btn-sm btn-light" data-toggle="collapse"
+                                                    href="#collapseLista{{$rezervari_pe_trasee->first()->lista_sosire}}"
+                                                    role="button"
+                                                    aria-expanded="false"
                                                     aria-controls="collapseLista{{$rezervari_pe_trasee->first()->lista_sosire}}"> --}}
                                                         Lista {{$rezervari_pe_trasee->first()->lista_sosire}}
                                                 {{-- </a> --}}
@@ -517,56 +516,56 @@
                                                 <form class="needs-validation" novalidate method="POST" action="/rapoarte/extrage-rezervari/raport-pdf">
                                                     @csrf
 
-                                                        @forelse (                                                        
+                                                        @forelse (
                                                                 ($rezervari_pe_tara->first()->oras_plecare_tara === 'Romania' ?
-                                                                    $rezervari_pe_trasee->sortBy('oras_sosire_traseu')->groupBy('oras_sosire_traseu') 
+                                                                    $rezervari_pe_trasee->sortBy('oras_sosire_traseu')->groupBy('oras_sosire_traseu')
                                                                     :
                                                                     $rezervari_pe_trasee->sortByDesc('oras_sosire_traseu')->groupBy('oras_sosire_traseu')
                                                                 )
-                                                                as $rezervari_pe_trasee_pe_traseu_initial) 
-                                                            @forelse (                                                      
+                                                                as $rezervari_pe_trasee_pe_traseu_initial)
+                                                            @forelse (
                                                                     ($rezervari_pe_tara->first()->oras_plecare_tara === 'Romania' ?
-                                                                        $rezervari_pe_trasee_pe_traseu_initial->sortBy('oras_sosire_ordine')->groupBy('oras_sosire_ordine') 
+                                                                        $rezervari_pe_trasee_pe_traseu_initial->sortBy('oras_sosire_ordine')->groupBy('oras_sosire_ordine')
                                                                         :
                                                                         $rezervari_pe_trasee_pe_traseu_initial->sortByDesc('oras_sosire_ordine')->groupBy('oras_sosire_ordine')
                                                                     )
-                                                                    as $rezervari_pe_trasee_pe_traseu_initial_pe_oras) 
+                                                                    as $rezervari_pe_trasee_pe_traseu_initial_pe_oras)
                                                                 @forelse ($rezervari_pe_trasee_pe_traseu_initial_pe_oras->sortBy('oras_sosire_nume') as $rezervare)
                                                                     <input type="hidden" name="rezervari[]" value="{{ $rezervare->id }}">
                                                                 @endforeach
                                                             @endforeach
                                                         @endforeach
-                                                            <input type="hidden" name="tip_lista" value="lista_sosire">  
+                                                            <input type="hidden" name="tip_lista" value="lista_sosire">
                                                         <a href="/rapoarte/lista_sofer/{{ $rezervari_pe_tara->first()->oras_plecare_tara }}/{{ \Carbon\Carbon::parse($search_data)->isoFormat('YYYY-MM-DD') }}/{{ $rezervari_pe_trasee->first()->lista_sosire }}/lista_sosire/{{ $tip_transport }}/extrage-rezervari/raport-pdf" class="btn btn-sm bg-success text-white border border-light rounded-pill">
-                                                            <i class="fas fa-file-pdf text-white mr-1"></i>Raport PDF 
+                                                            <i class="fas fa-file-pdf text-white mr-1"></i>Raport PDF
                                                             {{-- Iphone --}}
-                                                        </a> 
+                                                        </a>
                                                         {{-- <button type="submit" name="action" value="lista_sofer" class="btn btn-sm bg-success text-white border border-light rounded-pill">
                                                             <i class="fas fa-file-pdf text-white mr-1"></i>Raport PDF
                                                         </button>  --}}
                                                         <a href="/rapoarte/lista_pasageri/{{ $rezervari_pe_tara->first()->oras_plecare_tara }}/{{ \Carbon\Carbon::parse($search_data)->isoFormat('YYYY-MM-DD') }}/{{ $rezervari_pe_trasee->first()->lista_sosire }}/lista_sosire/{{ $tip_transport }}/extrage-rezervari/raport-pdf" class="btn btn-sm bg-success text-white border border-light rounded-pill">
-                                                            <i class="fas fa-file-pdf text-white mr-1"></i>Listă pasageri 
+                                                            <i class="fas fa-file-pdf text-white mr-1"></i>Listă pasageri
                                                             {{-- Iphone --}}
-                                                        </a> 
+                                                        </a>
                                                         {{-- <button type="submit" name="action" value="excel_nava" class="btn btn-sm bg-success text-white border border-light rounded-pill">
                                                             <i class="fas fa-file-pdf text-white mr-1"></i>Raport Navă
                                                         </button> --}}
                                                         <a href="/rapoarte/chitante/{{ $rezervari_pe_tara->first()->oras_plecare_tara }}/{{ \Carbon\Carbon::parse($search_data)->isoFormat('YYYY-MM-DD') }}/{{ $rezervari_pe_trasee->first()->lista_sosire }}/lista_sosire/{{ $tip_transport }}/extrage-rezervari/raport-pdf" class="btn btn-sm bg-success text-white border border-light rounded-pill">
-                                                            <i class="fas fa-file-pdf text-white mr-1"></i>Raport Bilete 
+                                                            <i class="fas fa-file-pdf text-white mr-1"></i>Raport Bilete
                                                             {{-- Iphone --}}
-                                                        </a> 
+                                                        </a>
                                                         <a href="/rapoarte/facturi/{{ $rezervari_pe_tara->first()->oras_plecare_tara }}/{{ \Carbon\Carbon::parse($search_data)->isoFormat('YYYY-MM-DD') }}/{{ $rezervari_pe_trasee->first()->lista_sosire }}/lista_sosire/{{ $tip_transport }}/extrage-rezervari/raport-pdf" class="btn btn-sm bg-success text-white border border-light rounded-pill">
-                                                            <i class="fas fa-file-pdf text-white mr-1"></i>Raport Facturi 
+                                                            <i class="fas fa-file-pdf text-white mr-1"></i>Raport Facturi
                                                                 <span style="background-color:darkgreen; padding: 0px 2px">
                                                                     <b>{{ $rezervari_pe_trasee->sum('factura_count') }}</b>
                                                                 </span>
                                                             {{-- Iphone --}}
                                                         </a>
                                                     @if ((auth()->user()->role === 'administrator') || (auth()->user()->role === 'superadmin'))
-                                                        <a 
+                                                        <a
                                                             class="btn btn-sm bg-warning border border-light rounded-pill" style="color: black !important"
-                                                            href="#" 
-                                                            data-toggle="modal" 
+                                                            href="#"
+                                                            data-toggle="modal"
                                                             data-target="#trimite-sms-{{ $rezervari_pe_trasee->first()->lista_sosire }}-lista_sosire"
                                                             {{-- data-target="#trimite-sms" --}}
                                                             title="Trimite SMS"
@@ -574,33 +573,33 @@
                                                             <i class="fas fa-sms mr-1"></i>Trimite SMS
                                                         </a>
                                                         {{-- <a href="/rapoarte/trimite-sms/{{ $rezervari_pe_tara->first()->oras_plecare_tara }}/{{ \Carbon\Carbon::parse($search_data)->isoFormat('YYYY-MM-DD') }}/{{ $rezervari_pe_trasee->first()->lista_sosire }}/lista_sosire/{{ $tip_transport }}/extrage-rezervari/raport-pdf"  class="btn btn-sm bg-warning border border-light rounded-pill" style="color: black !important">
-                                                            <i class="fas fa-sms mr-1"></i>Trimite SMS                                                            
+                                                            <i class="fas fa-sms mr-1"></i>Trimite SMS
                                                         </a>  --}}
                                                     @endif
                                                 </form>
                                             </div>
                                         </td>
-                                    </tr>           
-                                @forelse (                                                        
+                                    </tr>
+                                @forelse (
                                         ($rezervari_pe_tara->first()->oras_plecare_tara === 'Romania' ?
-                                            $rezervari_pe_trasee->sortBy('oras_sosire_traseu')->groupBy('oras_sosire_traseu') 
+                                            $rezervari_pe_trasee->sortBy('oras_sosire_traseu')->groupBy('oras_sosire_traseu')
                                             :
                                             $rezervari_pe_trasee->sortByDesc('oras_sosire_traseu')->groupBy('oras_sosire_traseu')
                                         )
-                                        as $rezervari_pe_trasee_pe_traseu_initial) 
-                                    @forelse (                                                      
+                                        as $rezervari_pe_trasee_pe_traseu_initial)
+                                    @forelse (
                                             ($rezervari_pe_tara->first()->oras_plecare_tara === 'Romania' ?
-                                                $rezervari_pe_trasee_pe_traseu_initial->sortBy('oras_sosire_ordine')->groupBy('oras_sosire_ordine') 
+                                                $rezervari_pe_trasee_pe_traseu_initial->sortBy('oras_sosire_ordine')->groupBy('oras_sosire_ordine')
                                                 :
                                                 $rezervari_pe_trasee_pe_traseu_initial->sortByDesc('oras_sosire_ordine')->groupBy('oras_sosire_ordine')
                                             )
-                                            as $rezervari_pe_trasee_pe_traseu_initial_pe_oras) 
-                                        @forelse ($rezervari_pe_trasee_pe_traseu_initial_pe_oras->sortBy('oras_sosire_nume') as $rezervare) 
-                                        <tr 
+                                            as $rezervari_pe_trasee_pe_traseu_initial_pe_oras)
+                                        @forelse ($rezervari_pe_trasee_pe_traseu_initial_pe_oras->sortBy('oras_sosire_nume') as $rezervare)
+                                        <tr
                                             {{-- class="collapse" id="collapseLista{{$rezervari_pe_trasee->first()->lista_sosire}}" --}}
-                                            >      
+                                            >
                                             <td>
-                                                <a href="{{ $rezervare->path() }}">  
+                                                <a href="{{ $rezervare->path() }}">
                                                     {{-- <b>{{ $rezervare->nume ?? $rezervare->pasageri_relation->first()->nume ?? '' }}</b> --}}
                                                     @isset($rezervare->nr_adulti)
                                                         @foreach ($rezervare->pasageri_relation as $pasager)
@@ -632,16 +631,16 @@
                                                         <div class="col-lg-12 d-flex px-0 mb-2 align-items-center">
 
                                                             {{-- <label for="lista">în lista:</label> --}}
-                                                            <input type="text" class="form-control form-control-sm border rounded-pill mr-2 {{ $errors->has('lista') ? 'is-invalid' : '' }}" 
+                                                            <input type="text" class="form-control form-control-sm border rounded-pill mr-2 {{ $errors->has('lista') ? 'is-invalid' : '' }}"
                                                                 id="lista" name="lista" placeholder=""
                                                                     style="width:50px"
                                                                     value="{{ old('lista') }}">
                                                             {{-- <input type="hidden" name="data_cursa" value="{{ $search_data }}">   --}}
-                                                            @if ($view_type === "plecare")                                          
-                                                                <input type="hidden" name="tip_lista" value="lista_plecare"> 
-                                                            @elseif ($view_type === "sosire")      
+                                                            @if ($view_type === "plecare")
+                                                                <input type="hidden" name="tip_lista" value="lista_plecare">
+                                                            @elseif ($view_type === "sosire")
                                                                 <input type="hidden" name="tip_lista" value="lista_sosire">
-                                                            @endif                  
+                                                            @endif
                                                             <button class="btn btn-sm btn-primary border border-dark rounded-pill mr-2" type="submit">
                                                                 <i class="fas fa-exchange-alt text-white mr-1"></i>Mută
                                                             </button>
@@ -654,28 +653,28 @@
                                                     >
                                                         <span class="badge badge-primary">Modifică</span>
                                                     </a>
-                                                    <a 
-                                                        href="#" 
-                                                        data-toggle="modal" 
+                                                    <a
+                                                        href="#"
+                                                        data-toggle="modal"
                                                         data-target="#neseriosiRezervare{{ $rezervare->id }}"
                                                         title="Clienți neserioși"
                                                         >
                                                         <span class="badge badge-danger">Neserioși</span>
                                                     </a>
-                                                    <a 
-                                                        href="#" 
-                                                        data-toggle="modal" 
+                                                    <a
+                                                        href="#"
+                                                        data-toggle="modal"
                                                         data-target="#stergeRezervare{{ $rezervare->id }}"
                                                         title="Șterge Rezervare"
                                                         >
                                                         <span class="badge badge-danger">Șterge</span>
                                                     </a>
                                             </td>
-                                        </tr>                                       
+                                        </tr>
                                         @empty
-                                        @endforelse                                               
+                                        @endforelse
                                     @empty
-                                    @endforelse                                     
+                                    @endforelse
                                 @empty
                                 @endforelse
                                     <tr>
@@ -700,7 +699,7 @@
                                         </td>
                                     </tr> --}}
                                     {{-- <tr>
-                                        <td colspan="5">  
+                                        <td colspan="5">
                                             <form class="needs-validation" novalidate method="POST" action="/rapoarte/muta-rezervari">
                                                 @csrf
 
@@ -712,15 +711,15 @@
                                                             <label> Mută rezervările în lista</label>
                                                         </div>
                                                         <div class="col-lg-1 mb-2">
-                                                            <input type="text" class="form-control form-control-sm border rounded-pill mb-0 py-0 mx-2 {{ $errors->has('lista_noua') ? 'is-invalid' : '' }}" 
+                                                            <input type="text" class="form-control form-control-sm border rounded-pill mb-0 py-0 mx-2 {{ $errors->has('lista_noua') ? 'is-invalid' : '' }}"
                                                                 id="lista_noua" name="lista_noua" placeholder=""
                                                                     style="width:50px"
-                                                                    value="{{ old('lista_noua') }}">  
-                                                            <input type="hidden" name="tip_lista" value="lista_sosire">  
-                                                            <input type="hidden" class="form-control form-control-sm border rounded-pill mb-0 py-0 mx-2 {{ $errors->has('data_traseu') ? 'is-invalid' : '' }}" 
+                                                                    value="{{ old('lista_noua') }}">
+                                                            <input type="hidden" name="tip_lista" value="lista_sosire">
+                                                            <input type="hidden" class="form-control form-control-sm border rounded-pill mb-0 py-0 mx-2 {{ $errors->has('data_traseu') ? 'is-invalid' : '' }}"
                                                                 id="data_traseu" name="data_traseu" placeholder=""
                                                                     style="width:50px"
-                                                                    value="{{ $search_data }}">                    
+                                                                    value="{{ $search_data }}">
                                                         </div>
                                                         <div class="col-lg-2">
                                                             <button class="btn btn-sm btn-primary col-md-12 border border-dark rounded-pill" type="submit">
@@ -768,8 +767,8 @@
         {{-- Rapoarte plecare --}}
         @foreach ($rezervari->groupBy('oras_plecare_tara') as $rezervari_pe_tara)
         {{-- Modal pentru butonul de trimitere sms la toate cursele de pe o zi --}}
-            <div class="modal fade text-dark"  
-                id="trimite-sms-toate" 
+            <div class="modal fade text-dark"
+                id="trimite-sms-toate"
                 tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -782,48 +781,56 @@
                         </button>
                     </div>
 
-                <form method="POST" 
+                <form method="POST"
                     action="/rapoarte/trimite-sms/{{ $rezervari_pe_tara->first()->oras_plecare_tara }}/{{ \Carbon\Carbon::parse($search_data)->isoFormat('YYYY-MM-DD') }}/toate/lista_plecare/{{ $tip_transport }}/extrage-rezervari/raport-pdf">
-                    
-                    @csrf  
 
-                    <div class="modal-body" style="text-align:left;">                
-                        <div class="form-row">                              
-                            <div class="form-group col-lg-12">  
-                                <label for="text_sms" class="mb-0 pl-3">Text SMS:</label>  
-                                <textarea class="form-control mb-1 {{ $errors->has('text_sms') ? 'is-invalid' : '' }}" 
+                    @csrf
+
+                    <div class="modal-body" style="text-align:left;">
+                        <div class="form-row">
+                            <div class="form-group col-lg-12">
+                                <label for="text_sms" class="mb-0 pl-3">Text SMS:</label>
+                                <textarea class="form-control mb-1 {{ $errors->has('text_sms') ? 'is-invalid' : '' }}"
                                     name="text_sms"
                                     rows="4"
                                     v-model="text_sms"
                                 ></textarea>
                                 <div class="text-right">
                                     <label for="nr_caractere" class="mb-0 pl-3">Nr. caractere:</label>
-                                    <input class="text-right" 
+                                    <input class="text-right"
                                         style="width:40px"
-                                        v-model="caractere" 
+                                        v-model="caractere"
                                         readonly>
                                 </div>
-                            </div>  
-                        </div> 
+                            </div>
+                            <div class="col-lg-12">
+                                <a class="" data-toggle="collapse" href="#collapse" role="button" aria-expanded="false" aria-controls="collapse">
+                                    <i class="fas fa-compress mr-1"></i> Afișează caracterele acceptate in textul SMS-ului
+                                </a>
+                            </div>
+                            <div class="col-lg-12 collapse" id="collapse">
+                                @include ('diverse.caracterele_acceptate_in_textul_sms_ului')
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Renunță</button>                                                              
-                            <button 
-                                type="submit" 
-                                class="btn btn-warning"  
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Renunță</button>
+                            <button
+                                type="submit"
+                                class="btn btn-warning"
                                 >
                                 Trimite SMS
-                            </button>  
-                    </div>                  
-                </form>                                                        
+                            </button>
+                    </div>
+                </form>
                     </div>
                 </div>
             </div>
-            
+
             @foreach ($rezervari_pe_tara->where('oras_plecare_tara', $rezervari_pe_tara->first()->oras_plecare_tara)->sortBy('lista_plecare')->groupBy('lista_plecare') as $rezervari_pe_trasee)
                 {{-- Modale pentru butoanele de trimitere sms la fiecare cursa in parte --}}
-                <div class="modal fade text-dark"  
-                    id="trimite-sms-{{ $rezervari_pe_trasee->first()->lista_plecare }}-lista_plecare" 
+                <div class="modal fade text-dark"
+                    id="trimite-sms-{{ $rezervari_pe_trasee->first()->lista_plecare }}-lista_plecare"
                     tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
@@ -836,40 +843,48 @@
                             </button>
                         </div>
 
-                    <form method="POST" 
+                    <form method="POST"
                         action="/rapoarte/trimite-sms/{{ $rezervari_pe_tara->first()->oras_plecare_tara }}/{{ \Carbon\Carbon::parse($search_data)->isoFormat('YYYY-MM-DD') }}/{{ $rezervari_pe_trasee->first()->lista_plecare }}/lista_plecare/{{ $tip_transport }}/extrage-rezervari/raport-pdf">
-                        
-                        @csrf  
 
-                        <div class="modal-body" style="text-align:left;">                
-                            <div class="form-row">                              
-                                <div class="form-group col-lg-12">  
-                                    <label for="text_sms" class="mb-0 pl-3">Text SMS:</label>  
-                                    <textarea class="form-control mb-1 {{ $errors->has('text_sms') ? 'is-invalid' : '' }}" 
+                        @csrf
+
+                        <div class="modal-body" style="text-align:left;">
+                            <div class="form-row">
+                                <div class="form-group col-lg-12">
+                                    <label for="text_sms" class="mb-0 pl-3">Text SMS:</label>
+                                    <textarea class="form-control mb-1 {{ $errors->has('text_sms') ? 'is-invalid' : '' }}"
                                         name="text_sms"
                                         rows="4"
                                         v-model="text_sms"
                                     ></textarea>
                                     <div class="text-right">
                                         <label for="nr_caractere" class="mb-0 pl-3">Nr. caractere:</label>
-                                        <input class="text-right" 
+                                        <input class="text-right"
                                             style="width:40px"
-                                            v-model="caractere" 
+                                            v-model="caractere"
                                             readonly>
                                     </div>
-                                </div>  
-                            </div> 
+                                </div>
+                                <div class="col-lg-12">
+                                    <a class="" data-toggle="collapse" href="#collapse" role="button" aria-expanded="false" aria-controls="collapse">
+                                        <i class="fas fa-compress mr-1"></i> Afișează caracterele acceptate in textul SMS-ului
+                                    </a>
+                                </div>
+                                <div class="col-lg-12 collapse" id="collapse">
+                                    @include ('diverse.caracterele_acceptate_in_textul_sms_ului')
+                                </div>
+                            </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Renunță</button>                                                              
-                                <button 
-                                    type="submit" 
-                                    class="btn btn-warning"  
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Renunță</button>
+                                <button
+                                    type="submit"
+                                    class="btn btn-warning"
                                     >
                                     Trimite SMS
-                                </button>  
-                        </div>                  
-                    </form>                                                        
+                                </button>
+                        </div>
+                    </form>
                         </div>
                     </div>
                 </div>
@@ -880,8 +895,8 @@
         @foreach ($rezervari->groupBy('oras_sosire_tara') as $rezervari_pe_tara)
             @foreach ($rezervari_pe_tara->where('oras_sosire_tara', $rezervari_pe_tara->first()->oras_sosire_tara)->sortBy('lista_sosire')->groupBy('lista_sosire') as $rezervari_pe_trasee)
                 {{-- Modale pentru butoanele de trimitere sms la fiecare cursa in parte --}}
-                <div class="modal fade text-dark"  
-                    id="trimite-sms-{{ $rezervari_pe_trasee->first()->lista_sosire }}-lista_sosire" 
+                <div class="modal fade text-dark"
+                    id="trimite-sms-{{ $rezervari_pe_trasee->first()->lista_sosire }}-lista_sosire"
                     tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
@@ -894,40 +909,48 @@
                             </button>
                         </div>
 
-                    <form method="POST" 
+                    <form method="POST"
                         action="/rapoarte/trimite-sms/{{ $rezervari_pe_tara->first()->oras_plecare_tara }}/{{ \Carbon\Carbon::parse($search_data)->isoFormat('YYYY-MM-DD') }}/{{ $rezervari_pe_trasee->first()->lista_sosire }}/lista_sosire/{{ $tip_transport }}/extrage-rezervari/raport-pdf">
-                        
-                        @csrf  
 
-                        <div class="modal-body" style="text-align:left;">                
-                            <div class="form-row">                              
-                                <div class="form-group col-lg-12">  
-                                    <label for="text_sms" class="mb-0 pl-3">Text SMS:</label>  
-                                    <textarea class="form-control mb-1 {{ $errors->has('text_sms') ? 'is-invalid' : '' }}" 
+                        @csrf
+
+                        <div class="modal-body" style="text-align:left;">
+                            <div class="form-row">
+                                <div class="form-group col-lg-12">
+                                    <label for="text_sms" class="mb-0 pl-3">Text SMS:</label>
+                                    <textarea class="form-control mb-1 {{ $errors->has('text_sms') ? 'is-invalid' : '' }}"
                                         name="text_sms"
                                         rows="4"
                                         v-model="text_sms"
                                     ></textarea>
                                     <div class="text-right">
                                         <label for="nr_caractere" class="mb-0 pl-3">Nr. caractere:</label>
-                                        <input class="text-right" 
+                                        <input class="text-right"
                                             style="width:40px"
-                                            v-model="caractere" 
+                                            v-model="caractere"
                                             readonly>
                                     </div>
-                                </div>  
-                            </div> 
+                                </div>
+                                <div class="col-lg-12">
+                                    <a class="" data-toggle="collapse" href="#collapse" role="button" aria-expanded="false" aria-controls="collapse">
+                                        <i class="fas fa-compress mr-1"></i> Afișează caracterele acceptate in textul SMS-ului
+                                    </a>
+                                </div>
+                                <div class="col-lg-12 collapse" id="collapse">
+                                    @include ('diverse.caracterele_acceptate_in_textul_sms_ului')
+                                </div>
+                            </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Renunță</button>                                                              
-                                <button 
-                                    type="submit" 
-                                    class="btn btn-warning"  
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Renunță</button>
+                                <button
+                                    type="submit"
+                                    class="btn btn-warning"
                                     >
                                     Trimite SMS
-                                </button>  
-                        </div>                  
-                    </form>                                                        
+                                </button>
+                        </div>
+                    </form>
                         </div>
                     </div>
                 </div>
@@ -936,14 +959,14 @@
         </div>
 
 
-    @forelse ($rezervari as $rezervare)         
+    @forelse ($rezervari as $rezervare)
         {{-- Modal pentru butonul de neseriosi --}}
         <div class="modal fade text-dark" id="neseriosiRezervare{{ $rezervare->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                 <div class="modal-header bg-danger">
                     <h5 class="modal-title text-white" id="exampleModalLabel">
-                        Rezervare: 
+                        Rezervare:
                         <b>
                             @isset($rezervare->nr_adulti)
                                 @foreach ($rezervare->pasageri_relation as $pasager)
@@ -965,47 +988,47 @@
 
             <form method="POST" action="{{ route('insereaza-pasageri-neseriosi', ['rezervare' => $rezervare->id]) }}">
                 {{-- @method('DELETE')   --}}
-                @csrf  
+                @csrf
 
                 <div class="modal-body" style="text-align:left;">
                     <p>
                         Ești sigur ca vrei să adaugi pasagerii în lista de Clienți neserioși?
                     </p>
-                
-                    <div class="form-row">                              
-                        <div class="form-group col-lg-12">  
-                            <label for="observatii" class="mb-0 pl-3">Observații:</label>  
-                            <textarea class="form-control {{ $errors->has('observatii') ? 'is-invalid' : '' }}" 
+
+                    <div class="form-row">
+                        <div class="form-group col-lg-12">
+                            <label for="observatii" class="mb-0 pl-3">Observații:</label>
+                            <textarea class="form-control {{ $errors->has('observatii') ? 'is-invalid' : '' }}"
                                 name="observatii"
                                 rows="2"
                             >{{ old('observatii') }}</textarea>
-                        </div>  
-                    </div> 
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Renunță</button>                                                              
-                        <button 
-                            type="submit" 
-                            class="btn btn-danger"  
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Renunță</button>
+                        <button
+                            type="submit"
+                            class="btn btn-danger"
                             >
                             Adaugă
-                        </button>  
-                </div>                  
-            </form>                                                        
+                        </button>
+                </div>
+            </form>
                 </div>
             </div>
         </div>
 
 
         {{-- Modal pentru butonul de stergere --}}
-        <div class="modal fade text-dark" id="stergeRezervare{{ $rezervare->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" 
+        <div class="modal fade text-dark" id="stergeRezervare{{ $rezervare->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
             {{-- data-backdrop="false" --}}
         >
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                 <div class="modal-header bg-danger">
                     <h5 class="modal-title text-white" id="exampleModalLabel">
-                        Rezervare: 
+                        Rezervare:
                         <b>
                             @isset($rezervare->nr_adulti)
                                 @foreach ($rezervare->pasageri_relation as $pasager)
@@ -1029,22 +1052,22 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Renunță</button>
-                    
+
                     <form method="POST" action="{{ $rezervare->path() }}">
-                        @method('DELETE')  
-                        @csrf   
-                        <button 
-                            type="submit" 
-                            class="btn btn-danger"  
+                        @method('DELETE')
+                        @csrf
+                        <button
+                            type="submit"
+                            class="btn btn-danger"
                             >
                             Șterge Rezervarea
-                        </button>                    
+                        </button>
                     </form>
-                
+
                 </div>
                 </div>
             </div>
-        </div>                      
+        </div>
     @empty
         {{-- <div>Nu s-au gasit rezervări în baza de date. Încearcă alte date de căutare</div> --}}
     @endforelse
