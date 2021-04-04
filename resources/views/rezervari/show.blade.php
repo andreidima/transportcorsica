@@ -1,23 +1,23 @@
 @extends ('layouts.app')
 
-@section('content')   
+@section('content')
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-7">
             <div class="shadow-lg" style="border-radius: 40px 40px 40px 40px;">
                 <div class="border border-secondary p-2" style="border-radius: 40px 40px 0px 0px; background-color:lightseagreen">
                     <h6 class="ml-4 my-0" style="color:white"><i class="fas fa-address-card mr-1"></i>
-                        Rezervări / 
+                        Rezervări /
                         @foreach ($rezervare_tur->pasageri_relation as $pasager)
                             {{ $pasager->nume }}
                         @endforeach
                     </h6>
                 </div>
 
-                <div class="card-body py-2" 
+                <div class="card-body py-2"
                     style="
                         /* color:ivory;  */
-                        background-color:darkcyan; 
+                        background-color:darkcyan;
                         border-radius: 0px 0px 40px 40px
                     "
                 >
@@ -98,11 +98,11 @@
                                     <div class="col-lg-11 px-4 py-2 bg-white border rounded-lg">
                                         <div class="row justify-content-center">
                                             <div class="col-lg-4">
-                                                Număr pasageri: 
+                                                Număr pasageri:
                                                 <span class="badge badge-primary" style="font-size:1em">{{ $rezervare_tur->nr_adulti + $rezervare_tur->nr_copii }}</span>
                                             </div>
                                             <div class="col-lg-4">
-                                                {{-- Preț total: 
+                                                {{-- Preț total:
                                                 <span class="badge badge-primary" style="font-size:1em">{{ $rezervare_tur->pret_total }}€</span> --}}
                                                 @if ($rezervare_retur && ($rezervare_retur->pret_total > 0))
                                                     <span style="margin-right:50px">
@@ -137,19 +137,19 @@
                                                 </div>
                                             @endforeach
                                         </div>
-                                    </div>        
+                                    </div>
                                 @else
                                     <div class="col-lg-11 px-0 border rounded-lg">
                                         <h5 class="bg-success p-1 m-0 text-center">
-                                            Informații bagaj
+                                            Informații colete
                                         </h5>
                                     </div>
                                     <div class="col-lg-11 px-4 py-2 bg-white border rounded-lg">
-                                        {{ $rezervare_tur->bagaje_descriere }}</span>
+                                        {{ $rezervare_tur->colete_descriere }}</span>
                                         {{-- * {{ $tarife->adult }}€ = {{ $rezervare_tur->nr_adulti * $tarife->adult}}€ --}}
                                     </div>
                                     <div class="col-lg-11 px-4 py-2 mb-4 bg-white border rounded-lg">
-                                        Catitate: <span class="badge badge-primary" style="font-size:1em">{{ $rezervare_tur->bagaje_kg }} Kg</span>
+                                        Catitate: <span class="badge badge-primary" style="font-size:1em">{{ $rezervare_tur->colete_kg }} Kg</span>
                                     </div>
                                 @endif
                                     <div class="col-lg-11 px-0 border rounded-lg">
@@ -184,20 +184,20 @@
                                     </div>
                                 @endif
 
-                                    <div class="col-lg-12 mb-0 d-flex justify-content-center">   
+                                    <div class="col-lg-12 mb-0 d-flex justify-content-center">
                                         <a class="btn bg-success text-white border border-dark rounded-pill mr-1" href="/chitanta-descarca/{{ $rezervare_tur->cheie_unica }}/export-pdf" target="_target" role="button">
                                             Descarcă bilet
-                                        </a> 
+                                        </a>
                                         <a class="btn bg-success text-white border border-dark rounded-pill mr-1" href="/bilet-rezervat-user-logat/rezervare-pdf/{{ $rezervare_tur->id }}/{{ $rezervare_retur->id ?? ''}}" role="button">
                                             Descarcă rezervare
                                         </a>
                                         <a class="btn bg-primary text-white border border-dark rounded-pill" href="{{ route('rezervari.index') }}" role="button">
                                             Înapoi la Rezervări
-                                        </a> 
+                                        </a>
                                     </div>
 
-                                </div>  
-                                
+                                </div>
+
 
                             </div>
                         </div>

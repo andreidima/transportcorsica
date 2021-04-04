@@ -1,24 +1,24 @@
 @extends ('layouts.app')
 
-@section('content')   
+@section('content')
 <div class="container card" style="border-radius: 40px 40px 40px 40px;">
         <div class="row card-header justify-content-between py-1" style="border-radius: 40px 40px 0px 0px;">
             <div class="col-lg-3 align-self-center mb-2">
                 <h4 class=" mb-0">
                     <a href="{{ route('rezervari.index') }}"><i class="fas fa-address-card mr-1"></i>Rezervări</a>
                 </h4>
-            </div> 
+            </div>
             <div class="col-lg-6" id="app1">
                 <form class="needs-validation" novalidate method="GET" action="{{ route('rezervari.index') }}">
-                    @csrf                    
+                    @csrf
                     <div class="row input-group custom-search-form justify-content-center">
                         <div class="col-md-4 mb-2 px-1 d-flex align-items-center">
-                            <input type="text" class="form-control form-control-sm border rounded-pill mb-0 py-0" 
+                            <input type="text" class="form-control form-control-sm border rounded-pill mb-0 py-0"
                             id="search_nume" name="search_nume" placeholder="Client"
                                     value="{{ $search_nume }}">
                         </div>
                         <div class="col-md-2 mb-2 px-1 d-flex align-items-center">
-                            <input type="text" class="form-control form-control-sm border rounded-pill mb-0 py-0" 
+                            <input type="text" class="form-control form-control-sm border rounded-pill mb-0 py-0"
                             id="search_bilet_numar" name="search_bilet_numar" placeholder="Nr. bilet"
                                     value="{{ $search_bilet_numar }}">
                         </div>
@@ -55,7 +55,7 @@
                 <a class="btn btn-sm bg-success text-white border border-dark rounded-pill col-md-8" href="{{ route('adauga-rezervare-noua') }}" role="button">
                     <i class="fas fa-plus-square text-white mr-1"></i>Adaugă rezervare
                 </a>
-            </div> 
+            </div>
         </div>
 
         <div class="card-body px-0 py-3">
@@ -63,7 +63,7 @@
             @include('errors')
 
             <div class="table-responsive rounded mb-2">
-                <table class="table table-striped table-hover table-sm rounded"> 
+                <table class="table table-striped table-hover table-sm rounded">
                     <thead class="text-white rounded" style="background-color:#e66800;">
                         <tr class="" style="padding:2rem">
                             <th>Nr. Crt.</th>
@@ -75,19 +75,19 @@
                             <th>Data cursă</th>
                             <th class="text-center">Tur retur</th>
                             {{-- <th>Pret</th> --}}
-                            <th class="text-center">Plătit</th>  
-                            <th class="">Utilizator</th>                        
+                            <th class="text-center">Plătit</th>
+                            <th class="">Utilizator</th>
                             <th class="text-center">Acțiuni</th>
                         </tr>
                     </thead>
-                    <tbody>             
-                        @forelse ($rezervari as $rezervare) 
-                            <tr>                  
+                    <tbody>
+                        @forelse ($rezervari as $rezervare)
+                            <tr>
                                 <td align="">
                                     {{ ($rezervari ->currentpage()-1) * $rezervari ->perpage() + $loop->index + 1 }}
                                 </td>
                                 <td>
-                                    <a href="{{ $rezervare->path() }}">  
+                                    <a href="{{ $rezervare->path() }}">
                                         {{-- <b>{{ $rezervare->nume ?? $rezervare->pasageri_relation->first()->nume ?? '' }}</b> --}}
                                         @isset($rezervare->nr_adulti)
                                             @foreach ($rezervare->pasageri_relation as $pasager)
@@ -98,7 +98,7 @@
                                                 @endif
                                             @endforeach
                                         @else
-                                            Rezervare bagaj
+                                            Rezervare colete
                                         @endif
                                     </a>
                                 </td>
@@ -152,48 +152,48 @@
                                 <td>
                                     {{ $rezervare->user->name ?? 'SITE'}}
                                 </td>
-                                <td class="text-right"> 
+                                <td class="text-right">
                                     <div class="d-flex justify-content-end">
                                         <a href="{{ $rezervare->path() }}"
-                                            class="flex mr-1"    
+                                            class="flex mr-1"
                                         >
                                             <span class="badge badge-success">Vizualizează</span>
-                                        </a> 
+                                        </a>
                                         <a href="{{ $rezervare->path() }}/modifica"
-                                            class="flex mr-1"    
+                                            class="flex mr-1"
                                         >
                                             <span class="badge badge-primary">Modifică</span>
-                                        </a> 
+                                        </a>
                                     @if ((auth()->user()->role === 'administrator') || (auth()->user()->role === 'superadmin'))
                                         <a href="{{ $rezervare->path() }}/duplica"
-                                            class="flex mr-1"    
+                                            class="flex mr-1"
                                         >
                                             <span class="badge badge-secondary">Duplică</span>
-                                        </a>   
+                                        </a>
                                     @endif
                                         <div style="" class="mr-1">
-                                            <a 
-                                                href="#" 
-                                                data-toggle="modal" 
+                                            <a
+                                                href="#"
+                                                data-toggle="modal"
                                                 data-target="#neseriosiRezervare{{ $rezervare->id }}"
                                                 title="Clienți neserioși"
                                                 >
                                                 <span class="badge badge-danger">Neserioși</span>
                                             </a>
-                                        </div>   
+                                        </div>
                                         <div style="" class="">
-                                            <a 
-                                                href="#" 
-                                                data-toggle="modal" 
+                                            <a
+                                                href="#"
+                                                data-toggle="modal"
                                                 data-target="#stergeRezervare{{ $rezervare->id }}"
                                                 title="Șterge Rezervare"
                                                 >
                                                 <span class="badge badge-danger">Șterge</span>
                                             </a>
-                                        </div> 
+                                        </div>
                                     </div>
                                 </td>
-                            </tr>                         
+                            </tr>
                         @empty
                             {{-- <div>Nu s-au gasit rezervări în baza de date. Încearcă alte date de căutare</div> --}}
                         @endforelse
@@ -212,14 +212,14 @@
 
 
     {{-- Modalele --}}
-                        @forelse ($rezervari as $rezervare) 
+                        @forelse ($rezervari as $rezervare)
                                                 {{-- Modal pentru butonul de neseriosi --}}
                                                 <div class="modal fade text-dark" id="neseriosiRezervare{{ $rezervare->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
                                                         <div class="modal-header bg-danger">
                                                             <h5 class="modal-title text-white" id="exampleModalLabel">
-                                                                Rezervare: 
+                                                                Rezervare:
                                                                 <b>
                                                                     @isset($rezervare->nr_adulti)
                                                                         @foreach ($rezervare->pasageri_relation as $pasager)
@@ -230,7 +230,7 @@
                                                                             @endif
                                                                         @endforeach
                                                                     @else
-                                                                        Rezervare bagaj
+                                                                        Rezervare colete
                                                                     @endif
                                                                 </b>
                                                             </h5>
@@ -241,47 +241,47 @@
 
                                                     <form method="POST" action="{{ route('insereaza-pasageri-neseriosi', ['rezervare' => $rezervare->id]) }}">
                                                         {{-- @method('DELETE')   --}}
-                                                        @csrf  
+                                                        @csrf
 
                                                         <div class="modal-body" style="text-align:left;">
                                                             <p>
                                                                 Ești sigur ca vrei să adaugi pasagerii în lista de Clienți neserioși?
                                                             </p>
-                                                        
-                                                            <div class="form-row">                              
-                                                                <div class="form-group col-lg-12">  
-                                                                    <label for="observatii" class="mb-0 pl-3">Observații:</label>  
-                                                                    <textarea class="form-control {{ $errors->has('observatii') ? 'is-invalid' : '' }}" 
+
+                                                            <div class="form-row">
+                                                                <div class="form-group col-lg-12">
+                                                                    <label for="observatii" class="mb-0 pl-3">Observații:</label>
+                                                                    <textarea class="form-control {{ $errors->has('observatii') ? 'is-invalid' : '' }}"
                                                                         name="observatii"
                                                                         rows="2"
                                                                     >{{ old('observatii') }}</textarea>
-                                                                </div>  
-                                                            </div> 
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Renunță</button>                                                              
-                                                                <button 
-                                                                    type="submit" 
-                                                                    class="btn btn-danger"  
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Renunță</button>
+                                                                <button
+                                                                    type="submit"
+                                                                    class="btn btn-danger"
                                                                     >
                                                                     Adaugă
-                                                                </button>  
-                                                        </div>                  
-                                                    </form>                                                        
+                                                                </button>
+                                                        </div>
+                                                    </form>
                                                         </div>
                                                     </div>
                                                 </div>
 
-                            
+
                                                 {{-- Modal pentru butonul de stergere --}}
-                                                <div class="modal fade text-dark" id="stergeRezervare{{ $rezervare->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" 
+                                                <div class="modal fade text-dark" id="stergeRezervare{{ $rezervare->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
                                                     {{-- data-backdrop="false" --}}
                                                 >
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
                                                         <div class="modal-header bg-danger">
                                                             <h5 class="modal-title text-white" id="exampleModalLabel">
-                                                                Rezervare: 
+                                                                Rezervare:
                                                                 <b>
                                                                     @isset($rezervare->nr_adulti)
                                                                         @foreach ($rezervare->pasageri_relation as $pasager)
@@ -292,7 +292,7 @@
                                                                             @endif
                                                                         @endforeach
                                                                     @else
-                                                                        Rezervare bagaj
+                                                                        Rezervare colete
                                                                     @endif
                                                                 </b>
                                                             </h5>
@@ -305,22 +305,22 @@
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Renunță</button>
-                                                            
+
                                                             <form method="POST" action="{{ $rezervare->path() }}">
-                                                                @method('DELETE')  
-                                                                @csrf   
-                                                                <button 
-                                                                    type="submit" 
-                                                                    class="btn btn-danger"  
+                                                                @method('DELETE')
+                                                                @csrf
+                                                                <button
+                                                                    type="submit"
+                                                                    class="btn btn-danger"
                                                                     >
                                                                     Șterge Rezervarea
-                                                                </button>                    
+                                                                </button>
                                                             </form>
-                                                        
+
                                                         </div>
                                                         </div>
                                                     </div>
-                                                </div>                      
+                                                </div>
                         @empty
                             {{-- <div>Nu s-au gasit rezervări în baza de date. Încearcă alte date de căutare</div> --}}
                         @endforelse

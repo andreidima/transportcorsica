@@ -6,11 +6,11 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Bilet</title>
     <style>
-        html { 
+        html {
             margin: 40px 30px;
         }
 
-        body { 
+        body {
             font-family: DejaVu Sans, sans-serif;
             /* font-family: Arial, Helvetica, sans-serif; */
             font-size: 12px;
@@ -32,18 +32,18 @@
             width: 100%;
             word-wrap:break-word;
         }
-        
+
         th, td {
             padding: 1px 10px;
             border-width: 0px;
             border-style: solid;
-            
+
         }
         tr {
             border-style: solid;
             border-width: 0px;
         }
-        hr { 
+        hr {
             display: block;
             margin-top: 0.5em;
             margin-bottom: 0.5em;
@@ -51,15 +51,15 @@
             margin-right: auto;
             border-style: inset;
             border-width: 0.5px;
-        } 
+        }
     </style>
 </head>
 
 <body>
     {{-- <div style="width:730px; height: 1030px; border-style: dashed ; border-width:2px; border-radius: 15px;">      --}}
     <div style="border:dashed #999;
-        width:710px; 
-        min-height:500px;            
+        width:710px;
+        min-height:500px;
         padding: 0px 8px 0px 8px;
         margin:0px 0px;
             -moz-border-radius: 10px;
@@ -78,8 +78,8 @@
                         </td>
                     </tr>
                 </table>
-            
-                            
+
+
             <table style="margin-bottom:40px">
                 <tr style="text-align:center; font-weight:bold;">
                     <td colspan="3" style="border-width:0px; padding:0rem;">
@@ -90,17 +90,17 @@
                 </tr>
                 <tr>
                     <td width="" style="">
-                        {{-- Client: 
+                        {{-- Client:
                         <br>
                         <b>{{ $rezervare_tur->nume }}</b> --}}
                     </td>
                     <td width="50%" style="text-align:center;">
-                        Telefon: 
+                        Telefon:
                         <br>
                         <b>{{ $rezervare_tur->telefon }}</b>
                     </td>
                     <td width="50%" style="text-align:center;">
-                        E-mail: 
+                        E-mail:
                         <br>
                         <b>{{ $rezervare_tur->email }}</b>
                     </td>
@@ -112,14 +112,14 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="3">                    
+                    <td colspan="3">
                         Observații: {{ str_replace('€', 'E', $rezervare_tur->observatii) }}
                     </td>
                 </tr>
                 @endisset
             </table>
 
-            <table style="margin-bottom:40px">    
+            <table style="margin-bottom:40px">
                 <tr style="text-align:center; font-weight:bold;">
                     <td colspan="4" style="padding:0rem;">
                         <h3 style="background-color:#e7d790; color:black; margin:10px 0px 5px 0px; padding:5px 0px">
@@ -129,7 +129,7 @@
                 </tr>
                 <tr style="">
                     <td style="">
-                        Data de plecare: 
+                        Data de plecare:
                         <br>
                         <b>{{ \Carbon\Carbon::parse($rezervare_tur->data_cursa)->isoFormat('DD.MM.YYYY') }}</b>
                     </td>
@@ -159,7 +159,7 @@
 
                     <tr>
                         <td style="">
-                            Data de întoarcere: 
+                            Data de întoarcere:
                             <br>
                             <b>{{ \Carbon\Carbon::parse($rezervare_retur->data_cursa)->isoFormat('DD.MM.YYYY') }}</b>
                         </td>
@@ -182,7 +182,7 @@
                     </tr>
                 @endif
             </table>
-                            
+
             <table style="margin-bottom:20px">
                 <tr style="text-align:center; font-weight:bold;">
                     <td colspan="5" style="border-width:0px; padding:0rem;">
@@ -209,13 +209,13 @@
                                         Preț total: <b>{{ $rezervare_tur->pret_total }}Euro</b>
                                     </span>
                                 @endif
-                                <br>                          
+                                <br>
                                 @if($rezervare_tur->plata_efectuata == 1)
                                     <span>
                                         <b>Plata a fost deja efectuată online</b>
                                     </span>
                                 @endif
-                                <br> 
+                                <br>
                             </td>
                         </tr>
                         <tr>
@@ -264,20 +264,20 @@
                             <td style="border: solid 1px gray">
                                 {{ $pasager->categorie }}
                             </td>
-                        </tr> 
-                        @endforeach      
+                        </tr>
+                        @endforeach
                         </tr>
                     @else
                         <tr>
                             <td colspan="4">
-                                Descriere bagaj: {{ $rezervare_tur->bagaje_descriere }}
+                                Descriere colete: {{ $rezervare_tur->colete_descriere }}
                                 <br>
-                                <b>Cantitate: {{ $rezervare_tur->bagaje_kg }}Kg</b>
+                                <b>Cantitate: {{ $rezervare_tur->colete_kg }}Kg</b>
                             </td>
                         </tr>
-                    @endif              
+                    @endif
             </table>
-                            
+
             {{-- <table style="margin-bottom:20px">
                 <tr style="text-align:center; font-weight:bold;">
                     <td colspan="" style="border-width:0px; padding:0rem;">
@@ -295,15 +295,15 @@
                         Cnp:<b> {{ $rezervare_tur->cnp }} </b>
                         <br>
                     </td>
-                </tr>                
+                </tr>
             </table> --}}
-            
+
             {{-- * IN PRETUL BILETULUI AVETI INCLUS 40 KG PTR BAGAJUL DVS , CE DEPASESTE SE TAXEAZA CU 1 EURO / KG !!!
             <br><br>
             Ptr rezervari făcute cu mai puțin de 24 ore înainte de plecare sunați la nr de telefon: <b>0755106508</b> sau <b>0742296938</b>
             <br>
-            E-mail: <a href="mailto:alsimy_mond_travel@yahoo.com">alsimy_mond_travel@yahoo.com</a> 
-                / 
+            E-mail: <a href="mailto:alsimy_mond_travel@yahoo.com">alsimy_mond_travel@yahoo.com</a>
+                /
                 <a href="mailto:alsimy.mond.travel@gmail.com">alsimy.mond.travel@gmail.com</a>
             <br>
             FACTURA FISCALA O VEȚI PRIMI PE E-MAIL --}}
@@ -311,4 +311,3 @@
 </body>
 
 </html>
-    

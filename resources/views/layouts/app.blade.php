@@ -35,7 +35,7 @@
                     </button>
 
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    
+
                         <!-- Left Side Of Navbar -->
                         <ul class="navbar-nav mr-auto">
                             <li class="nav-item active mr-4">
@@ -55,11 +55,11 @@
                             </li>
                             <li class="nav-item active mr-4 dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-book mr-1"></i>Rapoarte Bagaje
+                                <i class="fas fa-book mr-1"></i>Rapoarte Colete
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="/rapoarte/bagaje/plecare">Rapoarte plecare</a>
-                                    <a class="dropdown-item" href="/rapoarte/bagaje/sosire">Rapoarte sosire</a>
+                                    <a class="dropdown-item" href="/rapoarte/colete/plecare">Rapoarte plecare</a>
+                                    <a class="dropdown-item" href="/rapoarte/colete/sosire">Rapoarte sosire</a>
                                     {{-- <a class="dropdown-item" href="#">Raport Retur</a> --}}
                                 </div>
                             </li>

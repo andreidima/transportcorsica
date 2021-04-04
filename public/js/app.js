@@ -94947,6 +94947,8 @@ if (document.querySelector('#adauga-rezervare')) {
       // sex: '',
       nr_adulti: nrAdultiVechi,
       nr_copii: nrCopiiVechi,
+      colete_kg: coleteKgVechi,
+      colete_volum: coleteVolumVechi,
       pret_adult: pretAdult,
       pret_copil: pretCopil,
       pret_adult_tur_retur: pretAdultTurRetur,
@@ -94998,6 +95000,12 @@ if (document.querySelector('#adauga-rezervare')) {
           this.diferenta_date = '';
         }
 
+        this.getPretTotal();
+      },
+      colete_kg: function colete_kg() {
+        this.getPretTotal();
+      },
+      colete_volum: function colete_volum() {
         this.getPretTotal();
       }
     },
@@ -95122,34 +95130,6 @@ if (document.querySelector('#adauga-rezervare')) {
       //     }
       // },
       getPretTotal: function getPretTotal() {
-        // this.pret_total = 5;
-        // if (this.tur_retur == false) {
-        //     if (!isNaN(this.nr_adulti) && (this.nr_adulti > 0)) {
-        //         this.pret_total = this.pret_total + this.pret_adult * this.nr_adulti
-        //     }
-        //     if (!isNaN(this.nr_copii) && (this.nr_copii > 0)) {
-        //         this.pret_total = this.pret_total + this.pret_copil * this.nr_copii
-        //     } 
-        // } else if (this.tur_retur == true) {
-        //     if (this.data_plecare && this.data_intoarcere){
-        //         dt1 = new Date(this.data_plecare)
-        //         dt2 = new Date(this.data_intoarcere)
-        //         this.diferenta_date = Math.floor((Date.UTC(dt2.getFullYear(), dt2.getMonth(), dt2.getDate()) - Date.UTC(dt1.getFullYear(), dt1.getMonth(), dt1.getDate())) / (1000 * 60 * 60 * 24))
-        //         if (this.diferenta_date < 15) {
-        //             if (!isNaN(this.nr_adulti) && (this.nr_adulti > 0)) {
-        //                 this.pret_total = this.pret_total + this.pret_adult_tur_retur * this.nr_adulti
-        //             }
-        //             if (!isNaN(this.nr_copii) && (this.nr_copii > 0)) {
-        //                 this.pret_total = this.pret_total + this.pret_copil_tur_retur * this.nr_copii
-        //             }
-        //         }
-        //     } else {
-        //         this.pret_adult = 200;
-        //         this.pret_total = 3;
-        //     }
-        // } else{
-        //     this.pret_total = 2
-        // }
         this.pret_total_tur = 0;
         this.pret_total_retur = 0;
 
@@ -95159,21 +95139,31 @@ if (document.querySelector('#adauga-rezervare')) {
           this.diferenta_date = Math.floor((Date.UTC(dt2.getFullYear(), dt2.getMonth(), dt2.getDate()) - Date.UTC(dt1.getFullYear(), dt1.getMonth(), dt1.getDate())) / (1000 * 60 * 60 * 24));
         }
 
-        if (this.isNumeric(this.diferenta_date) && this.diferenta_date < 15) {
-          if (this.hasOnlyDigits(this.nr_adulti) && this.nr_adulti > 0) {
-            this.pret_total_tur = this.pret_total_tur + this.pret_adult_tur_retur * this.nr_adulti;
-          }
+        if (this.tip_calatorie == "Calatori") {
+          if (this.isNumeric(this.diferenta_date) && this.diferenta_date < 15) {
+            if (this.hasOnlyDigits(this.nr_adulti) && this.nr_adulti > 0) {
+              this.pret_total_tur = this.pret_total_tur + this.pret_adult_tur_retur * this.nr_adulti;
+            }
 
-          if (this.hasOnlyDigits(this.nr_copii) && this.nr_copii > 0) {
-            this.pret_total_tur = this.pret_total_tur + this.pret_copil_tur_retur * this.nr_copii;
-          }
-        } else {
-          if (this.hasOnlyDigits(this.nr_adulti) && this.nr_adulti > 0) {
-            this.pret_total_tur = this.pret_total_tur + this.pret_adult * this.nr_adulti;
-          }
+            if (this.hasOnlyDigits(this.nr_copii) && this.nr_copii > 0) {
+              this.pret_total_tur = this.pret_total_tur + this.pret_copil_tur_retur * this.nr_copii;
+            }
+          } else {
+            if (this.hasOnlyDigits(this.nr_adulti) && this.nr_adulti > 0) {
+              this.pret_total_tur = this.pret_total_tur + this.pret_adult * this.nr_adulti;
+            }
 
-          if (this.hasOnlyDigits(this.nr_copii) && this.nr_copii > 0) {
-            this.pret_total_tur = this.pret_total_tur + this.pret_copil * this.nr_copii;
+            if (this.hasOnlyDigits(this.nr_copii) && this.nr_copii > 0) {
+              this.pret_total_tur = this.pret_total_tur + this.pret_copil * this.nr_copii;
+            }
+
+            if (this.tur_retur == true) {
+              this.pret_total_retur = this.pret_total_tur;
+            }
+          }
+        } else if (this.tip_calatorie == "Colete") {
+          if (this.colete_kg && isNumeric(this.colete_kg)) {
+            this.pret_total_tur = this.colete_kg * 2;
           }
 
           if (this.tur_retur == true) {
@@ -95613,8 +95603,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! E:\laragon\www\transportcorsica\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! E:\laragon\www\transportcorsica\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\laragon\www\transport-corsica\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\laragon\www\transport-corsica\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

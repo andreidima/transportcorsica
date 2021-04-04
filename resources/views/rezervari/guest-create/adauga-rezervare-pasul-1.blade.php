@@ -12,9 +12,6 @@
                 </div>
 
                 @include ('errors')
-                <div>
-                    {{ url()->previous() }}
-                </div>
 
                 <div class="card-body py-2"
                     style="
@@ -59,16 +56,16 @@
                                                         Transport Călători
                                                     </span>
                                         </label>
-                                        <label class="col-lg-6 border" v-bind:class="[tip_calatorie=='Bagaje' ? 'btn btn-sm btn-success' : 'btn btn-sm btn-secondary']">
+                                        <label class="col-lg-6 border" v-bind:class="[tip_calatorie=='Colete' ? 'btn btn-sm btn-success' : 'btn btn-sm btn-secondary']">
                                             <input type="radio" class="btn-group-toggle" name="tip_calatorie" id="tip_calatorie2" autocomplete="off"
-                                                v-model="tip_calatorie" value="Bagaje"
+                                                v-model="tip_calatorie" value="Colete"
                                                 {{-- v-on:change="setTaraPlecare();getJudetePlecareInitial();getJudeteSosireInitial();setPreturi();" --}}
                                                 {{-- v-on:change="setTaraPlecare();getOrasePlecare();getOraseSosire();setPreturi();" --}}
                                                 v-on:change="setTaraPlecare();getOrasePlecare();getOraseSosire();"
                                                 >
                                                     <i class="fas fa-box" style="font-size: 2em;"></i>
                                                     <span style="font-size: 2em;">
-                                                        Transport Bagaje
+                                                        Transport Colete
                                                     </span>
                                         </label>
                                     </div>
@@ -736,7 +733,63 @@
                                                 name="pasageri" id="pasageri" rows="2">{{ old('pasageri') }}</textarea>
                                         </div>  --}}
                                     </div>
-                                    <div v-if="tip_calatorie === 'Calatori'" class="form-row mb-4 px-2 pt-2 d-flex justify-content-center align-items-center border rounded"
+                                    <div v-if="tip_calatorie === 'Colete'" class="form-row mb-4 px-2 py-3 d-flex justify-content-center align-items-center border rounded"
+                                        style="background-color:lightseagreen; color:white"
+                                    >
+                                        <div class="form-group col-lg-4 mb-0 d-flex">
+                                            <label for="colete_numar" class="col-form-label mb-0 mr-2">Număr de colete:* </label>
+                                            <div class="px-0" style="width:50px">
+                                                <input
+                                                    type="text"
+                                                    class="form-control form-control-sm {{ $errors->has('colete_numar') ? 'is-invalid' : '' }}"
+                                                    name="colete_numar"
+                                                    placeholder=""
+                                                    value="{{ old('colete_numar', ($rezervare->colete_numar ?? '')) }}"
+                                                >
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-lg-4 mb-0 d-flex">
+                                            <script type="application/javascript">
+                                                coleteKgVechi={!! json_encode(old('colete_kg', ($rezervare->colete_kg ?? '0')), JSON_NUMERIC_CHECK) !!}
+                                            </script>
+                                            <label for="colete_kg" class="col-form-label mb-0 mr-2">Cantitate:* </label>
+                                            <div class="px-0" style="width:100px">
+                                                <input
+                                                    type="text"
+                                                    class="form-control form-control-sm {{ $errors->has('colete_kg') ? 'is-invalid' : '' }}"
+                                                    name="colete_kg"
+                                                    v-model="colete_kg"
+                                                    placeholder=""
+                                                    value="{{ old('colete_kg', ($rezervare->colete_kg ?? '')) }}"
+                                                >
+                                            </div>
+                                            <label id="" class="col-form-label pl-1 align-bottom">
+                                                Kg
+                                            </label>
+                                        </div>
+                                        <div class="form-group col-lg-4 mb-0 d-flex">
+                                            <script type="application/javascript">
+                                                coleteVolumVechi={!! json_encode(old('colete_volum', ($rezervare->colete_volum ?? '0')), JSON_NUMERIC_CHECK) !!}
+                                            </script>
+                                            <label for="colete_volum" class="col-form-label mb-0 mr-2">Volum:</label>
+                                            <div class="px-0" style="width:100px">
+                                                <input
+                                                    type="text"
+                                                    class="form-control form-control-sm {{ $errors->has('colete_volum') ? 'is-invalid' : '' }}"
+                                                    name="colete_volum"
+                                                    v-model="colete_volum"
+                                                    placeholder=""
+                                                    value="{{ old('colete_volum', ($rezervare->colete_volum ?? '')) }}"
+                                                >
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-lg-12 mb-0 justify-content-center">
+                                            <label for="colete_descriere" class="mb-0">Descriere colete:*</label>
+                                            <textarea class="form-control {{ $errors->has('colete_descriere') ? 'is-invalid' : '' }}"
+                                                name="colete_descriere" id="colete_descriere" rows="2">{{ old('colete_descriere', ($rezervare->colete_descriere ?? '')) }}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-row mb-4 px-2 pt-2 d-flex justify-content-center align-items-center border rounded"
                                         style="background-color:lightseagreen; color:white"
                                     >
                                         <div v-if="tur_retur" class="col-lg-12">
@@ -816,35 +869,11 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div v-else class="form-row mb-4 px-2 py-3 d-flex justify-content-center align-items-center border rounded"
-                                        style="background-color:lightseagreen; color:white"
-                                    >
-                                        <div class="form-group col-lg-12 mb-0 d-flex">
-                                            <label for="bagaje_kg" class="col-form-label mb-0 mr-2">Cantitate:* </label>
-                                            <div class="px-0" style="width:100px">
-                                                <input
-                                                    type="text"
-                                                    class="form-control form-control-sm {{ $errors->has('bagaje_kg') ? 'is-invalid' : '' }}"
-                                                    name="bagaje_kg"
-                                                    placeholder=""
-                                                    value="{{ old('bagaje_kg', ($rezervare->bagaje_kg ?? '')) }}"
-                                                >
-                                            </div>
-                                            <label id="" class="col-form-label pl-1 align-bottom">
-                                                Kg
-                                            </label>
-                                        </div>
-                                        <div class="form-group col-lg-12 mb-0 justify-content-center">
-                                            <label for="bagaje_descriere" class="mb-0">Descriere bagaj:*</label>
-                                            <textarea class="form-control {{ $errors->has('bagaje_descriere') ? 'is-invalid' : '' }}"
-                                                name="bagaje_descriere" id="bagaje_descriere" rows="2">{{ old('bagaje_descriere', ($rezervare->bagaje_descriere ?? '')) }}</textarea>
-                                        </div>
-                                    </div>
                                     <div class="form-row mb-4 px-2 py-2 justify-content-between align-items-center border rounded"
                                         style="background-color:lightseagreen; color:white"
                                     >
-                                        <div v-if="tip_calatorie === 'Bagaje'" class="form-group col-lg-4">
-                                            <label for="nume" class="mb-0">Nume și prenume Client:*</label>
+                                        <div v-if="tip_calatorie === 'Colete'" class="form-group col-lg-4">
+                                            <label for="nume" class="mb-0">Nume și prenume Expeditor:*</label>
                                             <input
                                                 type="text"
                                                 class="form-control form-control-sm {{ $errors->has('nume') ? 'is-invalid' : '' }}"
@@ -854,7 +883,7 @@
                                                 required>
                                         </div>
                                         <div class="form-group col-lg-4">
-                                            <label for="nume" class="mb-0">Telefon:*</label>
+                                            <label for="nume" class="mb-0">Telefon Expeditor:*</label>
                                             <input
                                                 type="text"
                                                 class="form-control form-control-sm {{ $errors->has('nume') ? 'is-invalid' : '' }}"
@@ -864,7 +893,37 @@
                                                 required>
                                         </div>
                                         <div class="form-group col-lg-4">
-                                            <label for="nume" class="mb-0">Email:</label>
+                                            <label for="nume" class="mb-0">Email Expeditor:</label>
+                                            <input
+                                                type="text"
+                                                class="form-control form-control-sm {{ $errors->has('email') ? 'is-invalid' : '' }}"
+                                                name="email"
+                                                placeholder=""
+                                                value="{{ old('email', ($rezervare->email ?? '')) }}"
+                                                required>
+                                        </div>
+                                        <div class="form-group col-lg-4">
+                                            <label for="nume" class="mb-0">Nume și prenume Destinatar:*</label>
+                                            <input
+                                                type="text"
+                                                class="form-control form-control-sm {{ $errors->has('nume') ? 'is-invalid' : '' }}"
+                                                name="nume"
+                                                placeholder=""
+                                                value="{{ old('nume', ($rezervare->nume ?? '')) }}"
+                                                required>
+                                        </div>
+                                        <div class="form-group col-lg-4">
+                                            <label for="nume" class="mb-0">Telefon Destinatar:*</label>
+                                            <input
+                                                type="text"
+                                                class="form-control form-control-sm {{ $errors->has('nume') ? 'is-invalid' : '' }}"
+                                                name="telefon"
+                                                placeholder=""
+                                                value="{{ old('telefon', ($rezervare->telefon ?? '')) }}"
+                                                required>
+                                        </div>
+                                        <div class="form-group col-lg-4">
+                                            <label for="nume" class="mb-0">Email Destinatar:</label>
                                             <input
                                                 type="text"
                                                 class="form-control form-control-sm {{ $errors->has('email') ? 'is-invalid' : '' }}"
@@ -969,7 +1028,7 @@
                                         </div>
                                     </div>
                                 @endauth
-                                    <div class="form-row px-2 py-2 justify-content-between">
+                                    <div v-if="tip_calatorie === 'Calatori'" class="form-row px-2 py-2 justify-content-between">
                                         <div class="form-group col-lg-12 border-left border-info" style="border-width:5px !important">
                                             * În prețul biletului aveți inclus 50 kg ptr bagajul dvs. Excedentul se tarifează cu 1 Euro / kg.
                                             {{-- * IN PRETUL BILETULUI AVETI INCLUS 40 KG PTR BAGAJUL DVS , CE DEPASESTE SE TAXEAZA CU 1 EURO / KG !!! --}}

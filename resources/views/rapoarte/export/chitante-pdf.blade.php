@@ -6,11 +6,11 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Bilet</title>
     <style>
-        html { 
+        html {
             margin: 30px 30px 30px 30px;
         }
 
-        body { 
+        body {
             font-family: DejaVu Sans, sans-serif;
             /* font-family: Arial, Helvetica, sans-serif; */
             font-size: 8px;
@@ -32,18 +32,18 @@
             width: 100%;
             word-wrap:break-word;
         }
-        
+
         th, td {
             padding: 1px 1px;
             border-width: 0px;
             border-style: solid;
-            
+
         }
         tr {
             border-style: solid;
             border-width: 0px;
         }
-        hr { 
+        hr {
             display: block;
             margin-top: 0.5em;
             margin-bottom: 0.5em;
@@ -51,15 +51,15 @@
             margin-right: auto;
             border-style: inset;
             border-width: 0.5px;
-        } 
+        }
     </style>
 </head>
 
 <body>
     {{-- <div style="width:730px; height: 1030px; border-style: dashed ; border-width:2px; border-radius: 15px;">      --}}
     <div style="
-        width:730px; 
-        min-height:600px;            
+        width:730px;
+        min-height:600px;
         padding: 3px 3px 3px 3px;
         margin:0px 0px;
             -moz-border-radius: 10px;
@@ -80,15 +80,15 @@
                 Cod IBAN EURO: RO83BTRLEURCRT0319122801 <br>
                 Cod IBAN LEI: RO36BTRLRONCRT0319122801 <br>
             </p>
-   
+
 
             <h2 style="margin:0px; text-align:center">BILET DE CĂLĂTORIE</h2>
-            
-            <h2 style="margin:0px; text-align:center">Seria și număr: {{ $rezervare->bilet_serie }} {{ $rezervare->bilet_numar }} </h2>  
-            
+
+            <h2 style="margin:0px; text-align:center">Seria și număr: {{ $rezervare->bilet_serie }} {{ $rezervare->bilet_numar }} </h2>
+
             <h2 style="margin:0px; text-align:center">DUPLICAT</h2>
-                   
-                            
+
+
             <table style="margin-bottom:0px">
                 <tr style="text-align:center; font-weight:bold;">
                     <td colspan="3" style="border-width:0px; padding:0rem;">
@@ -101,19 +101,19 @@
                     <td width="" style="">
                     </td>
                     <td width="50%" style="text-align:center;">
-                        Telefon: 
+                        Telefon:
                         <br>
                         <b>{{ $rezervare->telefon }}</b>
                     </td>
                     <td width="50%" style="text-align:center;">
-                        E-mail: 
+                        E-mail:
                         <br>
                         <b>{{ $rezervare->email }}</b>
                     </td>
                 </tr>
             </table>
-   
-            <table style="margin-bottom:0px">    
+
+            <table style="margin-bottom:0px">
                 <tr style="text-align:center; font-weight:bold;">
                     <td colspan="4" style="padding:0rem;">
                         <h3 style="background-color:#ece7cf; color:black; margin:10px 0px 5px 0px; padding:5px 0px">
@@ -123,7 +123,7 @@
                 </tr>
                 <tr style="">
                     <td style="">
-                        Data de plecare: 
+                        Data de plecare:
                         <br>
                         <b>{{ \Carbon\Carbon::parse($rezervare->data_cursa)->isoFormat('DD.MM.YYYY') }}</b>
                     </td>
@@ -142,7 +142,7 @@
                     </td>
                 </tr>
             </table>
-                    
+
             <table style="margin-bottom:0px">
                 <tr style="text-align:center; font-weight:bold;">
                     <td colspan="3" style="border-width:0px; padding:0rem;">
@@ -162,7 +162,7 @@
                             <td style="width:33%; text-align: right">
                                 Preț în Lei: <b style="font-size:larger">{{ $rezervare->valoare_lei + $rezervare->valoare_lei_tva }} lei</b>
                             </td>
-                        </tr>                        
+                        </tr>
                     @if ($rezervare->pret_total == 0)
                         <tr>
                             <td colspan="3" style="text-align: center">
@@ -173,15 +173,15 @@
                         <tr>
                             <td colspan="3" style="text-align: center">
                                         {{-- <br> --}}
-                                        Curs valutar BNR la data rezervării biletului de călătorie {{ \Carbon\Carbon::parse($rezervare->created_at)->isoFormat('DD.MM.YYYY') }}: 
+                                        Curs valutar BNR la data rezervării biletului de călătorie {{ \Carbon\Carbon::parse($rezervare->created_at)->isoFormat('DD.MM.YYYY') }}:
                                         1 EURO = {{ $rezervare->curs_bnr_euro }}
-                                <br>                          
+                                <br>
                                 @if($rezervare->plata_efectuata == 1)
                                     <span>
                                         <b>Plata a fost efectuată online</b>
                                     </span>
                                 @endif
-                                <br> 
+                                <br>
                             </td>
                         </tr>
                         <tr>
@@ -206,22 +206,22 @@
                             <td style="border: solid 2px black">
                                 {{ $pasager->localitate_nastere }}
                             </td>
-                        </tr> 
-                        @endforeach    
+                        </tr>
+                        @endforeach
                     @else
                         <tr>
                             <td colspan="3">
-                                Descriere bagaj: {{ $rezervare->bagaje_descriere }}
+                                Descriere colete: {{ $rezervare->colete_descriere }}
                                 <br>
-                                <b>Cantitate: {{ $rezervare->bagaje_kg }}Kg</b>
+                                <b>Cantitate: {{ $rezervare->colete_kg }}Kg</b>
                             </td>
                         </tr>
-                    @endif   
-            </table>   
+                    @endif
+            </table>
             <p style="text-align:center; margin:0rem">
                 Păstrați biletul pentru control
             </p>
-             
+
         {{-- </div>
     </div> --}}
                         </td>

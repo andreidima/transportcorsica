@@ -120,7 +120,7 @@ class RezervareController extends Controller
         $rezervare = (!$rezervare->tur) ? $rezervare : Rezervare::find($rezervare->tur);
 
         // Setarea informatiilor suplimentare necesare formularului
-        $rezervare->tip_calatorie = isset($rezervare->nr_adulti) ? "Calatori" : "Bagaje";
+        $rezervare->tip_calatorie = isset($rezervare->nr_adulti) ? "Calatori" : "Colete";
         $rezervare->traseu = (($rezervare->oras_plecare_nume->tara ?? null) === "Romania") ? "Romania-Corsica" : "Corsica-Romania";
         $rezervare->tur_retur = ($rezervare->retur) ? "true" : "false";
         $rezervare->data_plecare = $rezervare->data_cursa;
@@ -285,16 +285,16 @@ class RezervareController extends Controller
             $rezervare_tur->nr_copii = null;
             $rezervare_tur->pret_total = 0;
 
-            $rezervare_tur->bagaje_kg = $request->bagaje_kg;
-            $rezervare_tur->bagaje_descriere = $request->bagaje_descriere;
+            $rezervare_tur->colete_kg = $request->colete_kg;
+            $rezervare_tur->colete_descriere = $request->colete_descriere;
 
             if (isset($rezervare_retur)){
                 $rezervare_retur->nr_adulti = null;
                 $rezervare_retur->nr_copii = null;
                 $rezervare_retur->pret_total = 0;
 
-                $rezervare_retur->bagaje_kg = $request->bagaje_kg;
-                $rezervare_retur->bagaje_descriere = $request->bagaje_descriere;
+                $rezervare_retur->colete_kg = $request->colete_kg;
+                $rezervare_retur->colete_descriere = $request->colete_descriere;
             }
         }
 
@@ -638,8 +638,8 @@ class RezervareController extends Controller
                     'copii.localitate_nastere.*' => ['nullable', 'max:100'],
                     // 'copii.localitate_domiciliu.*' => ['nullable', 'max:100'],
                     'copii.sex.*' => ['nullable', 'max:100'],
-                    'bagaje_kg' => ['nullable', 'integer', 'max:100'],
-                    'bagaje_descriere' => ['nullable', 'max:2000'],
+                    'colete_kg' => ['nullable', 'integer', 'max:100'],
+                    'colete_descriere' => ['nullable', 'max:2000'],
                     'data_plecare' => [
                         'nullable'
                     ],
@@ -781,9 +781,9 @@ class RezervareController extends Controller
                     'copii.localitate_nastere.*' => ['required', 'max:100'],
                     // 'copii.localitate_domiciliu.*' => ['nullable', 'max:100'],
                     'copii.sex.*' => ['nullable', 'max:100'],
-                    'bagaje_kg' => ['required_if:tip_calatorie,Bagaje', 'numeric'],
-                    // 'bagaje_descriere' => ['required_if:tip_calatorie,Bagaje', 'max:2000'],
-                    'bagaje_descriere' => ['nullable', 'max:2000'],
+                    'colete_kg' => ['required_if:tip_calatorie,Colete', 'numeric'],
+                    // 'colete_descriere' => ['required_if:tip_calatorie,Colete', 'max:2000'],
+                    'colete_descriere' => ['nullable', 'max:2000'],
                     'data_plecare' => [
                         'required'
                     ],
@@ -802,14 +802,14 @@ class RezervareController extends Controller
                     'nume' => ($request->_method === "PATCH") ?
                         [
                             'nullable'
-                            // 'required_if:tip_calatorie,Bagaje', 'max:200',
+                            // 'required_if:tip_calatorie,Colete', 'max:200',
                             // Rule::unique('rezervari')->ignore($rezervari->id)->where(function ($query) use ($rezervari, $request) {
                             //     return $query->where('telefon', $request->telefon)
                             //         ->where('data_cursa', $request->data_cursa);
                             // }),
                         ]
                         : [
-                            'required_if:tip_calatorie,Bagaje', 'max:200',
+                            'required_if:tip_calatorie,Colete', 'max:200',
                             Rule::unique('rezervari')->where(function ($query) use ($rezervari, $request) {
                                 return $query->where('telefon', $request->telefon)
                                     ->where('data_cursa', $request->data_plecare);
@@ -1059,8 +1059,8 @@ class RezervareController extends Controller
         );
 
         if($rezervare->tip_calatorie === "Calatori"){
-            unset($rezervare_unset->bagaje_kg,
-                $rezervare_unset->bagaje_descriere
+            unset($rezervare_unset->colete_kg,
+                $rezervare_unset->colete_descriere
             );
         }else{
             unset(
@@ -1251,7 +1251,7 @@ class RezervareController extends Controller
         //     }
         //     $mesaj .= 'a fost inregistrata in sistem. ';
         // } else {
-        //     $mesaj .= 'Rezervarea pentru bagajul dumneavoastra a fost inregistrata in sistem. ';
+        //     $mesaj .= 'Rezervarea pentru coletele dumneavoastra a fost inregistrata in sistem. ';
         // }
         // $mesaj .= 'O zi placuta va dorim!';
 

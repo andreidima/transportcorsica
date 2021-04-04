@@ -5,18 +5,18 @@
     <div class="row justify-content-center">
         <div class="col-lg-8">
             <div class="shadow-lg bg-white" style="border-radius: 40px 40px 40px 40px;">
-                <div class="p-2 d-flex justify-content-between align-items-end" 
-                    style="border-radius: 40px 40px 0px 0px; border:2px solid darkcyan">                     
+                <div class="p-2 d-flex justify-content-between align-items-end"
+                    style="border-radius: 40px 40px 0px 0px; border:2px solid darkcyan">
                     <h3 class="ml-3" style="color:darkcyan"><i class="fas fa-ticket-alt fa-lg mr-1"></i>Verificare bilet călătorie</h3>
                     <img src="{{ asset('images/logo.png') }}" height="70" class="mr-3">
                 </div>
-                
-                @include ('errors')                
 
-                <div class="card-body py-2" 
+                @include ('errors')
+
+                <div class="card-body py-2"
                     style="
                         /* color:ivory;  */
-                        background-color:darkcyan; 
+                        background-color:darkcyan;
                         border-radius: 0px 0px 40px 40px
                     "
                 >
@@ -97,11 +97,11 @@
                                     <div class="col-lg-11 px-4 py-2 bg-white border rounded-lg">
                                         <div class="row justify-content-center">
                                             <div class="col-lg-4">
-                                                Număr pasageri: 
+                                                Număr pasageri:
                                                 <span class="badge badge-primary" style="font-size:1em">{{ $rezervare->nr_adulti + $rezervare->nr_copii }}</span>
                                             </div>
                                             <div class="col-lg-4">
-                                                Preț total: 
+                                                Preț total:
                                                 <span class="badge badge-primary" style="font-size:1em">{{ $rezervare->pret_total_tur + $rezervare->pret_total_retur }}€</span>
                                             </div>
                                         </div>
@@ -139,19 +139,19 @@
                                                 </div>
                                             @endfor
                                         </div>
-                                    </div>                                
-                                @elseif ($rezervare->tip_calatorie === "Bagaje")
+                                    </div>
+                                @elseif ($rezervare->tip_calatorie === "Colete")
                                     <div class="col-lg-11 px-0 border rounded-lg">
                                         <h5 class="bg-success text-white p-1 m-0 text-center">
-                                            Informații bagaj
+                                            Informații colete
                                         </h5>
                                     </div>
                                     <div class="col-lg-11 px-4 py-2 bg-white border rounded-lg">
-                                        {{ $rezervare->bagaje_descriere }}</span>
+                                        {{ $rezervare->colete_descriere }}</span>
                                         {{-- * {{ $tarife->adult }}€ = {{ $rezervare->nr_adulti * $tarife->adult}}€ --}}
                                     </div>
                                     <div class="col-lg-11 px-4 py-2 mb-4 bg-white border rounded-lg">
-                                        Catitate: <span class="badge badge-primary" style="font-size:1em">{{ $rezervare->bagaje_kg }} Kg</span>
+                                        Catitate: <span class="badge badge-primary" style="font-size:1em">{{ $rezervare->colete_kg }} Kg</span>
                                     </div>
                                 @endif
                                     <div class="col-lg-11 px-0 border rounded-lg">
@@ -188,37 +188,37 @@
                                     </div>
                                 @endif
 
-                                </div>  
-                                
-                                
-                                
+                                </div>
+
+
+
                                 <div class="row">
                                     <div class="col-lg-12 d-flex justify-content-center mb-4">
                                     <form class="needs-validation" novalidate method="POST" action="/adauga-rezervare-pasul-2">
-                                        @csrf    
-                                        <div class="row">  
-                                            @if ($rezervare->nr_adulti > 0) 
-                                            <div class="col-lg-12 d-flex justify-content-center mb-4">  
+                                        @csrf
+                                        <div class="row">
+                                            @if ($rezervare->nr_adulti > 0)
+                                            <div class="col-lg-12 d-flex justify-content-center mb-4">
                                                 <button type="submit" name="action" value="cu_plata_online"
                                                     class="btn btn-primary btn-lg mr-2 rounded-pill border border-white" style="border-width:3px !important;">
                                                     Plătește rezervarea
                                                     <img src="{{ asset('images/netopia_banner_blue.jpg') }}" height="49" class="mr-3 bg-white rounded-pill border border-white">
-                                                </button>                                                
+                                                </button>
                                             </div>
                                             @endif
-                                            <div class="col-lg-12 d-flex justify-content-center mb-4">  
+                                            <div class="col-lg-12 d-flex justify-content-center mb-4">
                                                 <button type="submit" name="action" value="fara_plata_online"
                                                     class="btn btn-primary btn-lg mr-4 rounded-pill border border-white" style="border-width:3px !important;">
-                                                    Salvează rezervarea 
+                                                    Salvează rezervarea
                                                     și plătește la șofer
                                                 </button>
                                             </div>
-                                            <div class="col-lg-12 d-flex justify-content-center">  
-                                                <a class="btn btn-warning btn-lg rounded-pill border border-white mr-2" style="border-width:3px !important;" 
+                                            <div class="col-lg-12 d-flex justify-content-center">
+                                                <a class="btn btn-warning btn-lg rounded-pill border border-white mr-2" style="border-width:3px !important;"
                                                 href="/adauga-rezervare-pasul-1"
                                                 role="button">
                                                     Modifică rezervarea
-                                                <a class="btn btn-secondary btn-lg rounded-pill border border-white" style="border-width:3px !important;" 
+                                                <a class="btn btn-secondary btn-lg rounded-pill border border-white" style="border-width:3px !important;"
                                                 href="https://transportcorsica.ro/"
                                                 role="button">
                                                     Anulează rezervarea
@@ -226,7 +226,7 @@
                                             </div>
                                         </div>
                                     </form>
-                                        
+
                                     </div>
                                 </div>
 
@@ -237,5 +237,5 @@
         </div>
     </div>
 </div>
-   
+
 @endsection

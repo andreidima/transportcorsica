@@ -1,11 +1,11 @@
 @extends ('layouts.app')
 
-@section('content')   
+@section('content')
 <div class="container card" style="border-radius: 40px 40px 40px 40px;">
         <div class="row card-header align-items-center" style="border-radius: 40px 40px 0px 0px;">
             <div class="col-lg-3">
                 <h4 class=" mb-0"><a href="{{ route('facturi.index') }}"><i class="fas fa-file-invoice mr-1"></i>Facturi</a></h4>
-            </div> 
+            </div>
             {{-- <div class="col-lg-6">
                 <form class="needs-validation" novalidate method="GET" action="{{ route('facturi.index') }}">
                     @csrf
@@ -37,7 +37,7 @@
             @include ('errors')
 
             <div class="table-responsive rounded">
-                <table class="table table-striped table-hover table-sm rounded"> 
+                <table class="table table-striped table-hover table-sm rounded">
                     <thead class="text-white rounded" style="background-color:#e66800;">
                         <tr class="" style="padding:2rem">
                             <th>Nr. Crt.</th>
@@ -52,9 +52,9 @@
                             <th class="text-center">Acțiuni</th>
                         </tr>
                     </thead>
-                    <tbody>               
-                        @forelse ($facturi as $factura) 
-                            <tr>                  
+                    <tbody>
+                        @forelse ($facturi as $factura)
+                            <tr>
                                 <td align="">
                                     {{ ($facturi ->currentpage()-1) * $facturi ->perpage() + $loop->index + 1 }}
                                 </td>
@@ -73,7 +73,7 @@
                                                     @endif
                                                 @endforeach
                                             @else
-                                                Rezervare bagaj
+                                                Rezervare colete
                                             @endif
                                         </a>
                                     @endisset
@@ -98,17 +98,17 @@
                                         <i class="fas fa-file-pdf fa-lg bg-white text-danger"></i>
                                     </a>
                                 </td>
-                                <td class="text-right"> 
-                                    <div class="d-flex justify-content-end"> 
+                                <td class="text-right">
+                                    <div class="d-flex justify-content-end">
                                         @if($factura->anulata === 1)
                                             Anulată
                                         @elseif($factura->anulare_factura_id_originala !== null)
                                             Storno
                                         @else
                                             <div style="" class="">
-                                                <a 
-                                                    href="#" 
-                                                    data-toggle="modal" 
+                                                <a
+                                                    href="#"
+                                                    data-toggle="modal"
                                                     data-target="#activeazaAnuleazaFactura{{ $factura->id }}"
                                                     title="Activeaza Anuleaza Factura"
                                                     >
@@ -122,11 +122,11 @@
                                                             </span>
                                                         @endif
                                                 </a>
-                                            </div> 
+                                            </div>
                                         @endif
                                     </div>
                                 </td>
-                            </tr>  
+                            </tr>
                         @empty
                             {{-- <div>Nu s-au gasit rezervări în baza de date. Încearcă alte date de căutare</div> --}}
                         @endforelse
@@ -145,16 +145,16 @@
 
 
     {{-- Modalele --}}
-        @forelse ($facturi as $factura)                             
+        @forelse ($facturi as $factura)
             {{-- Modal pentru butonul de stergere --}}
-            <div class="modal fade text-dark" id="activeazaAnuleazaFactura{{ $factura->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" 
+            <div class="modal fade text-dark" id="activeazaAnuleazaFactura{{ $factura->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
                 {{-- data-backdrop="false" --}}
             >
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                     <div class="modal-header bg-danger">
                         <h5 class="modal-title text-white" id="exampleModalLabel">
-                            Factura pentru 
+                            Factura pentru
                             <b>
                                 {{ $factura->cumparator }}
                             </b>
@@ -165,39 +165,39 @@
                     </div>
 
                     <form method="POST" action="{{ $factura->path() }}/anuleaza">
-                        @method('PATCH')  
+                        @method('PATCH')
                         @csrf
-                        
+
                         <div class="modal-body" style="text-align:left;">
                             @if ($factura->anulata === 1)
                                 Ești sigur ca vrei să activezi factura?
                             @else
                                 Ești sigur ca vrei să anulezi factura?
-                                <div class="form-row">                              
-                                    <div class="form-group col-lg-12">  
-                                        <label for="anulare_motiv" class="mb-0 pl-3">Motiv anulare:</label>  
-                                        <textarea class="form-control {{ $errors->has('anulare_motiv') ? 'is-invalid' : '' }}" 
+                                <div class="form-row">
+                                    <div class="form-group col-lg-12">
+                                        <label for="anulare_motiv" class="mb-0 pl-3">Motiv anulare:</label>
+                                        <textarea class="form-control {{ $errors->has('anulare_motiv') ? 'is-invalid' : '' }}"
                                             name="anulare_motiv"
                                             rows="2"
                                         >{{ old('anulare_motiv', ($factura->anulare_motiv ?? '')) }}</textarea>
-                                    </div>  
-                                </div> 
+                                    </div>
+                                </div>
                             @endif
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Renunță</button>
-                            
-                                <button 
-                                    type="submit" 
-                                    class="btn btn-danger"  
+
+                                <button
+                                    type="submit"
+                                    class="btn btn-danger"
                                     >
                                     {{ ($factura->anulata === 1) ? 'Activează factura' : 'Anulează factura' }}
-                                </button>                           
-                        </div>                 
+                                </button>
+                        </div>
                     </form>
                     </div>
                 </div>
-            </div>                      
+            </div>
         @empty
             {{-- <div>Nu s-au gasit rezervări în baza de date. Încearcă alte date de căutare</div> --}}
         @endforelse

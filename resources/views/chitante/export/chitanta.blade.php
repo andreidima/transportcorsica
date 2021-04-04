@@ -6,11 +6,11 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Bilet</title>
     <style>
-        html { 
+        html {
             margin: 0px 0px 0px 0px;
         }
 
-        body { 
+        body {
             font-family: DejaVu Sans, sans-serif;
             /* font-family: Arial, Helvetica, sans-serif; */
             font-size: 10px;
@@ -32,18 +32,18 @@
             width: 100%;
             word-wrap:break-word;
         }
-        
+
         th, td {
             padding: 1px 1px;
             border-width: 0px;
             border-style: solid;
-            
+
         }
         tr {
             border-style: solid;
             border-width: 0px;
         }
-        hr { 
+        hr {
             display: block;
             margin-top: 0.5em;
             margin-bottom: 0.5em;
@@ -51,7 +51,7 @@
             margin-right: auto;
             border-style: inset;
             border-width: 0.5px;
-        } 
+        }
     </style>
 </head>
 
@@ -64,7 +64,7 @@
             -webkit-border-radius: 3px;
             border-radius: 3px;
         text-align:center
-        ">               
+        ">
             <p style="text-align:left; margin:0px;">
                 <b>MRW88 MAXARMONY S.R.L.</b> <br>
                 ORC: J39/570/29.09.2015 | CIF: RO35059906 <br>
@@ -73,16 +73,16 @@
                 Cod IBAN EURO: RO83BTRLEURCRT0319122801 <br>
                 Cod IBAN LEI: RO36BTRLRONCRT0319122801 <br>
             </p>
-   
+
             <br>
 
             <h2 style="margin:5px">BILET DE CĂLĂTORIE</h2>
-            
-            <h2 style="margin:5px">Seria și număr: {{ $rezervare->bilet_serie }} {{ $rezervare->bilet_numar }} </h2>  
-               
+
+            <h2 style="margin:5px">Seria și număr: {{ $rezervare->bilet_serie }} {{ $rezervare->bilet_numar }} </h2>
+
             <br>
-            <br>          
-                            
+            <br>
+
             <table style="margin-bottom:0px">
                 <tr style="text-align:center; font-weight:bold;">
                     <td colspan="3" style="border-width:0px; padding:0rem;">
@@ -95,12 +95,12 @@
                     <td width="" style="">
                     </td>
                     <td width="50%" style="text-align:center;">
-                        Telefon: 
+                        Telefon:
                         <br>
                         <b>{{ $rezervare->telefon }}</b>
                     </td>
                     <td width="50%" style="text-align:center;">
-                        E-mail: 
+                        E-mail:
                         <br>
                         <b>{{ $rezervare->email }}</b>
                     </td>
@@ -112,16 +112,16 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="3">                    
+                    <td colspan="3">
                         Observații: {{ $rezervare->observatii }}
                     </td>
                 </tr>
                 @endisset --}}
             </table>
-   
+
             <br>
 
-            <table style="margin-bottom:0px">    
+            <table style="margin-bottom:0px">
                 <tr style="text-align:center; font-weight:bold;">
                     <td colspan="4" style="padding:0rem;">
                         <h3 style="background-color:#ece7cf; color:black; margin:10px 0px 5px 0px; padding:5px 0px">
@@ -131,7 +131,7 @@
                 </tr>
                 <tr style="">
                     <td style="">
-                        Data de plecare: 
+                        Data de plecare:
                         <br>
                         <b>{{ \Carbon\Carbon::parse($rezervare->data_cursa)->isoFormat('DD.MM.YYYY') }}</b>
                     </td>
@@ -150,7 +150,7 @@
                     </td>
                 </tr>
             </table>
-                           
+
             <br>
 
             <table style="margin-bottom:10px">
@@ -176,16 +176,16 @@
                         <tr>
                             <td colspan="3" style="text-align: center">
                                         <br>
-                                        Curs valutar BNR la data rezervării biletului de călătorie {{ \Carbon\Carbon::parse($rezervare->created_at)->isoFormat('DD.MM.YYYY') }}: 
+                                        Curs valutar BNR la data rezervării biletului de călătorie {{ \Carbon\Carbon::parse($rezervare->created_at)->isoFormat('DD.MM.YYYY') }}:
                                         <br>
                                         1 EURO = {{ $rezervare->curs_bnr_euro }}
-                                <br>                          
+                                <br>
                                 @if($rezervare->plata_efectuata == 1)
                                     <span>
                                         <b>Plata a fost efectuată online</b>
                                     </span>
                                 @endif
-                                <br> 
+                                <br>
                             </td>
                         </tr>
                         <tr>
@@ -210,19 +210,19 @@
                             <td style="border: solid 3px black">
                                 {{ $pasager->localitate_nastere }}
                             </td>
-                        </tr> 
-                        @endforeach    
+                        </tr>
+                        @endforeach
                     @else
                         <tr>
                             <td colspan="3">
-                                Descriere bagaj: {{ $rezervare->bagaje_descriere }}
+                                Descriere colete: {{ $rezervare->colete_descriere }}
                                 <br>
-                                <b>Cantitate: {{ $rezervare->bagaje_kg }}Kg</b>
+                                <b>Cantitate: {{ $rezervare->colete_kg }}Kg</b>
                             </td>
                         </tr>
-                    @endif   
-            </table>   
-            
+                    @endif
+            </table>
+
             <br>
             Păstrați biletul pentru control
             {{-- <br> --}}
@@ -237,14 +237,14 @@
                 {{-- <svg class="svg-inline--fa fa-print fa-w-16" aria-hidden="true" data-prefix="fas" data-icon="print" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="">
                     <path fill="currentColor" d="M464 192h-16V81.941a24 24 0 0 0-7.029-16.97L383.029 7.029A24 24 0 0 0 366.059 0H88C74.745 0 64 10.745 64 24v168H48c-26.51 0-48 21.49-48 48v132c0 6.627 5.373 12 12 12h52v104c0 13.255 10.745 24 24 24h336c13.255 0 24-10.745 24-24V384h52c6.627 0 12-5.373 12-12V240c0-26.51-21.49-48-48-48zm-80 256H128v-96h256v96zM128 224V64h192v40c0 13.2 10.8 24 24 24h40v96H128zm304 72c-13.254 0-24-10.746-24-24s10.746-24 24-24 24 10.746 24 24-10.746 24-24 24z" data-darkreader-inline-fill="" style="--darkreader-inline-fill:currentColor;">
                     </path></svg> --}}
-                    <!-- <i class="fas fa-print"></i> --> 
+                    <!-- <i class="fas fa-print"></i> -->
                     {{-- Print Now
             </a> --}}
             {{-- <a href="print://escpos.org/escpos/bt/print?srcTp=uri
    &srcObj=html
    &numCopies=1 //added in version 2.3.2
    &src='https://rezervari.transportcorsica.ro/chitanta-descarca/tur600825b6d3542/export-pdf'">Print Me !</a> --}}
-             
+
         </div>
     </div>
 </body>

@@ -1,19 +1,19 @@
 @extends ('layouts.app')
 
-@section('content')   
+@section('content')
 <div class="container card" style="border-radius: 40px 40px 40px 40px;">
         <div class="row card-header justify-content-between py-1" style="border-radius: 40px 40px 0px 0px;">
             <div class="col-lg-3 align-self-center">
                 <h4 class=" mb-0">
                     <a href="{{ route('mesaje-trimise-sms.index') }}"><i class="fas fa-sms mr-1"></i>SMS trimise</a>
                 </h4>
-            </div> 
+            </div>
             {{-- <div class="col-lg-8" id="app1">
                 <form class="needs-validation" novalidate method="GET" action="{{ route('sms-trimise.index') }}">
-                    @csrf                    
+                    @csrf
                     <div class="row input-group custom-search-form justify-content-end align-self-end">
                         <div class="col-md-3">
-                            <input type="text" class="form-control form-control-sm border rounded-pill mb-1 py-0" 
+                            <input type="text" class="form-control form-control-sm border rounded-pill mb-1 py-0"
                             id="search_nume" name="search_nume" placeholder="Nume" autofocus
                                     value="{{ $search_nume }}">
                         </div>
@@ -53,7 +53,7 @@
             @include ('errors')
 
             <div class="table-responsive rounded">
-                <table class="table table-striped table-hover table-sm rounded"> 
+                <table class="table table-striped table-hover table-sm rounded">
                     <thead class="text-white rounded" style="background-color:#408080;">
                         <tr class="" style="padding:2rem">
                             <th style="font-size:0.8rem">Nr. Crt.</th>
@@ -65,15 +65,15 @@
                             <th class="text-right">Data trimitere</th>
                         </tr>
                     </thead>
-                    <tbody>               
-                        @forelse ($mesaje_sms as $mesaj_sms) 
-                            <tr>                  
+                    <tbody>
+                        @forelse ($mesaje_sms as $mesaj_sms)
+                            <tr>
                                 <td align="">
                                     {{ ($mesaje_sms ->currentpage()-1) * $mesaje_sms ->perpage() + $loop->index + 1 }}
                                 </td>
                                 <td>
                                     @isset($mesaj_sms->rezervare)
-                                        <a href="{{ $mesaj_sms->rezervare->path() ?? ''}}">  
+                                        <a href="{{ $mesaj_sms->rezervare->path() ?? ''}}">
                                             {{-- <b>{{ $rezervare->nume ?? $rezervare->pasageri_relation->first()->nume ?? '' }}</b> --}}
                                             @isset($mesaj_sms->rezervare->nr_adulti)
                                                 @foreach ($mesaj_sms->rezervare->pasageri_relation as $pasager)
@@ -84,7 +84,7 @@
                                                     @endif
                                                 @endforeach
                                             @else
-                                                Rezervare bagaj
+                                                Rezervare colete
                                             @endif
                                         </a>
                                     @endisset
@@ -108,7 +108,7 @@
                                 <td class="text-right">
                                     {{ \Carbon\Carbon::parse($mesaj_sms->created_at)->isoFormat('HH:mm - DD.MM.YYYY') ?? '' }}
                                 </td>
-                            </tr> 
+                            </tr>
                         @empty
                             {{-- <div>Nu s-au gasit rezervări în baza de date. Încearcă alte date de căutare</div> --}}
                         @endforelse

@@ -304,7 +304,7 @@
                                                             @endif
                                                         @endforeach
                                                     @else
-                                                        Rezervare bagaj
+                                                        Rezervare colete
                                                     @endif
 
                                                     @if ($rezervare->observatii)
@@ -610,7 +610,7 @@
                                                             @endif
                                                         @endforeach
                                                     @else
-                                                        Rezervare bagaj
+                                                        Rezervare colete
                                                     @endif
                                                 </a>
                                             </td>
@@ -977,7 +977,7 @@
                                     @endif
                                 @endforeach
                             @else
-                                Rezervare bagaj
+                                Rezervare colete
                             @endif
                         </b>
                     </h5>
@@ -1039,7 +1039,7 @@
                                     @endif
                                 @endforeach
                             @else
-                                Rezervare bagaj
+                                Rezervare colete
                             @endif
                         </b>
                     </h5>

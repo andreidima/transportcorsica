@@ -6,7 +6,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Raport</title>
     <style>
-        body { 
+        body {
             font-family: DejaVu Sans, sans-serif;
             /* font-family: Verdana, Tahoma, "DejaVu Sans", sans-serif; */
             font-size: 12px;
@@ -22,20 +22,20 @@
             margin-top: 0px;
             border-style: solid;
             border-width:0px;
-            width: 100%; 
+            width: 100%;
             word-wrap:break-word;
             /* word-break: break-all; */
             /* table-layout: fixed; */
             page-break-inside:auto;
         }
-        
+
         th, td {
             padding: 5px 5px;
             border-width:1px;
             border-style: solid;
             table-layout:fixed;
             font-weight: normal;
-            
+
         }
         tr {
             /* text-align:; */
@@ -43,7 +43,7 @@
             border-width:1px; */
             page-break-after:auto
         }
-        hr { 
+        hr {
             display: block;
             margin-top: 0.5em;
             margin-bottom: 0.5em;
@@ -51,18 +51,18 @@
             margin-right: auto;
             border-style: inset;
             border-width: 0.5px;
-        } 
+        }
         /* tr:nth-child(even) {background-color:lightgray;} */
     </style>
 </head>
 
-<body> 
+<body>
     @switch($tip_lista)
         @case ("lista_plecare")
             <div style="
-                
-                width:680px; 
-                min-height:600px;            
+
+                width:680px;
+                min-height:600px;
                 padding: 0px;
                 margin:0px 0px;
                     -moz-border-radius: 10px;
@@ -75,7 +75,7 @@
                         </td>
                         <td colspan="4" style="border-width:0px; padding:0rem; font-size:16px; text-align:left">
                             <br>
-                            Listă plecare 
+                            Listă plecare
                             {{ $rezervari->first()->oras_plecare_tara }}
                             <br><br>
                         </td>
@@ -96,7 +96,7 @@
                         <th style="">Destinație</th>
                         <th style="width: 30px">Nr. pers</th>
                         <th style="width: 40px">Preț</th>
-                        <th style="width: 67px">Kg. bagaj</th>
+                        <th style="width: 67px">Kg. colete</th>
                         <th style="width: 50px">Bilet</th>
                     </tr>
                 @forelse ($rezervari as $rezervare)
@@ -108,7 +108,7 @@
                             <b>{{ $rezervare->oras_plecare_nume }}</b>
                         </td>
                         <td>
-                            {{ $rezervare->nume ?? $rezervare->pasageri_relation->first()->nume ?? '' }}                          
+                            {{ $rezervare->nume ?? $rezervare->pasageri_relation->first()->nume ?? '' }}
                         </td>
                         <td>
                             {{ $rezervare->telefon }}&nbsp;
@@ -162,18 +162,18 @@
                         $nr_crt = 0;
                     @endphp
                     @foreach ($rezervare->pasageri_relation as $pasager)
-                        @if (in_array($pasager->nume, $clienti_neseriosi))     
+                        @if (in_array($pasager->nume, $clienti_neseriosi))
                             @php
-                                $nr_crt++; 
+                                $nr_crt++;
                             @endphp
-                            @if ($nr_crt === 1)                            
+                            @if ($nr_crt === 1)
                     <tr>
                         <td style="border-top:0rem; border-bottom:0rem"></td>
                         <td colspan="8">
                                 Clienți neserioși:
                             @endif
-                            {{ \App\Models\ClientNeserios::where('nume', $pasager->nume)->first()->nume }} - 
-                            {{ \App\Models\ClientNeserios::where('nume', $pasager->nume)->first()->observatii }};                            
+                            {{ \App\Models\ClientNeserios::where('nume', $pasager->nume)->first()->nume }} -
+                            {{ \App\Models\ClientNeserios::where('nume', $pasager->nume)->first()->observatii }};
                         @endif
                     @endforeach
                         </td>
@@ -185,15 +185,15 @@
                         <tr>
                             <td style="border-top:0rem; border-bottom:0rem"></td>
                             <td colspan="8">
-                                Rezervare Bagaj {{ $rezervare->bagaje_kg ? ':' . $rezervare->bagaje_kg . 'kg' : '' }}
-                                @isset ($rezervare->bagaje_descriere)
+                                Rezervare colete {{ $rezervare->colete_kg ? ':' . $rezervare->colete_kg . 'kg' : '' }}
+                                @isset ($rezervare->colete_descriere)
                                     <br>
-                                    Descriere bagaj: {{ $rezervare->bagaje_descriere }}
+                                    Descriere colete: {{ $rezervare->colete_descriere }}
                                 @endisset
                             </td>
                         </tr>
                     @endisset
-                        
+
                 @empty
                 @endforelse
                     <tr>
@@ -207,10 +207,10 @@
                             <b>{{ $rezervari->where('plata_efectuata', '<>', 1)->sum('pret_total') }}</b>
                         </td>
                         <td>
-                            
+
                         </td>
                         <td>
-                            
+
                         </td>
                     </tr>
 
@@ -219,8 +219,8 @@
         @break
         @case ("lista_sosire")
             <div style="border:dashed #999;
-                width:690px; 
-                min-height:600px;            
+                width:690px;
+                min-height:600px;
                 padding: 15px 10px 15px 10px;
                 margin:0px 0px;
                     -moz-border-radius: 10px;
@@ -256,7 +256,7 @@
                         <th>Plecare</th>
                         <th style="width: 30px">Nr. pers</th>
                         <th style="width: 40px">Preț</th>
-                        <th style="width: 67px">Kg. bagaj</th>
+                        <th style="width: 67px">Kg. colete</th>
                         <th style="width: 50px">Bilet</th>
                     </tr>
                 @forelse ($rezervari as $rezervare)
@@ -268,7 +268,7 @@
                             <b>{{ $rezervare->oras_sosire_nume }}</b>
                         </td>
                         <td>
-                            {{ $rezervare->nume ?? $rezervare->pasageri_relation->first()->nume ?? '' }}                         
+                            {{ $rezervare->nume ?? $rezervare->pasageri_relation->first()->nume ?? '' }}
                         </td>
                         <td>
                             {{ $rezervare->telefon }}
@@ -283,7 +283,7 @@
                             {!! ($rezervare->plata_efectuata === 1) ? '0 <br> platit online' : $rezervare->pret_total !!}
                         </td>
                         <td>
-                            
+
                         </td>
                         <td>
                             <img src="data:image/png;base64, {{ base64_encode(\SimpleSoftwareIO\QrCode\Facades\QrCode::size(50)->generate('https://rezervari.transportcorsica.ro/chitanta-descarca/' . $rezervare->cheie_unica . '/seteaza_orase')) }} ">
@@ -322,15 +322,15 @@
                         <tr>
                             <td style="border-top:0rem; border-bottom:0rem"></td>
                             <td colspan="8">
-                                Rezervare Bagaj {{ $rezervare->bagaje_kg ? ':' . $rezervare->bagaje_kg . 'kg' : '' }}
-                                @isset ($rezervare->bagaje_descriere)
+                                Rezervare Colete {{ $rezervare->colete_kg ? ':' . $rezervare->colete_kg . 'kg' : '' }}
+                                @isset ($rezervare->colete_descriere)
                                     <br>
-                                    Descriere bagaj: {{ $rezervare->bagaje_descriere }}
+                                    Descriere colete: {{ $rezervare->colete_descriere }}
                                 @endisset
                             </td>
                         </tr>
                     @endisset
-                        
+
                 @empty
                 @endforelse
                     <tr>
