@@ -109,6 +109,8 @@ if (document.querySelector('#adauga-rezervare')) {
             pret_copil: pretCopil,
             pret_adult_tur_retur: pretAdultTurRetur,
             pret_copil_tur_retur: pretCopilTurRetur,
+            pret_colete_kg: pretColeteKg,
+            pret_colete_volum: pretColeteKg * 166,
             pret_animal_mic: 0,
             pret_animal_mare: 0,
             pret_adult_cu_reducere_10_procente: 0,
@@ -343,9 +345,18 @@ if (document.querySelector('#adauga-rezervare')) {
                         }
                     }
                 } else if(this.tip_calatorie == "Colete") {
-                    if (this.colete_kg && isNumeric(this.colete_kg)){
-                        this.pret_total_tur = this.colete_kg * 2;
+                    if ((this.colete_kg && !isNaN(this.colete_kg)) && (this.colete_volum && !isNaN(this.colete_volum))) {
+                        if (this.colete_kg > this.colete_volum * 166) {
+                            this.pret_total_tur = Math.round(this.colete_kg * this.pret_colete_kg);
+                        } else {
+                            this.pret_total_tur = Math.round(this.colete_volum * this.pret_colete_volum);
+                        }
+                    } else if (this.colete_kg && !isNaN(this.colete_kg)){
+                        this.pret_total_tur = Math.round(this.colete_kg * this.pret_colete_kg);
+                    } else if (this.colete_volum && !isNaN(this.colete_volum)) {
+                        this.pret_total_tur = Math.round(this.colete_volum * this.pret_colete_volum);
                     }
+
                     if (this.tur_retur == true) {
                         this.pret_total_retur = this.pret_total_tur
                     }

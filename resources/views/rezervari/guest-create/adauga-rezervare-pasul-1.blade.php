@@ -479,6 +479,54 @@
                                             Prețurile tur retur sunt cu discount, dar se aplică doar dacă între tur și retur nu este o diferență mai mare de 14 zile.
                                         </div>
                                     </div>
+                                    <div v-else class="form-row mb-4 px-2 pt-2 d-flex justify-content-center align-items-center border rounded"
+                                        style="background-color:lightseagreen; color:white"
+                                    >
+                                        <div class="form-group col-lg-12 mb-2 d-flex justify-content-center border-bottom">
+                                                <h5 class="mb-1">Prețuri:</h5>
+                                        </div>
+                                        <script type="application/javascript">
+                                            pretColeteKg={!! json_encode($tarife->colete_kg ?? '') !!}
+                                        </script>
+                                        <div class="form-group col-lg-6 d-flex">
+                                            <label for="pret_colete_kg" class="col-form-label mb-0 mr-2">Preț kg: </label>
+                                            <div class="px-0">
+                                                <input
+                                                    type="text"
+                                                    class="form-control form-control-sm"
+                                                    style="width:50px"
+                                                    name="pret_colete_kg"
+                                                    v-model="pret_colete_kg"
+                                                    required
+                                                    disabled>
+                                            </div>
+                                            <label id="" class="col-form-label pl-1 align-bottom">
+                                                Euro
+                                            </label>
+                                        </div>
+                                        <div class="form-group col-lg-6 d-flex">
+                                            <label for="pret_colete_kg" class="col-form-label mb-0 mr-2">Preț volum - 1m<sup>3</sup> : </label>
+                                            <div class="px-0">
+                                                <input
+                                                    type="text"
+                                                    class="form-control form-control-sm"
+                                                    style="width:50px"
+                                                    name="pret_colete_kg"
+                                                    v-model="pret_colete_volum"
+                                                    required
+                                                    disabled>
+                                            </div>
+                                            <label id="" class="col-form-label pl-1 align-bottom">
+                                                Euro
+                                            </label>
+                                        </div>
+                                        <div class="form-group col-lg-12 border-left border-warning" style="border-width:5px !important">
+                                            Dacă coletele dumneavoastră sunt peste raportul cantitate/ volum de 166kg / 1m<sup>3</sup>, prețul total se va calcula la prețul per kg. Dacă nu, prețul total se va calcula la prețul pe m<sup>3</sup>.
+                                        </div>
+                                        <div class="form-group col-lg-12 border-left border-warning" style="border-width:5px !important">
+                                            La predarea coletului către șofer, prețul poate suferi modificări dacă dimensiunile sau cantitatea sunt altele decât cele înregistrate în acest formular.
+                                        </div>
+                                    </div>
                                     <div v-if="tip_calatorie === 'Calatori'" class="form-row mb-4 px-2 pt-2 d-flex justify-content-center align-items-center border rounded"
                                         style="background-color:lightseagreen; color:white"
                                     >
