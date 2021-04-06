@@ -140,20 +140,6 @@
                                             @endfor
                                         </div>
                                     </div>
-                                @elseif ($rezervare->tip_calatorie === "Colete")
-                                    <div class="col-lg-11 px-0 border rounded-lg">
-                                        <h5 class="bg-success text-white p-1 m-0 text-center">
-                                            Informații colete
-                                        </h5>
-                                    </div>
-                                    <div class="col-lg-11 px-4 py-2 bg-white border rounded-lg">
-                                        {{ $rezervare->colete_descriere }}</span>
-                                        {{-- * {{ $tarife->adult }}€ = {{ $rezervare->nr_adulti * $tarife->adult}}€ --}}
-                                    </div>
-                                    <div class="col-lg-11 px-4 py-2 mb-4 bg-white border rounded-lg">
-                                        Catitate: <span class="badge badge-primary" style="font-size:1em">{{ $rezervare->colete_kg }} Kg</span>
-                                    </div>
-                                @endif
                                     <div class="col-lg-11 px-0 border rounded-lg">
                                         <h5 class="bg-success text-white p-1 m-0 text-center">
                                             Informații client
@@ -170,6 +156,63 @@
                                         <br>
                                         Observații: {{ $rezervare->observatii }}
                                     </div>
+                                @elseif ($rezervare->tip_calatorie === "Colete")
+                                    <div class="col-lg-11 px-0 border rounded-lg">
+                                        <h5 class="bg-success text-white p-1 m-0 text-center">
+                                            Informații colete
+                                        </h5>
+                                    </div>
+                                    <div class="col-lg-11 px-4 py-2 mb-4 bg-white border rounded-lg">
+                                        Număr: <span class="badge badge-primary" style="font-size:1em">{{ $rezervare->colete_numar }}</span>
+                                        <br>
+                                        Cantitate: <span class="badge badge-primary" style="font-size:1em">{{ $rezervare->colete_kg }} Kg</span>
+                                        <br>
+                                        Volum: <span class="badge badge-primary" style="font-size:1em">{{ $rezervare->colete_volum }} Kg</span>
+                                        <br>
+                                        {{ $rezervare->colete_descriere }}
+                                        <br>
+                                        Preț total:
+                                        <span class="badge badge-primary" style="font-size:1em">{{ $rezervare->pret_total_tur + $rezervare->pret_total_retur }}€</span>
+                                    </div>
+
+                                    <div class="col-lg-11 px-0 border rounded-lg">
+                                        <h5 class="bg-success text-white p-1 m-0 text-center">
+                                            Informații Expeditor
+                                        </h5>
+                                    </div>
+                                    <div class="col-lg-11 px-4 py-2 mb-4 bg-white border rounded-lg">
+                                        Nume: <span class="badge badge-primary" style="font-size:1.1em">{{ $rezervare->nume }}</span>
+                                        <br>
+                                        Telefon: <b>{{ $rezervare->telefon }}</b>
+                                        <br>
+                                        Email: <b>{{ $rezervare->email }}</b>
+                                    </div>
+
+                                    <div class="col-lg-11 px-0 border rounded-lg">
+                                        <h5 class="bg-success text-white p-1 m-0 text-center">
+                                            Informații Destinatar
+                                        </h5>
+                                    </div>
+                                    <div class="col-lg-11 px-4 py-2 mb-4 bg-white border rounded-lg">
+                                        Nume: <span class="badge badge-primary" style="font-size:1.1em">{{ $rezervare->colete_nume_destinatar }}</span>
+                                        <br>
+                                        Telefon: <b>{{ $rezervare->colete_telefon_destinatar }}</b>
+                                        <br>
+                                        Email: <b>{{ $rezervare->colete_email_destinatar }}</b>
+                                    </div>
+
+                                    @if ($rezervare->observatii)
+                                        <div class="col-lg-11 px-0 border rounded-lg">
+                                            <h5 class="bg-success text-white p-1 m-0 text-center">
+                                                Observații
+                                            </h5>
+                                        </div>
+                                        <div class="col-lg-11 px-4 py-2 mb-4 bg-white border rounded-lg">
+                                            {{ $rezervare->observatii }}
+                                        </div>
+                                    @endif
+
+                                @endif
 
                                 @if ($rezervare->cumparator)
                                     <div class="col-lg-11 px-0 border rounded-lg">

@@ -505,7 +505,7 @@
                                             </label>
                                         </div>
                                         <div class="form-group col-lg-6 d-flex">
-                                            <label for="pret_colete_kg" class="col-form-label mb-0 mr-2">Preț volum - 1m<sup>3</sup> : </label>
+                                            <label for="pret_colete_kg" class="col-form-label mb-0 mr-2">Preț volum, 1m<sup>3</sup> : </label>
                                             <div class="px-0">
                                                 <input
                                                     type="text"
@@ -781,10 +781,13 @@
                                                 name="pasageri" id="pasageri" rows="2">{{ old('pasageri') }}</textarea>
                                         </div>  --}}
                                     </div>
-                                    <div v-if="tip_calatorie === 'Colete'" class="form-row mb-4 px-2 py-3 d-flex justify-content-center align-items-center border rounded"
+                                    <div v-if="tip_calatorie === 'Colete'" class="form-row mb-4 px-2 py-2 d-flex justify-content-between align-items-center border rounded"
                                         style="background-color:lightseagreen; color:white"
                                     >
-                                        <div class="form-group col-lg-4 mb-0 d-flex">
+                                        <div class="form-group col-lg-12 mb-0 d-flex">
+                                            <small id="colete_kg" class="form-text border-left border-warning pl-1" style="border-width:5px !important">Folosiți punctul(<b>.</b>) pentru a delimita zecimalele.</small>
+                                        </div>
+                                        <div class="form-group col-lg-3 mb-0 d-flex">
                                             <label for="colete_numar" class="col-form-label mb-0 mr-2">Număr de colete:* </label>
                                             <div class="px-0" style="width:50px">
                                                 <input
@@ -796,7 +799,7 @@
                                                 >
                                             </div>
                                         </div>
-                                        <div class="form-group col-lg-4 mb-0 d-flex">
+                                        <div class="form-group col-lg-3 mb-0 d-flex">
                                             <script type="application/javascript">
                                                 coleteKgVechi={!! json_encode(old('colete_kg', ($rezervare->colete_kg ?? '0')), JSON_NUMERIC_CHECK) !!}
                                             </script>
@@ -815,7 +818,7 @@
                                                 Kg
                                             </label>
                                         </div>
-                                        <div class="form-group col-lg-4 mb-0 d-flex">
+                                        <div class="form-group col-lg-3 mb-0 d-flex">
                                             <script type="application/javascript">
                                                 coleteVolumVechi={!! json_encode(old('colete_volum', ($rezervare->colete_volum ?? '0')), JSON_NUMERIC_CHECK) !!}
                                             </script>
@@ -830,6 +833,9 @@
                                                     value="{{ old('colete_volum', ($rezervare->colete_volum ?? '')) }}"
                                                 >
                                             </div>
+                                            <label id="" class="col-form-label pl-1 align-bottom">
+                                                m<sup>3</sup>
+                                            </label>
                                         </div>
                                         <div class="form-group col-lg-12 mb-0 justify-content-center">
                                             <label for="colete_descriere" class="mb-0">Descriere colete:*</label>
@@ -917,10 +923,39 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-row mb-4 px-2 py-2 justify-content-between align-items-center border rounded"
+                                    <div v-if="tip_calatorie === 'Calatori'" class="form-row mb-4 px-2 py-2 justify-content-between align-items-center border rounded"
                                         style="background-color:lightseagreen; color:white"
                                     >
-                                        <div v-if="tip_calatorie === 'Colete'" class="form-group col-lg-4">
+                                        <div class="form-group col-lg-4">
+                                            <label for="telefon" class="mb-0">Telefon:*</label>
+                                            <input
+                                                type="text"
+                                                class="form-control form-control-sm {{ $errors->has('telefon') ? 'is-invalid' : '' }}"
+                                                name="telefon"
+                                                placeholder=""
+                                                value="{{ old('telefon', ($rezervare->telefon ?? '')) }}"
+                                                required>
+                                        </div>
+                                        <div class="form-group col-lg-4">
+                                            <label for="email" class="mb-0">Email:</label>
+                                            <input
+                                                type="text"
+                                                class="form-control form-control-sm {{ $errors->has('email') ? 'is-invalid' : '' }}"
+                                                name="email"
+                                                placeholder=""
+                                                value="{{ old('email', ($rezervare->email ?? '')) }}"
+                                                required>
+                                        </div>
+                                        <div class="form-group col-lg-12 mb-1 justify-content-center">
+                                            <label for="observatii" class="mb-0">Observații:</label>
+                                            <textarea class="form-control {{ $errors->has('observatii') ? 'is-invalid' : '' }}"
+                                                name="observatii" id="observatii" rows="2">{{ old('observatii', ($rezervare->observatii ?? '')) }}</textarea>
+                                        </div>
+                                    </div>
+                                    <div v-if="tip_calatorie === 'Colete'" class="form-row mb-4 px-2 py-2 justify-content-between align-items-center border rounded"
+                                        style="background-color:lightseagreen; color:white"
+                                    >
+                                        <div class="form-group col-lg-4">
                                             <label for="nume" class="mb-0">Nume și prenume Expeditor:*</label>
                                             <input
                                                 type="text"
@@ -931,17 +966,17 @@
                                                 required>
                                         </div>
                                         <div class="form-group col-lg-4">
-                                            <label for="nume" class="mb-0">Telefon Expeditor:*</label>
+                                            <label for="telefon" class="mb-0">Telefon Expeditor:*</label>
                                             <input
                                                 type="text"
-                                                class="form-control form-control-sm {{ $errors->has('nume') ? 'is-invalid' : '' }}"
+                                                class="form-control form-control-sm {{ $errors->has('telefon') ? 'is-invalid' : '' }}"
                                                 name="telefon"
                                                 placeholder=""
                                                 value="{{ old('telefon', ($rezervare->telefon ?? '')) }}"
                                                 required>
                                         </div>
                                         <div class="form-group col-lg-4">
-                                            <label for="nume" class="mb-0">Email Expeditor:</label>
+                                            <label for="email" class="mb-0">Email Expeditor:</label>
                                             <input
                                                 type="text"
                                                 class="form-control form-control-sm {{ $errors->has('email') ? 'is-invalid' : '' }}"
@@ -951,33 +986,33 @@
                                                 required>
                                         </div>
                                         <div class="form-group col-lg-4">
-                                            <label for="nume" class="mb-0">Nume și prenume Destinatar:*</label>
+                                            <label for="colete_nume_destinatar" class="mb-0">Nume și prenume Destinatar:*</label>
                                             <input
                                                 type="text"
-                                                class="form-control form-control-sm {{ $errors->has('nume') ? 'is-invalid' : '' }}"
-                                                name="nume"
+                                                class="form-control form-control-sm {{ $errors->has('colete_nume_destinatar') ? 'is-invalid' : '' }}"
+                                                name="colete_nume_destinatar"
                                                 placeholder=""
-                                                value="{{ old('nume', ($rezervare->nume ?? '')) }}"
+                                                value="{{ old('colete_nume_destinatar', ($rezervare->colete_nume_destinatar ?? '')) }}"
                                                 required>
                                         </div>
                                         <div class="form-group col-lg-4">
-                                            <label for="nume" class="mb-0">Telefon Destinatar:*</label>
+                                            <label for="colete_telefon_destinatar" class="mb-0">Telefon Destinatar:*</label>
                                             <input
                                                 type="text"
-                                                class="form-control form-control-sm {{ $errors->has('nume') ? 'is-invalid' : '' }}"
-                                                name="telefon"
+                                                class="form-control form-control-sm {{ $errors->has('colete_telefon_destinatar') ? 'is-invalid' : '' }}"
+                                                name="colete_telefon_destinatar"
                                                 placeholder=""
-                                                value="{{ old('telefon', ($rezervare->telefon ?? '')) }}"
+                                                value="{{ old('colete_telefon_destinatar', ($rezervare->colete_telefon_destinatar ?? '')) }}"
                                                 required>
                                         </div>
                                         <div class="form-group col-lg-4">
-                                            <label for="nume" class="mb-0">Email Destinatar:</label>
+                                            <label for="colete_email_destinatar" class="mb-0">Email Destinatar:</label>
                                             <input
                                                 type="text"
-                                                class="form-control form-control-sm {{ $errors->has('email') ? 'is-invalid' : '' }}"
-                                                name="email"
+                                                class="form-control form-control-sm {{ $errors->has('colete_email_destinatar') ? 'is-invalid' : '' }}"
+                                                name="colete_email_destinatar"
                                                 placeholder=""
-                                                value="{{ old('email', ($rezervare->email ?? '')) }}"
+                                                value="{{ old('colete_email_destinatar', ($rezervare->colete_email_destinatar ?? '')) }}"
                                                 required>
                                         </div>
                                         <div class="form-group col-lg-12 mb-1 justify-content-center">
