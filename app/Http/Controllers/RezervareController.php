@@ -638,8 +638,8 @@ class RezervareController extends Controller
                     'copii.localitate_nastere.*' => ['nullable', 'max:100'],
                     // 'copii.localitate_domiciliu.*' => ['nullable', 'max:100'],
                     'copii.sex.*' => ['nullable', 'max:100'],
-                    'colete_numar' => ['required_if:tip_calatorie,Colete', 'numeric'],
-                    'colete_kg' => ['nullable', 'required_without:colete_volum', 'numeric'],
+                    'colete_numar' => ['nullable', 'numeric'],
+                    'colete_kg' => ['nullable', 'numeric'],
                     'colete_volum' => ['nullable', 'numeric'],
                     'colete_descriere' => ['nullable', 'max:2000'],
                     'data_plecare' => [
@@ -787,8 +787,8 @@ class RezervareController extends Controller
                     'copii.localitate_nastere.*' => ['required', 'max:100'],
                     // 'copii.localitate_domiciliu.*' => ['nullable', 'max:100'],
                     'copii.sex.*' => ['nullable', 'max:100'],
-                    'colete_numar' => ['required_if:tip_calatorie,Colete', 'numeric'],
-                    'colete_kg' => ['nullable', 'required_without:colete_volum', 'numeric'],
+                    'colete_numar' => ['nullable', 'required_if:tip_calatorie,Colete', 'numeric'],
+                    'colete_kg' => ['nullable', 'required_if:tip_calatorie,Colete', 'numeric'],
                     'colete_volum' => ['nullable', 'numeric'],
                     'colete_descriere' => ['nullable', 'max:2000'],
                     'data_plecare' => [
@@ -923,7 +923,7 @@ class RezervareController extends Controller
         }
         $rezervare->fill($this->validateRequest($request));
         $rezervare->user_id = auth()->user()->id ?? null;
-        dd($request);
+
         // Recalcularea pretului total pentru siguranta
         if (!Auth::check()) {
             $rezervare->pret_total_tur = 0;
