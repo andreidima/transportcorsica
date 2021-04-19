@@ -40,35 +40,39 @@
                                             tipCalatorieVeche={!! json_encode(old('tip_calatorie', ($rezervare->tip_calatorie ?? ''))) !!}
                                         </script>
                                 @auth
-                                    <div class="col-lg-10 pl-3">
-                                        Selectează tip cursă:
-                                    </div>
-                                    <div class="col-lg-10 btn-group btn-group-toggle">
-                                        <label class="col-lg-6 border" v-bind:class="[tip_calatorie=='Calatori' ? 'btn btn-sm btn-success' : 'btn btn-sm btn-secondary']">
-                                            <input type="radio" class="btn-group-toggle" name="tip_calatorie" id="tip_calatorie1" autocomplete="off"
-                                                v-model="tip_calatorie" value="Calatori"
-                                                {{-- v-on:change="setTaraPlecare();getJudetePlecareInitial();getJudeteSosireInitial();setPreturi();" --}}
-                                                {{-- v-on:change="setTaraPlecare();getOrasePlecare();getOraseSosire();setPreturi();" --}}
-                                                v-on:change="setTaraPlecare();getOrasePlecare();getOraseSosire();"
-                                                >
-                                                    <i class="fas fa-users" style="font-size: 2em;"></i>
-                                                    <span style="font-size: 2em;">
-                                                        Transport Călători
-                                                    </span>
-                                        </label>
-                                        <label class="col-lg-6 border" v-bind:class="[tip_calatorie=='Colete' ? 'btn btn-sm btn-success' : 'btn btn-sm btn-secondary']">
-                                            <input type="radio" class="btn-group-toggle" name="tip_calatorie" id="tip_calatorie2" autocomplete="off"
-                                                v-model="tip_calatorie" value="Colete"
-                                                {{-- v-on:change="setTaraPlecare();getJudetePlecareInitial();getJudeteSosireInitial();setPreturi();" --}}
-                                                {{-- v-on:change="setTaraPlecare();getOrasePlecare();getOraseSosire();setPreturi();" --}}
-                                                v-on:change="setTaraPlecare();getOrasePlecare();getOraseSosire();"
-                                                >
-                                                    <i class="fas fa-box" style="font-size: 2em;"></i>
-                                                    <span style="font-size: 2em;">
-                                                        Transport Colete
-                                                    </span>
-                                        </label>
-                                    </div>
+                                    @if (isset($tip_operatie) && ($tip_operatie === "modificare"))
+                                        {{-- Nu se mai ofera posibilitatea de schimbare a cursei --}}
+                                    @else
+                                        <div class="col-lg-10 pl-3">
+                                            Selectează tip cursă:
+                                        </div>
+                                        <div class="col-lg-10 btn-group btn-group-toggle">
+                                            <label class="col-lg-6 border" v-bind:class="[tip_calatorie=='Calatori' ? 'btn btn-sm btn-success' : 'btn btn-sm btn-secondary']">
+                                                <input type="radio" class="btn-group-toggle" name="tip_calatorie" id="tip_calatorie1" autocomplete="off"
+                                                    v-model="tip_calatorie" value="Calatori"
+                                                    {{-- v-on:change="setTaraPlecare();getJudetePlecareInitial();getJudeteSosireInitial();setPreturi();" --}}
+                                                    {{-- v-on:change="setTaraPlecare();getOrasePlecare();getOraseSosire();setPreturi();" --}}
+                                                    v-on:change="setTaraPlecare();getOrasePlecare();getOraseSosire();"
+                                                    >
+                                                        <i class="fas fa-users" style="font-size: 2em;"></i>
+                                                        <span style="font-size: 2em;">
+                                                            Transport Călători
+                                                        </span>
+                                            </label>
+                                            <label class="col-lg-6 border" v-bind:class="[tip_calatorie=='Colete' ? 'btn btn-sm btn-success' : 'btn btn-sm btn-secondary']">
+                                                <input type="radio" class="btn-group-toggle" name="tip_calatorie" id="tip_calatorie2" autocomplete="off"
+                                                    v-model="tip_calatorie" value="Colete"
+                                                    {{-- v-on:change="setTaraPlecare();getJudetePlecareInitial();getJudeteSosireInitial();setPreturi();" --}}
+                                                    {{-- v-on:change="setTaraPlecare();getOrasePlecare();getOraseSosire();setPreturi();" --}}
+                                                    v-on:change="setTaraPlecare();getOrasePlecare();getOraseSosire();"
+                                                    >
+                                                        <i class="fas fa-box" style="font-size: 2em;"></i>
+                                                        <span style="font-size: 2em;">
+                                                            Transport Colete
+                                                        </span>
+                                            </label>
+                                        </div>
+                                    @endif
                                 @else
                                         <script type="application/javascript">
                                             tipCalatorieVeche={!! json_encode(old('tip_calatorie', ($rezervare->tip_calatorie ?? 'Calatori'))) !!}

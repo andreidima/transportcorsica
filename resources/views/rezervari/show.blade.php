@@ -138,20 +138,6 @@
                                             @endforeach
                                         </div>
                                     </div>
-                                @else
-                                    <div class="col-lg-11 px-0 border rounded-lg">
-                                        <h5 class="bg-success p-1 m-0 text-center">
-                                            Informații colete
-                                        </h5>
-                                    </div>
-                                    <div class="col-lg-11 px-4 py-2 bg-white border rounded-lg">
-                                        {{ $rezervare_tur->colete_descriere }}</span>
-                                        {{-- * {{ $tarife->adult }}€ = {{ $rezervare_tur->nr_adulti * $tarife->adult}}€ --}}
-                                    </div>
-                                    <div class="col-lg-11 px-4 py-2 mb-4 bg-white border rounded-lg">
-                                        Catitate: <span class="badge badge-primary" style="font-size:1em">{{ $rezervare_tur->colete_kg }} Kg</span>
-                                    </div>
-                                @endif
                                     <div class="col-lg-11 px-0 border rounded-lg">
                                         <h5 class="bg-success p-1 m-0 text-center">
                                             Informații client
@@ -166,6 +152,50 @@
                                         <br>
                                         Observații: {{ $rezervare_tur->observatii }}
                                     </div>
+                                @else
+                                    <div class="col-lg-11 px-0 border rounded-lg">
+                                        <h5 class="bg-success p-1 m-0 text-center">
+                                            Informații colete
+                                        </h5>
+                                    </div>
+                                    <div class="col-lg-11 px-4 py-2 bg-white border rounded-lg">
+                                        {{ $rezervare_tur->colete_descriere }}</span>
+                                        {{-- * {{ $tarife->adult }}€ = {{ $rezervare_tur->nr_adulti * $tarife->adult}}€ --}}
+                                    </div>
+                                    <div class="col-lg-11 px-4 py-2 mb-4 bg-white border rounded-lg">
+                                        Număr: <span class="badge badge-primary" style="font-size:1em">{{ $rezervare_tur->colete_numar }}</span>
+                                        <br>
+                                        Cantitate: <span class="badge badge-primary" style="font-size:1em">{{ $rezervare_tur->colete_kg }} Kg</span>
+                                        <br>
+                                        Volum: <span class="badge badge-primary" style="font-size:1em">{{ $rezervare_tur->colete_volum }} m<sup>3</sup></span>
+                                        <br>
+                                        Descriere: {{ $rezervare_tur->colete_descriere }}
+                                    </div>
+                                    <div class="col-lg-11 px-0 border rounded-lg">
+                                        <h5 class="bg-success p-1 m-0 text-center">
+                                            Informații expeditor
+                                        </h5>
+                                    </div>
+                                    <div class="col-lg-11 px-4 py-2 mb-4 bg-white border rounded-lg">
+                                        Nume: <span class="badge badge-primary" style="font-size:1.1em">{{ $rezervare_tur->nume }}</span>
+                                        <br>
+                                        Telefon: <b>{{ $rezervare_tur->telefon }}</b>
+                                        <br>
+                                        Email: <b>{{ $rezervare_tur->email }}</b>
+                                    </div>
+                                    <div class="col-lg-11 px-0 border rounded-lg">
+                                        <h5 class="bg-success p-1 m-0 text-center">
+                                            Informații destinatar
+                                        </h5>
+                                    </div>
+                                    <div class="col-lg-11 px-4 py-2 mb-4 bg-white border rounded-lg">
+                                        Nume: <span class="badge badge-primary" style="font-size:1.1em">{{ $rezervare_tur->colete_nume_destinatar }}</span>
+                                        <br>
+                                        Telefon: <b>{{ $rezervare_tur->colete_telefon_destinatar }}</b>
+                                        <br>
+                                        Email: <b>{{ $rezervare_tur->colete_email_destinatar }}</b>
+                                    </div>
+                                @endif
 
                                 @if ($rezervare_tur->factura)
                                     <div class="col-lg-11 px-0 border rounded-lg">

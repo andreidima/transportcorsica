@@ -113,7 +113,6 @@ class RezervareController extends Controller
      */
     public function edit(Request $request, Rezervare $rezervare)
     {
-        dd($rezervare, $rezervare->pasageri_relation_adulti);
         $this->authorize('update', $rezervare);
 
         // In cazul in care se intra pe modificare retur, se cauta si se deschide turul, pentru a se pastra logica de lucru cu datele de plecare si intoarcere
@@ -678,9 +677,9 @@ class RezervareController extends Controller
                         'max: 100'
                     ],
                     'email' => ['nullable', 'email', 'max:100'],
-                    'colete_nume_destinatar' => ['required_if:tip_calatorie,Colete', 'max:200'],
-                    'colete_telefon_destinatar' => ['required_if:tip_calatorie,Colete', 'max: 100'],
-                    'colete_email_destinatar' => ['required_if:tip_calatorie,Colete', 'email', 'max:100'],
+                    'colete_nume_destinatar' => ['nullable', 'max:200'],
+                    'colete_telefon_destinatar' => ['nullable', 'max: 100'],
+                    'colete_email_destinatar' => ['nullable', 'email', 'max:100'],
                     'adresa' => ['nullable', 'max:2000'],
                     'observatii' => ['nullable', 'max:2000'],
                     // 'plata_online' => [''],
@@ -923,7 +922,7 @@ class RezervareController extends Controller
         }
         $rezervare->fill($this->validateRequest($request));
         $rezervare->user_id = auth()->user()->id ?? null;
-        dd($request);
+        // dd($request);
         // Recalcularea pretului total pentru siguranta
         if (!Auth::check()) {
             $rezervare->pret_total_tur = 0;
