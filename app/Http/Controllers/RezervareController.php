@@ -279,7 +279,7 @@ class RezervareController extends Controller
                 $rezervare_retur->valoare_lei_tva = ($rezervare_retur->pret_total * $rezervare_retur->curs_bnr_euro) * 0.19;
                 $rezervare_retur->valoare_lei = ($rezervare_retur->pret_total * $rezervare_retur->curs_bnr_euro) - $rezervare_retur->valoare_lei_tva;
             }
-        }else{
+        }elseif($request->tip_calatorie === "Colete"){
             $rezervare_tur->nr_adulti = null;
             $rezervare_tur->nr_copii = null;
             $rezervare_tur->pret_total = 0;
@@ -534,8 +534,8 @@ class RezervareController extends Controller
         if (Auth::check()) {
             return request()->validate(
                 [
-                    'tip_calatorie' => ['nullable'],
-                    'traseu' => ['nullable'],
+                    'tip_calatorie' => ['required'],
+                    'traseu' => ['required'],
                     // 'judet_plecare' => [''],
                     'oras_plecare' => ['nullable', 'integer'],
                     // 'judet_sosire' => [''],
@@ -637,13 +637,8 @@ class RezervareController extends Controller
                     'copii.localitate_nastere.*' => ['nullable', 'max:100'],
                     // 'copii.localitate_domiciliu.*' => ['nullable', 'max:100'],
                     'copii.sex.*' => ['nullable', 'max:100'],
-<<<<<<< HEAD
                     'colete_numar' => ['nullable', 'numeric'],
                     'colete_kg' => ['nullable', 'numeric'],
-=======
-                    'colete_numar' => ['required_if:tip_calatorie,Colete', 'numeric'],
-                    'colete_kg' => ['nullable', 'required_if:tip_calatorie,Colete', 'numeric'],
->>>>>>> c1157b639d1d59eb9a1be0a28fdf528246ef664f
                     'colete_volum' => ['nullable', 'numeric'],
                     'colete_descriere' => ['nullable', 'max:2000'],
                     'data_plecare' => [
@@ -791,11 +786,7 @@ class RezervareController extends Controller
                     'copii.localitate_nastere.*' => ['required', 'max:100'],
                     // 'copii.localitate_domiciliu.*' => ['nullable', 'max:100'],
                     'copii.sex.*' => ['nullable', 'max:100'],
-<<<<<<< HEAD
-                    'colete_numar' => ['nullable', 'required_if:tip_calatorie,Colete', 'numeric'],
-=======
                     'colete_numar' => ['required_if:tip_calatorie,Colete', 'numeric'],
->>>>>>> c1157b639d1d59eb9a1be0a28fdf528246ef664f
                     'colete_kg' => ['nullable', 'required_if:tip_calatorie,Colete', 'numeric'],
                     'colete_volum' => ['nullable', 'numeric'],
                     'colete_descriere' => ['nullable', 'max:2000'],
@@ -931,11 +922,7 @@ class RezervareController extends Controller
         }
         $rezervare->fill($this->validateRequest($request));
         $rezervare->user_id = auth()->user()->id ?? null;
-<<<<<<< HEAD
-
-=======
         // dd($request);
->>>>>>> c1157b639d1d59eb9a1be0a28fdf528246ef664f
         // Recalcularea pretului total pentru siguranta
         if (!Auth::check()) {
             $rezervare->pret_total_tur = 0;
