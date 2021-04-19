@@ -113,7 +113,6 @@ class RezervareController extends Controller
      */
     public function edit(Request $request, Rezervare $rezervare)
     {
-        // dd($rezervare);
         $this->authorize('update', $rezervare);
 
         // In cazul in care se intra pe modificare retur, se cauta si se deschide turul, pentru a se pastra logica de lucru cu datele de plecare si intoarcere
@@ -638,8 +637,13 @@ class RezervareController extends Controller
                     'copii.localitate_nastere.*' => ['nullable', 'max:100'],
                     // 'copii.localitate_domiciliu.*' => ['nullable', 'max:100'],
                     'copii.sex.*' => ['nullable', 'max:100'],
+<<<<<<< HEAD
                     'colete_numar' => ['nullable', 'numeric'],
                     'colete_kg' => ['nullable', 'numeric'],
+=======
+                    'colete_numar' => ['required_if:tip_calatorie,Colete', 'numeric'],
+                    'colete_kg' => ['nullable', 'required_if:tip_calatorie,Colete', 'numeric'],
+>>>>>>> c1157b639d1d59eb9a1be0a28fdf528246ef664f
                     'colete_volum' => ['nullable', 'numeric'],
                     'colete_descriere' => ['nullable', 'max:2000'],
                     'data_plecare' => [
@@ -678,9 +682,9 @@ class RezervareController extends Controller
                         'max: 100'
                     ],
                     'email' => ['nullable', 'email', 'max:100'],
-                    'colete_nume_destinatar' => ['required_if:tip_calatorie,Colete', 'max:200'],
-                    'colete_telefon_destinatar' => ['required_if:tip_calatorie,Colete', 'max: 100'],
-                    'colete_email_destinatar' => ['required_if:tip_calatorie,Colete', 'email', 'max:100'],
+                    'colete_nume_destinatar' => ['nullable', 'max:200'],
+                    'colete_telefon_destinatar' => ['nullable', 'max: 100'],
+                    'colete_email_destinatar' => ['nullable', 'email', 'max:100'],
                     'adresa' => ['nullable', 'max:2000'],
                     'observatii' => ['nullable', 'max:2000'],
                     // 'plata_online' => [''],
@@ -701,7 +705,7 @@ class RezervareController extends Controller
                     'nr_adulti.required_if' => 'Câmpul Nr. Pasageri este necesar.',
                     'nr_adulti.integer' => 'Câmpul Nr. Pasageri trebuie să conțină un număr.',
                     'nr_adulti.between' => 'Câmpul Nr. Pasageri trebuie să fie între 1 și 100.',
-                    'colete_kg.required_without' => 'Este necesară introducerea a minim unuia dintre câmpurile: Cantitate sau Volum',
+                    // 'colete_kg.required_without' => 'Este necesară introducerea a minim unuia dintre câmpurile: Cantitate sau Volum',
                     // 'adresa.required_if' => 'Câmpul Adresa este obligatoriu dacă este selectată plata cu card'
                 ]
             );
@@ -787,7 +791,11 @@ class RezervareController extends Controller
                     'copii.localitate_nastere.*' => ['required', 'max:100'],
                     // 'copii.localitate_domiciliu.*' => ['nullable', 'max:100'],
                     'copii.sex.*' => ['nullable', 'max:100'],
+<<<<<<< HEAD
                     'colete_numar' => ['nullable', 'required_if:tip_calatorie,Colete', 'numeric'],
+=======
+                    'colete_numar' => ['required_if:tip_calatorie,Colete', 'numeric'],
+>>>>>>> c1157b639d1d59eb9a1be0a28fdf528246ef664f
                     'colete_kg' => ['nullable', 'required_if:tip_calatorie,Colete', 'numeric'],
                     'colete_volum' => ['nullable', 'numeric'],
                     'colete_descriere' => ['nullable', 'max:2000'],
@@ -851,7 +859,7 @@ class RezervareController extends Controller
                     // 'nr_adulti.integer' => 'Câmpul Nr. Pasageri trebuie să conțină un număr.',
                     // 'nr_adulti.between' => 'Câmpul Nr. Pasageri trebuie să fie între 1 și 100.',
                     // 'adresa.required_if' => 'Câmpul Adresa este obligatoriu dacă este selectată plata cu card'
-                    'colete_kg.required_without' => 'Este necesară introducerea a minim unuia dintre câmpurile: Cantitate sau Volum',
+                    // 'colete_kg.required_without' => 'Este necesară introducerea a minim unuia dintre câmpurile: Cantitate sau Volum',
                 ]
             );
         }
@@ -923,7 +931,11 @@ class RezervareController extends Controller
         }
         $rezervare->fill($this->validateRequest($request));
         $rezervare->user_id = auth()->user()->id ?? null;
+<<<<<<< HEAD
 
+=======
+        // dd($request);
+>>>>>>> c1157b639d1d59eb9a1be0a28fdf528246ef664f
         // Recalcularea pretului total pentru siguranta
         if (!Auth::check()) {
             $rezervare->pret_total_tur = 0;
