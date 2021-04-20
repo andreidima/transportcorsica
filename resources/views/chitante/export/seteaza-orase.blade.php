@@ -62,6 +62,21 @@
                                             value="{{ old('oras_sosire', ($rezervare->oras_sosire_nume->oras ?? '')) }}"
                                             required>
                                     </div>
+
+                                    @isset($rezervare->nr_adulti)
+                                    @else
+                                    <div class="col-lg-12 mb-5">
+                                        <label for="pret_total" class="mb-1 h5">Preț:*</label>
+                                        <input
+                                            type="text"
+                                            class="form-control form-control-lg {{ $errors->has('pret_total') ? 'is-invalid' : '' }}"
+                                            name="pret_total"
+                                            placeholder=""
+                                            value="{{ old('pret_total', ($rezervare->pret_total ?? '')) }}"
+                                            required>
+                                    </div>
+                                    @endisset
+
                                     <div class="col-lg-12 d-flex justify-content-center">
                                         <button type="submit" class="btn btn-lg btn-primary border border-white btn-block">EMITE CHITANȚA</button>
                                     </div>

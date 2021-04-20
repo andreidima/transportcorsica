@@ -990,7 +990,7 @@ class RezervareController extends Controller
     public function postAdaugaRezervarePasul2(Request $request)
     {
         $rezervare = $request->session()->get('rezervare');
-        // dd($rezervare);
+
         $rezervare->created_at = \Carbon\Carbon::now();
 
         // Verificare rezervare duplicat
@@ -1115,6 +1115,7 @@ class RezervareController extends Controller
 
         $rezervare_tur->cheie_unica = uniqid('tur');
         $rezervare_retur->cheie_unica = uniqid('retur');
+        // dd($rezervare);
 
         if ($rezervare->tur_retur === 'false') {
             //Inserarea rezervarii in baza de date

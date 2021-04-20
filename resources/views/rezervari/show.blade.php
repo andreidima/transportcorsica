@@ -158,10 +158,6 @@
                                             Informații colete
                                         </h5>
                                     </div>
-                                    <div class="col-lg-11 px-4 py-2 bg-white border rounded-lg">
-                                        {{ $rezervare_tur->colete_descriere }}</span>
-                                        {{-- * {{ $tarife->adult }}€ = {{ $rezervare_tur->nr_adulti * $tarife->adult}}€ --}}
-                                    </div>
                                     <div class="col-lg-11 px-4 py-2 mb-4 bg-white border rounded-lg">
                                         Număr: <span class="badge badge-primary" style="font-size:1em">{{ $rezervare_tur->colete_numar }}</span>
                                         <br>

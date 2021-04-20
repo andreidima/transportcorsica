@@ -8,7 +8,7 @@
                     {{-- @php
                         dd($view_type);
                     @endphp --}}
-                        <a href="/rapoarte/calatori/{{ $view_type }}"><i class="fas fa-book mr-1"></i>Rapoarte {{ $view_type }}</a>
+                        <a href="/rapoarte/{{ $tip_transport }}/{{ $view_type }}"><i class="fas fa-book mr-1"></i>Rapoarte {{ $view_type }}</a>
                 </h4>
             </div>
             <div class="col-lg-7" id="app1">
@@ -304,7 +304,9 @@
                                                             @endif
                                                         @endforeach
                                                     @else
-                                                        Rezervare colete
+                                                        <a href="{{ $rezervare->path() }}">
+                                                            Rezervare colete
+                                                        </a>
                                                     @endif
 
                                                     @if ($rezervare->observatii)

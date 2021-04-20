@@ -167,9 +167,9 @@
                                         <br>
                                         Cantitate: <span class="badge badge-primary" style="font-size:1em">{{ $rezervare->colete_kg }} Kg</span>
                                         <br>
-                                        Volum: <span class="badge badge-primary" style="font-size:1em">{{ $rezervare->colete_volum }} Kg</span>
+                                        Volum: <span class="badge badge-primary" style="font-size:1em">{{ $rezervare->colete_volum }} m<sup>3</sup></span>
                                         <br>
-                                        {{ $rezervare->colete_descriere }}
+                                        Descriere: {{ $rezervare->colete_descriere }}
                                         <br>
                                         Preț total:
                                         <span class="badge badge-primary" style="font-size:1em">{{ $rezervare->pret_total_tur + $rezervare->pret_total_retur }}€</span>
