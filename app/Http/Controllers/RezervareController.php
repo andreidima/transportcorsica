@@ -1411,21 +1411,41 @@ class RezervareController extends Controller
 
     public function postChitantaSeteazaOraseGuest(Request $request, $cheie_unica = null)
     {
-        $request->validate(
-            [
-                'oras_plecare' => 'required|max:100',
-                'oras_sosire' => 'required|max:100',
-            ]
-        );
-
         $rezervare = Rezervare::where('cheie_unica', $cheie_unica)->first();
-        $rezervare->oras_plecare_sofer = $request->oras_plecare;
-        $rezervare->oras_sosire_sofer = $request->oras_sosire;
-        $rezervare->bilet_serie = 'MRW88';
-        $rezervare->bilet_numar = $rezervare->bilet_numar ?? ((Rezervare::max('bilet_numar') ?? 0) + 1);
-        $rezervare->update();
 
-        return redirect()->away('rawbt:url:https://rezervari.transportcorsica.ro/chitanta-descarca/' . $rezervare->cheie_unica . '/export-html');
+        if ($rezervare->nr_adulti){
+            $request->validate(
+                [
+                    'oras_plecare' => 'required|max:100',
+                    'oras_sosire' => 'required|max:100',
+                ]
+            );
+            $rezervare->oras_plecare_sofer = $request->oras_plecare;
+            $rezervare->oras_sosire_sofer = $request->oras_sosire;
+            $rezervare->bilet_serie = 'MRW88';
+            $rezervare->bilet_numar = $rezervare->bilet_numar ?? ((Rezervare::max('bilet_numar') ?? 0) + 1);
+
+            $rezervare->update();
+
+            return redirect()->away('rawbt:url:https://rezervari.transportcorsica.ro/chitanta-descarca/' . $rezervare->cheie_unica . '/export-html');
+        } else {
+            $request->validate(
+                [
+                    'pret' => 'required|numeric|integer|max:99999'
+                ]
+            );
+
+            $rezervare->pret_total = $request->pret;
+
+            // Calcularea preturilor in lei
+            $rezervare->valoare_lei_tva = ($rezervare->pret_total * $rezervare->curs_bnr_euro) * 0.19;
+            $rezervare->valoare_lei = ($rezervare->pret_total * $rezervare->curs_bnr_euro) - $rezervare->valoare_lei_tva;
+
+            $rezervare->update();
+
+            return redirect('chitanta-descarca/' . $rezervare->cheie_unica . '/export-html');
+        }
+
 
         // return redirect()->action(
         //     [RezervareController::class, 'chitantaExportPDFGuest'],
@@ -1440,17 +1460,54 @@ class RezervareController extends Controller
     {
         $rezervare = Rezervare::where('cheie_unica', $cheie_unica)->first();
 
-        if ($request->view_type === 'export-html') {
+        if ($rezervare->nr_adulti){
+            if ($request->view_type === 'export-html') {
+                return view('chitante.export.chitanta', compact('rezervare'));
+            } elseif ($request->view_type === 'export-pdf') {
+                    $pdf = \PDF::loadView('chitante.export.chitanta', compact('rezervare'))
+                        ->setPaper([0,0,384,500]);
+                        // ->setPaper('a5', 'portrait');
+                    return $pdf->stream();
+                    // return $pdf->download('Chitanta.pdf');
+            }
+
             return view('chitante.export.chitanta', compact('rezervare'));
-        } elseif ($request->view_type === 'export-pdf') {
-                $pdf = \PDF::loadView('chitante.export.chitanta', compact('rezervare'))
-                    ->setPaper([0,0,384,500]);
-                    // ->setPaper('a5', 'portrait');
-                return $pdf->stream();
-                // return $pdf->download('Chitanta.pdf');
+
+        } else {
+            if ($request->view_type === 'export-html') {
+                return view('chitante.export.awb_colete', compact('rezervare'));
+            } elseif ($request->view_type === 'export-pdf') {
+                    $pdf = \PDF::loadView('chitante.export.awb_colete', compact('rezervare'))
+                        ->setPaper('a4', 'portrait');
+                    // return $pdf->stream();
+                    return $pdf->download('AWB.pdf');
+            }
+
+            return view('chitante.export.awb_colete', compact('rezervare'));
         }
 
-        return view('chitante.export.chitanta', compact('rezervare'));
+    }
+
+    public function cmrExportPDFGuest(Request $request, $cheie_unica = null)
+    {
+        $rezervare = Rezervare::where('cheie_unica', $cheie_unica)->first();
+
+        if ($rezervare->nr_adulti){
+            return back()->with('error', 'Această rezervare este pentru pasageri, deci nu are CMR.');
+
+        } else {
+            if ($request->view_type === 'export-html') {
+                return view('chitante.export.cmr_colete', compact('rezervare'));
+            } elseif ($request->view_type === 'export-pdf') {
+                    $pdf = \PDF::loadView('chitante.export.cmr_colete', compact('rezervare'))
+                        ->setPaper('a4', 'portrait');
+                    return $pdf->stream();
+                    // return $pdf->download('CMR.pdf');
+            }
+
+            return view('chitante.export.CMR_colete', compact('rezervare'));
+        }
+
     }
 
     public function duplicaRezervare(Request $request, Rezervare $rezervare)

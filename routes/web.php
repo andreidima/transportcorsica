@@ -43,13 +43,13 @@ Route::get('/adauga-rezervare-pasul-3', [RezervareController::class, 'adaugaReze
 Route::get('/bilet-rezervat/{view_type}', [RezervareController::class, 'pdfExportGuest']);
 Route::get('/factura-descarca/{view_type}', [RezervareController::class, 'exportPDFGuest']);
 
-// Imprimanta termica
-// 1. Setare orase si emitere bilet pasageri
-// 2. Setare kilograme si emitere awb colete
+// Imprimanta termica: Rezervari pasageri (Setare orase si emitere bilet pasageri) | Rezervari colete (Setare kilograme si emitere awb colete)
 Route::get('/chitanta-descarca/{cheie_unica}/seteaza_orase', [RezervareController::class, 'chitantaSeteazaOraseGuest']);
 Route::post('/chitanta-descarca/{cheie_unica}/seteaza_orase', [RezervareController::class, 'postChitantaSeteazaOraseGuest']);
 Route::get('/chitanta-descarca/{cheie_unica}/{view_type}', [RezervareController::class, 'chitantaExportPDFGuest'])->name('chitanta-descarca');
-// Route::get('/chitanta-descarca/{view_type}', [RezervareController::class, 'chitantaExportPDFGuest']);
+
+// Descarcare CMR colete
+Route::get('/cmr-descarca/{cheie_unica}/{view_type}', [RezervareController::class, 'cmrExportPDFGuest']);
 
 // Extras date cu Axios
 Route::get('/orase_rezervari', [RezervareController::class, 'orase_rezervari']);

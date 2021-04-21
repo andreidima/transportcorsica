@@ -82,13 +82,13 @@
                                         </div>
                                     @else
                                         <div class="col-lg-2 mb-5">
-                                            <label for="pret_total" class="mb-1 h5">Preț:*</label>
+                                            <label for="pret" class="mb-1 h5">Preț:*</label>
                                             <input
                                                 type="text"
-                                                class="form-control form-control-lg {{ $errors->has('pret_total') ? 'is-invalid' : '' }}"
-                                                name="pret_total"
+                                                class="form-control form-control-lg {{ $errors->has('pret') ? 'is-invalid' : '' }}"
+                                                name="pret"
                                                 placeholder=""
-                                                value="{{ old('pret_total', ($rezervare->pret_total ?? '')) }}"
+                                                value="{{ old('pret', ($rezervare->pret_total ?? '')) }}"
                                                 required>
                                         </div>
                                     @endisset

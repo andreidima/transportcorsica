@@ -88,23 +88,60 @@
                         </h3>
                     </td>
                 </tr>
-                <tr>
-                    <td width="" style="">
-                        {{-- Client:
-                        <br>
-                        <b>{{ $rezervare_tur->nume }}</b> --}}
-                    </td>
-                    <td width="50%" style="text-align:center;">
-                        Telefon:
-                        <br>
-                        <b>{{ $rezervare_tur->telefon }}</b>
-                    </td>
-                    <td width="50%" style="text-align:center;">
-                        E-mail:
-                        <br>
-                        <b>{{ $rezervare_tur->email }}</b>
-                    </td>
-                </tr>
+                @isset ($rezervare_tur->nr_adulti)
+                    <tr>
+                        <td width="" style="">
+                            {{-- Client:
+                            <br>
+                            <b>{{ $rezervare_tur->nume }}</b> --}}
+                        </td>
+                        <td width="50%" style="text-align:center;">
+                            Telefon:
+                            <br>
+                            <b>{{ $rezervare_tur->telefon }}</b>
+                        </td>
+                        <td width="50%" style="text-align:center;">
+                            E-mail:
+                            <br>
+                            <b>{{ $rezervare_tur->email }}</b>
+                        </td>
+                    </tr>
+                @else
+                    <tr>
+                        <td width="" style="">
+                            Expeditor:
+                            <br>
+                            <b>{{ $rezervare_tur->nume }}</b>
+                        </td>
+                        <td width="" style="text-align:center;">
+                            Telefon:
+                            <br>
+                            <b>{{ $rezervare_tur->telefon }}</b>
+                        </td>
+                        <td width="" style="text-align:center;">
+                            E-mail:
+                            <br>
+                            <b>{{ $rezervare_tur->email }}</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="" style="">
+                            Destinatar:
+                            <br>
+                            <b>{{ $rezervare_tur->colete_nume_destinatar }}</b>
+                        </td>
+                        <td width="" style="text-align:center;">
+                            Telefon:
+                            <br>
+                            <b>{{ $rezervare_tur->colete_telefon_destinatar }}</b>
+                        </td>
+                        <td width="" style="text-align:center;">
+                            E-mail:
+                            <br>
+                            <b>{{ $rezervare_tur->colete_email_destinatar }}</b>
+                        </td>
+                    </tr>
+                @endisset
                 @isset ($rezervare_tur->observatii)
                 <tr>
                     <td colspan="3" style="height: 10px">
@@ -269,10 +306,22 @@
                         </tr>
                     @else
                         <tr>
-                            <td colspan="4">
-                                Descriere colete: {{ $rezervare_tur->colete_descriere }}
+                            <td colspan="2">
+                                <b>Număr colete: {{ $rezervare_tur->colete_numar }}</b>
                                 <br>
                                 <b>Cantitate: {{ $rezervare_tur->colete_kg }}Kg</b>
+                                <br>
+                                <b>Volum: {{ $rezervare_tur->colete_volum }}Kg</b>
+                            </td>
+                            <td colspan="2">
+                                <b>Preț în Euro: {{ $rezervare_tur->pret_total }} Euro</b>
+                                <br>
+                                <b>Preț în Lei: {{ $rezervare_tur->valoare_lei + $rezervare_tur->valoare_lei_tva }} lei</b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                Descriere colete: {{ $rezervare_tur->colete_descriere }}
                             </td>
                         </tr>
                     @endif

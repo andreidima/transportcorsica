@@ -212,8 +212,18 @@
 
                                     <div class="col-lg-12 mb-0 d-flex justify-content-center">
                                         <a class="btn bg-success text-white border border-dark rounded-pill mr-1" href="/chitanta-descarca/{{ $rezervare_tur->cheie_unica }}/export-pdf" target="_target" role="button">
-                                            Descarcă bilet
+                                            @isset ($rezervare_tur->nr_adulti)
+                                                Descarcă bilet
+                                            @else
+                                                Descarcă AWB
+                                            @endisset
                                         </a>
+                                    @isset ($rezervare_tur->nr_adulti)
+                                    @else
+                                        <a class="btn bg-success text-white border border-dark rounded-pill mr-1" href="/cmr-descarca/{{ $rezervare_tur->cheie_unica }}/export-pdf" target="_target" role="button">
+                                           Descarcă CMR
+                                        </a>
+                                    @endisset
                                         <a class="btn bg-success text-white border border-dark rounded-pill mr-1" href="/bilet-rezervat-user-logat/rezervare-pdf/{{ $rezervare_tur->id }}/{{ $rezervare_retur->id ?? ''}}" role="button">
                                             Descarcă rezervare
                                         </a>
