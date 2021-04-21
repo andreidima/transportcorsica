@@ -282,18 +282,39 @@ class RezervareController extends Controller
         }elseif($request->tip_calatorie === "Colete"){
             $rezervare_tur->nr_adulti = null;
             $rezervare_tur->nr_copii = null;
-            $rezervare_tur->pret_total = 0;
 
+            $rezervare_tur->pret_total = $request->pret_total_tur;
+            // Salvarea preturilor in lei in tabelul de rezervari, pentru a emite chitante
+            $rezervare_tur->valoare_lei_tva = ($rezervare_tur->pret_total * $rezervare_tur->curs_bnr_euro) * 0.19;
+            $rezervare_tur->valoare_lei = ($rezervare_tur->pret_total * $rezervare_tur->curs_bnr_euro) - $rezervare_tur->valoare_lei_tva;
+
+            $rezervare_tur->colete_numar = $request->colete_numar;
             $rezervare_tur->colete_kg = $request->colete_kg;
+            $rezervare_tur->colete_volum = $request->colete_volum;
             $rezervare_tur->colete_descriere = $request->colete_descriere;
+
+            $rezervare_tur->colete_nume_destinatar = $request->colete_nume_destinatar;
+            $rezervare_tur->colete_telefon_destinatar = $request->colete_telefon_destinatar;
+            $rezervare_tur->colete_email_destinatar = $request->colete_email_destinatar;
+
 
             if (isset($rezervare_retur)){
                 $rezervare_retur->nr_adulti = null;
                 $rezervare_retur->nr_copii = null;
-                $rezervare_retur->pret_total = 0;
 
+                $rezervare_retur->pret_total = $request->pret_total_tur;
+                // Salvarea preturilor in lei in tabelul de rezervari, pentru a emite chitante
+                $rezervare_retur->valoare_lei_tva = ($rezervare_retur->pret_total * $rezervare_retur->curs_bnr_euro) * 0.19;
+                $rezervare_retur->valoare_lei = ($rezervare_retur->pret_total * $rezervare_retur->curs_bnr_euro) - $rezervare_retur->valoare_lei_tva;
+
+                $rezervare_retur->colete_numar = $request->colete_numar;
                 $rezervare_retur->colete_kg = $request->colete_kg;
+                $rezervare_retur->colete_volum = $request->colete_volum;
                 $rezervare_retur->colete_descriere = $request->colete_descriere;
+
+                $rezervare_retur->colete_nume_destinatar = $request->colete_nume_destinatar;
+                $rezervare_retur->colete_telefon_destinatar = $request->colete_telefon_destinatar;
+                $rezervare_retur->colete_email_destinatar = $request->colete_email_destinatar;
             }
         }
 
@@ -1490,7 +1511,23 @@ class RezervareController extends Controller
 
     public function cmrExportPDFGuest(Request $request, $cheie_unica = null)
     {
-        $rezervare = Rezervare::where('cheie_unica', $cheie_unica)->first();
+        $rezervare = Rezervare::
+            join('orase as orase_plecare', 'rezervari.oras_plecare', '=', 'orase_plecare.id')
+            ->join('orase as orase_sosire', 'rezervari.oras_sosire', '=', 'orase_sosire.id')
+            ->with('pasageri_relation')
+            ->with('pasageri_relation')
+            ->select(
+                'rezervari.*',
+                'orase_plecare.tara as oras_plecare_tara',
+                'orase_plecare.oras as oras_plecare_nume',
+                'orase_plecare.traseu as oras_plecare_traseu',
+                'orase_plecare.ordine as oras_plecare_ordine',
+                'orase_sosire.tara as oras_sosire_tara',
+                'orase_sosire.oras as oras_sosire_nume',
+                'orase_sosire.traseu as oras_sosire_traseu',
+                'orase_sosire.ordine as oras_sosire_ordine',
+            )
+            ->where('cheie_unica', $cheie_unica)->first();
 
         if ($rezervare->nr_adulti){
             return back()->with('error', 'Această rezervare este pentru pasageri, deci nu are CMR.');

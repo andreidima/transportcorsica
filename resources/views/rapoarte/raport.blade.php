@@ -225,6 +225,7 @@
                                                         {{-- <button type="submit" name="action" value="lista_sofer" class="btn btn-sm bg-success text-white border border-light rounded-pill">
                                                             <i class="fas fa-file-pdf text-white mr-1"></i>Raport PDF
                                                         </button>  --}}
+                                                    @if ( $tip_transport === 'calatori')
                                                         <a href="/rapoarte/lista_pasageri/{{ $rezervari_pe_tara->first()->oras_plecare_tara }}/{{ \Carbon\Carbon::parse($search_data)->isoFormat('YYYY-MM-DD') }}/{{ $rezervari_pe_trasee->first()->lista_plecare }}/lista_plecare/{{ $tip_transport }}/extrage-rezervari/raport-pdf" class="btn btn-sm bg-success text-white border border-light rounded-pill">
                                                             <i class="fas fa-file-pdf text-white mr-1"></i>Listă pasageri
                                                             {{-- Iphone --}}
@@ -247,6 +248,12 @@
                                                                 </span>
                                                             {{-- Iphone --}}
                                                         </a>
+                                                    @else
+                                                        <a href="/rapoarte/cmr/{{ $rezervari_pe_tara->first()->oras_plecare_tara }}/{{ \Carbon\Carbon::parse($search_data)->isoFormat('YYYY-MM-DD') }}/{{ $rezervari_pe_trasee->first()->lista_plecare }}/lista_plecare/{{ $tip_transport }}/extrage-rezervari/raport-pdf" class="btn btn-sm bg-success text-white border border-light rounded-pill">
+                                                            <i class="fas fa-file-pdf text-white mr-1"></i>Raport CMR
+                                                            {{-- Iphone --}}
+                                                        </a>
+                                                    @endif
                                                     @if ((auth()->user()->role === 'administrator') || (auth()->user()->role === 'superadmin'))
                                                         <a
                                                             class="btn btn-sm bg-warning border border-light rounded-pill" style="color: black !important"
@@ -545,6 +552,7 @@
                                                         {{-- <button type="submit" name="action" value="lista_sofer" class="btn btn-sm bg-success text-white border border-light rounded-pill">
                                                             <i class="fas fa-file-pdf text-white mr-1"></i>Raport PDF
                                                         </button>  --}}
+                                                    @if ( $tip_transport === 'calatori')
                                                         <a href="/rapoarte/lista_pasageri/{{ $rezervari_pe_tara->first()->oras_plecare_tara }}/{{ \Carbon\Carbon::parse($search_data)->isoFormat('YYYY-MM-DD') }}/{{ $rezervari_pe_trasee->first()->lista_sosire }}/lista_sosire/{{ $tip_transport }}/extrage-rezervari/raport-pdf" class="btn btn-sm bg-success text-white border border-light rounded-pill">
                                                             <i class="fas fa-file-pdf text-white mr-1"></i>Listă pasageri
                                                             {{-- Iphone --}}
@@ -563,6 +571,12 @@
                                                                 </span>
                                                             {{-- Iphone --}}
                                                         </a>
+                                                    @else
+                                                        <a href="/rapoarte/cmr/{{ $rezervari_pe_tara->first()->oras_plecare_tara }}/{{ \Carbon\Carbon::parse($search_data)->isoFormat('YYYY-MM-DD') }}/{{ $rezervari_pe_trasee->first()->lista_plecare }}/lista_plecare/{{ $tip_transport }}/extrage-rezervari/raport-pdf" class="btn btn-sm bg-success text-white border border-light rounded-pill">
+                                                            <i class="fas fa-file-pdf text-white mr-1"></i>Raport CMR
+                                                            {{-- Iphone --}}
+                                                        </a>
+                                                    @endif
                                                     @if ((auth()->user()->role === 'administrator') || (auth()->user()->role === 'superadmin'))
                                                         <a
                                                             class="btn btn-sm bg-warning border border-light rounded-pill" style="color: black !important"
