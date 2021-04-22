@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Rezervare extends Model
 {
     use HasFactory;
-    
+
     protected $table = 'rezervari';
     protected $guarded = [];
 
@@ -45,6 +45,11 @@ class Rezervare extends Model
     public function factura()
     {
         return $this->hasOne('App\Models\Factura', 'rezervare_id');
+    }
+
+    public function facturi()
+    {
+        return $this->HasMany('App\Models\Factura', 'rezervare_id');
     }
 
     public function factura_valida()
