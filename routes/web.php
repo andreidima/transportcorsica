@@ -11,6 +11,7 @@ use App\Http\Controllers\PlataOnlineController;
 use App\Http\Controllers\VueJSController;
 use App\Http\Controllers\SmsBulkController;
 use App\Http\Controllers\Test;
+use App\Http\Controllers\MasinaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -58,11 +59,8 @@ Route::get('/trimitere-catre-plata/{rezervare_tur}', [PlataOnlineController::cla
 Route::post('/confirmare-plata', [PlataOnlineController::class, 'confirmarePlata'])->name('confirmare-plata');
 
 Route::middleware(['role:administrator,sofer'])->group(function () {
-    // Route::view('/home', 'home');
     Route::resource('rezervari', RezervareController::class,  ['parameters' => ['rezervari' => 'rezervare']]);
-    // Route::resource('rezervari', RezervareController::class,  ['parameters' => ['rezervari' => 'rezervare']])->only([
-    //     'index', 'show'
-    // ]);
+
     Route::post('/rapoarte/extrage-rezervari/{view_type}', [RaportController::class, 'extrageRezervari']);
     Route::post('/rapoarte/{tip_transport}/muta-rezervari', [RaportController::class, 'mutaRezervari']);
     Route::post('/rapoarte/{tip_transport}/muta-rezervare/{rezervare}', [RaportController::class, 'mutaRezervare']);
@@ -75,10 +73,6 @@ Route::middleware(['role:administrator,sofer'])->group(function () {
     Route::get('rezervari/{rezervare}/duplica', [RezervareController::class, 'duplicaRezervare']);
     Route::post('rezervari/{rezervare}/pasageri-neseriosi', [RezervareController::class, 'insereazaPasageriNeseriosi'])->name('insereaza-pasageri-neseriosi');
 
-    // Route::resource('rezervari', RezervareController::class,  ['parameters' => ['rezervari' => 'rezervare']])->only([
-    //     'create', 'store', 'update', 'destroy'
-    // ]);
-
     Route::resource('clienti-neseriosi', ClientNeseriosController::class,  ['parameters' => ['clienti-neseriosi' => 'client_neserios']]);
 
     Route::resource('mesaje-trimise-sms', MesajTrimisSmsController::class,  ['parameters' => ['mesaje_trimise_sms' => 'mesaj_trimis_sms']]);
@@ -88,6 +82,9 @@ Route::middleware(['role:administrator,sofer'])->group(function () {
     Route::any('/facturi/{factura}/anuleaza', [FacturaController::class, 'anuleaza']);
     Route::get('/facturi/{factura}/export/{view_type}', [FacturaController::class, 'exportPDF']);
 
+    // Autocomplete firme pentru facturi
     Route::get('vuejs/autocomplete', [VueJSController::class, 'autocomplete']);
     Route::get('vuejs/autocomplete/search', [VueJSController::class, 'autocompleteSearch']);
+
+    Route::resource('masini', MasinaController::class,  ['parameters' => ['masini' => 'masina']]);
 });
