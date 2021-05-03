@@ -35,34 +35,32 @@
 
                             <div class="form-group col-lg-12 px-2 mb-0">
 
-                            @if (isset($tip_operatie) && ($tip_operatie === "modificare"))
-                                <div class="form-row mb-4 d-flex justify-content-center">
                                             {{-- Nu se mai ofera posibilitatea de schimbare a cursei --}}
+                            {{-- @if (isset($tip_operatie) && ($tip_operatie === "modificare"))
+                                <div class="form-row mb-4 d-flex justify-content-center">
                                     <script type="application/javascript">
                                         tipCalatorieVeche={!! json_encode(old('tip_calatorie', ($rezervare->tip_calatorie ?? ''))) !!}
-                                        traseuVechi={!! json_encode(old('traseu', ($rezervare->traseu?? ''))) !!}
                                     </script>
                                     <div class="col-lg-5 pl-3 text-center">
                                         <span class="px-2 border" style="font-size: 1.5em; background-color:lightseagreen; color:white">
                                             Tip cursă: {{ $rezervare->tip_calatorie }}
                                         </span>
                                     </div>
-                                    <div class="col-lg-5 pl-3 text-center">
-                                        <span class="px-2 border" style="font-size: 1.5em; background-color:lightseagreen; color:white;">
-                                            Traseu: {{ $rezervare->traseu }}
-                                        </span>
-                                    </div>
                                 </div>
 
                                     <input type="hidden" name="tip_calatorie" value="{{  $rezervare->tip_calatorie }}" />
-                                    <input type="hidden" name="traseu" value="{{  $rezervare->traseu }}" />
-                            @else
-                                <div class="form-row mb-4 d-flex justify-content-center">
-                                        <script type="application/javascript">
-                                            tipCalatorieVeche={!! json_encode(old('tip_calatorie', ($rezervare->tip_calatorie ?? ''))) !!}
-                                        </script>
-                                @auth
+                            @else --}}
+
+                            @auth
+                                <script type="application/javascript">
+                                    tipCalatorieVeche={!! json_encode(old('tip_calatorie', ($rezervare->tip_calatorie ?? ''))) !!}
+                                </script>
+
+                                {{ old('tip_calatorie') }}
+
+                                <div v-if="tip_calatorie === ''" class="form-row mb-4 d-flex justify-content-center">
                                     {{-- Este rezervare noua, si automat este necesarea posibilitarea selectarii tipului de cursa --}}
+                                    {{-- Se va ascunde campul de selectare a cursei dupa prima selectie --}}
                                     <div class="col-lg-10 pl-3">
                                         Selectează tip cursă:
                                     </div>
@@ -92,13 +90,30 @@
                                                     </span>
                                         </label>
                                     </div>
-                                @else
-                                        <script type="application/javascript">
-                                            tipCalatorieVeche={!! json_encode(old('tip_calatorie', ($rezervare->tip_calatorie ?? 'Calatori'))) !!}
-                                        </script>
-                                    <input type="hidden" name="tip_calatorie" value="Calatori" />
-                                @endauth
                                 </div>
+
+                                <div v-else class="form-row mb-4 d-flex justify-content-center">
+                                            {{-- Nu se mai ofera posibilitatea de schimbare a cursei --}}
+                                    <div class="col-lg-5 pl-3 text-center">
+                                        <span class="px-2 border" style="font-size: 1.5em; background-color:lightseagreen; color:white">
+                                            Tip cursă: @{{ tip_calatorie }}
+                                        </span>
+                                    </div>
+
+                                    <input type="hidden" name="tip_calatorie" v-model="tip_calatorie" />
+
+                                </div>
+
+                            @else
+                                <script type="application/javascript">
+                                    tipCalatorieVeche={!! json_encode(old('tip_calatorie', ($rezervare->tip_calatorie ?? 'Calatori'))) !!}
+                                </script>
+                                {{-- <div v-if="tip_calatorie === ''" class="form-row mb-4 d-flex justify-content-center"> --}}
+                                <div class="form-row mb-4 d-flex justify-content-center">
+                                    <input type="hidden" name="tip_calatorie" value="Calatori" />
+                                </div>
+                            @endauth
+
                             <div v-cloak v-if="tip_calatorie">
                                 <div class="form-row mb-1 d-flex justify-content-center">
                                         <script type="application/javascript">
@@ -131,7 +146,6 @@
                                     </div>
                                 </div>
                             </div>
-                        @endif
 
 
                     {{-- <div v-if="tur_retur">                --}}
@@ -253,7 +267,13 @@
                                             >
                                             <label class="custom-control-label" for="customSwitch1">TUR - RETUR</label>
                                         </div>
+                                        <div class="col-lg-3 d-flex align-items-center">
+                                            <button class="btn btn-sm btn-warning" type="button" v-on:click="inverseaza_orasele()">
+                                                Inversează orașele
+                                            </button>
+                                        </div>
                                     </div>
+
                                     <div class="form-row mb-4 px-2 py-2 d-flex justify-content-center align-items-center border rounded"
                                         style="background-color:lightseagreen; color:white"
                                     >

@@ -429,8 +429,6 @@ if (document.querySelector('#adauga-rezervare')) {
             hasOnlyDigits(value) {
                 return /^\d+$/.test(value);
             },
-
-
             autoComplete: function () {
                 app1.cumparatori = '';
                 if (app1.cumparator.length > 2) {
@@ -443,6 +441,20 @@ if (document.querySelector('#adauga-rezervare')) {
                         app1.cumparatori = response.data;
                     });
                 }
+            },
+            inverseaza_orasele: function () {
+                if (this.traseu == 'Romania-Corsica') {
+                    (this.traseu = 'Corsica-Romania')
+                } else {
+                    (this.traseu = 'Romania-Corsica')
+                }
+                this.setTaraPlecare()
+                this.getOrasePlecare()
+                this.getOraseSosire()
+
+                salvareoras = this.oras_plecare;
+                this.oras_plecare = this.oras_sosire;
+                this.oras_sosire = salvareoras;
             },
         }
     });

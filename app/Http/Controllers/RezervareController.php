@@ -125,7 +125,7 @@ class RezervareController extends Controller
         $rezervare->data_plecare = $rezervare->data_cursa;
         $rezervare->data_intoarcere = ($rezervare->retur) ? Rezervare::find($rezervare->retur)->data_cursa : '';
         $rezervare->pret_total_tur = $rezervare->pret_total;
-        $rezervare->pret_total_retur = ($rezervare->retur) ? Rezervare::find($rezervare->retur)->pret_total : '';
+        $rezervare->pret_total_retur = ($rezervare->retur) ? Rezervare::find($rezervare->retur)->pret_total : 0;
         // $rezervare->judet_plecare = $rezervare->oras_plecare_nume->judet ?? null;
         // $rezervare->judet_sosire = $rezervare->oras_sosire_nume->judet ?? null;
         $rezervare->acord_de_confidentialitate = "1";
