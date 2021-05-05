@@ -36,7 +36,7 @@
                                                 Data de plecare:
                                                 <br>
                                                 <span class="badge badge-primary" style="font-size:1.1em">
-                                                    {{ \Carbon\Carbon::parse($rezervare_tur->data_cursa)->isoFormat('DD.MM.YYYY') }}
+                                                    {{ $rezervare_tur->data_cursa ? \Carbon\Carbon::parse($rezervare_tur->data_cursa)->isoFormat('DD.MM.YYYY') : null}}
                                                 </span>
                                             </div>
                                             <div class="col-lg-4">
@@ -165,7 +165,9 @@
                                         <br>
                                         Volum: <span class="badge badge-primary" style="font-size:1em">{{ $rezervare_tur->colete_volum }} m<sup>3</sup></span>
                                         <br>
-                                        Descriere: {{ $rezervare_tur->colete_descriere }}
+                                        Natura mărfii: {{ $rezervare_tur->colete_natura_marfii }}
+                                        <br>
+                                        Mod de ambalare: {{ $rezervare_tur->colete_mod_ambalare }}
                                     </div>
                                     <div class="col-lg-11 px-0 border rounded-lg">
                                         <h5 class="bg-success p-1 m-0 text-center">
@@ -178,6 +180,8 @@
                                         Telefon: <b>{{ $rezervare_tur->telefon }}</b>
                                         <br>
                                         Email: <b>{{ $rezervare_tur->email }}</b>
+                                        <br>
+                                        Adresa: <b>{{ $rezervare_tur->adresa }}</b>
                                     </div>
                                     <div class="col-lg-11 px-0 border rounded-lg">
                                         <h5 class="bg-success p-1 m-0 text-center">
@@ -190,6 +194,8 @@
                                         Telefon: <b>{{ $rezervare_tur->colete_telefon_destinatar }}</b>
                                         <br>
                                         Email: <b>{{ $rezervare_tur->colete_email_destinatar }}</b>
+                                        <br>
+                                        Adresa: <b>{{ $rezervare_tur->colete_adresa_destinatar }}</b>
                                     </div>
                                 @endif
 

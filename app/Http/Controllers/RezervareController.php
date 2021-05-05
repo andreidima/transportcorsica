@@ -233,6 +233,7 @@ class RezervareController extends Controller
         $rezervare_tur->nume = $request->nume;
         $rezervare_tur->telefon = $request->telefon;
         $rezervare_tur->email = $request->email;
+        $rezervare_tur->adresa = $request->adresa;
         $rezervare_tur->observatii = $request->observatii;
         $rezervare_tur->document_de_calatorie = $request->document_de_calatorie;
         $rezervare_tur->serie_document = $request->serie_document;
@@ -252,6 +253,7 @@ class RezervareController extends Controller
             $rezervare_retur->nume = $request->nume;
             $rezervare_retur->telefon = $request->telefon;
             $rezervare_retur->email = $request->email;
+            $rezervare_retur->adresa = $request->adresa;
             $rezervare_retur->observatii = $request->observatii;
             $rezervare_retur->document_de_calatorie = $request->document_de_calatorie;
             $rezervare_retur->serie_document = $request->serie_document;
@@ -291,11 +293,14 @@ class RezervareController extends Controller
             $rezervare_tur->colete_numar = $request->colete_numar;
             $rezervare_tur->colete_kg = $request->colete_kg;
             $rezervare_tur->colete_volum = $request->colete_volum;
+            $rezervare_tur->colete_natura_marfii = $request->colete_natura_marfii;
+            $rezervare_tur->colete_mod_ambalare = $request->colete_mod_ambalare;
             $rezervare_tur->colete_descriere = $request->colete_descriere;
 
             $rezervare_tur->colete_nume_destinatar = $request->colete_nume_destinatar;
             $rezervare_tur->colete_telefon_destinatar = $request->colete_telefon_destinatar;
             $rezervare_tur->colete_email_destinatar = $request->colete_email_destinatar;
+            $rezervare_tur->colete_adresa_destinatar = $request->colete_adresa_destinatar;
 
 
             if (isset($rezervare_retur)){
@@ -310,11 +315,14 @@ class RezervareController extends Controller
                 $rezervare_retur->colete_numar = $request->colete_numar;
                 $rezervare_retur->colete_kg = $request->colete_kg;
                 $rezervare_retur->colete_volum = $request->colete_volum;
+                $rezervare_retur->colete_natura_marfii = $request->colete_natura_marfii;
+                $rezervare_retur->colete_mod_ambalare = $request->colete_mod_ambalare;
                 $rezervare_retur->colete_descriere = $request->colete_descriere;
 
                 $rezervare_retur->colete_nume_destinatar = $request->colete_nume_destinatar;
                 $rezervare_retur->colete_telefon_destinatar = $request->colete_telefon_destinatar;
                 $rezervare_retur->colete_email_destinatar = $request->colete_email_destinatar;
+                $rezervare_retur->colete_adresa_destinatar = $request->colete_adresa_destinatar;
             }
         }
 
@@ -661,6 +669,8 @@ class RezervareController extends Controller
                     'colete_numar' => ['nullable', 'numeric'],
                     'colete_kg' => ['nullable', 'numeric'],
                     'colete_volum' => ['nullable', 'numeric'],
+                    'colete_natura_marfii' => ['nullable', 'max:1000'],
+                    'colete_mod_ambalare' => ['nullable', 'max:1000'],
                     'colete_descriere' => ['nullable', 'max:2000'],
                     'data_plecare' => [
                         'nullable'
@@ -698,10 +708,11 @@ class RezervareController extends Controller
                         'max: 100'
                     ],
                     'email' => ['nullable', 'email', 'max:100'],
+                    'adresa' => ['nullable', 'max:500'],
                     'colete_nume_destinatar' => ['nullable', 'max:200'],
                     'colete_telefon_destinatar' => ['nullable', 'max: 100'],
                     'colete_email_destinatar' => ['nullable', 'email', 'max:100'],
-                    'adresa' => ['nullable', 'max:2000'],
+                    'colete_adresa_destinatar' => ['nullable', 'max:500'],
                     'observatii' => ['nullable', 'max:2000'],
                     // 'plata_online' => [''],
                     'cumparator' => ['nullable', 'max:100'],
@@ -810,6 +821,8 @@ class RezervareController extends Controller
                     'colete_numar' => ['required_if:tip_calatorie,Colete', 'numeric'],
                     'colete_kg' => ['nullable', 'required_if:tip_calatorie,Colete', 'numeric'],
                     'colete_volum' => ['nullable', 'numeric'],
+                    'colete_natura_marfii' => ['required_if:tip_calatorie,Colete', 'max:1000'],
+                    'colete_mod_ambalare' => ['required_if:tip_calatorie,Colete', 'max:1000'],
                     'colete_descriere' => ['nullable', 'max:2000'],
                     'data_plecare' => [
                         'required'
@@ -848,10 +861,11 @@ class RezervareController extends Controller
                         'max: 100'
                     ],
                     'email' => ['nullable', 'email', 'max:100'],
+                    'adresa' => ['max:2000'],
                     'colete_nume_destinatar' => ['required_if:tip_calatorie,Colete', 'max:200'],
                     'colete_telefon_destinatar' => ['required_if:tip_calatorie,Colete', 'max: 100'],
-                    'colete_email_destinatar' => ['required_if:tip_calatorie,Colete', 'email', 'max:100'],
-                    'adresa' => ['max:2000'],
+                    'colete_email_destinatar' => ['nullable', 'email', 'max:100'],
+                    'colete_adresa_destinatar' => ['required_if:tip_calatorie,Colete', 'nullable', 'max:500'],
                     'observatii' => ['max:2000'],
                     // 'plata_online' => [''],
                     'cumparator' => ['nullable', 'max:100'],

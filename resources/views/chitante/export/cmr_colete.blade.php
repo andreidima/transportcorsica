@@ -77,7 +77,12 @@
                     Expediteur (nom, adresse, pays)
                     <br>
                     <br>
-                    <h2 style="text-align:center; margin:0px">{{ $rezervare->nume }}</h2>
+                    <h2 style="text-align:center; margin:0px">
+                        {{ $rezervare->nume }},
+                        {{ $rezervare->adresa }},
+                        {{ $rezervare->oras_plecare_nume}},
+                        {{ $rezervare->oras_plecare_tara}}
+                    </h2>
                 </td>
                 <td style="width: 50%">
                     <b>
@@ -103,7 +108,12 @@
                     <br>
                     Destinataire (nom, adresse, pays)
                     <br>
-                    <h2 style="text-align:center; margin:0px">{{ $rezervare->colete_nume_destinatar }}</h2>
+                    <h2 style="text-align:center; margin:0px">
+                        {{ $rezervare->colete_nume_destinatar }},
+                        {{ $rezervare->colete_adresa_destinatar }},
+                        {{ $rezervare->oras_sosire_nume}},
+                        {{ $rezervare->oras_sosire_tara}}
+                    </h2>
                 </td>
                 <td rowspan="2" style="width: 50%">
                     <span style="font-size: 12px; font-weight:bold">16</span>
@@ -139,7 +149,11 @@
                     <br>
                     Lieu prevu pour la livraison de la merchandise (lieu, pays)
                     <br>
-                    <h2 style="text-align:center; margin:0px">{{ $rezervare->oras_sosire_nume }}, {{ $rezervare->oras_sosire_tara }}</h2>
+                    <h2 style="text-align:center; margin:0px">
+                        {{ $rezervare->colete_adresa_destinatar }},
+                        {{ $rezervare->oras_sosire_nume }},
+                        {{ $rezervare->oras_sosire_tara }}
+                    </h2>
                 </td>
             </tr>
             <tr>
@@ -151,7 +165,11 @@
                     <br>
                     Lieu et date de la prise en charge de la merchandise (lieu, pays, date)
                     <br>
-                    <h2 style="text-align:center; margin:0px">{{ $rezervare->oras_plecare_nume }}, {{ $rezervare->oras_plecare_tara }}</h2>
+                    <h2 style="text-align:center; margin:0px">
+                        {{ $rezervare->adresa }},
+                        {{ $rezervare->oras_plecare_nume }},
+                        {{ $rezervare->oras_plecare_tara }}
+                    </h2>
                 </td>
                 <td rowspan="2" style="width: 50%">
                     <span style="font-size: 12px; font-weight:bold">18</span>
@@ -188,7 +206,7 @@
                 <td style="">
                     <table>
                         <tr>
-                            <td style="border-width:0px; padding:0px">
+                            <td style="width:10%; border-width:0px; padding:0px 1px">
                                 <span style="font-size: 12px; font-weight:bold">6</span>
                                 Marci si numere
                                 <br>
@@ -207,7 +225,7 @@
                                 <br>
                                 <br>
                             </td>
-                            <td style="border-width:0px; padding:0px">
+                            <td style="width:10%; border-width:0px; padding:0px 1px">
                                 <span style="font-size: 12px; font-weight:bold">7</span>
                                 Nr. de colete
                                 <br>
@@ -215,27 +233,33 @@
                                 <br>
                                 Nombre de colis
                                 <br>
-                                <h2 style="text-align:center">
+                                <h2 style="">
                                     {{ $rezervare->colete_numar }}
                                 </h2>
                             </td>
-                            <td style="border-width:0px; padding:0px">
+                            <td style="width:20%; border-width:0px; padding:0px 1px">
                                 <span style="font-size: 12px; font-weight:bold">8</span>
                                 Mod de ambalare
                                 <br>
                                 Method of packing
                                 <br>
                                 Mode d'emballage
+                                <br>
+                                <br>
+                                {{ $rezervare->colete_mod_ambalare }}
                             </td>
-                            <td style="border-width:0px; padding:0px">
+                            <td style="width:20%; border-width:0px; padding:0px 1px">
                                 <span style="font-size: 12px; font-weight:bold">9</span>
                                 Natura marfii
                                 <br>
                                 Nature of the goods
                                 <br>
                                 Nature de la marchandise
+                                <br>
+                                <br>
+                                {{ $rezervare->colete_natura_marfii }}
                             </td>
-                            <td rowspan="2" style="border-width:0px; border-left:1px; padding:0px">
+                            <td rowspan="2" style="width:10%; border-width:0px; border-left:1px; padding:0px 1px">
                                 <span style="font-size: 12px; font-weight:bold">10</span>
                                 Numar statistic
                                 <br>
@@ -243,11 +267,11 @@
                                 <br>
                                 No statistique
                                 <br>
-                                <h2 style="text-align:center">
+                                <h2 style="">
                                     {{ $rezervare->id }}
                                 </h2>
                             </td>
-                            <td rowspan="2" style="border-width:0px; border-left:1px; padding:0px">
+                            <td rowspan="2" style="width:12%; border-width:0px; border-left:1px; padding:0px 1px">
                                 <span style="font-size: 12px; font-weight:bold">11</span>
                                 Greutate bruta, kg
                                 <br>
@@ -255,11 +279,11 @@
                                 <br>
                                 Poids brut, kg
                                 <br>
-                                <h2 style="text-align:center">
+                                <h2 style="">
                                     {{ $rezervare->colete_kg }}
                                 </h2>
                             </td>
-                            <td rowspan="2" style="border-width:0px; border-left:1px; padding:0px">
+                            <td rowspan="2" style="width:10%; border-width:0px; border-left:1px; padding:0px 1px">
                                 <span style="font-size: 12px; font-weight:bold">12</span>
                                 Cubaj, m<sup>3</sup>
                                 <br>
@@ -267,7 +291,7 @@
                                 <br>
                                 Cubage, m<sup>3</sup>
                                 <br>
-                                <h2 style="text-align:center">
+                                <h2 style="">
                                     {{ $rezervare->colete_volum }}
                                 </h2>
                             </td>
@@ -472,7 +496,9 @@
                                 <span style="font-size: 12px; font-weight:bold">21</span>
                                 Intocmit in / Drafted in / Redige en
                                 <h2 style="margin:0px">
-                                    {{ $rezervare->oras_sosire_nume }}
+                                    {{ $rezervare->adresa }},
+                                    {{ $rezervare->oras_plecare_nume }},
+                                    {{ $rezervare->oras_plecare_tara }}
                                 </h2>
                             </td>
                             <td style="border-width:0px">

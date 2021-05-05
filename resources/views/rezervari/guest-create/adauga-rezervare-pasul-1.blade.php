@@ -881,11 +881,31 @@
                                                 m<sup>3</sup>
                                             </label>
                                         </div>
-                                        <div class="form-group col-lg-12 mb-0 justify-content-center">
+                                        <div class="form-group col-lg-12">
+                                            <label for="colete_natura_marfii" class="mb-0">Natura mărfii:*</label>
+                                            <input
+                                                type="text"
+                                                class="form-control form-control-sm {{ $errors->has('colete_natura_marfii') ? 'is-invalid' : '' }}"
+                                                name="colete_natura_marfii"
+                                                placeholder=""
+                                                value="{{ old('colete_natura_marfii', ($rezervare->colete_natura_marfii ?? '')) }}"
+                                                required>
+                                        </div>
+                                        <div class="form-group col-lg-12">
+                                            <label for="colete_mod_ambalare" class="mb-0">Mod de ambalare:*</label>
+                                            <input
+                                                type="text"
+                                                class="form-control form-control-sm {{ $errors->has('colete_mod_ambalare') ? 'is-invalid' : '' }}"
+                                                name="colete_mod_ambalare"
+                                                placeholder=""
+                                                value="{{ old('colete_mod_ambalare', ($rezervare->colete_mod_ambalare ?? '')) }}"
+                                                required>
+                                        </div>
+                                        {{-- <div class="form-group col-lg-12 mb-0 justify-content-center">
                                             <label for="colete_descriere" class="mb-0">Descriere colete:*</label>
                                             <textarea class="form-control {{ $errors->has('colete_descriere') ? 'is-invalid' : '' }}"
                                                 name="colete_descriere" id="colete_descriere" rows="2">{{ old('colete_descriere', ($rezervare->colete_descriere ?? '')) }}</textarea>
-                                        </div>
+                                        </div> --}}
                                     </div>
                                     <div class="form-row mb-4 px-2 pt-2 d-flex justify-content-center align-items-center border rounded"
                                         style="background-color:lightseagreen; color:white"
@@ -1029,6 +1049,16 @@
                                                 value="{{ old('email', ($rezervare->email ?? '')) }}"
                                                 required>
                                         </div>
+                                        <div class="form-group col-lg-12">
+                                            <label for="adresa" class="mb-0">Adresă Expeditor:*</label>
+                                            <input
+                                                type="text"
+                                                class="form-control form-control-sm {{ $errors->has('adresa') ? 'is-invalid' : '' }}"
+                                                name="adresa"
+                                                placeholder=""
+                                                value="{{ old('adresa', ($rezervare->adresa ?? '')) }}"
+                                                required>
+                                        </div>
                                         <div class="form-group col-lg-4">
                                             <label for="colete_nume_destinatar" class="mb-0">Nume și prenume Destinatar:*</label>
                                             <input
@@ -1057,6 +1087,16 @@
                                                 name="colete_email_destinatar"
                                                 placeholder=""
                                                 value="{{ old('colete_email_destinatar', ($rezervare->colete_email_destinatar ?? '')) }}"
+                                                required>
+                                        </div>
+                                        <div class="form-group col-lg-12">
+                                            <label for="colete_adresa_destinatar" class="mb-0">Adresă Destinatar:*</label>
+                                            <input
+                                                type="text"
+                                                class="form-control form-control-sm {{ $errors->has('colete_adresa_destinatar') ? 'is-invalid' : '' }}"
+                                                name="colete_adresa_destinatar"
+                                                placeholder=""
+                                                value="{{ old('colete_adresa_destinatar', ($rezervare->colete_adresa_destinatar ?? '')) }}"
                                                 required>
                                         </div>
                                         <div class="form-group col-lg-12 mb-1 justify-content-center">

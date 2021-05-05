@@ -81,7 +81,27 @@
                                                 required>
                                         </div>
                                     @else
-                                        <div class="col-lg-2 mb-5">
+                                        <div class="col-lg-2 mb-2">
+                                            <label for="colete_kg" class="mb-1 h5">Cantitate:*</label>
+                                            <input
+                                                type="text"
+                                                class="form-control form-control-lg {{ $errors->has('colete_kg') ? 'is-invalid' : '' }}"
+                                                name="colete_kg"
+                                                placeholder=""
+                                                value="{{ old('colete_kg', ($rezervare->colete_kg ?? '')) }}"
+                                                required>
+                                        </div>
+                                        <div class="col-lg-2 mb-2">
+                                            <label for="colete_volum" class="mb-1 h5">Volum:*</label>
+                                            <input
+                                                type="text"
+                                                class="form-control form-control-lg {{ $errors->has('colete_volum') ? 'is-invalid' : '' }}"
+                                                name="colete_volum"
+                                                placeholder=""
+                                                value="{{ old('colete_volum', ($rezervare->colete_volum ?? '')) }}"
+                                                required>
+                                        </div>
+                                        <div class="col-lg-2 mb-3">
                                             <label for="pret" class="mb-1 h5">Preț:*</label>
                                             <input
                                                 type="text"
@@ -112,3 +132,4 @@
         </div>
     </div>
 </div>
+@endsection
