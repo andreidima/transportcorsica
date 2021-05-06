@@ -1294,8 +1294,14 @@ class RezervareController extends Controller
                     $mail->send(new RezervareFinalizata($rezervare_tur));
                 }
             } else {
-                if ($rezervare_tur->email) {
+                if ($rezervare_tur->email && $rezervare_tur->colete_email_destinatar) {
+                    $mail = \Mail::to([$rezervare_tur->email, $rezervare_tur->colete_email_destinatar])
+                        ->bcc('rezervari@transportcorsica.ro');
+                } else if ($rezervare_tur->email){
                     $mail = \Mail::to($rezervare_tur->email)
+                        ->bcc('rezervari@transportcorsica.ro');
+                } else if ($rezervare_tur->colete_email_destinatar){
+                    $mail = \Mail::to($rezervare_tur->colete_email_destinatar)
                         ->bcc('rezervari@transportcorsica.ro');
                 } else {
                     $mail = \Mail::to('rezervari@transportcorsica.ro');
