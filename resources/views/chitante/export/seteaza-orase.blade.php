@@ -28,6 +28,7 @@
                         background-color:darkcyan;
                         border-radius: 0px 0px 40px 40px
                     "
+                    id="adauga-rezervare"
                 >
 
                     <form  class="needs-validation" novalidate method="POST" action="/chitanta-descarca/{{ $cheie_unica }}/seteaza_orase">

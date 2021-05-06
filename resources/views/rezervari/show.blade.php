@@ -165,6 +165,8 @@
                                         <br>
                                         Volum: <span class="badge badge-primary" style="font-size:1em">{{ $rezervare_tur->colete_volum }} m<sup>3</sup></span>
                                         <br>
+                                        Preț: <span class="badge badge-primary" style="font-size:1em">{{ $rezervare_tur->pret_total }} EURO</span>
+                                        <br>
                                         Natura mărfii: {{ $rezervare_tur->colete_natura_marfii }}
                                         <br>
                                         Mod de ambalare: {{ $rezervare_tur->colete_mod_ambalare }}

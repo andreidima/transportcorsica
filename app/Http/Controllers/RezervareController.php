@@ -1466,10 +1466,14 @@ class RezervareController extends Controller
         } else {
             $request->validate(
                 [
-                    'pret' => 'required|numeric|integer|max:99999'
+                    'colete_kg' => 'nullable|numeric',
+                    'colete_volum' => 'nullable|numeric',
+                    'pret' => 'required|numeric|integer|max:99999',
                 ]
             );
 
+            $rezervare->colete_kg = $request->colete_kg;
+            $rezervare->colete_volum = $request->colete_volum;
             $rezervare->pret_total = $request->pret;
 
             // Calcularea preturilor in lei
