@@ -28,7 +28,7 @@
                         background-color:darkcyan;
                         border-radius: 0px 0px 40px 40px
                     "
-                    id="adauga-rezervare"
+                    {{-- id="adauga-rezervare" --}}
                 >
 
                     <form  class="needs-validation" novalidate method="POST" action="/chitanta-descarca/{{ $cheie_unica }}/seteaza_orase">
@@ -48,6 +48,11 @@
                                         </div>
                                     @else
                                         <div class="col-lg-12 mb-4 h5 text-center">
+                                            <span class="px-2 border" style="font-size: 1.5em; background-color:lightseagreen; color:white">
+                                                {{ $rezervare->nume }} -> {{ $rezervare->colete_nume_destinatar }}
+                                            </span>
+                                            <br>
+                                            <br>
                                             <span class="px-2 border" style="font-size: 1.5em; background-color:lightseagreen; color:white">
                                                 {{ $rezervare->oras_plecare_nume->oras }} -> {{ $rezervare->oras_sosire_nume->oras }}
                                             </span>
