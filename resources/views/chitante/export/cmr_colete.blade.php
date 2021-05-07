@@ -71,11 +71,10 @@
                 <td style="width: 50%">
                     <span style="font-size: 12px; font-weight:bold">1</span>
                     Expeditor (nume, adresa, tara)
-                    <br>
+                    |
                     Sender (name, address, country)
-                    <br>
+                    |
                     Expediteur (nom, adresse, pays)
-                    <br>
                     <br>
                     <h2 style="text-align:center; margin:0px">
                         {{ $rezervare->nume }},
@@ -87,9 +86,9 @@
                 <td style="width: 50%">
                     <b>
                         SCRISOARE DE TRANSPORT
-                        <br>
+                        |
                         CONSIGNMENT NOTE
-                        <br>
+                        |
                         LETTRE DE VOITURE
                     </b>
                     <h2 style="text-align:center; paddin:0px; margin:0px">
@@ -103,9 +102,9 @@
                 <td style="width: 50%">
                     <span style="font-size: 12px; font-weight:bold">2</span>
                     Destinatar (nume, adresa, tara)
-                    <br>
+                    |
                     Consigner (name, address, country)
-                    <br>
+                    |
                     Destinataire (nom, adresse, pays)
                     <br>
                     <h2 style="text-align:center; margin:0px">
@@ -123,7 +122,6 @@
                     <br>
                     Transporteur (nom, adresse, pays)
                     <br>
-                    <br>
 
                     <div style="border: 1px solid black; width: 85%; text-align:center; margin:auto">
                         MRW88 MAXARMONY S.R.L., Ceardac - Vrancea, România
@@ -131,7 +129,6 @@
                         CIF: RO 35059906, ORC J 39/570/2015
                     </div>
 
-                    <br>
                     <span style="font-size: 12px; font-weight:bold">17</span>
                     Transportatori succesivi (nume, adresa, tara)
                     <br>
@@ -144,9 +141,9 @@
                 <td style="width: 50%">
                     <span style="font-size: 12px; font-weight:bold">3</span>
                     Locul descarcarii (loc, tara)
-                    <br>
+                    |
                     Place of delivery of the goods (place, country)
-                    <br>
+                    |
                     Lieu prevu pour la livraison de la merchandise (lieu, pays)
                     <br>
                     <h2 style="text-align:center; margin:0px">
@@ -174,9 +171,9 @@
                 <td rowspan="2" style="width: 50%">
                     <span style="font-size: 12px; font-weight:bold">18</span>
                     Rezerve si observatii ale transportatorilor
-                    <br>
+                    |
                     Carrier's reservation and observations
-                    <br>
+                    |
                     Reserves et observations du transporteur
                     <br>
                     <span style="font-size:12px">
@@ -194,9 +191,9 @@
                 <td style="width: 50%">
                     <span style="font-size: 12px; font-weight:bold">5</span>
                     Documente anexate
-                    <br>
+                    |
                     Documents attached
-                    <br>
+                    |
                     Documents annexes
                 </td>
             </tr>
@@ -213,9 +210,6 @@
                                 Marks and Nos
                                 <br>
                                 Marques et numeros
-                                <br>
-                                <br>
-                                <br>
                                 <br>
                                 <br>
                                 <br>
@@ -273,25 +267,30 @@
                             </td>
                             <td rowspan="2" style="width:12%; border-width:0px; border-left:1px; padding:0px 1px">
                                 <span style="font-size: 12px; font-weight:bold">11</span>
+                                <br>
                                 Greutate bruta, kg
                                 <br>
                                 Gross weight, kg
                                 <br>
                                 Poids brut, kg
                                 <br>
+                                <br>
                                 <h2 style="">
                                     {{ $rezervare->colete_kg }}
                                 </h2>
                             </td>
-                            <td rowspan="2" style="width:10%; border-width:0px; border-left:1px; padding:0px 1px">
+                            <td rowspan="2" style="width:9%; border-width:0px; border-left:1px; padding:0px 1px">
                                 <span style="font-size: 12px; font-weight:bold">12</span>
+                                <br>
                                 Cubaj, m<sup>3</sup>
                                 <br>
                                 Volume, m<sup>3</sup>
                                 <br>
                                 Cubage, m<sup>3</sup>
                                 <br>
-                                <h2 style="">
+                                <br>
+                                <br>
+                                <h2 style="margin:0px; padding:0px">
                                     {{ $rezervare->colete_volum }}
                                 </h2>
                             </td>
@@ -299,22 +298,22 @@
                         <tr style="">
                             <td colspan="4">
                                 <table>
-                                    <tr>
-                                        <td style="border-width:0px;">
+                                    <tr style="margin:0px; padding:0px">
+                                        <td style="border-width:0px; margin:0px; padding:0px">
                                             Clasa
                                             <br>
                                             Classe
                                             <br>
                                             La classe
                                         </td>
-                                        <td style="border-width:0px;">
+                                        <td style="border-width:0px; margin:0px; padding:0px">
                                             Cifra
                                             <br>
                                             Number
                                             <br>
                                             La chifre
                                         </td>
-                                        <td style="border-width:0px;">
+                                        <td style="border-width:0px; margin:0px; padding:0px">
                                             Litera
                                             <br>
                                             Letter
