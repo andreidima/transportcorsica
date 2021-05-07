@@ -24,6 +24,21 @@
                     required>
             </div>
             <div class="form-group col-lg-4 text-center">
+                <label for="itp" class="mb-0 mr-2">ITP:*</label>
+                    <script type="application/javascript">
+                        asigurareRcaVeche={!! json_encode(old('itp', ($rezervare->itp ?? ''))) !!}
+                    </script>
+                    <vue2-datepicker
+                        data-veche="{{ old('itp', ($masina->itp ?? '')) }}"
+                        nume-camp-db="itp"
+                        :latime="{ width: '125px' }"
+                        tip="date"
+                        value-type="YYYY-MM-DD"
+                        format="DD-MM-YYYY"
+                        not-before-date="{{ auth()->check() ? \Carbon\Carbon::today()->subYear() : \Carbon\Carbon::today() }}"
+                    ></vue2-datepicker>
+            </div>
+            <div class="form-group col-lg-4 text-center">
                 <label for="asigurare_rca" class="mb-0 mr-2">Asigurare RCA:*</label>
                     <script type="application/javascript">
                         asigurareRcaVeche={!! json_encode(old('asigurare_rca', ($rezervare->asigurare_rca ?? ''))) !!}
