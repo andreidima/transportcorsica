@@ -4,7 +4,7 @@
     <div class="form-group col-lg-12 px-2 mb-0">
         <div class="form-row">
             <div class="form-group col-lg-8">
-                <label for="nume" class="mb-0 pl-3">Nume mașină:</label>
+                <label for="nume" class="mb-0 pl-3">Nume mașină*:</label>
                 <input
                     type="text"
                     class="form-control form-control-sm rounded-pill {{ $errors->has('nume') ? 'is-invalid' : '' }}"
