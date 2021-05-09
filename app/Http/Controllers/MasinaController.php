@@ -61,7 +61,7 @@ class MasinaController extends Controller
      */
     public function show(Masina $masina)
     {
-        return view('masini.show');
+        return view('masini.show', compact('masina'));
     }
 
     /**
@@ -109,11 +109,11 @@ class MasinaController extends Controller
     protected function validateRequest(Request $request)
     {
         return request()->validate([
-            'nume' => 'nullable|max:100',
+            'nume' => 'required|max:100',
             'numar_auto' => 'nullable|max:50',
             'itp' => 'nullable',
             'asigurare_rca' => 'nullable',
-            'asigurari_persoane_bagaje' => 'nullable',
+            'asigurari_persoane_colete' => 'nullable',
             'licenta' => 'nullable',
             'clasificare' => 'nullable',
             'verificare_tahograf' => 'nullable',

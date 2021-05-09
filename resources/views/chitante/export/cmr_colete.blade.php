@@ -7,7 +7,7 @@
     <title>CMR</title>
     <style>
         html {
-            margin: 10px 15px;
+            margin: 5px 5px;
         }
 
         body {
@@ -58,7 +58,7 @@
 
 <body>
     <div style="
-        width:740px;
+        width:765px;
         min-height:600px;
         padding: 15px 10px 15px 10px;
         margin:0px 0px;

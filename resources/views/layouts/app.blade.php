@@ -74,6 +74,7 @@
                                     <a class="dropdown-item" href="{{ route('facturi.index') }}">Facturi</a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="{{ route('masini.index') }}"><i class="fas fa-bus mr-1"></i>Mașini</a>
+                                    <a class="dropdown-item" href="{{ route('soferi.index') }}"><i class="fas fa-users mr-1"></i>Șoferi</a>
                                 </div>
                             </li>
                     @endif

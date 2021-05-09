@@ -56,7 +56,7 @@
                                     <b>{{ $masina->nume }}</b>
                                 </td>
                                 <td>
-                                    {{ $masina->numar }}
+                                    {{ $masina->numar_auto }}
                                 </td>
                                 <td class="d-flex justify-content-end">
                                     <a href="{{ $masina->path() }}"
