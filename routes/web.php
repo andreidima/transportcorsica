@@ -13,6 +13,7 @@ use App\Http\Controllers\SmsBulkController;
 use App\Http\Controllers\Test;
 use App\Http\Controllers\MasinaController;
 use App\Http\Controllers\SoferController;
+use App\Http\Controllers\CronJobTrimitereController;
 
 /*
 |--------------------------------------------------------------------------
@@ -89,4 +90,7 @@ Route::middleware(['role:administrator,sofer'])->group(function () {
 
     Route::resource('masini', MasinaController::class,  ['parameters' => ['masini' => 'masina']]);
     Route::resource('soferi', SoferController::class,  ['parameters' => ['soferi' => 'sofer']]);
+
+    // Trimitere Cron joburi din Cpanel
+    Route::any('/cron-jobs/trimitere-automata/{key}', [CronJobTrimitereController::class, 'trimitere'])->name('cronjob.trimitere.automata');
 });
