@@ -60,6 +60,9 @@ Route::get('/orase_rezervari', [RezervareController::class, 'orase_rezervari']);
 Route::get('/trimitere-catre-plata/{rezervare_tur}', [PlataOnlineController::class, 'trimitereCatrePlata'])->name('trimitere-catre-plata');
 Route::post('/confirmare-plata', [PlataOnlineController::class, 'confirmarePlata'])->name('confirmare-plata');
 
+// Trimitere Cron joburi din Cpanel
+Route::any('/cron-jobs/trimitere-automata/{key}', [CronJobTrimitereController::class, 'trimitere'])->name('cronjob.trimitere.automata');
+
 Route::middleware(['role:administrator,sofer'])->group(function () {
     Route::resource('rezervari', RezervareController::class,  ['parameters' => ['rezervari' => 'rezervare']]);
 
@@ -90,7 +93,4 @@ Route::middleware(['role:administrator,sofer'])->group(function () {
 
     Route::resource('masini', MasinaController::class,  ['parameters' => ['masini' => 'masina']]);
     Route::resource('soferi', SoferController::class,  ['parameters' => ['soferi' => 'sofer']]);
-
-    // Trimitere Cron joburi din Cpanel
-    Route::any('/cron-jobs/trimitere-automata/{key}', [CronJobTrimitereController::class, 'trimitere'])->name('cronjob.trimitere.automata');
 });
