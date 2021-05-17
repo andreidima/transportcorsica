@@ -9,5 +9,5 @@ Vă trimit alertele pentru ziua de astăzi:
 {!! $mesaj !!}
 
 <br><br>
-O zi plăcută vă doresc! 128578	1F642
+O zi plăcută vă doresc!
 @endcomponent
