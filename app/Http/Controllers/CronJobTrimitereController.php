@@ -141,6 +141,7 @@ class CronJobTrimitereController extends Controller
                     echo $mesaj_per_total;
             // return redirect('/clienti')->with('status', 'Cron Joburile de astăzi au fost trimise!' . $cron_jobs->count());
         } else {
+            echo 'Cheia pentru Cron Joburi nu este corectă!'
             // return redirect('/clienti')->with('error', 'Cron Joburile de astăzi nu fost trimise! Cheia ' . $key . ' nu este validă');
         }
 
