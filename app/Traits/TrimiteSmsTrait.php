@@ -12,29 +12,29 @@ trait TrimiteSmsTrait {
         // dd($categorie, $subcategorie, $referinta_id, $telefoane, $mesaj);
         // Setarea trimiterii live sau testarea sms-ului
         // $test = 1; // sms-ul nu se trimite
-        $test = 0; // sms-ul se trimite  
+        $test = 0; // sms-ul se trimite
 
         foreach ($telefoane as $telefon) {
 
             // ----------------------------------------------------------------------------
-            // 
+            //
             //    Exemplu minimal pentru trimiterea de SMS-uri (PHP)
             //    Serviciul SMS Gateway
             //    Versiunea 1.1 / 12.04.2010
-            //    Distribuit gratuit    
+            //    Distribuit gratuit
             //
             // ----------------------------------------------------------------------------
 
             // ----------------------------------------------------------------------------
-            //  Pasul 1    
-            //  Interogam SMS Gateway si salvam rezultatul trimis de acesta in variabila 
+            //  Pasul 1
+            //  Interogam SMS Gateway si salvam rezultatul trimis de acesta in variabila
             //  pentru a putea interpreta statutul trimiterii
             //   - Pentru HTTPS utilizati https://secure.smslink.ro
             // ----------------------------------------------------------------------------
             // $mesaj = "Salutare domnule";
             $content = file_get_contents("http://www.smslink.ro/sms/gateway/communicate/?" .
                 "connection_id=" . config('sms_link.connection_id') . "&password=" . config('sms_link.password') .
-                "&to=" . urlencode($telefon) . 
+                "&to=" . urlencode($telefon) .
                 "&message=" . urlencode($mesaj) .
                 '&test=' . $test);
             // dd($content);
@@ -47,7 +47,7 @@ trait TrimiteSmsTrait {
             //  string Nivel;int ID Rezultat;string Mesaj;string[optional] Variabile
             // ----------------------------------------------------------------------------
             //  Pasul 2.1
-            //  Extragem din rezultat toate variabilele separate prin punct si virgula 
+            //  Extragem din rezultat toate variabilele separate prin punct si virgula
             // ----------------------------------------------------------------------------
             list($level, $id, $response, $variabiles) = explode(";", $content . ';');
 
@@ -56,8 +56,8 @@ trait TrimiteSmsTrait {
             //  Verificam daca mesajul trimis a fost transmis cu succes prin compararea
             //  Nivelului si ID Rezultat
             // ----------------------------------------------------------------------------
-            //  Daca mesajul este transmis atunci Nivelul va fi MESSAGE si ID- rezultat 
-            //  va avea valoarea numerica 1    
+            //  Daca mesajul este transmis atunci Nivelul va fi MESSAGE si ID- rezultat
+            //  va avea valoarea numerica 1
             // ----------------------------------------------------------------------------
 
 
@@ -71,17 +71,17 @@ trait TrimiteSmsTrait {
 
 
             if (($level == "MESSAGE") and ($id == 1)) {
-                // ------------------------------------------------------------------------    
+                // ------------------------------------------------------------------------
                 //  Variabilele optionale transmise optional sunt separate prin virgula
                 //  si vor avea forma urmatoare:
-                //  mixed Variabila 1,mixed Variabila 2 ... mixed Variabila 3                
+                //  mixed Variabila 1,mixed Variabila 2 ... mixed Variabila 3
                 // ------------------------------------------------------------------------
                 $variabiles = explode(",", $variabiles);
 
                 // ------------------------------------------------------------------------
                 //  Extragem ID-ul Mesajului alocat de gateway pentru a il salva pentru
-                //  utilizare ulterioara. Message ID  va fi intotdeauna prima variabila 
-                //  trimisa, restul fiind explicate complet in documentatia de pe site. 
+                //  utilizare ulterioara. Message ID  va fi intotdeauna prima variabila
+                //  trimisa, restul fiind explicate complet in documentatia de pe site.
                 // ------------------------------------------------------------------------
                 $message_id = $variabiles[0];
 

@@ -19,7 +19,7 @@
 
 
                                 @include ('soferi.form', [
-                                    'buttonText' => 'Modifică Șoferil'
+                                    'buttonText' => 'Modifică Șoferul'
                                 ])
 
                     </form>
