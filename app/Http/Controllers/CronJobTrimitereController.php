@@ -127,14 +127,14 @@ class CronJobTrimitereController extends Controller
             // Trimitere alerta prin email
             \Mail::
                 // to('rezervari@transportcorsica.ro')
-                to('adima@validsoftware.ro')
+                to('andrei.dima@usm.ro')
                 // ->bcc(['contact@validsoftware.ro', 'adima@validsoftware.ro'])
                 ->send(new CronJobAlerteMasiniSoferi($mesaj_per_total)
             );
 
             // Trimitere alerta prin SMS
             // Trait continand functie cu argumentele: categorie(string), subcategorie(string), referinta_id(integer), telefoane(array), mesaj(string)
-            $this->trimiteSms('alerte masini soferi', null, null, ['0749262658'], $mesaj_per_total);
+            // $this->trimiteSms('alerte masini soferi', null, null, ['0749262658'], $mesaj_per_total);
 
 
 
