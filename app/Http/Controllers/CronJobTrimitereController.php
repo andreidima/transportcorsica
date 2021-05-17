@@ -127,7 +127,7 @@ class CronJobTrimitereController extends Controller
             // Trimitere alerta prin email
             \Mail::
                 // to('rezervari@transportcorsica.ro')
-                to('andrei.dima@usm.ro')
+                to('adima@validsoftware.ro')
                 // ->bcc(['contact@validsoftware.ro', 'adima@validsoftware.ro'])
                 ->send(new CronJobAlerteMasiniSoferi($mesaj_per_total)
             );
