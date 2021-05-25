@@ -117,6 +117,18 @@ class CronJobTrimitereController extends Controller
                         $mesaj_per_sofer .= 'Buletin ' . Carbon::parse($sofer->buletin)->isoFormat('DD.MM.YYYY') . ', ';
                     }
                 }
+                if($sofer->atestat) {
+                    $zile_ramase = Carbon::parse(Carbon::today())->diffInDays($sofer->atestat, false);
+                    if(($zile_ramase < 10) || ($zile_ramase == 30)){
+                        $mesaj_per_sofer .= 'Buletin ' . Carbon::parse($sofer->atestat)->isoFormat('DD.MM.YYYY') . ', ';
+                    }
+                }
+                if($sofer->card_tahograf) {
+                    $zile_ramase = Carbon::parse(Carbon::today())->diffInDays($sofer->card_tahograf, false);
+                    if(($zile_ramase < 10) || ($zile_ramase == 30)){
+                        $mesaj_per_sofer .= 'Buletin ' . Carbon::parse($sofer->card_tahograf)->isoFormat('DD.MM.YYYY') . ', ';
+                    }
+                }
 
                 if ($mesaj_per_sofer) {
                     $mesaj_per_total .= 'Soferul ' . $sofer->nume . ': ' . $mesaj_per_sofer . '. ';

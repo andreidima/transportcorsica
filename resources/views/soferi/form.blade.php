@@ -46,6 +46,28 @@
                         format="DD-MM-YYYY"
                     ></vue2-datepicker>
             </div>
+            <div class="form-group col-lg-4 text-center">
+                <label for="atestat" class="mb-0 mr-2">Atestat:</label>
+                    <vue2-datepicker
+                        data-veche="{{ old('atestat', ($sofer->atestat ?? '')) }}"
+                        nume-camp-db="atestat"
+                        :latime="{ width: '125px' }"
+                        tip="date"
+                        value-type="YYYY-MM-DD"
+                        format="DD-MM-YYYY"
+                    ></vue2-datepicker>
+            </div>
+            <div class="form-group col-lg-4 text-center">
+                <label for="card_tahograf" class="mb-0 mr-2">Card tahograf:</label>
+                    <vue2-datepicker
+                        data-veche="{{ old('card_tahograf', ($sofer->card_tahograf ?? '')) }}"
+                        nume-camp-db="card_tahograf"
+                        :latime="{ width: '125px' }"
+                        tip="date"
+                        value-type="YYYY-MM-DD"
+                        format="DD-MM-YYYY"
+                    ></vue2-datepicker>
+            </div>
         </div>
         <div class="form-row">
             <div class="form-group col-lg-12">

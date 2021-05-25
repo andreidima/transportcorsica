@@ -109,6 +109,8 @@ class SoferController extends Controller
             'analize_medicale' => 'nullable',
             'permis' => 'nullable',
             'buletin' => 'nullable',
+            'atestat' => 'nullable',
+            'card_tahograf' => 'nullable',
             'observatii' => 'nullable',
         ]);
     }

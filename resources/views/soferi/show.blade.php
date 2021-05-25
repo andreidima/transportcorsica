@@ -53,6 +53,22 @@
                             </tr>
                             <tr>
                                 <td>
+                                    Atestat
+                                </td>
+                                <td>
+                                    {{ $sofer->atestat ? \Carbon\Carbon::parse($sofer->atestat)->isoFormat('DD.MM.YYYY') : null }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Card tahograf
+                                </td>
+                                <td>
+                                    {{ $sofer->card_tahograf ? \Carbon\Carbon::parse($sofer->card_tahograf)->isoFormat('DD.MM.YYYY') : null }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
                                     Observații
                                 </td>
                                 <td>
