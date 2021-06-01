@@ -117,7 +117,7 @@ class RezervareController extends Controller
 
         // In cazul in care se intra pe modificare retur, se cauta si se deschide turul, pentru a se pastra logica de lucru cu datele de plecare si intoarcere
         $rezervare = (!$rezervare->tur) ? $rezervare : Rezervare::find($rezervare->tur);
-
+        // dd($rezervare, $rezervare->data_cursa);
         // Setarea informatiilor suplimentare necesare formularului
         $rezervare->tip_calatorie = isset($rezervare->nr_adulti) ? "Calatori" : "Colete";
         $rezervare->traseu = (($rezervare->oras_plecare_nume->tara ?? null) === "Romania") ? "Romania-Corsica" : "Corsica-Romania";
@@ -430,37 +430,65 @@ class RezervareController extends Controller
         $this->authorize('update', $rezervare);
 
         // Daca exista factura emisa, se blocheaza stergerea rezervarii
-        if ($rezervare->factura()->exists()){
+        // In cazul in care se intra pe stergere retur (lucru posibil doar din rapoarte), se cauta si se verifica turul
+        $rezervare_factura = (!$rezervare->tur) ? $rezervare : Rezervare::find($rezervare->tur);
+        if ($rezervare_factura->factura()->exists()){
             return back()->with('error', 'Rezervarea nu poate fi ștearsă pentru că are deja factură emisă!');
         }
 
-        // Daca exista bilet emis, se blocheaza stergerea rezervarii.
-        if (is_null($rezervare->bilet_numar)){
-            // stergere pasageri - daca nu mai sunt alte rezervari (tur, retur) continand acesti pasageri
-            foreach ($rezervare->pasageri_relation as $pasager) {
-                    $pasager->delete();
+        // Daca stergerea se face din „rezervari”, se va sterge complet si turul si returul
+        if (strpos(url()->previous(), 'rezervari') !== false) {
+            // Daca exista bilet emis, se blocheaza stergerea rezervarii.
+            if (is_null($rezervare->bilet_numar)){
+                // stergere pasageri
+                foreach ($rezervare->pasageri_relation as $pasager) {
+                        $pasager->delete();
+                }
+
+                $rezervare->pasageri_relation()->detach();
+                $rezervare->delete();
+
+                if ($rezervare->retur){
+                    $rezervare_retur = Rezervare::find($rezervare->retur);
+                    if($rezervare_retur){
+                        $rezervare_retur->pasageri_relation()->detach();
+                        $rezervare_retur->delete();
+                    }
+                }
+                // elseif ($rezervare->tur){
+                //     $rezervare_tur = Rezervare::find($rezervare->tur);
+                //     if($rezervare_tur){
+                //         $rezervare_tur->pasageri_relation()->detach();
+                //         $rezervare_tur->delete();
+                //     }
+                // }
+                return back()->with('status', 'Rezervarea a fost ștearsă cu succes!');
+            } else {
+                return back()->with('error', 'Rezervarea nu poate fi ștearsă pentru că are deja bilet emis!');
             }
 
-            $rezervare->pasageri_relation()->detach();
-            $rezervare->delete();
+        // Daca stergerea se face din „rapoarte”, se va sterge doar turul sau returul
+        } elseif (strpos(url()->previous(), 'rapoarte') !== false) {
+            // Daca rezervarea este tur - retur, se va trimite utilizatorul sa o vizualizeze complet in rezervari, pentru a putea lua o decizie in deplina cunostinta de cauza
+            if ($rezervare->tur || $rezervare->retur) {
+                return back()->with('error', 'Această rezervare este tur-retur. Vizualizează întâi această rezervare în pagina de Rezervări, de unde poate fi modificată sau ștearsă complet!');
+            } else {
+                // Daca exista bilet emis, se blocheaza stergerea rezervarii.
+                if (is_null($rezervare->bilet_numar)){
 
-            if ($rezervare->retur){
-                $rezervare_retur = Rezervare::find($rezervare->retur);
-                if($rezervare_retur){
-                    $rezervare_retur->pasageri_relation()->detach();
-                    $rezervare_retur->delete();
+                    // Pasagerii se sterg din baza de date
+                    foreach ($rezervare->pasageri_relation as $pasager) {
+                            $pasager->delete();
+                    }
+
+                    $rezervare->pasageri_relation()->detach();
+                    $rezervare->delete();
+
+                    return back()->with('status', 'Rezervarea a fost ștearsă cu succes!');
+                } else {
+                    return back()->with('error', 'Rezervarea nu poate fi ștearsă pentru că are deja bilet emis!');
                 }
             }
-            // elseif ($rezervare->tur){
-            //     $rezervare_tur = Rezervare::find($rezervare->tur);
-            //     if($rezervare_tur){
-            //         $rezervare_tur->pasageri_relation()->detach();
-            //         $rezervare_tur->delete();
-            //     }
-            // }
-            return back()->with('status', 'Rezervarea a fost ștearsă cu succes!');
-        } else {
-            return back()->with('error', 'Rezervarea nu poate fi ștearsă pentru că are deja bilet emis!');
         }
     }
 
