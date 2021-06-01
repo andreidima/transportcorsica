@@ -436,6 +436,16 @@ class RezervareController extends Controller
             return back()->with('error', 'Rezervarea nu poate fi ștearsă pentru că are deja factură emisă!');
         }
 
+        if (strpos(url()->previous(), 'rezervari') !== false) {
+            echo 'rezervari <br>';
+        }
+        if (strpos(url()->previous(), 'rapoarte') !== false) {
+            echo 'rapoarte <br>';
+        }
+        dd(url()->previous(), strpos(url()->previous(), 'rezervari'), strpos(url()->previous(), 'rapoarte'));
+
+
+
         // Daca stergerea se face din „rezervari”, se va sterge complet si turul si returul
         if (strpos(url()->previous(), 'rezervari') !== false) {
             // Daca exista bilet emis, se blocheaza stergerea rezervarii.
