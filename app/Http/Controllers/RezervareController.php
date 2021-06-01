@@ -445,9 +445,8 @@ class RezervareController extends Controller
         // dd(url()->previous(), strpos(url()->previous(), 'rezervari'), strpos(url()->previous(), 'rapoarte'));
 
 
-
         // Daca stergerea se face din „rezervari”, se va sterge complet si turul si returul
-        if (strpos(url()->previous(), 'rezervari/') !== false) {
+        if ((strpos(url()->previous(), '.test/rezervari') !== false) || (strpos(url()->previous(), '.ro/rezervari') !== false)) {
             // Daca exista bilet emis, se blocheaza stergerea rezervarii.
             if (is_null($rezervare->bilet_numar)){
                 // stergere pasageri
