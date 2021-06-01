@@ -436,18 +436,18 @@ class RezervareController extends Controller
             return back()->with('error', 'Rezervarea nu poate fi ștearsă pentru că are deja factură emisă!');
         }
 
-        if (strpos(url()->previous(), 'rezervari') !== false) {
-            echo 'rezervari <br>';
-        }
-        if (strpos(url()->previous(), 'rapoarte') !== false) {
-            echo 'rapoarte <br>';
-        }
-        dd(url()->previous(), strpos(url()->previous(), 'rezervari'), strpos(url()->previous(), 'rapoarte'));
+        // if (strpos(url()->previous(), 'rezervari') !== false) {
+        //     echo 'rezervari <br>';
+        // }
+        // if (strpos(url()->previous(), 'rapoarte') !== false) {
+        //     echo 'rapoarte <br>';
+        // }
+        // dd(url()->previous(), strpos(url()->previous(), 'rezervari'), strpos(url()->previous(), 'rapoarte'));
 
 
 
         // Daca stergerea se face din „rezervari”, se va sterge complet si turul si returul
-        if (strpos(url()->previous(), 'rezervari') !== false) {
+        if (strpos(url()->previous(), 'rezervari/') !== false) {
             // Daca exista bilet emis, se blocheaza stergerea rezervarii.
             if (is_null($rezervare->bilet_numar)){
                 // stergere pasageri
@@ -478,7 +478,7 @@ class RezervareController extends Controller
             }
 
         // Daca stergerea se face din „rapoarte”, se va sterge doar turul sau returul
-        } elseif (strpos(url()->previous(), 'rapoarte') !== false) {
+        } elseif (strpos(url()->previous(), 'rapoarte/') !== false) {
             // Daca rezervarea este tur - retur, se va trimite utilizatorul sa o vizualizeze complet in rezervari, pentru a putea lua o decizie in deplina cunostinta de cauza
             if ($rezervare->tur || $rezervare->retur) {
                 return back()->with('error', 'Această rezervare este tur-retur. Vizualizează întâi această rezervare în pagina de Rezervări, de unde poate fi modificată sau ștearsă complet!');
