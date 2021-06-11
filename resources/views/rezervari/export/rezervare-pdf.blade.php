@@ -69,7 +69,7 @@
                 <table style="margin:20px 0 20px 0">
                     <tr style="">
                         <td style="border-width:0px; padding:0rem; margin:0rem; width:40%">
-                            <img src="{{ asset('images/logo.png') }}" width="300px">
+                            <img src="{{ public_path('images/logo.png') }}" width="300px">
                         </td>
                         <td style="border-width:0px; padding:0rem; margin:0rem; width:60%; text-align:center; font-size:16px">
                             BILET REZERVAT

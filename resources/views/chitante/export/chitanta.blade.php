@@ -141,7 +141,7 @@
                         <b>{{ $rezervare->oras_plecare_sofer ?? '' }}</b>
                     </td>
                     <td style="text-align: center">
-                        <img src="{{ asset('images/sageata dreapta.jpg') }}" width="50px">
+                        <img src="{{ public_path('images/sageata dreapta.jpg') }}" width="50px">
                     </td>
                     <td style="text-align: center">
                         Oraș sosire:
