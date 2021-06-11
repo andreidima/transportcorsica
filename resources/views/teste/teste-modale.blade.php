@@ -10,44 +10,44 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ public_path('js/app.js') }}" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ public_path('css/app.css') }}" rel="stylesheet">
     <!-- Font Awesome links -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 </head>
-<body style="height:100%">  
+<body style="height:100%">
  <div class="justify-content-center align-items-center" style="height:100%">
     @include ('errors')
                                         <div style="" class="">
-                                            <a 
-                                                href="#" 
-                                                data-toggle="modal" 
+                                            <a
+                                                href="#"
+                                                data-toggle="modal"
                                                 data-target="#testeModala"
                                                 title="Teste Modala"
                                                 >
                                                 <h1>Testeaza Modala 1</h1>
                                             </a>
-                                        </div> 
-                            
+                                        </div>
+
                                         <div style="" class="">
-                                            <a 
-                                                href="#" 
-                                                data-toggle="modal" 
+                                            <a
+                                                href="#"
+                                                data-toggle="modal"
                                                 data-target="#testeModala2"
                                                 title="Teste Modala"
                                                 >
                                                 <h1>Testeaza Modala 2</h1>
                                             </a>
                                         </div>
-                            
+
                                                 {{-- Modal pentru butonul de stergere --}}
-                                                <div class="modal fade text-dark" id="testeModala" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" 
+                                                <div class="modal fade text-dark" id="testeModala" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
                                                     {{-- data-backdrop="false" --}}
                                                 >
                                                     <div class="modal-dialog" role="document">
@@ -63,18 +63,18 @@
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Nu</button>
-                                                            
+
                                                             <form method="POST" action="teste-modale-apasa-buton">
                                                                 {{-- @method('DELETE')   --}}
-                                                                @csrf   
-                                                                <button 
-                                                                    type="submit" 
-                                                                    class="btn btn-danger"  
+                                                                @csrf
+                                                                <button
+                                                                    type="submit"
+                                                                    class="btn btn-danger"
                                                                     >
                                                                     Da
-                                                                </button>                    
+                                                                </button>
                                                             </form>
-                                                        
+
                                                         </div>
                                                         </div>
                                                     </div>
@@ -82,7 +82,7 @@
 
     </div>
                                                 {{-- Modal pentru butonul de stergere --}}
-                                                <div class="modal fade text-dark" id="testeModala2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" 
+                                                <div class="modal fade text-dark" id="testeModala2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
                                                     {{-- data-backdrop="false" --}}
                                                 >
                                                     <div class="modal-dialog" role="document">
@@ -98,18 +98,18 @@
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Nu</button>
-                                                            
+
                                                             <form method="POST" action="teste-modale-apasa-buton-2">
                                                                 {{-- @method('DELETE')   --}}
-                                                                @csrf   
-                                                                <button 
-                                                                    type="submit" 
-                                                                    class="btn btn-danger"  
+                                                                @csrf
+                                                                <button
+                                                                    type="submit"
+                                                                    class="btn btn-danger"
                                                                     >
                                                                     Da
-                                                                </button>                    
+                                                                </button>
                                                             </form>
-                                                        
+
                                                         </div>
                                                         </div>
                                                     </div>

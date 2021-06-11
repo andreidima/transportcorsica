@@ -6,8 +6,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Raport</title>
     <style>
-        body { 
-            font-family: DejaVu Sans, sans-serif; 
+        body {
+            font-family: DejaVu Sans, sans-serif;
             font-size: 12px;
         }
 
@@ -23,26 +23,26 @@
             margin-top: 0px;
             border-style: solid;
             border-width:0px;
-            width: 100%; 
+            width: 100%;
             word-wrap:break-word;
             /* word-break: break-all; */
             /* table-layout: fixed; */
         }
-        
+
         th, td {
             padding: 5px 5px;
             border-width:1px;
             border-style: solid;
             table-layout:fixed;
             font-weight: normal;
-            
+
         }
         tr {
             /* text-align:; */
             /* border-style: solid;
             border-width:1px; */
         }
-        hr { 
+        hr {
             display: block;
             margin-top: 0.5em;
             margin-bottom: 0.5em;
@@ -50,18 +50,18 @@
             margin-right: auto;
             border-style: inset;
             border-width: 0.5px;
-        } 
+        }
 
         /* tr:nth-child(even) {background-color:lightgray;} */
     </style>
 </head>
 
-<body> 
+<body>
     @switch($tip_lista)
         @case ("lista_plecare")
             <div style="border:dashed #999;
-                width:690px; 
-                min-height:600px;            
+                width:690px;
+                min-height:600px;
                 padding: 15px 10px 15px 10px;
                 margin:0px 0px;
                     -moz-border-radius: 10px;
@@ -70,7 +70,7 @@
                 <table style="background-color:darkcyan; color:white">
                     <tr style="background-color:darkcyan; color:white">
                         <td style="border-width:0px; padding:0rem; width:30%">
-                                <img src="{{ asset('images/logo.png') }}" width="270px">
+                                <img src="{{ public_path('images/logo.png') }}" width="270px">
                         </td>
                         <td style="border-width:0px; padding:0rem; width:40%; font-size:11px; text-align:left">
                             MRW88 MAXARMONY S.R.L., Ceardac - Vrancea, România
@@ -115,7 +115,7 @@
                             AUTO NR: _______________________
                             <br>
                             <br>
-                            DATA: 
+                            DATA:
                             <b>
                                 {{\Carbon\Carbon::parse($rezervari->first()->data_cursa)->isoFormat('DD.MM.YYYY')}}
                             </b>
@@ -172,8 +172,8 @@
         @break
         @case ("lista_sosire")
             <div style="border:dashed #999;
-                width:690px; 
-                min-height:600px;            
+                width:690px;
+                min-height:600px;
                 padding: 15px 10px 15px 10px;
                 margin:0px 0px;
                     -moz-border-radius: 10px;
@@ -182,7 +182,7 @@
                 <table style="background-color:darkcyan; color:white">
                     <tr style="background-color:darkcyan; color:white">
                         <td style="border-width:0px; padding:0rem; width:30%">
-                                <img src="{{ asset('images/logo.png') }}" width="270px">
+                                <img src="{{ public_path('images/logo.png') }}" width="270px">
                         </td>
                         <td style="border-width:0px; padding:0rem; width:40%; font-size:11px; text-align:left">
                             MRW88 MAXARMONY S.R.L., Ceardac - Vrancea, România
@@ -227,7 +227,7 @@
                             AUTO NR: _______________________
                             <br>
                             <br>
-                            DATA: 
+                            DATA:
                             <b>
                                 {{\Carbon\Carbon::parse($rezervari->first()->data_cursa)->isoFormat('DD.MM.YYYY')}}
                             </b>
@@ -288,4 +288,3 @@
 </body>
 
 </html>
-    

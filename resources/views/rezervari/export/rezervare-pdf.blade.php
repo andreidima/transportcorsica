@@ -176,7 +176,7 @@
                         <b>{{ $rezervare_tur->oras_plecare_nume->oras ?? '' }}</b>
                     </td>
                     <td style="text-align: center">
-                        <img src="{{ asset('images/sageata dreapta.jpg') }}" width="50px">
+                        <img src="{{ public_path('images/sageata dreapta.jpg') }}" width="50px">
                     </td>
                     <td style="text-align: center">
                         Oraș sosire:
@@ -206,7 +206,7 @@
                             <b>{{ $rezervare_retur->oras_sosire_nume->oras ?? '' }}</b>
                         </td>
                         <td style="text-align: center">
-                        <img src="{{ asset('images/sageata stanga.jpg') }}" width="50px">
+                        <img src="{{ public_path('images/sageata stanga.jpg') }}" width="50px">
                         </td>
                         <td style="text-align: center">
                             Oraș plecare:

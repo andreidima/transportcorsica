@@ -537,7 +537,7 @@
                 <td style="width:34%">
                         {{-- <div style="text-align:center; padding-top:1px">
                             <img style=""
-                                src="{{ asset('images/stampila_semnatura_mrw.jpg') }}" width="80px">
+                                src="{{ public_path('images/stampila_semnatura_mrw.jpg') }}" width="80px">
                         </div>
                         <div style="position: relative; bottom: 15px; left: 0px;">
                             Semnatura si stampila transportatorului
@@ -549,7 +549,7 @@
 
 <div style="position: relative; width: 100%; margin: auto; padding-top:1px">
                     <span style="font-size: 12px; font-weight:bold; float:left">23</span>
-    <img src="{{ asset('images/stampila_semnatura_mrw.jpg') }}" style="position: absolute; left:120px; width: 120px; z-index: -1000;" />
+    <img src="{{ public_path('images/stampila_semnatura_mrw.jpg') }}" style="position: absolute; left:120px; width: 120px; z-index: -1000;" />
     <div style="position: absolute; top: 70px; width: 100%;">
         Semnatura si stampila transportatorului
         <br>

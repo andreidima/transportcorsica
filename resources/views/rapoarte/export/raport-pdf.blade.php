@@ -74,7 +74,7 @@
                 <table>
                     <tr style="background-color:darkcyan; color:white">
                         <td colspan="3" style="border-width:0px; padding:0rem;">
-                                <img src="{{ asset('images/logo.png') }}" width="170px" style="margin-left:5px">
+                                <img src="{{ public_path('images/logo.png') }}" width="170px" style="margin-left:5px">
                         </td>
                         <td colspan="4" style="border-width:0px; padding:0rem; font-size:16px; text-align:left">
                             <br>
@@ -231,7 +231,7 @@
                 <table>
                     <tr style="background-color:darkcyan; color:white">
                         <td colspan="3" style="border-width:0px; padding:0rem;">
-                                <img src="{{ asset('images/logo.png') }}" width="170px" style="margin-left:5px">
+                                <img src="{{ public_path('images/logo.png') }}" width="170px" style="margin-left:5px">
                         </td>
                         <td colspan="4" style="border-width:0px; padding:0rem; font-size:16px; text-align:left">
                             <br>
@@ -370,7 +370,7 @@
                 <table style="">
                     <tr style="">
                         <td style="border-width:0px; padding:0rem; width:30%">
-                                <img src="{{ asset('images/logo.png') }}" width="150px">
+                                <img src="{{ public_path('images/logo.png') }}" width="150px">
                         </td>
                         <td style="border-width:0px; padding:0rem; width:40%; font-size:16px; text-align:center">
                             Listă sosire
@@ -509,7 +509,7 @@
                 <table>
                     <tr style="background-color:darkcyan; color:white">
                         <td colspan="3" style="border-width:0px; padding:0rem;">
-                                <img src="{{ asset('images/logo.png') }}" width="170px" style="margin-left:5px">
+                                <img src="{{ public_path('images/logo.png') }}" width="170px" style="margin-left:5px">
                         </td>
                         <td colspan="4" style="border-width:0px; padding:0rem; font-size:16px; text-align:left">
                             <br>
