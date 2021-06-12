@@ -291,7 +291,7 @@ class RaportController extends Controller
                         return view('rapoarte.export.lista-pasageri-pdf', compact('rezervari', 'clienti_neseriosi', 'tip_lista'));
                         break;
                     case 'raport-pdf':
-                        $pdf = \PDF::loadView('rapoarte.export.lista-pasageri-pdf', compact('rezervari', 'clienti_neseriosi', 'tip_lista'))
+                        $pdf = \PDF::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])->loadView('rapoarte.export.lista-pasageri-pdf', compact('rezervari', 'clienti_neseriosi', 'tip_lista'))
                             ->setPaper('a4');
                         // return $pdf->stream('Rezervare ' . $rezervari->nume . '.pdf');
                         return $pdf->download('Raport lista pasageri' .

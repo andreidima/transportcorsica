@@ -93,4 +93,8 @@ Route::middleware(['role:administrator,sofer'])->group(function () {
 
     Route::resource('masini', MasinaController::class,  ['parameters' => ['masini' => 'masina']]);
     Route::resource('soferi', SoferController::class,  ['parameters' => ['soferi' => 'sofer']]);
+
+    Route::get('/test', function () {
+        return phpinfo();
+    });
 });

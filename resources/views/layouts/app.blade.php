@@ -28,7 +28,7 @@
                 <div class="container">
                     <a class="navbar-brand mr-4" href="{{ url('/rezervari') }}">
                         {{ config('app.name', 'Transport Corsica') }}
-                        {{-- <img src="{{ public_path('images/logo.png') }}" height="40" class="border border-dark rounded-pill mr-4"> --}}
+                        {{-- <img src="{{ asset('images/logo.png') }}" height="40" class="border border-dark rounded-pill mr-4"> --}}
                     </a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                         <span class="navbar-toggler-icon"></span>

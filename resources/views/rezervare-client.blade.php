@@ -6,7 +6,7 @@
         <div class="col-md-8">
             <div class="shadow-lg bg-white" style="border-radius: 0px 0px 0px 0px;">
                 <div class="text-center border border-danger p-0" style="border-radius: 0px 0px 0px 0px;">
-                    <img src="{{ public_path('images/logo.png') }}" class="" style="max-width:100%">
+                    <img src="{{ asset('images/logo.png') }}" class="" style="max-width:100%">
                 </div>
 
                 <div class="card-body text-center"
