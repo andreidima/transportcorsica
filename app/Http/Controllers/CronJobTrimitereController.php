@@ -135,22 +135,25 @@ class CronJobTrimitereController extends Controller
                 }
             }
 
+            if ($mesaj_per_total !== ''){
+                // Trimitere alerta prin email
+                \Mail::
+                    to('rezervari@transportcorsica.ro')
+                    // to('andrei.dima@usm.ro')
+                    // ->bcc(['contact@validsoftware.ro', 'adima@validsoftware.ro'])
+                    ->send(new CronJobAlerteMasiniSoferi($mesaj_per_total)
+                );
 
-            // Trimitere alerta prin email
-            \Mail::
-                to('rezervari@transportcorsica.ro')
-                // to('andrei.dima@usm.ro')
-                // ->bcc(['contact@validsoftware.ro', 'adima@validsoftware.ro'])
-                ->send(new CronJobAlerteMasiniSoferi($mesaj_per_total)
-            );
+                // Trimitere alerta prin SMS
+                // Trait continand functie cu argumentele: categorie(string), subcategorie(string), referinta_id(integer), telefoane(array), mesaj(string)
+                // $this->trimiteSms('alerte masini soferi', null, null, ['0761329420'], $mesaj_per_total);
 
-            // Trimitere alerta prin SMS
-            // Trait continand functie cu argumentele: categorie(string), subcategorie(string), referinta_id(integer), telefoane(array), mesaj(string)
-            // $this->trimiteSms('alerte masini soferi', null, null, ['0761329420'], $mesaj_per_total);
+                echo 'Mesajul este: ' . $mesaj_per_total;
+            } else {
+                echo 'Nu este nici un mesaj';
+            }
 
 
-
-                    echo $mesaj_per_total;
             // return redirect('/clienti')->with('status', 'Cron Joburile de astăzi au fost trimise!' . $cron_jobs->count());
         } else {
             echo 'Cheia pentru Cron Joburi nu este corectă!';
