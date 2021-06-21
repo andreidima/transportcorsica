@@ -124,6 +124,10 @@
                                                         <i class="fas fa-file-pdf text-white mr-1"></i>Raport Navă
                                                         {{-- Iphone --}}
                                                     </a>
+                                                    <a href="/rapoarte/excel-fara-nava/{{ $rezervari_pe_tara->first()->oras_plecare_tara }}/{{ \Carbon\Carbon::parse($search_data)->isoFormat('YYYY-MM-DD') }}/toate/lista_plecare/{{ $tip_transport }}/extrage-rezervari/raport-pdf" class="btn btn-sm bg-success text-white border border-light rounded-pill">
+                                                        <i class="fas fa-file-pdf text-white mr-1"></i>Raport fără Navă
+                                                        {{-- Iphone --}}
+                                                    </a>
                                                 @if ((auth()->user()->role === 'administrator') || (auth()->user()->role === 'superadmin'))
                                                     @php
                                                         $lista = "toate";
@@ -235,6 +239,10 @@
                                                         </button>  --}}
                                                         <a href="/rapoarte/excel-nava/{{ $rezervari_pe_tara->first()->oras_plecare_tara }}/{{ \Carbon\Carbon::parse($search_data)->isoFormat('YYYY-MM-DD') }}/{{ $rezervari_pe_trasee->first()->lista_plecare }}/lista_plecare/{{ $tip_transport }}/extrage-rezervari/raport-pdf" class="btn btn-sm bg-success text-white border border-light rounded-pill">
                                                             <i class="fas fa-file-pdf text-white mr-1"></i>Raport Navă
+                                                            {{-- Iphone --}}
+                                                        </a>
+                                                        <a href="/rapoarte/excel-fara-nava/{{ $rezervari_pe_tara->first()->oras_plecare_tara }}/{{ \Carbon\Carbon::parse($search_data)->isoFormat('YYYY-MM-DD') }}/toate/lista_plecare/{{ $tip_transport }}/extrage-rezervari/raport-pdf" class="btn btn-sm bg-success text-white border border-light rounded-pill">
+                                                            <i class="fas fa-file-pdf text-white mr-1"></i>Raport fără Navă
                                                             {{-- Iphone --}}
                                                         </a>
                                                         <a href="/rapoarte/chitante/{{ $rezervari_pe_tara->first()->oras_plecare_tara }}/{{ \Carbon\Carbon::parse($search_data)->isoFormat('YYYY-MM-DD') }}/{{ $rezervari_pe_trasee->first()->lista_plecare }}/lista_plecare/{{ $tip_transport }}/extrage-rezervari/raport-pdf" class="btn btn-sm bg-success text-white border border-light rounded-pill">

@@ -366,10 +366,7 @@ class RaportController extends Controller
                 ));
 
                 break;
-
-        }
-
-        return back();
+            }
 
     }
 
@@ -554,6 +551,47 @@ class RaportController extends Controller
                 return response()->download(storage_path(
                     'app/fisiere_temporare/' .
                     'Lista Nava' . '.xlsx'
+                ));
+
+                break;
+            case 'excel-fara-nava':
+                $spreadsheet = new Spreadsheet();
+                $sheet = $spreadsheet->getActiveSheet();
+                $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(20);
+
+                $sheet->setCellValue('A1', 'Lista cu persoanele care NU doresc bilet la Navă');
+                $sheet->getStyle('A1')->getFont()->setSize(16);
+
+                $sheet->setCellValue('A3', 'Nume');
+                $sheet->setCellValue('B3', 'Prenume');
+                $sheet->getStyle('A3')->getFont()->setSize(13);
+                $sheet->getStyle('B3')->getFont()->setSize(13);
+
+                // dd($rezervari, $rezervari->where('bilet_nava', 1));
+
+                $nr_celula = 4;
+                foreach ($rezervari
+                        ->where('bilet_nava', 0)
+                        as $rezervare){
+                    foreach ($rezervare->pasageri_relation as $pasager){
+                    $sheet->setCellValue('A' . ($nr_celula), strtok($pasager->nume, " "));
+                    $sheet->setCellValue('B' . ($nr_celula), (substr(strstr($pasager->nume, " "), 1) === false) ? '' : substr(strstr($pasager->nume, " "), 1));
+                    $nr_celula++;
+                    }
+                }
+
+                try {
+                    Storage::makeDirectory('fisiere_temporare');
+                    $writer = new Xlsx($spreadsheet);
+                    $writer->save(storage_path(
+                        'app/fisiere_temporare/' .
+                        'Lista fara Nava' . '.xlsx'
+                    ));
+                } catch (Exception $e) { }
+
+                return response()->download(storage_path(
+                    'app/fisiere_temporare/' .
+                    'Lista fara Nava' . '.xlsx'
                 ));
 
                 break;
