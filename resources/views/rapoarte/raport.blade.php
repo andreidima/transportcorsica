@@ -241,7 +241,7 @@
                                                             <i class="fas fa-file-pdf text-white mr-1"></i>Raport Navă
                                                             {{-- Iphone --}}
                                                         </a>
-                                                        <a href="/rapoarte/excel-fara-nava/{{ $rezervari_pe_tara->first()->oras_plecare_tara }}/{{ \Carbon\Carbon::parse($search_data)->isoFormat('YYYY-MM-DD') }}/toate/lista_plecare/{{ $tip_transport }}/extrage-rezervari/raport-pdf" class="btn btn-sm bg-success text-white border border-light rounded-pill">
+                                                        <a href="/rapoarte/excel-fara-nava/{{ $rezervari_pe_tara->first()->oras_plecare_tara }}/{{ \Carbon\Carbon::parse($search_data)->isoFormat('YYYY-MM-DD') }}/{{ $rezervari_pe_trasee->first()->lista_plecare }}/lista_plecare/{{ $tip_transport }}/extrage-rezervari/raport-pdf" class="btn btn-sm bg-success text-white border border-light rounded-pill">
                                                             <i class="fas fa-file-pdf text-white mr-1"></i>Raport fără Navă
                                                             {{-- Iphone --}}
                                                         </a>
@@ -623,20 +623,30 @@
                                             {{-- class="collapse" id="collapseLista{{$rezervari_pe_trasee->first()->lista_sosire}}" --}}
                                             >
                                             <td>
-                                                <a href="{{ $rezervare->path() }}">
-                                                    {{-- <b>{{ $rezervare->nume ?? $rezervare->pasageri_relation->first()->nume ?? '' }}</b> --}}
-                                                    @isset($rezervare->nr_adulti)
-                                                        @foreach ($rezervare->pasageri_relation as $pasager)
-                                                            @if(!$loop->last)
-                                                                {{ $pasager->nume }},
-                                                            @else
+                                                {{-- <b>{{ $rezervare->nume ?? $rezervare->pasageri_relation->first()->nume ?? '' }}</b> --}}
+                                                @isset($rezervare->nr_adulti)
+                                                    @foreach ($rezervare->pasageri_relation as $pasager)
+                                                            <a href="{{ $rezervare->path() }}">
                                                                 {{ $pasager->nume }}
+                                                            </a>
+                                                            @if (in_array($pasager->nume, $clienti_neseriosi))
+                                                                (client neserios:
+                                                                {{ \App\Models\ClientNeserios::where('nume', $pasager->nume)->first()->observatii ?? '-'}})
                                                             @endif
-                                                        @endforeach
-                                                    @else
+                                                        @if(!$loop->last)
+                                                            ,
+                                                        @endif
+                                                    @endforeach
+                                                @else
+                                                    <a href="{{ $rezervare->path() }}">
                                                         Rezervare colete
-                                                    @endif
-                                                </a>
+                                                    </a>
+                                                @endif
+
+                                                @if ($rezervare->observatii)
+                                                    <br>
+                                                    Observatii: {{ $rezervare->observatii }}
+                                                @endif
                                             </td>
                                             <td class="text-center">
                                                 {{ $rezervare->oras_sosire_traseu ?? ''}}
