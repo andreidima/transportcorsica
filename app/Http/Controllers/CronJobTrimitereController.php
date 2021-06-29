@@ -93,6 +93,7 @@ class CronJobTrimitereController extends Controller
                 }
 
                 if ($mesaj_per_masina) {
+                    $mesaj_per_masina = substr($mesaj_per_masina, 0, -2); // stergerea ultimelor 2 caractere ", "
                     $mesaj_per_total .= 'Masina ' . $masina->nume . ': ' . $mesaj_per_masina . '. ';
                 }
             }
@@ -131,6 +132,7 @@ class CronJobTrimitereController extends Controller
                 }
 
                 if ($mesaj_per_sofer) {
+                    $mesaj_per_sofer = substr($mesaj_per_sofer, 0, -2); // stergerea ultimelor 2 caractere ", "
                     $mesaj_per_total .= 'Soferul ' . $sofer->nume . ': ' . $mesaj_per_sofer . '. ';
                 }
             }
