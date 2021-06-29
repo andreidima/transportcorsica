@@ -111,7 +111,7 @@ class SoferController extends Controller
             'buletin' => 'nullable',
             'atestat' => 'nullable',
             'card_tahograf' => 'nullable',
-            'observatii' => 'nullable',
+            'observatii' => 'nullable|max:1000',
         ]);
     }
 }

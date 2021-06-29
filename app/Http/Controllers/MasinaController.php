@@ -121,7 +121,7 @@ class MasinaController extends Controller
             'rovinieta_ungaria' => 'nullable',
             'rovinieta_slovenia' => 'nullable',
             'revizie' => 'nullable',
-            'observatii' => 'nullable',
+            'observatii' => 'nullable|max:1000',
         ]);
     }
 }
