@@ -958,7 +958,9 @@ class RezervareController extends Controller
      */
     public function adaugaRezervareNoua(Request $request)
     {
-        $rezervare = $request->session()->forget('rezervare');
+        if(!empty($request->session()->get('rezervare'))){
+            $rezervare = $request->session()->forget('rezervare');
+        }
 
         return redirect('/adauga-rezervare-pasul-1');
     }
