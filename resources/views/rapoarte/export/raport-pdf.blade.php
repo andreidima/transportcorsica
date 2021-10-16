@@ -369,26 +369,20 @@
                     border-radius: 10px;">
                 <table style="">
                     <tr style="">
-                        <td style="border-width:0px; padding:0rem; width:30%">
+                        <td colspan="3" style="border-width:0px; padding:0rem; width:30%">
                                 <img src="{{ public_path('images/logo.png') }}" width="150px">
                         </td>
-                        <td style="border-width:0px; padding:0rem; width:40%; font-size:16px; text-align:center">
+                        <td colspan="4" style="border-width:0px; padding:0rem; width:40%; font-size:16px; text-align:center">
                             Listă sosire
                             {{ $rezervari->first()->oras_sosire_tara ?? '' }}
                         </td>
-                        <td style="border-width:0px; padding:0rem; width:30%; font-size:16px; text-align:right">
+                        <td colspan="2" style="border-width:0px; padding:0rem; width:30%; font-size:16px; text-align:right">
                             {{-- Traseu {{ $rezervari->first()->oras_plecare_traseu }}
                             <br> --}}
                             {{isset($rezervari->first()->data_cursa) ? \Carbon\Carbon::parse($rezervari->first()->data_cursa)->isoFormat('DD.MM.YYYY') : ''}}
 
                         </td>
                     </tr>
-                </table>
-
-                <br><br><br>
-
-
-                <table style="">
                     <tr style="background-color:#302700; color:#ffffff">
                         <th style="width: 20px">Nr crt</th>
                         <th>Destinație</th>
