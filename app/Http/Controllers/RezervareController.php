@@ -615,7 +615,7 @@ class RezervareController extends Controller
                     'adulti.nume.*' => ['nullable', 'max:100',
                         function ($attribute, $value, $fail) use ($request, $rezervare_tur) {
                             if (!empty($request->data_plecare)){
-                                $pasageri = Pasager::whereHas('rezervari', function (Builder $query) use ($request, $rezervare_tur) {
+                                $pasageri = Pasager::where('nume', $value)->whereHas('rezervari', function (Builder $query) use ($request, $rezervare_tur) {
                                         if ($request->_method === "PATCH") {
                                             // dd($rezervare_tur->id);
                                             $query->where('rezervari.id', '<>', $rezervare_tur->id)
@@ -634,7 +634,7 @@ class RezervareController extends Controller
                         },
                         function ($attribute, $value, $fail) use ($request, $rezervare_retur) {
                             if (!empty($request->data_intoarcere)) {
-                                $pasageri = Pasager::whereHas('rezervari', function (Builder $query) use ($request, $rezervare_retur) {
+                                $pasageri = Pasager::where('nume', $value)->whereHas('rezervari', function (Builder $query) use ($request, $rezervare_retur) {
                                     if ($request->_method === "PATCH") {
                                         // dd($request, $rezervare_retur->id);
                                         $query->where('rezervari.id', '<>', $rezervare_retur->id)
@@ -661,7 +661,7 @@ class RezervareController extends Controller
                         'nullable', 'max:100',
                         function ($attribute, $value, $fail) use ($request, $rezervare_tur) {
                             if (!empty($request->data_plecare)) {
-                                $pasageri = Pasager::whereHas('rezervari', function (Builder $query) use ($request, $rezervare_tur) {
+                                $pasageri = Pasager::where('nume', $value)->whereHas('rezervari', function (Builder $query) use ($request, $rezervare_tur) {
                                     if ($request->_method === "PATCH") {
                                         // dd($rezervare_tur->id);
                                         $query->where('rezervari.id', '<>', $rezervare_tur->id)
@@ -680,7 +680,7 @@ class RezervareController extends Controller
                         },
                         function ($attribute, $value, $fail) use ($request, $rezervare_retur) {
                             if (!empty($request->data_intoarcere)) {
-                                $pasageri = Pasager::whereHas('rezervari', function (Builder $query) use ($request, $rezervare_retur) {
+                                $pasageri = Pasager::where('nume', $value)->whereHas('rezervari', function (Builder $query) use ($request, $rezervare_retur) {
                                     if ($request->_method === "PATCH") {
                                         // dd($request, $rezervare_retur->id);
                                         $query->where('rezervari.id', '<>', $rezervare_retur->id)
@@ -792,7 +792,7 @@ class RezervareController extends Controller
                         'required', 'max:100',
                         function ($attribute, $value, $fail) use ($request) {
                             if (!empty($request->data_plecare)) {
-                                $pasageri = Pasager::whereHas('rezervari', function (Builder $query) use ($request) {
+                                $pasageri = Pasager::where('nume', $value)->whereHas('rezervari', function (Builder $query) use ($request) {
                                     $query->whereDate('data_cursa', '=', $request->data_plecare);
                                 })->pluck('nume')->all();
                                 if (stripos($value, 'Andrei Dima test') === false) {
@@ -805,7 +805,7 @@ class RezervareController extends Controller
                         },
                         function ($attribute, $value, $fail) use ($request) {
                             if (!empty($request->data_intoarcere)) {
-                                $pasageri = Pasager::whereHas('rezervari', function (Builder $query) use ($request) {
+                                $pasageri = Pasager::where('nume', $value)->whereHas('rezervari', function (Builder $query) use ($request) {
                                     $query->whereDate('data_cursa', '=', $request->data_intoarcere);
                                 })->pluck('nume')->all();
                                 if (stripos($value, 'Andrei Dima test') === false) {
@@ -825,7 +825,7 @@ class RezervareController extends Controller
                     'copii.nume.*' => ['required', 'max:100',
                         function ($attribute, $value, $fail) use ($request) {
                             if (!empty($request->data_plecare)){
-                                $pasageri = Pasager::whereHas('rezervari', function (Builder $query) use ($request) {
+                                $pasageri = Pasager::where('nume', $value)->whereHas('rezervari', function (Builder $query) use ($request) {
                                         $query->whereDate('data_cursa', '=', $request->data_plecare);
                                     })->pluck('nume')->all();
                                 if (stripos($value, 'Andrei Dima test') === false) {
@@ -838,7 +838,7 @@ class RezervareController extends Controller
                         },
                         function ($attribute, $value, $fail) use ($request) {
                             if (!empty($request->data_intoarcere)) {
-                                $pasageri = Pasager::whereHas('rezervari', function (Builder $query) use ($request) {
+                                $pasageri = Pasager::where('nume', $value)->whereHas('rezervari', function (Builder $query) use ($request) {
                                     $query->whereDate('data_cursa', '=', $request->data_intoarcere);
                                 })->pluck('nume')->all();
                                 if (stripos($value, 'Andrei Dima test') === false) {
@@ -1082,7 +1082,7 @@ class RezervareController extends Controller
                         'nullable', 'max:100',
                         function ($attribute, $value, $fail) use ($request_verificare_duplicate) {
                             if (!empty($request_verificare_duplicate->data_plecare)) {
-                                $pasageri = Pasager::whereHas('rezervari', function (Builder $query) use ($request_verificare_duplicate) {
+                                $pasageri = Pasager::where('nume', $value)->whereHas('rezervari', function (Builder $query) use ($request_verificare_duplicate) {
                                     $query->whereDate('data_cursa', '=', $request_verificare_duplicate->data_plecare);
                                 })->pluck('nume')->all();
                                 if (stripos($value, 'Andrei Dima test') === false) {
@@ -1095,7 +1095,7 @@ class RezervareController extends Controller
                         },
                         function ($attribute, $value, $fail) use ($request_verificare_duplicate) {
                             if (!empty($request_verificare_duplicate->data_intoarcere)) {
-                                $pasageri = Pasager::whereHas('rezervari', function (Builder $query) use ($request_verificare_duplicate) {
+                                $pasageri = Pasager::where('nume', $value)->whereHas('rezervari', function (Builder $query) use ($request_verificare_duplicate) {
                                     $query->whereDate('data_cursa', '=', $request_verificare_duplicate->data_intoarcere);
                                 })->pluck('nume')->all();
                                 if (stripos($value, 'Andrei Dima test') === false) {
@@ -1111,7 +1111,7 @@ class RezervareController extends Controller
                         'nullable', 'max:100',
                         function ($attribute, $value, $fail) use ($request_verificare_duplicate) {
                             if (!empty($request_verificare_duplicate->data_plecare)) {
-                                $pasageri = Pasager::whereHas('rezervari', function (Builder $query) use ($request_verificare_duplicate) {
+                                $pasageri = Pasager::where('nume', $value)->whereHas('rezervari', function (Builder $query) use ($request_verificare_duplicate) {
                                     $query->whereDate('data_cursa', '=', $request_verificare_duplicate->data_plecare);
                                 })->pluck('nume')->all();
                                 if (stripos($value, 'Andrei Dima test') === false) {
@@ -1124,7 +1124,7 @@ class RezervareController extends Controller
                         },
                         function ($attribute, $value, $fail) use ($request_verificare_duplicate) {
                             if (!empty($request_verificare_duplicate->data_intoarcere)) {
-                                $pasageri = Pasager::whereHas('rezervari', function (Builder $query) use ($request_verificare_duplicate) {
+                                $pasageri = Pasager::where('nume', $value)->whereHas('rezervari', function (Builder $query) use ($request_verificare_duplicate) {
                                     $query->whereDate('data_cursa', '=', $request_verificare_duplicate->data_intoarcere);
                                 })->pluck('nume')->all();
                                 if (stripos($value, 'Andrei Dima test') === false) {
