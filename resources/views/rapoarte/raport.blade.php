@@ -168,7 +168,7 @@
                             <tr class="" style="padding:2rem">
                                 <th class="w-25">Pasageri</th>
                                 <th class="text-center">Traseu</th>
-                                <th class="">Oraș plecare</th>
+                                <th class="">Oraș plecare/ sosire</th>
                                 <th class="text-center">Nr. pers.</th>
                                 <th class="text-center">Mutare</th>
                                 <th class="text-right">Acțiuni</th>
@@ -334,6 +334,8 @@
                                             </td>
                                             <td>
                                                 {{ $rezervare->oras_plecare_nume ?? ''}} ({{ $rezervare->oras_plecare_ordine ?? ''}})
+                                                /
+                                                {{ $rezervare->oras_sosire_nume ?? ''}} ({{ $rezervare->oras_sosire_ordine ?? ''}})
                                             </td>
                                             <td class="text-center">
                                                 {{ $rezervare->nr_adulti + $rezervare->nr_copii }}
