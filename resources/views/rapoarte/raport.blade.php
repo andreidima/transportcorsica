@@ -499,11 +499,25 @@
                             </tr>
                                 @if ( $tip_transport === 'calatori')
                                     <tr>
-                                        <td colspan="6" class="text-center">
-                                            <b>
-                                                Total pasageri în toate listele:
-                                                {{ $rezervari_pe_tara->sum('nr_adulti') + $rezervari_pe_tara->sum('nr_copii') }}
-                                            </b>
+                                        <td colspan="6" class="py-1">
+                                            <div class="d-flex flex-row justify-content-center">
+                                                <div class="mr-4">
+                                                    <b>
+                                                        Total pasageri în toate listele:
+                                                        {{ $rezervari_pe_tara->sum('nr_adulti') + $rezervari_pe_tara->sum('nr_copii') }}
+                                                    </b>
+                                                </div>
+                                                <div class="mr-4">
+                                                    <a href="/rapoarte/excel-nava/{{ $rezervari_pe_tara->first()->oras_plecare_tara }}/{{ \Carbon\Carbon::parse($search_data)->isoFormat('YYYY-MM-DD') }}/toate/lista_sosire/{{ $tip_transport }}/extrage-rezervari/raport-pdf" class="btn btn-sm bg-success text-white border border-light rounded-pill">
+                                                        <i class="fas fa-file-pdf text-white mr-1"></i>Raport Navă
+                                                        {{-- Iphone --}}
+                                                    </a>
+                                                    <a href="/rapoarte/excel-fara-nava/{{ $rezervari_pe_tara->first()->oras_plecare_tara }}/{{ \Carbon\Carbon::parse($search_data)->isoFormat('YYYY-MM-DD') }}/toate/lista_sosire/{{ $tip_transport }}/extrage-rezervari/raport-pdf" class="btn btn-sm bg-success text-white border border-light rounded-pill">
+                                                        <i class="fas fa-file-pdf text-white mr-1"></i>Raport fără Navă
+                                                        {{-- Iphone --}}
+                                                    </a>
+                                                </div>
+                                            </div>
                                         </td>
                                     </tr>
                                 @endif
@@ -567,9 +581,14 @@
                                                             <i class="fas fa-file-pdf text-white mr-1"></i>Listă pasageri
                                                             {{-- Iphone --}}
                                                         </a>
-                                                        {{-- <button type="submit" name="action" value="excel_nava" class="btn btn-sm bg-success text-white border border-light rounded-pill">
+                                                        <a href="/rapoarte/excel-nava/{{ $rezervari_pe_tara->first()->oras_plecare_tara }}/{{ \Carbon\Carbon::parse($search_data)->isoFormat('YYYY-MM-DD') }}/{{ $rezervari_pe_trasee->first()->lista_sosire }}/lista_sosire/{{ $tip_transport }}/extrage-rezervari/raport-pdf" class="btn btn-sm bg-success text-white border border-light rounded-pill">
                                                             <i class="fas fa-file-pdf text-white mr-1"></i>Raport Navă
-                                                        </button> --}}
+                                                            {{-- Iphone --}}
+                                                        </a>
+                                                        <a href="/rapoarte/excel-fara-nava/{{ $rezervari_pe_tara->first()->oras_plecare_tara }}/{{ \Carbon\Carbon::parse($search_data)->isoFormat('YYYY-MM-DD') }}/{{ $rezervari_pe_trasee->first()->lista_sosire }}/lista_sosire/{{ $tip_transport }}/extrage-rezervari/raport-pdf" class="btn btn-sm bg-success text-white border border-light rounded-pill">
+                                                            <i class="fas fa-file-pdf text-white mr-1"></i>Raport fără Navă
+                                                            {{-- Iphone --}}
+                                                        </a>
                                                         <a href="/rapoarte/chitante/{{ $rezervari_pe_tara->first()->oras_plecare_tara }}/{{ \Carbon\Carbon::parse($search_data)->isoFormat('YYYY-MM-DD') }}/{{ $rezervari_pe_trasee->first()->lista_sosire }}/lista_sosire/{{ $tip_transport }}/extrage-rezervari/raport-pdf" class="btn btn-sm bg-success text-white border border-light rounded-pill">
                                                             <i class="fas fa-file-pdf text-white mr-1"></i>Raport Bilete
                                                             {{-- Iphone --}}
