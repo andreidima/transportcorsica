@@ -22,6 +22,14 @@
                     id="adauga-rezervare"
                 >
 
+
+                @if (!is_null($rezervare->bilet_numar))
+                    <div class="alert alert-warning" role="alert">
+                        Această călătorie a fost deja efectuată. Are bilet emis!. Nu veți putea modifica detaliile traseului
+                    </div>
+                @endif
+
+
                 @if (isset($tip_operatie) && ($tip_operatie === "modificare"))
                     <form  class="needs-validation" novalidate method="POST" action="{{ $rezervare->path() }}">
                         @csrf
@@ -123,21 +131,25 @@
                                         Selectează traseu:
                                     </div>
                                     <div class="col-lg-7 mb-4 btn-group btn-group-toggle">
-                                        <label class="border" v-bind:class="[traseu=='Romania-Corsica' ? 'btn btn-sm btn-success' : 'btn btn-sm btn-secondary']">
+                                        <label class="border {{ is_null($rezervare->bilet_numar) ? '' : 'disabled' }}"
+                                                v-bind:class="[traseu=='Romania-Corsica' ? 'btn btn-sm btn-success' : 'btn btn-sm btn-secondary']">
                                             <input type="radio" class="btn-group-toggle" name="traseu" id="traseu1" autocomplete="off"
                                                 v-model="traseu" value="Romania-Corsica"
                                                 {{-- v-on:change="setTaraPlecare();getOrasePlecare();getOraseSosire();setPreturi()" --}}
                                                 v-on:change="setTaraPlecare();getOrasePlecare();getOraseSosire();"
+                                                {{ is_null($rezervare->bilet_numar) ? '' : 'disabled' }}
                                                 >
                                                     <span style="font-size: 1.2em;">
                                                         România -> Corsica
                                                     </span>
                                         </label>
-                                        <label class="border" v-bind:class="[traseu=='Corsica-Romania' ? 'btn btn-sm btn-success' : 'btn btn-sm btn-secondary']">
+                                        <label class="border {{ is_null($rezervare->bilet_numar) ? '' : 'disabled' }}"
+                                                v-bind:class="[traseu=='Corsica-Romania' ? 'btn btn-sm btn-success' : 'btn btn-sm btn-secondary']">
                                             <input type="radio" class="btn-group-toggle" name="traseu" id="traseu2" autocomplete="off"
                                                 v-model="traseu" value="Corsica-Romania"
                                                 {{-- v-on:change="setTaraPlecare();getOrasePlecare();getOraseSosire();setPreturi();" --}}
                                                 v-on:change="setTaraPlecare();getOrasePlecare();getOraseSosire();"
+                                                {{ is_null($rezervare->bilet_numar) ? '' : 'disabled' }}
                                                 >
                                                     <span style="font-size: 1.2em;">
                                                         Corsica -> România
@@ -146,18 +158,6 @@
                                     </div>
                                 </div>
                             </div>
-
-
-                    {{-- <div v-if="tur_retur">                --}}
-                        {{-- <span  v-for="index in nr_adulti" :key="index">
-                            <input type="text" class="form-control" name="pasagerit[nume][]" v-model="nume[index-1]"><br/>
-                            <input type="text" class="form-control" name="pasagerit[buletin][]" v-model="buletin[index-1]"><br/>
-                        </span> --}}
-                    {{-- </div> --}}
-
-            {{-- :value="type.tags"
-            :key="type.index"
-            :id="type.id" > --}}
 
                                 <div v-cloak v-if="traseu">
                                     <div class="row mb-2 d-flex justify-content-between">
@@ -193,6 +193,7 @@
                                                         name="oras_plecare"
                                                         v-model="oras_plecare"
                                                         {{-- @change='getPreturi();getPretTotal()' --}}
+                                                        {{ is_null($rezervare->bilet_numar) ? '' : 'disabled' }}
                                                         >
                                                         <option disabled value="">Selectează o opțiune</option>
                                                         <option
@@ -234,6 +235,7 @@
                                                             name="oras_sosire"
                                                             v-model="oras_sosire"
                                                             {{-- @change='getPreturi();getPretTotal()' --}}
+                                                            {{ is_null($rezervare->bilet_numar) ? '' : 'disabled' }}
                                                             >
                                                             <option disabled value="">Selectează o opțiune</option>
                                                             <option
@@ -262,13 +264,15 @@
                                             <input type="checkbox" class="custom-control-input custom-control-lg" id="customSwitch1"
                                             name="tur_retur" v-model="tur_retur" value="true" required
                                             {{ old('tur_retur') == 'true' ? 'checked' : '' }}
+                                            {{ is_null($rezervare->bilet_numar) ? '' : 'disabled' }}
                                             {{-- @change='setPreturi();getPretTotal()' --}}
                                             {{-- @change='getPretTotal()' --}}
                                             >
                                             <label class="custom-control-label" for="customSwitch1">TUR - RETUR</label>
                                         </div>
                                         <div class="col-lg-3 d-flex align-items-center">
-                                            <button class="btn btn-sm btn-warning" type="button" v-on:click="inverseaza_orasele()">
+                                            <button class="btn btn-sm btn-warning {{ is_null($rezervare->bilet_numar) ? '' : 'disabled' }}"
+                                                type="button" v-on:click="{{ is_null($rezervare->bilet_numar) ? 'inverseaza_orasele()' : '' }}">
                                                 Inversează orașele
                                             </button>
                                         </div>
@@ -322,6 +326,7 @@
                                                     :doar-ziua="3"
                                                     @dataplecare="dataPlecareTrimisa"
                                                     {{-- v-on:dataplecare="dataPlecareTrimisa" --}}
+                                                    {{ is_null($rezervare->bilet_numar) ? '' : 'disabled' }}
                                                 ></vue2-datepicker-plecare>
                                             </div>
                                             <div v-if="traseu === 'Corsica-Romania'">
@@ -338,6 +343,7 @@
                                                     :doar-ziua="6"
                                                     @dataintoarcere="dataIntoarcereTrimisa"
                                                     {{-- v-on:dataplecare="dataPlecareTrimisa" --}}
+                                                    {{ is_null($rezervare->bilet_numar) ? '' : 'disabled' }}
                                                 ></vue2-datepicker-intoarcere>
                                             </div>
                                         </div>
@@ -375,6 +381,7 @@
                                                     not-before-date="{{ auth()->check() ? \Carbon\Carbon::today()->subYear() : \Carbon\Carbon::today() }}"
                                                     :doar-ziua="6"
                                                     @dataintoarcere="dataIntoarcereTrimisa"
+                                                    {{ is_null($rezervare->bilet_numar) ? '' : 'disabled' }}
                                                 ></vue2-datepicker-intoarcere>
                                             </div>
                                             <div v-if="traseu === 'Corsica-Romania'">
@@ -390,6 +397,7 @@
                                                     not-before-date="{{ auth()->check() ? \Carbon\Carbon::today()->subYear() : \Carbon\Carbon::today() }}"
                                                     :doar-ziua="3"
                                                     @dataplecare="dataPlecareTrimisa"
+                                                    {{ is_null($rezervare->bilet_numar) ? '' : 'disabled' }}
                                                 ></vue2-datepicker-plecare>
                                             </div>
                                         </div>
@@ -398,6 +406,8 @@
                                             Data de intoarcere trebuie sa fie la maxim 15 zile de la data de plecare.
                                         </div>
                                     </div>
+
+
                                     <div v-if="tip_calatorie === 'Calatori'" class="form-row mb-4 px-2 py-2 d-flex justify-content-center align-items-center border rounded"
                                         style="background-color:lightseagreen; color:white"
                                     >

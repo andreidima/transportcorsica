@@ -154,15 +154,15 @@
                                 </td>
                                 <td class="text-right">
                                     <div class="d-flex justify-content-end">
-                                        <a href="{{ $rezervare->path() }}"
-                                            class="flex mr-1"
-                                        >
-                                            <span class="badge badge-success">Vizualizează</span>
-                                        </a>
                                         <a href="{{ $rezervare->path() }}/modifica"
                                             class="flex mr-1"
                                         >
                                             <span class="badge badge-primary">Modifică</span>
+                                        </a>
+                                        <a href="{{ $rezervare->path() }}"
+                                            class="flex mr-1"
+                                        >
+                                            <span class="badge badge-success">Vizualizează</span>
                                         </a>
                                     @if ((auth()->user()->role === 'administrator') || (auth()->user()->role === 'superadmin'))
                                         <a href="{{ $rezervare->path() }}/duplica"
