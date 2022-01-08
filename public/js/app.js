@@ -1923,7 +1923,7 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     DatePicker: vue2_datepicker__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
-  props: ['dataVeche', 'numeCampDb', 'tip', 'valueType', 'format', 'latime', 'notBeforeDate', 'notAfterDate', 'doarZiuaA', 'doarZiuaB', 'minuteStep', 'hours'],
+  props: ['dataVeche', 'numeCampDb', 'tip', 'valueType', 'format', 'latime', 'notBeforeDate', 'notAfterDate', 'doarZiuaA', 'doarZiuaB', 'minuteStep', 'hours', 'disabled'],
   computed: {
     latimePrelucrata: function latimePrelucrata() {
       if (this.tip === "time") {
@@ -2024,7 +2024,7 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     DatePicker: vue2_datepicker__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
-  props: ['dataVeche', 'numeCampDb', 'tip', 'valueType', 'format', 'latime', 'notBeforeDate', 'notAfterDate', 'doarZiua', 'minuteStep', 'hours'],
+  props: ['dataVeche', 'numeCampDb', 'tip', 'valueType', 'format', 'latime', 'notBeforeDate', 'notAfterDate', 'doarZiua', 'minuteStep', 'hours', 'disabled'],
   computed: {
     latimePrelucrata: function latimePrelucrata() {
       if (this.tip === "time") {
@@ -2132,7 +2132,7 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     DatePicker: vue2_datepicker__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
-  props: ['dataVeche', 'numeCampDb', 'tip', 'valueType', 'format', 'latime', 'notBeforeDate', 'notAfterDate', 'doarZiua', 'minuteStep', 'hours'],
+  props: ['dataVeche', 'numeCampDb', 'tip', 'valueType', 'format', 'latime', 'notBeforeDate', 'notAfterDate', 'doarZiua', 'minuteStep', 'hours', 'disabled'],
   computed: {
     latimePrelucrata: function latimePrelucrata() {
       if (this.tip === "time") {
@@ -78079,7 +78079,8 @@ var render = function() {
           "minute-step": _vm.minuteStep,
           "hour-options": _vm.hours,
           editable: false,
-          "disabled-date": _vm.notDates
+          "disabled-date": _vm.notDates,
+          disabled: _vm.disabled
         },
         model: {
           value: _vm.time,
@@ -78149,7 +78150,8 @@ var render = function() {
           "minute-step": _vm.minuteStep,
           "hour-options": _vm.hours,
           editable: false,
-          "disabled-date": _vm.notDates
+          "disabled-date": _vm.notDates,
+          disabled: _vm.disabled
         },
         model: {
           value: _vm.time,
@@ -78219,7 +78221,8 @@ var render = function() {
           "minute-step": _vm.minuteStep,
           "hour-options": _vm.hours,
           editable: false,
-          "disabled-date": _vm.notDates
+          "disabled-date": _vm.notDates,
+          disabled: _vm.disabled
         },
         model: {
           value: _vm.time,
@@ -95627,8 +95630,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! E:\laragon\www\transportcorsica\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! E:\laragon\www\transportcorsica\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\laragon\www\transport-corsica\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\laragon\www\transport-corsica\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

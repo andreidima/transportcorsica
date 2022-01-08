@@ -205,6 +205,7 @@ class RezervareController extends Controller
      */
     public function update(Request $request, Rezervare $rezervare)
     {
+        // dd($request, $rezervare);
         $this->authorize('update', $rezervare);
 
         $rezervare_tur = (!$rezervare->tur) ? $rezervare : Rezervare::find($rezervare->tur);
@@ -982,7 +983,13 @@ class RezervareController extends Controller
      */
     public function adaugaRezervarePasul1(Request $request)
     {
-        $rezervare = $request->session()->get('rezervare');
+        // $rezervare = $request->session()->get('rezervare');
+        if(empty($request->session()->get('rezervare'))){
+            $rezervare = new Rezervare();
+        }else{
+            $rezervare = $request->session()->get('rezervare');
+        }
+
         $tarife = \App\Models\Tarif::first();
         return view('rezervari.guest-create/adauga-rezervare-pasul-1', compact('rezervare', 'tarife'));
     }

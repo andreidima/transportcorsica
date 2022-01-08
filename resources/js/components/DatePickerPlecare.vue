@@ -17,7 +17,8 @@ export default {
     'notAfterDate',
     'doarZiua',
     'minuteStep',
-    'hours'],
+    'hours',
+    'disabled'],
   computed: {
     latimePrelucrata() {
       if (this.tip === "time") {
@@ -109,6 +110,7 @@ export default {
       :editable="false"
       :style=latime
       :disabled-date="notDates"
+      :disabled=disabled
     >
     </date-picker>
   </div>

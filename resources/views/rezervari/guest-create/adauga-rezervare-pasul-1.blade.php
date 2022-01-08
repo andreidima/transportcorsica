@@ -22,7 +22,6 @@
                     id="adauga-rezervare"
                 >
 
-
                 @if (!is_null($rezervare->bilet_numar))
                     <div class="alert alert-warning" role="alert">
                         Această călătorie a fost deja efectuată. Are bilet emis!. Nu veți putea modifica detaliile traseului
@@ -406,6 +405,18 @@
                                             Data de intoarcere trebuie sa fie la maxim 15 zile de la data de plecare.
                                         </div>
                                     </div>
+
+
+                                    {{-- Daca: „Această călătorie a fost deja efectuată. Are bilet emis!. Nu veți putea modifica detaliile traseului” --}}
+                                    {{-- Se salveaza campurile disabled in request, necesare pentru update --}}
+                                    @if (!is_null($rezervare->bilet_numar))
+                                        <input type="hidden" name="traseu" value="{{ $rezervare->traseu }}" />
+                                        <input type="hidden" name="oras_plecare" value="{{ $rezervare->oras_plecare }}" />
+                                        <input type="hidden" name="oras_sosire" value="{{ $rezervare->oras_sosire }}" />
+                                        <input type="hidden" name="tur_retur" value="{{ $rezervare->tur_retur }}" />
+                                        <input type="hidden" name="data_plecare" value="{{ $rezervare->data_plecare }}" />
+                                        <input type="hidden" name="data_intoarcere" value="{{ $rezervare->data_intoarcere }}" />
+                                    @endif
 
 
                                     <div v-if="tip_calatorie === 'Calatori'" class="form-row mb-4 px-2 py-2 d-flex justify-content-center align-items-center border rounded"
