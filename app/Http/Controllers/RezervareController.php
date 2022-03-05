@@ -1339,9 +1339,9 @@ class RezervareController extends Controller
                 } else {
                     if ($rezervare_tur->email){
                         $mail = \Mail::to($rezervare_tur->email)
-                            ->bcc('adima@validsoftware.ro');
+                            ->bcc('andrei.dima@usm.ro');
                     } else {
-                        $mail = \Mail::to('adima@validsoftware.ro');
+                        $mail = \Mail::to('andrei.dima@usm.ro');
                     }
                     $mail->send(new RezervareFinalizata($rezervare_tur));
                 }
