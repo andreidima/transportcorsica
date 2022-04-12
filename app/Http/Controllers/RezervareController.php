@@ -1526,13 +1526,13 @@ class RezervareController extends Controller
             $request->validate(
                 [
                     'colete_kg' => 'nullable|numeric',
-                    'colete_volum' => 'nullable|numeric',
+                    'colete_numar' => 'nullable|numeric',
                     'pret' => 'required|numeric|integer|max:99999',
                 ]
             );
 
             $rezervare->colete_kg = $request->colete_kg;
-            $rezervare->colete_volum = $request->colete_volum;
+            $rezervare->colete_numar = $request->colete_numar;
             $rezervare->pret_total = $request->pret;
 
             // Calcularea preturilor in lei
@@ -1541,8 +1541,8 @@ class RezervareController extends Controller
 
             $rezervare->update();
 
-            // return redirect('chitanta-descarca/' . $rezervare->cheie_unica . '/export-html');
-            return redirect()->away('rawbt:url:https://rezervari.transportcorsica.ro/chitanta-descarca/' . $rezervare->cheie_unica . '/export-html');
+            return redirect('chitanta-descarca/' . $rezervare->cheie_unica . '/export-html');
+            // return redirect()->away('rawbt:url:https://rezervari.transportcorsica.ro/chitanta-descarca/' . $rezervare->cheie_unica . '/export-html');
         }
 
 

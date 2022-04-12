@@ -99,13 +99,13 @@
                                                 required>
                                         </div>
                                         <div class="col-lg-2 mb-2">
-                                            <label for="colete_volum" class="mb-1 h5">Volum:*</label>
+                                            <label for="colete_numar" class="mb-1 h5">Nr. colete:*</label>
                                             <input
                                                 type="text"
-                                                class="form-control form-control-lg {{ $errors->has('colete_volum') ? 'is-invalid' : '' }}"
-                                                name="colete_volum"
+                                                class="form-control form-control-lg {{ $errors->has('colete_numar') ? 'is-invalid' : '' }}"
+                                                name="colete_numar"
                                                 placeholder=""
-                                                value="{{ old('colete_volum', ($rezervare->colete_volum ?? '')) }}"
+                                                value="{{ old('colete_numar', ($rezervare->colete_numar ?? '')) }}"
                                                 required>
                                         </div>
                                         <div class="col-lg-2 mb-3">
