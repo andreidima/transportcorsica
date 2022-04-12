@@ -1580,11 +1580,7 @@ class RezervareController extends Controller
         // }
 
         if ($request->view_type === 'export-html') {
-            // return view('chitante.export.chitanta', compact('rezervare'));
-            $pdf = \PDF::loadView('chitante.export.chitanta', compact('rezervare'))
-                // ->setPaper('a5', 'portrait');
-                ->setPaper([0,0,384,9999]);
-            return $pdf->stream();
+            return view('chitante.export.chitanta', compact('rezervare'));
         } elseif ($request->view_type === 'export-pdf') {
             $pdf = \PDF::loadView('chitante.export.chitanta', compact('rezervare'))
                 ->setPaper([0,0,384,500]);
