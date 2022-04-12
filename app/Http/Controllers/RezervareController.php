@@ -1541,8 +1541,8 @@ class RezervareController extends Controller
 
             $rezervare->update();
 
-            return redirect('chitanta-descarca/' . $rezervare->cheie_unica . '/export-html');
-            // return redirect()->away('rawbt:url:https://rezervari.transportcorsica.ro/chitanta-descarca/' . $rezervare->cheie_unica . '/export-html');
+            // return redirect('chitanta-descarca/' . $rezervare->cheie_unica . '/export-html');
+            return redirect()->away('rawbt:url:https://rezervari.transportcorsica.ro/chitanta-descarca/' . $rezervare->cheie_unica . '/export-html');
         }
 
 
