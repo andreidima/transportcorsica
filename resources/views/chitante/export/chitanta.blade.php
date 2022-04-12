@@ -251,16 +251,16 @@
                     </tr> --}}
                     <tr>
                         <td colspan="1">
-                            Expeditor: <span style="font-size: 150%; font-weight:bold">{{ $rezervare->nume }}</span>
+                            Expeditor: <span style="font-size: 120%; font-weight:bold">{{ $rezervare->nume }}</span>
                             <br>
-                            Telefon: <span style="font-size: 150%; font-weight:bold">{{ $rezervare->telefon }}</span>
+                            Telefon: <span style="font-size: 120%; font-weight:bold">{{ $rezervare->telefon }}</span>
                             {{-- <br>
                             Email: {{ $rezervare->email }} --}}
                         </td>
                         <td colspan="1">
-                            Destinatar: <span style="font-size: 150%; font-weight:bold">{{ $rezervare->colete_nume_destinatar }}</span>
+                            Destinatar: <span style="font-size: 120%; font-weight:bold">{{ $rezervare->colete_nume_destinatar }}</span>
                             <br>
-                            Telefon: <span style="font-size: 150%; font-weight:bold">{{ $rezervare->colete_telefon_destinatar }}</span>
+                            Telefon: <span style="font-size: 120%; font-weight:bold">{{ $rezervare->colete_telefon_destinatar }}</span>
                             {{-- <br>
                             Email: {{ $rezervare->colete_email_destinatar }} --}}
                         </td>
