@@ -215,7 +215,8 @@
     {{-- Chitanta pentru colete --}}
     @else
         {{-- De printat cate un AWB pentru fiecare colet in parte, si inca 3 AWB-uri duplicat --}}
-        @for ($i = 0; $i < $rezervare->colete_numar + 3; $i++)
+        {{-- @for ($i = 0; $i < $rezervare->colete_numar + 3; $i++) --}}
+        @for ($i = 0; $i < 1; $i++)
             <div style="
                 width:360px;
                 margin:0px 0px;
@@ -224,7 +225,7 @@
                     border-radius: 3px;
                 ">
 
-                <p style="text-align:left; margin:0px;">
+                {{-- <p style="text-align:left; margin:0px;">
                     <b>MRW88 MAXARMONY S.R.L.</b> <br>
                     ORC: J39/570/29.09.2015 | CIF: RO35059906 <br>
                     Sediul: Str. Șoseaua Națională nr. 22, Et:1, Sat Ceardac, Golești, Vrancea <br>
@@ -239,7 +240,7 @@
                     @else
                         AWB ({{ $rezervare->colete_numar }} colete)
                     @endif
-                </h2>
+                </h2> --}}
 
                 <table style="margin-bottom:0px">
                     {{-- <tr style="text-align:center; font-weight:bold;">
@@ -270,13 +271,6 @@
                 <br>
 
                 <table style="margin-bottom:0px">
-                    {{-- <tr style="text-align:center; font-weight:bold;">
-                        <td colspan="4" style="border-width:0px; padding:0rem;">
-                            <h3 style="background-color:#ece7cf; color:black; margin:10px 0px 5px 0px; padding:5px 0px">
-                            Informații Rezervare Colete
-                            </h3>
-                        </td>
-                    </tr> --}}
                     <tr style="">
                         <td style="">
                             Data de plecare:
@@ -302,13 +296,6 @@
                 <br>
 
                 <table style="margin-bottom:0px">
-                    {{-- <tr style="text-align:center; font-weight:bold;">
-                        <td colspan="3" style="border-width:0px; padding:0rem;">
-                            <h3 style="background-color:#ece7cf; color:black; margin:10px 0px 5px 0px; padding:5px 0px">
-                            Informații Colete
-                            </h3>
-                        </td>
-                    </tr> --}}
                     <tr>
                         <td>
                             Număr colete: {{ $rezervare->colete_numar }}
@@ -339,11 +326,6 @@
 
                 <table style="margin-bottom:0px">
                     <tr style="font-weight:bold;">
-                        {{-- <td colspan="3" style="border-width:0px; padding:0rem;">
-                            <h3 style="background-color:#ece7cf; color:black; margin:10px 0px 5px 0px; padding:5px 0px">
-                            Confirmare - Am primit expediția intactă ({{ $rezervare->colete_numar }} buc)
-                            </h3>
-                        </td> --}}
                         <td colspan="3">
                             Confirmare - Am primit expediția intactă ({{ $rezervare->colete_numar }} buc)
                         </td>
