@@ -233,7 +233,7 @@
                     Cod IBAN LEI: RO36BTRLRONCRT0319122801 <br>
                 </p>
 
-                <h2 style="margin:5 0 5 0px; text-align:center">
+                <h2 style="margin:0px 0px 5px 0px; text-align:center">
                     @if ($i < $rezervare->colete_numar)
                         AWB {{ $rezervare->id }} ({{ $i+1 }} din {{ $rezervare->colete_numar }})
                     @else
@@ -299,7 +299,7 @@
                     </tr>
                 </table>
 
-                {{-- <br> --}}
+                <br>
 
                 <table style="margin-bottom:0px">
                     {{-- <tr style="text-align:center; font-weight:bold;">
