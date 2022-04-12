@@ -215,8 +215,8 @@
     {{-- Chitanta pentru colete --}}
     @else
         {{-- De printat cate un AWB pentru fiecare colet in parte, si inca 3 AWB-uri duplicat --}}
-        {{-- @for ($i = 0; $i < $rezervare->colete_numar + 3; $i++) --}}
-        @for ($i = 0; $i < 1; $i++)
+        @for ($i = 0; $i < $rezervare->colete_numar + 3; $i++)
+        {{-- @for ($i = 0; $i < 1; $i++) --}}
             <div style="
                 width:360px;
                 margin:0px 0px;
@@ -225,7 +225,7 @@
                     border-radius: 3px;
                 ">
 
-                {{-- <p style="text-align:left; margin:0px;">
+                <p style="text-align:left; margin:0px;">
                     <b>MRW88 MAXARMONY S.R.L.</b> <br>
                     ORC: J39/570/29.09.2015 | CIF: RO35059906 <br>
                     Sediul: Str. Șoseaua Națională nr. 22, Et:1, Sat Ceardac, Golești, Vrancea <br>
@@ -240,7 +240,7 @@
                     @else
                         AWB ({{ $rezervare->colete_numar }} colete)
                     @endif
-                </h2> --}}
+                </h2>
 
                 <table style="margin-bottom:0px">
                     {{-- <tr style="text-align:center; font-weight:bold;">
