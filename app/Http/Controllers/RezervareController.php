@@ -1520,6 +1520,7 @@ class RezervareController extends Controller
 
             $rezervare->update();
 
+            // return redirect('chitanta-descarca/' . $rezervare->cheie_unica . '/export-html');
             return redirect()->away('rawbt:url:https://rezervari.transportcorsica.ro/chitanta-descarca/' . $rezervare->cheie_unica . '/export-html');
         } else {
             $request->validate(
@@ -1540,7 +1541,8 @@ class RezervareController extends Controller
 
             $rezervare->update();
 
-            return redirect('chitanta-descarca/' . $rezervare->cheie_unica . '/export-html');
+            // return redirect('chitanta-descarca/' . $rezervare->cheie_unica . '/export-html');
+            return redirect()->away('rawbt:url:https://rezervari.transportcorsica.ro/chitanta-descarca/' . $rezervare->cheie_unica . '/export-html');
         }
 
 
@@ -1557,30 +1559,34 @@ class RezervareController extends Controller
     {
         $rezervare = Rezervare::where('cheie_unica', $cheie_unica)->first();
 
-        if ($rezervare->nr_adulti){
-            if ($request->view_type === 'export-html') {
-                return view('chitante.export.chitanta', compact('rezervare'));
-            } elseif ($request->view_type === 'export-pdf') {
-                    $pdf = \PDF::loadView('chitante.export.chitanta', compact('rezervare'))
-                        ->setPaper([0,0,384,500]);
-                        // ->setPaper('a5', 'portrait');
-                    return $pdf->stream();
-                    // return $pdf->download('Chitanta.pdf');
-            }
+        // if ($rezervare->nr_adulti){
+        //     if ($request->view_type === 'export-html') {
+        //         return view('chitante.export.chitanta', compact('rezervare'));
+        //     } elseif ($request->view_type === 'export-pdf') {
+        //             $pdf = \PDF::loadView('chitante.export.chitanta', compact('rezervare'))
+        //                 ->setPaper([0,0,384,500]);
+        //             return $pdf->stream();
+        //     }
+        //     return view('chitante.export.chitanta', compact('rezervare'));
+        // } else {
+        //     if ($request->view_type === 'export-html') {
+        //         return view('chitante.export.awb_colete', compact('rezervare'));
+        //     } elseif ($request->view_type === 'export-pdf') {
+        //             $pdf = \PDF::loadView('chitante.export.awb_colete', compact('rezervare'))
+        //                 ->setPaper('a4', 'portrait');
+        //             return $pdf->download('AWB.pdf');
+        //     }
+        //     return view('chitante.export.awb_colete', compact('rezervare'));
+        // }
 
+        if ($request->view_type === 'export-html') {
             return view('chitante.export.chitanta', compact('rezervare'));
-
-        } else {
-            if ($request->view_type === 'export-html') {
-                return view('chitante.export.awb_colete', compact('rezervare'));
-            } elseif ($request->view_type === 'export-pdf') {
-                    $pdf = \PDF::loadView('chitante.export.awb_colete', compact('rezervare'))
-                        ->setPaper('a4', 'portrait');
-                    // return $pdf->stream();
-                    return $pdf->download('AWB.pdf');
-            }
-
-            return view('chitante.export.awb_colete', compact('rezervare'));
+        } elseif ($request->view_type === 'export-pdf') {
+            $pdf = \PDF::loadView('chitante.export.chitanta', compact('rezervare'))
+                ->setPaper([0,0,384,500]);
+                // ->setPaper('a5', 'portrait');
+            return $pdf->stream();
+            // return $pdf->download('Chitanta.pdf');
         }
 
     }
