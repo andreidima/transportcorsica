@@ -229,9 +229,9 @@
                     <b>MRW88 MAXARMONY S.R.L.</b> <br>
                     ORC: J39/570/29.09.2015 | CIF: RO35059906 <br>
                     Sediul: Str. Șoseaua Națională nr. 22, Et:1, Sat Ceardac, Golești, Vrancea <br>
-                    Banca: Transilvania <br>
-                    Cod IBAN EURO: RO83BTRLEURCRT0319122801 <br>
-                    Cod IBAN LEI: RO36BTRLRONCRT0319122801 <br>
+                    {{-- Banca: Transilvania <br> --}}
+                    {{-- Cod IBAN EURO: RO83BTRLEURCRT0319122801 <br>
+                    Cod IBAN LEI: RO36BTRLRONCRT0319122801 <br> --}}
                 </p>
 
                 <h2 style="margin:0px 0px 5px 0px; text-align:center">
@@ -240,6 +240,9 @@
                     @else
                         AWB ({{ $rezervare->colete_numar }} colete)
                     @endif
+                    <span style="font-size: 130%; font-weight:bold">
+                        {{ $rezervare->oras_sosire_nume->oras ?? null }}
+                    </span>
                 </h2>
 
                 <table style="margin-bottom:0px">
