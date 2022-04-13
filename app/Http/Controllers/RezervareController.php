@@ -34,10 +34,10 @@ class RezervareController extends Controller
         $search_bilet_numar = \Request::get('search_bilet_numar');
         $search_data = \Request::get('search_data');
 
-        if ($search_nume){
-            $pasageri = Pasager::where('nume', 'like', '%' . $search_nume . '%')->pluck('id')->all();
-            // dd($search_nume, $pasageri);
-        }
+        // if ($search_nume){
+        //     $pasageri = Pasager::where('nume', 'like', '%' . $search_nume . '%')->pluck('id')->all();
+        //     // dd($search_nume, $pasageri);
+        // }
 
         $rezervari = Rezervare::with('oras_plecare_nume', 'oras_sosire_nume', 'retur_relation', 'pasageri_relation', 'user')
             // ->when($search_nume, function (Builder $query, $search_nume) {
@@ -46,11 +46,20 @@ class RezervareController extends Controller
             //     });
             // })
             ->when($search_nume, function (Builder $query, $search_nume) {
-                $pasageri = Pasager::where('nume', 'like', '%' . $search_nume . '%')->pluck('id')->all();
-                $rezervari = DB::table('pasageri_rezervari')->whereIn('pasager_id', $pasageri)->pluck('rezervare_id')->all();
-                // dd($rezervari, $pasageri);
-                return $query->whereIn('id', $rezervari);
+                if (strlen($search_nume) >= 3){
+                    $pasageri = Pasager::where('nume', 'like', '%' . $search_nume . '%')->pluck('id')->all();
+                    $rezervari = DB::table('pasageri_rezervari')->whereIn('pasager_id', $pasageri)->pluck('rezervare_id')->all();
+                    // dd($rezervari, $pasageri);
+                    return $query->whereIn('id', $rezervari);
+                } else {
+                    return $query->where('id', 0); // nu va returna nici un rezultat
+                }
             })
+            // ->when($search_nume, function (Builder $query, $search_nume) {
+            //     $query->whereHas('pasageri_relation', function (Builder $query) use ($search_nume) {
+            //         $query->where('nume', 'like', '%' . $search_nume . '%');
+            //     });
+            // })
             // Daca se cauta dupa bilet, se afiseaza chiar daca este retur, pentru ca altfel e posibil sa nu apara nici o rezervare
             // Daca nu se cauta dupa bilet, se afiseaza doar turul rezervarilor
             ->when($search_bilet_numar, function ($query, $search_bilet_numar) {

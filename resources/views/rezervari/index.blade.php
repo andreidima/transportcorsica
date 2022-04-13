@@ -98,7 +98,7 @@
                                                 @endif
                                             @endforeach
                                         @else
-                                            Rezervare colete
+                                            {{ $rezervare->nume }} - colete
                                         @endif
                                     </a>
                                 </td>
@@ -230,7 +230,7 @@
                                                                             @endif
                                                                         @endforeach
                                                                     @else
-                                                                        Rezervare colete
+                                                                        {{ $rezervare->nume }} - colete
                                                                     @endif
                                                                 </b>
                                                             </h5>
@@ -292,7 +292,7 @@
                                                                             @endif
                                                                         @endforeach
                                                                     @else
-                                                                        Rezervare colete
+                                                                        {{ $rezervare->nume }} - colete
                                                                     @endif
                                                                 </b>
                                                             </h5>

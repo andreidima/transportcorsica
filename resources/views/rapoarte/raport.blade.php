@@ -164,12 +164,27 @@
                                             </div>
                                         </td>
                                     </tr>
+                                @else
+                                    <tr>
+                                        <td colspan="6" class="py-1">
+                                            <div class="d-flex flex-row justify-content-center">
+                                                <div class="">
+                                                    <b>
+                                                        Total colete în toate listele:
+                                                        {{ $rezervari_pe_tara->sum('colete_numar') }}
+                                                    </b>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
                                 @endif
                             <tr class="" style="padding:2rem">
                                 <th class="w-25">Pasageri</th>
                                 <th class="text-center">Traseu</th>
                                 <th class="">Oraș plecare/ sosire</th>
-                                <th class="text-center">Nr. pers.</th>
+                                <th class="text-center">
+                                    {{ $tip_transport === 'calatori' ? 'Nr. pers.' : 'Nr. colete' }}
+                                </th>
                                 <th class="text-center">Mutare</th>
                                 <th class="text-right">Acțiuni</th>
                             </tr>
@@ -320,7 +335,7 @@
                                                         @endforeach
                                                     @else
                                                         <a href="{{ $rezervare->path() }}">
-                                                            Rezervare colete
+                                                            {{ $rezervare->nume }} - colete
                                                         </a>
                                                     @endif
 
@@ -338,7 +353,7 @@
                                                 {{ $rezervare->oras_sosire_nume ?? ''}} ({{ $rezervare->oras_sosire_ordine ?? ''}})
                                             </td>
                                             <td class="text-center">
-                                                {{ $rezervare->nr_adulti + $rezervare->nr_copii }}
+                                                {{ ($tip_transport === 'calatori') ? ($rezervare->nr_adulti + $rezervare->nr_copii) : $rezervare->colete_numar }}
                                             </td>
                                             <td class="text-center">
                                                 <form  class="needs-validation" novalidate method="POST" action="/rapoarte/{{ $tip_transport }}/muta-rezervare/{{ $rezervare->id}}">
@@ -402,7 +417,7 @@
                                         </td>
                                         <td class="text-center">
                                             <b>
-                                                {{ $rezervari_pe_trasee->sum('nr_adulti') + $rezervari_pe_trasee->sum('nr_copii') }}
+                                                {{ ($tip_transport === 'calatori') ? ($rezervari_pe_trasee->sum('nr_adulti') + $rezervari_pe_trasee->sum('nr_copii')) : $rezervari_pe_trasee->sum('colete_numar') }}
                                             </b>
                                         </td>
                                         <td></td>
@@ -520,12 +535,27 @@
                                             </div>
                                         </td>
                                     </tr>
+                                @else
+                                    <tr>
+                                        <td colspan="6" class="py-1">
+                                            <div class="d-flex flex-row justify-content-center">
+                                                <div class="">
+                                                    <b>
+                                                        Total colete în toate listele:
+                                                        {{ $rezervari_pe_tara->sum('colete_numar') }}
+                                                    </b>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
                                 @endif
                             <tr class="" style="padding:2rem">
                                 <th class="w-25">Pasageri</th>
                                 <th class="text-center">Traseu</th>
                                 <th>Oraș sosire/ plecare</th>
-                                <th class="text-center">Nr. pers.</th>
+                                <th class="text-center">
+                                    {{ $tip_transport === 'calatori' ? 'Nr. pers.' : 'Nr. colete' }}
+                                </th>
                                 <th class="text-center">Mutare</th>
                                 <th class="text-right">Acțiuni</th>
                             </tr>
@@ -660,7 +690,7 @@
                                                     @endforeach
                                                 @else
                                                     <a href="{{ $rezervare->path() }}">
-                                                        Rezervare colete
+                                                        {{ $rezervare->nume }} - colete
                                                     </a>
                                                 @endif
 
@@ -678,7 +708,7 @@
                                                 {{ $rezervare->oras_plecare_nume ?? ''}} ({{ $rezervare->oras_plecare_ordine ?? ''}})
                                             </td>
                                             <td class="text-center">
-                                                {{ $rezervare->nr_adulti + $rezervare->nr_copii }}
+                                                {{ ($tip_transport === 'calatori') ? ($rezervare->nr_adulti + $rezervare->nr_copii) : $rezervare->colete_numar }}
                                             </td>
                                             <td class="text-center px-2">
                                                 <form  class="needs-validation" novalidate method="POST" action="/rapoarte/{{ $tip_transport }}/muta-rezervare/{{ $rezervare->id}}">
@@ -742,7 +772,7 @@
                                         </td>
                                         <td class="text-center">
                                             <b>
-                                                {{ $rezervari_pe_trasee->sum('nr_adulti') + $rezervari_pe_trasee->sum('nr_copii') }}
+                                                {{ ($tip_transport === 'calatori') ? ($rezervari_pe_trasee->sum('nr_adulti') + $rezervari_pe_trasee->sum('nr_copii')) : $rezervari_pe_trasee->sum('colete_numar') }}
                                             </b>
                                         </td>
                                         <td></td>
@@ -1034,7 +1064,7 @@
                                     @endif
                                 @endforeach
                             @else
-                                Rezervare colete
+                                {{ $rezervare->nume }} - colete
                             @endif
                         </b>
                     </h5>
@@ -1096,7 +1126,7 @@
                                     @endif
                                 @endforeach
                             @else
-                                Rezervare colete
+                                {{ $rezervare->nume }} - colete
                             @endif
                         </b>
                     </h5>
