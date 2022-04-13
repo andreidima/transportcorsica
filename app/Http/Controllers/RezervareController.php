@@ -80,7 +80,6 @@ class RezervareController extends Controller
             })
             ->orderBy('rezervari.created_at', 'desc')
             ->simplePaginate(25);
-            dd();
 
         return view('rezervari.index', compact('rezervari', 'search_nume', 'search_data', 'search_bilet_numar'));
     }
