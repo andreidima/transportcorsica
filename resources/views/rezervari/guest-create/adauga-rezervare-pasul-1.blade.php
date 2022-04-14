@@ -263,7 +263,7 @@
                                             <input type="checkbox" class="custom-control-input custom-control-lg" id="customSwitch1"
                                             name="tur_retur" v-model="tur_retur" value="true" required
                                             {{ old('tur_retur') == 'true' ? 'checked' : '' }}
-                                            {{ is_null($rezervare->bilet_numar) ? '' : 'disabled' }}
+                                            {{-- {{ is_null($rezervare->bilet_numar) ? '' : 'disabled' }} --}}
                                             {{-- @change='setPreturi();getPretTotal()' --}}
                                             {{-- @change='getPretTotal()' --}}
                                             >
@@ -325,7 +325,7 @@
                                                     :doar-ziua="3"
                                                     @dataplecare="dataPlecareTrimisa"
                                                     {{-- v-on:dataplecare="dataPlecareTrimisa" --}}
-                                                    {{ is_null($rezervare->bilet_numar) ? '' : 'disabled' }}
+                                                    {{-- {{ is_null($rezervare->bilet_numar) ? '' : 'disabled' }} --}}
                                                 ></vue2-datepicker-plecare>
                                             </div>
                                             <div v-if="traseu === 'Corsica-Romania'">
@@ -342,7 +342,7 @@
                                                     :doar-ziua="6"
                                                     @dataintoarcere="dataIntoarcereTrimisa"
                                                     {{-- v-on:dataplecare="dataPlecareTrimisa" --}}
-                                                    {{ is_null($rezervare->bilet_numar) ? '' : 'disabled' }}
+                                                    {{-- {{ is_null($rezervare->bilet_numar) ? '' : 'disabled' }} --}}
                                                 ></vue2-datepicker-intoarcere>
                                             </div>
                                         </div>
@@ -380,7 +380,7 @@
                                                     not-before-date="{{ auth()->check() ? \Carbon\Carbon::today()->subYear() : \Carbon\Carbon::today() }}"
                                                     :doar-ziua="6"
                                                     @dataintoarcere="dataIntoarcereTrimisa"
-                                                    {{ is_null($rezervare->bilet_numar) ? '' : 'disabled' }}
+                                                    {{-- {{ is_null($rezervare->bilet_numar) ? '' : 'disabled' }} --}}
                                                 ></vue2-datepicker-intoarcere>
                                             </div>
                                             <div v-if="traseu === 'Corsica-Romania'">
@@ -396,7 +396,7 @@
                                                     not-before-date="{{ auth()->check() ? \Carbon\Carbon::today()->subYear() : \Carbon\Carbon::today() }}"
                                                     :doar-ziua="3"
                                                     @dataplecare="dataPlecareTrimisa"
-                                                    {{ is_null($rezervare->bilet_numar) ? '' : 'disabled' }}
+                                                    {{-- {{ is_null($rezervare->bilet_numar) ? '' : 'disabled' }} --}}
                                                 ></vue2-datepicker-plecare>
                                             </div>
                                         </div>
@@ -413,9 +413,9 @@
                                         <input type="hidden" name="traseu" value="{{ $rezervare->traseu }}" />
                                         <input type="hidden" name="oras_plecare" value="{{ $rezervare->oras_plecare }}" />
                                         <input type="hidden" name="oras_sosire" value="{{ $rezervare->oras_sosire }}" />
-                                        <input type="hidden" name="tur_retur" value="{{ $rezervare->tur_retur }}" />
-                                        <input type="hidden" name="data_plecare" value="{{ $rezervare->data_plecare }}" />
-                                        <input type="hidden" name="data_intoarcere" value="{{ $rezervare->data_intoarcere }}" />
+                                        {{-- <input type="hidden" name="tur_retur" value="{{ $rezervare->tur_retur }}" /> --}}
+                                        {{-- <input type="hidden" name="data_plecare" value="{{ $rezervare->data_plecare }}" /> --}}
+                                        {{-- <input type="hidden" name="data_intoarcere" value="{{ $rezervare->data_intoarcere }}" /> --}}
                                     @endif
 
 

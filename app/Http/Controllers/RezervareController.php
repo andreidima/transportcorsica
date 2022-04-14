@@ -48,9 +48,13 @@ class RezervareController extends Controller
             ->when($search_nume, function (Builder $query, $search_nume) {
                 if (strlen($search_nume) >= 3){
                     $pasageri = Pasager::where('nume', 'like', '%' . $search_nume . '%')->pluck('id')->all();
-                    $rezervari = DB::table('pasageri_rezervari')->whereIn('pasager_id', $pasageri)->pluck('rezervare_id')->all();
+                    $rezervari = DB::table('pasageri_rezervari')
+                        ->whereIn('pasager_id', $pasageri)
+                        ->pluck('rezervare_id')
+                        ->all();
                     // dd($rezervari, $pasageri);
-                    return $query->whereIn('id', $rezervari);
+                    return $query->whereIn('id', $rezervari) // rezervarile cu pasageri
+                        ->orwhere('nume', 'like', '%' . $search_nume . '%'); // rezervarile de colete
                 } else {
                     return $query->where('id', 0); // nu va returna nici un rezultat
                 }
@@ -71,11 +75,13 @@ class RezervareController extends Controller
                 return $query->whereDate('data_cursa', '=', $search_data);
             })
             // ->whereNull('tur')
-            ->where(function ($query) {
-                if ((auth()->user()->role === 'administrator') || (auth()->user()->role === 'superadmin')){
-                    return;
-                } elseif (auth()->user()->role === 'sofer'){
-                    return $query->whereBetween('data_cursa', [\Carbon\Carbon::now()->startOfWeek(), \Carbon\Carbon::now()->endOfWeek()]);
+            ->where(function ($query) use ($search_nume) {
+                if ( !(strlen($search_nume) >= 3) ){ // doar la cautare pot si soferii sa caute prin toata baza de date
+                    if ((auth()->user()->role === 'administrator') || (auth()->user()->role === 'superadmin')){
+                        return;
+                    } elseif (auth()->user()->role === 'sofer'){
+                        return $query->whereBetween('data_cursa', [\Carbon\Carbon::now()->startOfWeek(), \Carbon\Carbon::now()->endOfWeek()]);
+                    }
                 }
             })
             ->orderBy('rezervari.created_at', 'desc')
