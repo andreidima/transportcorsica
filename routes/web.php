@@ -83,7 +83,7 @@ Route::middleware(['role:administrator,sofer'])->group(function () {
     Route::resource('mesaje-trimise-sms', MesajTrimisSmsController::class,  ['parameters' => ['mesaje_trimise_sms' => 'mesaj_trimis_sms']]);
 
     Route::resource('facturi', FacturaController::class,  ['parameters' => ['facturi' => 'factura']])
-        ->only(['index']);
+        ->only(['index', 'destroy']);
     Route::any('/facturi/{factura}/anuleaza', [FacturaController::class, 'anuleaza']);
     Route::get('/facturi/{factura}/export/{view_type}', [FacturaController::class, 'exportPDF']);
 

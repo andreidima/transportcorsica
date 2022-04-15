@@ -132,7 +132,7 @@
                     <td style="text-align: center">
                         Oraș plecare:
                         <br>
-                        <b>{{ $rezervare->oras_plecare_sofer ?? '' }}</b>
+                        <b>{{ $rezervare->oras_plecare_sofer ?? $rezervare->oras_plecare_nume->oras ?? '' }}</b>
                     </td>
                     <td style="text-align: center">
                         {{-- <img src="{{ public_path('images/sageata dreapta.jpg') }}" width="50px"> --}}
@@ -141,9 +141,36 @@
                     <td style="text-align: center">
                         Oraș sosire:
                         <br>
-                        <b>{{ $rezervare->oras_sosire_sofer ?? '' }}</b>
+                        <b>{{ $rezervare->oras_sosire_sofer ?? $rezervare->oras_sosire_nume->oras ?? '' }}</b>
                     </td>
                 </tr>
+                @isset ($rezervare_retur)
+                    <tr>
+                        <td colspan="4">
+                            <br>
+                        </td>
+                    </tr>
+                    <tr style="">
+                        <td style="">
+                            Data de întoarcere:
+                            <br>
+                            <b>{{ \Carbon\Carbon::parse($rezervare_retur->data_cursa)->isoFormat('DD.MM.YYYY') }}</b>
+                        </td>
+                        <td style="text-align: center">
+                            Oraș plecare:
+                            <br>
+                            <b>{{ $rezervare_retur->oras_plecare_sofer ?? $rezervare->oras_plecare_nume->oras ?? null }}</b>
+                        </td>
+                        <td style="text-align: center">
+                            <img src="{{ asset('images/sageata stanga.jpg') }}" width="50px">
+                        </td>
+                        <td style="text-align: center">
+                            Oraș sosire:
+                            <br>
+                            <b>{{ $rezervare_retur->oras_sosire_sofer ?? $rezervare->oras_sosire_nume->oras ?? null }}</b>
+                        </td>
+                    </tr>
+                @endisset
             </table>
 
             <br>

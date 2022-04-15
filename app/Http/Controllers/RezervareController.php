@@ -1574,6 +1574,15 @@ class RezervareController extends Controller
     {
         $rezervare = Rezervare::where('cheie_unica', $cheie_unica)->first();
 
+        // Daca exista rezervare retur, cea la oferta, pana in 14 zile, se afiseaza si ea pe bilet
+        $rezervare_retur = null;
+        if (!is_null($rezervare->retur)){
+            $rezervare_retur = Rezervare::find($rezervare->retur);
+            if ( \Carbon\Carbon::parse($rezervare->data_cursa)->diffInDays(\Carbon\Carbon::parse($rezervare_retur->data_cursa)) > 15 ){
+                $rezervare_retur = null;
+            }
+        }
+
         // if ($rezervare->nr_adulti){
         //     if ($request->view_type === 'export-html') {
         //         return view('chitante.export.chitanta', compact('rezervare'));
@@ -1595,9 +1604,9 @@ class RezervareController extends Controller
         // }
 
         if ($request->view_type === 'export-html') {
-            return view('chitante.export.chitanta', compact('rezervare'));
+            return view('chitante.export.chitanta', compact('rezervare', 'rezervare_retur'));
         } elseif ($request->view_type === 'export-pdf') {
-            $pdf = \PDF::loadView('chitante.export.chitanta', compact('rezervare'))
+            $pdf = \PDF::loadView('chitante.export.chitanta', compact('rezervare', 'rezervare_retur'))
                 ->setPaper([0,0,384,500]);
                 // ->setPaper('a5', 'portrait');
             return $pdf->stream();

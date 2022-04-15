@@ -99,7 +99,7 @@
                                     </a>
                                 </td>
                                 <td class="text-right">
-                                    <div class="d-flex justify-content-end">
+                                    <div class="justify-content-end">
                                         @if($factura->anulata === 1)
                                             Anulată
                                         @elseif($factura->anulare_factura_id_originala !== null)
@@ -121,6 +121,18 @@
                                                                 Anulează
                                                             </span>
                                                         @endif
+                                                </a>
+                                            </div>
+                                        @endif
+                                        @if ($factura->id === App\Models\Factura::latest()->first()->id)
+                                            <div style="" class="">
+                                                <a
+                                                    href="#"
+                                                    data-toggle="modal"
+                                                    data-target="#stergeFactura{{ $factura->id }}"
+                                                    title="Șterge Factura"
+                                                    >
+                                                    <span class="badge badge-danger">Șterge</span>
                                                 </a>
                                             </div>
                                         @endif
@@ -201,6 +213,40 @@
         @empty
             {{-- <div>Nu s-au gasit rezervări în baza de date. Încearcă alte date de căutare</div> --}}
         @endforelse
+
+    {{-- Modalele pentru stergere factura --}}
+    @foreach ($facturi as $factura)
+        <div class="modal fade text-dark" id="stergeFactura{{ $factura->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                <div class="modal-header bg-danger">
+                    <h5 class="modal-title text-white" id="exampleModalLabel">Factură: <b>{{ $factura->numar }}</b></h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="text-align:left;">
+                    Ești sigur ca vrei să ștergi Factura?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Renunță</button>
+
+                    <form method="POST" action="{{ $factura->path() }}">
+                        @method('DELETE')
+                        @csrf
+                        <button
+                            type="submit"
+                            class="btn btn-danger"
+                            >
+                            Șterge Factura
+                        </button>
+                    </form>
+
+                </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
 
 
 @endsection

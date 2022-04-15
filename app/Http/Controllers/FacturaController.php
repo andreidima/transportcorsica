@@ -25,9 +25,15 @@ class FacturaController extends Controller
             // })
             ->latest()
             ->simplePaginate(25);
-            
+
         // return view('facturi.index', compact('facturi', 'search_nume', 'search_telefon'));
         return view('facturi.index', compact('facturi'));
+    }
+
+    public function destroy(Factura $factura)
+    {
+        $factura->delete();
+        return back()->with('status', 'Factura „' . $factura->seria . $factura->numar . '” a fost ștearsă cu succes!');
     }
 
     public function anuleaza(Request $request, Factura $factura = null)
@@ -64,7 +70,7 @@ class FacturaController extends Controller
     }
 
     public function exportPDF(Request $request, Factura $factura = null, $view_type = null)
-    {        
+    {
         if (!$factura->rezervare()->exists()){
             return back()->with('error', 'Rezervarea acestei facturi a fost stearsa!');
         }
