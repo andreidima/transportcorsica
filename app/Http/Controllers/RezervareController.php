@@ -1690,6 +1690,7 @@ class RezervareController extends Controller
         // Stergere din datele care nu trebuie sa se duplice, si actualizarea celor care trebuie sa fie diferite
         $rezervare_tur->oras_plecare_sofer = NULL;
         $rezervare_tur->oras_sosire_sofer = NULL;
+        $rezervare_tur->data_cursa = \Carbon\Carbon::now();
         $rezervare_tur->curs_bnr_euro = $curs_bnr_euro->valoare;
         $rezervare_tur->valoare_lei_tva = ($rezervare_tur->pret_total * $rezervare_tur->curs_bnr_euro) * 0.19;
         $rezervare_tur->valoare_lei = ($rezervare_tur->pret_total * $rezervare_tur->curs_bnr_euro) - $rezervare_tur->valoare_lei_tva;
@@ -1702,6 +1703,7 @@ class RezervareController extends Controller
         if (isset($rezervare_retur)) {
             $rezervare_retur->oras_plecare_sofer = NULL;
             $rezervare_retur->oras_sosire_sofer = NULL;
+            $rezervare_retur->data_cursa = \Carbon\Carbon::now();
             $rezervare_retur->curs_bnr_euro = $curs_bnr_euro->valoare;
             $rezervare_retur->valoare_lei_tva = ($rezervare_retur->pret_total * $rezervare_retur->curs_bnr_euro) * 0.19;
             $rezervare_retur->valoare_lei = ($rezervare_retur->pret_total * $rezervare_retur->curs_bnr_euro) - $rezervare_retur->valoare_lei_tva;
