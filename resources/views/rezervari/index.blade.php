@@ -164,13 +164,13 @@
                                         >
                                             <span class="badge badge-success">Vizualizează</span>
                                         </a>
-                                    @if ((auth()->user()->role === 'administrator') || (auth()->user()->role === 'superadmin'))
+                                    {{-- @if ((auth()->user()->role === 'administrator') || (auth()->user()->role === 'superadmin')) --}}
                                         <a href="{{ $rezervare->path() }}/duplica"
                                             class="flex mr-1"
                                         >
                                             <span class="badge badge-secondary">Duplică</span>
                                         </a>
-                                    @endif
+                                    {{-- @endif --}}
                                         <div style="" class="mr-1">
                                             <a
                                                 href="#"

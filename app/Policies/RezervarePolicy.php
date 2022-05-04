@@ -58,25 +58,25 @@ class RezervarePolicy
                 return
                     (
                         ($rezervare->data_cursa > \Carbon\Carbon::now()->startOfWeek())
-                        &&
-                        ($rezervare->data_cursa < \Carbon\Carbon::now()->endOfWeek())
+                        // &&
+                        // ($rezervare->data_cursa < \Carbon\Carbon::now()->endOfWeek())
                     );
             }elseif($rezervare->retur) {
                 $rezervare_retur = Rezervare::find($rezervare->retur);
-                return 
+                return
                     (
                         (
                             ($rezervare->data_cursa > \Carbon\Carbon::now()->startOfWeek())
-                            && 
-                            ($rezervare->data_cursa < \Carbon\Carbon::now()->endOfWeek())
+                            // &&
+                            // ($rezervare->data_cursa < \Carbon\Carbon::now()->endOfWeek())
                         )
                         ||
                         (
                             ($rezervare_retur->data_cursa > \Carbon\Carbon::now()->startOfWeek())
-                            && 
-                            ($rezervare_retur->data_cursa < \Carbon\Carbon::now()->endOfWeek())
+                            // &&
+                            // ($rezervare_retur->data_cursa < \Carbon\Carbon::now()->endOfWeek())
                         )
-                    );               
+                    );
             }
         } else{
             return true;

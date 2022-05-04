@@ -80,7 +80,8 @@ class RezervareController extends Controller
                     if ((auth()->user()->role === 'administrator') || (auth()->user()->role === 'superadmin')){
                         return;
                     } elseif (auth()->user()->role === 'sofer'){
-                        return $query->whereBetween('data_cursa', [\Carbon\Carbon::now()->startOfWeek(), \Carbon\Carbon::now()->endOfWeek()]);
+                        // return $query->whereBetween('data_cursa', [\Carbon\Carbon::now()->startOfWeek(), \Carbon\Carbon::now()->endOfWeek()]);
+                        return $query->whereDate('data_cursa', '>', \Carbon\Carbon::now()->startOfWeek());
                     }
                 }
             })
