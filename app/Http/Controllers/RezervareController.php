@@ -1394,7 +1394,7 @@ class RezervareController extends Controller
         // }
         // $mesaj .= 'O zi placuta va dorim!';
 
-        $mesaj = 'Rezervarea dumneavoastra a fost inregistrata cu succes in sistem. Veti fi contactat cu minim 12 ore inainte de plecare. Cu stima, MRW Transport +40761329420!';
+        $mesaj = 'Rezervarea dumneavoastra a fost inregistrata cu succes in sistem. Veti fi contactat cu minim 12 ore inainte de plecare. Cu stima, MRW Transport  +40791881888!';
 
         /**
          * Trimitere SMS

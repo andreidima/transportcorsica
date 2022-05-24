@@ -301,7 +301,7 @@
                                                         <span class="badge badge-primary border border-dark"
                                                             style="background-color:blue; color:white"
                                                         >
-                                                            <a href="tel:+40761329420" style="color:white"> +40 761 329 420</a>
+                                                            <a href="tel:+40791881888" style="color:white"> +40 791 881 888</a>
                                                         </span>
                                         </div>
 
