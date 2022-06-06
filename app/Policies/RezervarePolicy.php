@@ -6,6 +6,8 @@ use App\Models\Rezervare;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
+use \Carbon\Carbon;
+
 class RezervarePolicy
 {
     use HandlesAuthorization;
@@ -53,11 +55,12 @@ class RezervarePolicy
      */
     public function update(User $user, Rezervare $rezervare)
     {
+        // dd(Carbon::now()->startOfWeek(), Carbon::parse($rezervare->data_cursa));
         if (auth()->user()->role === 'sofer') {
             if (!$rezervare->retur) {
                 return
                     (
-                        ($rezervare->data_cursa > \Carbon\Carbon::now()->startOfWeek())
+                        (Carbon::parse($rezervare->data_cursa)->greaterThanOrEqualTo(Carbon::now()->startOfWeek()))
                         // &&
                         // ($rezervare->data_cursa < \Carbon\Carbon::now()->endOfWeek())
                     );
@@ -66,13 +69,13 @@ class RezervarePolicy
                 return
                     (
                         (
-                            ($rezervare->data_cursa > \Carbon\Carbon::now()->startOfWeek())
+                            (Carbon::parse($rezervare->data_cursa)->greaterThanOrEqualTo(Carbon::now()->startOfWeek()))
                             // &&
                             // ($rezervare->data_cursa < \Carbon\Carbon::now()->endOfWeek())
                         )
                         ||
                         (
-                            ($rezervare_retur->data_cursa > \Carbon\Carbon::now()->startOfWeek())
+                            (Carbon::parse($rezervare_retur->data_cursa)->greaterThanOrEqualTo(Carbon::now()->startOfWeek()))
                             // &&
                             // ($rezervare_retur->data_cursa < \Carbon\Carbon::now()->endOfWeek())
                         )
