@@ -53,8 +53,10 @@ class RezervareController extends Controller
                         ->pluck('rezervare_id')
                         ->all();
                     // dd($rezervari, $pasageri);
-                    return $query->whereIn('id', $rezervari) // rezervarile cu pasageri
-                        ->orwhere('nume', 'like', '%' . $search_nume . '%'); // rezervarile de colete
+                    return $query->where(function($query) use($rezervari, $search_nume) {
+                            $query->whereIn('id', $rezervari) // rezervarile cu pasageri
+                                ->orwhere('nume', 'like', '%' . $search_nume . '%'); // rezervarile de colete
+                    });
                 } else {
                     return $query->where('id', 0); // nu va returna nici un rezultat
                 }
