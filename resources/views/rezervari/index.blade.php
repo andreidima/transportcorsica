@@ -92,9 +92,25 @@
                                         @isset($rezervare->nr_adulti)
                                             @foreach ($rezervare->pasageri_relation as $pasager)
                                                 @if(!$loop->last)
-                                                    {{ $pasager->nume }},
+                                                    @if (in_array($pasager->nume, $clienti_neseriosi))
+                                                        <span class="text-danger">
+                                                            {{ $pasager->nume }}
+                                                            (client neserios:
+                                                            {{ \App\Models\ClientNeserios::where('nume', $pasager->nume)->first()->observatii ?? '-'}}),
+                                                        </span>
+                                                    @else
+                                                        {{ $pasager->nume }},
+                                                    @endif
                                                 @else
-                                                    {{ $pasager->nume }}
+                                                    @if (in_array($pasager->nume, $clienti_neseriosi))
+                                                        <span class="text-danger">
+                                                            {{ $pasager->nume }}
+                                                            (client neserios:
+                                                            {{ \App\Models\ClientNeserios::where('nume', $pasager->nume)->first()->observatii ?? '-'}})
+                                                        </span>
+                                                    @else
+                                                        {{ $pasager->nume }}
+                                                    @endif
                                                 @endif
                                             @endforeach
                                         @else
@@ -194,6 +210,16 @@
                                     </div>
                                 </td>
                             </tr>
+                            {{-- @foreach ($rezervare->pasageri_relation as $pasager)
+                                @if (in_array($pasager->nume, $clienti_neseriosi))
+                                    <tr>
+                                        <td colspan="11" class="text-danger">
+                                            Client neserios:
+                                            {{ \App\Models\ClientNeserios::where('nume', $pasager->nume)->first()->observatii ?? '-'}})
+                                        </td>
+                                    </tr>
+                                @endif
+                            @endforeach --}}
                         @empty
                             {{-- <div>Nu s-au gasit rezervări în baza de date. Încearcă alte date de căutare</div> --}}
                         @endforelse
