@@ -73,7 +73,7 @@
             <table style="">
                 <tr style="">
                     <td style="border-width:0px; padding:0rem; width:30%">
-                            <img src="{{ public_path('images/logo.png') }}" width="270px">
+                            <img src="{{ asset('images/logo.png') }}" width="270px">
                     </td>
                     <td style="border-width:0px; padding:0rem; width:40%; font-size:11px; text-align:left">
                         MRW88 MAXARMONY S.R.L., Ceardac - Vrancea, România
@@ -84,7 +84,8 @@
                         <br>
                         Cont LEI: RO36BTRLRONCRT0319122801, BANCA TRANSILVANIA
                         <br>
-                        Tel. mobil +40 761 329 420; +40 760 904 748
+                        {{-- Tel. mobil +40 761 329 420; +40 760 904 748 --}}
+                        Tel. mobil +40 791 881 888
                     </td>
                 </tr>
             </table>
@@ -144,7 +145,7 @@
                         <b>{{ $rezervare->oras_plecare_nume->oras ?? null }}</b>
                     </td>
                     <td style="text-align: center">
-                        <img src="{{ public_path('images/sageata dreapta.jpg') }}" width="50px">
+                        <img src="{{ asset('images/sageata dreapta.jpg') }}" width="50px">
                     </td>
                     <td style="text-align: center">
                         Oraș sosire:
@@ -235,7 +236,7 @@
         <table style="">
             <tr style="">
                 <td style="border-width:0px; padding:0rem; width:30%">
-                        <img src="{{ public_path('images/logo.png') }}" width="270px">
+                        <img src="{{ asset('images/logo.png') }}" width="270px">
                 </td>
                 <td style="border-width:0px; padding:0rem; width:40%; font-size:11px; text-align:left">
                     MRW88 MAXARMONY S.R.L., Ceardac - Vrancea, România
@@ -246,7 +247,8 @@
                     <br>
                     Cont LEI: RO36BTRLRONCRT0319122801, BANCA TRANSILVANIA
                     <br>
-                    Tel. mobil +40 761 329 420; +40 760 904 748
+                    {{-- Tel. mobil +40 761 329 420; +40 760 904 748 --}}
+                    Tel. mobil +40 791 881 888
                 </td>
             </tr>
         </table>
@@ -309,7 +311,7 @@
                     <b>{{ $rezervare->oras_plecare_nume->oras ?? '' }}</b>
                 </td>
                 <td style="text-align: center">
-                    <img src="{{ public_path('images/sageata dreapta.jpg') }}" width="50px">
+                    <img src="{{ asset('images/sageata dreapta.jpg') }}" width="50px">
                 </td>
                 <td style="text-align: center">
                     Oraș sosire:

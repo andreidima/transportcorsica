@@ -7,7 +7,8 @@
             <div class="shadow-lg bg-white" style="border-radius: 40px 40px 40px 40px;">
                 <div class="p-4 justify-content-center align-items-end" style="border-radius: 40px 40px 0px 0px; border:2px solid darkcyan">
                     <div class="col-lg-12 mb-4 d-flex justify-content-center">
-                        <img src="{{ public_path('images/logo.png') }}" height="100" class="">
+                        {{-- <img src="{{ public_path('images/logo.png') }}" height="100" class=""> --}}
+                        <img src="{{ asset('images/logo.png') }}" height="100" class="">
                     </div>
                     <div class="col-lg-12 mb-0 d-flex justify-content-center">
                         <h1 class="mb-0" style="color:darkcyan">
@@ -98,13 +99,13 @@
                                                 required>
                                         </div>
                                         <div class="col-lg-2 mb-2">
-                                            <label for="colete_volum" class="mb-1 h5">Volum:*</label>
+                                            <label for="colete_numar" class="mb-1 h5">Nr. colete:*</label>
                                             <input
                                                 type="text"
-                                                class="form-control form-control-lg {{ $errors->has('colete_volum') ? 'is-invalid' : '' }}"
-                                                name="colete_volum"
+                                                class="form-control form-control-lg {{ $errors->has('colete_numar') ? 'is-invalid' : '' }}"
+                                                name="colete_numar"
                                                 placeholder=""
-                                                value="{{ old('colete_volum', ($rezervare->colete_volum ?? '')) }}"
+                                                value="{{ old('colete_numar', ($rezervare->colete_numar ?? '')) }}"
                                                 required>
                                         </div>
                                         <div class="col-lg-2 mb-3">

@@ -98,7 +98,7 @@
                                                 @endif
                                             @endforeach
                                         @else
-                                            Rezervare colete
+                                            {{ $rezervare->nume }} - colete
                                         @endif
                                     </a>
                                 </td>
@@ -154,23 +154,23 @@
                                 </td>
                                 <td class="text-right">
                                     <div class="d-flex justify-content-end">
-                                        <a href="{{ $rezervare->path() }}"
-                                            class="flex mr-1"
-                                        >
-                                            <span class="badge badge-success">Vizualizează</span>
-                                        </a>
                                         <a href="{{ $rezervare->path() }}/modifica"
                                             class="flex mr-1"
                                         >
                                             <span class="badge badge-primary">Modifică</span>
                                         </a>
-                                    @if ((auth()->user()->role === 'administrator') || (auth()->user()->role === 'superadmin'))
+                                        <a href="{{ $rezervare->path() }}"
+                                            class="flex mr-1"
+                                        >
+                                            <span class="badge badge-success">Vizualizează</span>
+                                        </a>
+                                    {{-- @if ((auth()->user()->role === 'administrator') || (auth()->user()->role === 'superadmin')) --}}
                                         <a href="{{ $rezervare->path() }}/duplica"
                                             class="flex mr-1"
                                         >
                                             <span class="badge badge-secondary">Duplică</span>
                                         </a>
-                                    @endif
+                                    {{-- @endif --}}
                                         <div style="" class="mr-1">
                                             <a
                                                 href="#"
@@ -230,7 +230,7 @@
                                                                             @endif
                                                                         @endforeach
                                                                     @else
-                                                                        Rezervare colete
+                                                                        {{ $rezervare->nume }} - colete
                                                                     @endif
                                                                 </b>
                                                             </h5>
@@ -292,7 +292,7 @@
                                                                             @endif
                                                                         @endforeach
                                                                     @else
-                                                                        Rezervare colete
+                                                                        {{ $rezervare->nume }} - colete
                                                                     @endif
                                                                 </b>
                                                             </h5>

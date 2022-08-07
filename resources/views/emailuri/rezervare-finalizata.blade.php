@@ -28,7 +28,7 @@ Vă mulțumim că folosiți serviciile noastre.
         @component('mail::footer')
             Contact:
             <br>
-            +40 761 329 420
+            +40 791 881 888
             <br>
             office@transportcorsica.ro
             <br>

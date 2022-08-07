@@ -3,22 +3,23 @@ import DatePicker from 'vue2-datepicker';
 import 'vue2-datepicker/index.css';
 import 'vue2-datepicker/locale/ro';
 import moment from 'moment';
- 
+
 export default {
   components: { DatePicker },
   props: [
-    'dataVeche', 
-    'numeCampDb', 
-    'tip', 
-    'valueType', 
-    'format', 
-    'latime', 
-    'notBeforeDate', 
-    'notAfterDate', 
+    'dataVeche',
+    'numeCampDb',
+    'tip',
+    'valueType',
+    'format',
+    'latime',
+    'notBeforeDate',
+    'notAfterDate',
     'doarZiuaA',
     'doarZiuaB',
-    'minuteStep', 
-    'hours'],
+    'minuteStep',
+    'hours',
+    'disabled'],
   computed: {
     latimePrelucrata() {
       if (this.tip === "time") {
@@ -87,13 +88,13 @@ export default {
 
 
 }
-</script> 
- 
+</script>
+
 <template>
   <div>
     <input type="text" :name=numeCampDb v-model="time" v-show="false">
-    <date-picker 
-      v-model="time"  
+    <date-picker
+      v-model="time"
       :type=tip
       :value-type=valueType
       :format=format
@@ -102,7 +103,8 @@ export default {
       :editable="false"
       :style=latime
       :disabled-date="notDates"
-    >      
+      :disabled=disabled
+    >
     </date-picker>
   </div>
 </template>

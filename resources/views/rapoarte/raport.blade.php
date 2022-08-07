@@ -164,12 +164,27 @@
                                             </div>
                                         </td>
                                     </tr>
+                                @else
+                                    <tr>
+                                        <td colspan="6" class="py-1">
+                                            <div class="d-flex flex-row justify-content-center">
+                                                <div class="">
+                                                    <b>
+                                                        Total colete în toate listele:
+                                                        {{ $rezervari_pe_tara->sum('colete_numar') }}
+                                                    </b>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
                                 @endif
                             <tr class="" style="padding:2rem">
                                 <th class="w-25">Pasageri</th>
                                 <th class="text-center">Traseu</th>
-                                <th class="">Oraș plecare</th>
-                                <th class="text-center">Nr. pers.</th>
+                                <th class="">Oraș plecare/ sosire</th>
+                                <th class="text-center">
+                                    {{ $tip_transport === 'calatori' ? 'Nr. pers.' : 'Nr. colete' }}
+                                </th>
                                 <th class="text-center">Mutare</th>
                                 <th class="text-right">Acțiuni</th>
                             </tr>
@@ -320,7 +335,7 @@
                                                         @endforeach
                                                     @else
                                                         <a href="{{ $rezervare->path() }}">
-                                                            Rezervare colete
+                                                            {{ $rezervare->nume }} - colete
                                                         </a>
                                                     @endif
 
@@ -334,9 +349,11 @@
                                             </td>
                                             <td>
                                                 {{ $rezervare->oras_plecare_nume ?? ''}} ({{ $rezervare->oras_plecare_ordine ?? ''}})
+                                                /
+                                                {{ $rezervare->oras_sosire_nume ?? ''}} ({{ $rezervare->oras_sosire_ordine ?? ''}})
                                             </td>
                                             <td class="text-center">
-                                                {{ $rezervare->nr_adulti + $rezervare->nr_copii }}
+                                                {{ ($tip_transport === 'calatori') ? ($rezervare->nr_adulti + $rezervare->nr_copii) : $rezervare->colete_numar }}
                                             </td>
                                             <td class="text-center">
                                                 <form  class="needs-validation" novalidate method="POST" action="/rapoarte/{{ $tip_transport }}/muta-rezervare/{{ $rezervare->id}}">
@@ -400,7 +417,7 @@
                                         </td>
                                         <td class="text-center">
                                             <b>
-                                                {{ $rezervari_pe_trasee->sum('nr_adulti') + $rezervari_pe_trasee->sum('nr_copii') }}
+                                                {{ ($tip_transport === 'calatori') ? ($rezervari_pe_trasee->sum('nr_adulti') + $rezervari_pe_trasee->sum('nr_copii')) : $rezervari_pe_trasee->sum('colete_numar') }}
                                             </b>
                                         </td>
                                         <td></td>
@@ -497,19 +514,48 @@
                             </tr>
                                 @if ( $tip_transport === 'calatori')
                                     <tr>
-                                        <td colspan="6" class="text-center">
-                                            <b>
-                                                Total pasageri în toate listele:
-                                                {{ $rezervari_pe_tara->sum('nr_adulti') + $rezervari_pe_tara->sum('nr_copii') }}
-                                            </b>
+                                        <td colspan="6" class="py-1">
+                                            <div class="d-flex flex-row justify-content-center">
+                                                <div class="mr-4">
+                                                    <b>
+                                                        Total pasageri în toate listele:
+                                                        {{ $rezervari_pe_tara->sum('nr_adulti') + $rezervari_pe_tara->sum('nr_copii') }}
+                                                    </b>
+                                                </div>
+                                                <div class="mr-4">
+                                                    <a href="/rapoarte/excel-nava/{{ $rezervari_pe_tara->first()->oras_plecare_tara }}/{{ \Carbon\Carbon::parse($search_data)->isoFormat('YYYY-MM-DD') }}/toate/lista_sosire/{{ $tip_transport }}/extrage-rezervari/raport-pdf" class="btn btn-sm bg-success text-white border border-light rounded-pill">
+                                                        <i class="fas fa-file-pdf text-white mr-1"></i>Raport Navă
+                                                        {{-- Iphone --}}
+                                                    </a>
+                                                    <a href="/rapoarte/excel-fara-nava/{{ $rezervari_pe_tara->first()->oras_plecare_tara }}/{{ \Carbon\Carbon::parse($search_data)->isoFormat('YYYY-MM-DD') }}/toate/lista_sosire/{{ $tip_transport }}/extrage-rezervari/raport-pdf" class="btn btn-sm bg-success text-white border border-light rounded-pill">
+                                                        <i class="fas fa-file-pdf text-white mr-1"></i>Raport fără Navă
+                                                        {{-- Iphone --}}
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @else
+                                    <tr>
+                                        <td colspan="6" class="py-1">
+                                            <div class="d-flex flex-row justify-content-center">
+                                                <div class="">
+                                                    <b>
+                                                        Total colete în toate listele:
+                                                        {{ $rezervari_pe_tara->sum('colete_numar') }}
+                                                    </b>
+                                                </div>
+                                            </div>
                                         </td>
                                     </tr>
                                 @endif
                             <tr class="" style="padding:2rem">
                                 <th class="w-25">Pasageri</th>
                                 <th class="text-center">Traseu</th>
-                                <th>Oraș sosire</th>
-                                <th class="text-center">Nr. pers.</th>
+                                <th>Oraș sosire/ plecare</th>
+                                <th class="text-center">
+                                    {{ $tip_transport === 'calatori' ? 'Nr. pers.' : 'Nr. colete' }}
+                                </th>
                                 <th class="text-center">Mutare</th>
                                 <th class="text-right">Acțiuni</th>
                             </tr>
@@ -565,9 +611,14 @@
                                                             <i class="fas fa-file-pdf text-white mr-1"></i>Listă pasageri
                                                             {{-- Iphone --}}
                                                         </a>
-                                                        {{-- <button type="submit" name="action" value="excel_nava" class="btn btn-sm bg-success text-white border border-light rounded-pill">
+                                                        <a href="/rapoarte/excel-nava/{{ $rezervari_pe_tara->first()->oras_plecare_tara }}/{{ \Carbon\Carbon::parse($search_data)->isoFormat('YYYY-MM-DD') }}/{{ $rezervari_pe_trasee->first()->lista_sosire }}/lista_sosire/{{ $tip_transport }}/extrage-rezervari/raport-pdf" class="btn btn-sm bg-success text-white border border-light rounded-pill">
                                                             <i class="fas fa-file-pdf text-white mr-1"></i>Raport Navă
-                                                        </button> --}}
+                                                            {{-- Iphone --}}
+                                                        </a>
+                                                        <a href="/rapoarte/excel-fara-nava/{{ $rezervari_pe_tara->first()->oras_plecare_tara }}/{{ \Carbon\Carbon::parse($search_data)->isoFormat('YYYY-MM-DD') }}/{{ $rezervari_pe_trasee->first()->lista_sosire }}/lista_sosire/{{ $tip_transport }}/extrage-rezervari/raport-pdf" class="btn btn-sm bg-success text-white border border-light rounded-pill">
+                                                            <i class="fas fa-file-pdf text-white mr-1"></i>Raport fără Navă
+                                                            {{-- Iphone --}}
+                                                        </a>
                                                         <a href="/rapoarte/chitante/{{ $rezervari_pe_tara->first()->oras_plecare_tara }}/{{ \Carbon\Carbon::parse($search_data)->isoFormat('YYYY-MM-DD') }}/{{ $rezervari_pe_trasee->first()->lista_sosire }}/lista_sosire/{{ $tip_transport }}/extrage-rezervari/raport-pdf" class="btn btn-sm bg-success text-white border border-light rounded-pill">
                                                             <i class="fas fa-file-pdf text-white mr-1"></i>Raport Bilete
                                                             {{-- Iphone --}}
@@ -639,7 +690,7 @@
                                                     @endforeach
                                                 @else
                                                     <a href="{{ $rezervare->path() }}">
-                                                        Rezervare colete
+                                                        {{ $rezervare->nume }} - colete
                                                     </a>
                                                 @endif
 
@@ -653,9 +704,11 @@
                                             </td>
                                             <td>
                                                 {{ $rezervare->oras_sosire_nume ?? ''}} ({{ $rezervare->oras_sosire_ordine ?? ''}})
+                                                /
+                                                {{ $rezervare->oras_plecare_nume ?? ''}} ({{ $rezervare->oras_plecare_ordine ?? ''}})
                                             </td>
                                             <td class="text-center">
-                                                {{ $rezervare->nr_adulti + $rezervare->nr_copii }}
+                                                {{ ($tip_transport === 'calatori') ? ($rezervare->nr_adulti + $rezervare->nr_copii) : $rezervare->colete_numar }}
                                             </td>
                                             <td class="text-center px-2">
                                                 <form  class="needs-validation" novalidate method="POST" action="/rapoarte/{{ $tip_transport }}/muta-rezervare/{{ $rezervare->id}}">
@@ -719,7 +772,7 @@
                                         </td>
                                         <td class="text-center">
                                             <b>
-                                                {{ $rezervari_pe_trasee->sum('nr_adulti') + $rezervari_pe_trasee->sum('nr_copii') }}
+                                                {{ ($tip_transport === 'calatori') ? ($rezervari_pe_trasee->sum('nr_adulti') + $rezervari_pe_trasee->sum('nr_copii')) : $rezervari_pe_trasee->sum('colete_numar') }}
                                             </b>
                                         </td>
                                         <td></td>
@@ -1011,7 +1064,7 @@
                                     @endif
                                 @endforeach
                             @else
-                                Rezervare colete
+                                {{ $rezervare->nume }} - colete
                             @endif
                         </b>
                     </h5>
@@ -1073,7 +1126,7 @@
                                     @endif
                                 @endforeach
                             @else
-                                Rezervare colete
+                                {{ $rezervare->nume }} - colete
                             @endif
                         </b>
                     </h5>

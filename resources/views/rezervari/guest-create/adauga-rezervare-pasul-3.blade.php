@@ -120,7 +120,7 @@
                                                     Pentru orice detalii legate de această rezervare, ne puteți contacta la:
                                                     <ul>
                                                         <li>
-                                                            Telefon: 0761 329 420
+                                                            Telefon: 0791 881 888
                                                         </li>
                                                         <li>
                                                             Email: <a href="mailto:office@transportcorsica.ro">office@transportcorsica.ro</a>

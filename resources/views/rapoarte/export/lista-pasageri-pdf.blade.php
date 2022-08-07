@@ -81,7 +81,8 @@
                             <br>
                             Cont LEI: RO36BTRLRONCRT0319122801, BANCA TRANSILVANIA
                             <br>
-                            Tel. mobil +40 761 329 420; +40 760 904 748
+                            {{-- Tel. mobil +40 761 329 420; +40 760 904 748 --}}
+                            Tel. mobil +40 791 881 888
                         </td>
                     </tr>
                 </table>
@@ -193,7 +194,8 @@
                             <br>
                             Cont LEI: RO36BTRLRONCRT0319122801, BANCA TRANSILVANIA
                             <br>
-                            Tel. mobil +40 761 329 420; +40 760 904 748
+                            {{-- Tel. mobil +40 761 329 420; +40 760 904 748 --}}
+                            Tel. mobil +40 791 881 888
                         </td>
                     </tr>
                 </table>

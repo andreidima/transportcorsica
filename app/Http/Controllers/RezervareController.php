@@ -34,17 +34,38 @@ class RezervareController extends Controller
         $search_bilet_numar = \Request::get('search_bilet_numar');
         $search_data = \Request::get('search_data');
 
+        // if ($search_nume){
+        //     $pasageri = Pasager::where('nume', 'like', '%' . $search_nume . '%')->pluck('id')->all();
+        //     // dd($search_nume, $pasageri);
+        // }
+
         $rezervari = Rezervare::with('oras_plecare_nume', 'oras_sosire_nume', 'retur_relation', 'pasageri_relation', 'user')
-            // ->join('pasageri_rezervari as pasageri_rezervari', 'rezervari.id', '=', 'pasageri_rezervari.rezervare_id')
-            // ->join('pasageri as pasageri', 'pasageri_rezervari.pasager_id', '=', 'pasageri.id')
-            // ->when($search_nume, function ($query, $search_nume) {
-            //     return $query->where('pasageri.nume', 'like', '%' . $search_nume . '%');
+            // ->when($search_nume, function (Builder $query, $search_nume) {
+            //     $query->whereHas('pasageri_relation', function (Builder $query) use ($search_nume) {
+            //         $query->where('nume', 'like', '%' . $search_nume . '%');
+            //     });
             // })
             ->when($search_nume, function (Builder $query, $search_nume) {
-                $query->whereHas('pasageri_relation', function (Builder $query) use ($search_nume) {
-                    $query->where('nume', 'like', '%' . $search_nume . '%');
-                });
+                if (strlen($search_nume) >= 3){
+                    $pasageri = Pasager::where('nume', 'like', '%' . $search_nume . '%')->pluck('id')->all();
+                    $rezervari = DB::table('pasageri_rezervari')
+                        ->whereIn('pasager_id', $pasageri)
+                        ->pluck('rezervare_id')
+                        ->all();
+                    // dd($rezervari, $pasageri);
+                    return $query->where(function($query) use($rezervari, $search_nume) {
+                            $query->whereIn('id', $rezervari) // rezervarile cu pasageri
+                                ->orwhere('nume', 'like', '%' . $search_nume . '%'); // rezervarile de colete
+                    });
+                } else {
+                    return $query->where('id', 0); // nu va returna nici un rezultat
+                }
             })
+            // ->when($search_nume, function (Builder $query, $search_nume) {
+            //     $query->whereHas('pasageri_relation', function (Builder $query) use ($search_nume) {
+            //         $query->where('nume', 'like', '%' . $search_nume . '%');
+            //     });
+            // })
             // Daca se cauta dupa bilet, se afiseaza chiar daca este retur, pentru ca altfel e posibil sa nu apara nici o rezervare
             // Daca nu se cauta dupa bilet, se afiseaza doar turul rezervarilor
             ->when($search_bilet_numar, function ($query, $search_bilet_numar) {
@@ -56,11 +77,14 @@ class RezervareController extends Controller
                 return $query->whereDate('data_cursa', '=', $search_data);
             })
             // ->whereNull('tur')
-            ->where(function ($query) {
-                if ((auth()->user()->role === 'administrator') || (auth()->user()->role === 'superadmin')){
-                    return;
-                } elseif (auth()->user()->role === 'sofer'){
-                    return $query->whereBetween('data_cursa', [\Carbon\Carbon::now()->startOfWeek(), \Carbon\Carbon::now()->endOfWeek()]);
+            ->where(function ($query) use ($search_nume) {
+                if ( !(strlen($search_nume) >= 3) ){ // doar la cautare pot si soferii sa caute prin toata baza de date
+                    if ((auth()->user()->role === 'administrator') || (auth()->user()->role === 'superadmin')){
+                        return;
+                    } elseif (auth()->user()->role === 'sofer'){
+                        // return $query->whereBetween('data_cursa', [\Carbon\Carbon::now()->startOfWeek(), \Carbon\Carbon::now()->endOfWeek()]);
+                        return $query->whereDate('data_cursa', '>=', \Carbon\Carbon::now()->startOfWeek());
+                    }
                 }
             })
             ->orderBy('rezervari.created_at', 'desc')
@@ -201,6 +225,7 @@ class RezervareController extends Controller
      */
     public function update(Request $request, Rezervare $rezervare)
     {
+        // dd($request, $rezervare);
         $this->authorize('update', $rezervare);
 
         $rezervare_tur = (!$rezervare->tur) ? $rezervare : Rezervare::find($rezervare->tur);
@@ -617,7 +642,7 @@ class RezervareController extends Controller
                     'adulti.nume.*' => ['nullable', 'max:100',
                         function ($attribute, $value, $fail) use ($request, $rezervare_tur) {
                             if (!empty($request->data_plecare)){
-                                $pasageri = Pasager::whereHas('rezervari', function (Builder $query) use ($request, $rezervare_tur) {
+                                $pasageri = Pasager::where('nume', $value)->whereHas('rezervari', function (Builder $query) use ($request, $rezervare_tur) {
                                         if ($request->_method === "PATCH") {
                                             // dd($rezervare_tur->id);
                                             $query->where('rezervari.id', '<>', $rezervare_tur->id)
@@ -636,7 +661,7 @@ class RezervareController extends Controller
                         },
                         function ($attribute, $value, $fail) use ($request, $rezervare_retur) {
                             if (!empty($request->data_intoarcere)) {
-                                $pasageri = Pasager::whereHas('rezervari', function (Builder $query) use ($request, $rezervare_retur) {
+                                $pasageri = Pasager::where('nume', $value)->whereHas('rezervari', function (Builder $query) use ($request, $rezervare_retur) {
                                     if ($request->_method === "PATCH") {
                                         // dd($request, $rezervare_retur->id);
                                         $query->where('rezervari.id', '<>', $rezervare_retur->id)
@@ -663,7 +688,7 @@ class RezervareController extends Controller
                         'nullable', 'max:100',
                         function ($attribute, $value, $fail) use ($request, $rezervare_tur) {
                             if (!empty($request->data_plecare)) {
-                                $pasageri = Pasager::whereHas('rezervari', function (Builder $query) use ($request, $rezervare_tur) {
+                                $pasageri = Pasager::where('nume', $value)->whereHas('rezervari', function (Builder $query) use ($request, $rezervare_tur) {
                                     if ($request->_method === "PATCH") {
                                         // dd($rezervare_tur->id);
                                         $query->where('rezervari.id', '<>', $rezervare_tur->id)
@@ -682,7 +707,7 @@ class RezervareController extends Controller
                         },
                         function ($attribute, $value, $fail) use ($request, $rezervare_retur) {
                             if (!empty($request->data_intoarcere)) {
-                                $pasageri = Pasager::whereHas('rezervari', function (Builder $query) use ($request, $rezervare_retur) {
+                                $pasageri = Pasager::where('nume', $value)->whereHas('rezervari', function (Builder $query) use ($request, $rezervare_retur) {
                                     if ($request->_method === "PATCH") {
                                         // dd($request, $rezervare_retur->id);
                                         $query->where('rezervari.id', '<>', $rezervare_retur->id)
@@ -794,7 +819,7 @@ class RezervareController extends Controller
                         'required', 'max:100',
                         function ($attribute, $value, $fail) use ($request) {
                             if (!empty($request->data_plecare)) {
-                                $pasageri = Pasager::whereHas('rezervari', function (Builder $query) use ($request) {
+                                $pasageri = Pasager::where('nume', $value)->whereHas('rezervari', function (Builder $query) use ($request) {
                                     $query->whereDate('data_cursa', '=', $request->data_plecare);
                                 })->pluck('nume')->all();
                                 if (stripos($value, 'Andrei Dima test') === false) {
@@ -807,7 +832,7 @@ class RezervareController extends Controller
                         },
                         function ($attribute, $value, $fail) use ($request) {
                             if (!empty($request->data_intoarcere)) {
-                                $pasageri = Pasager::whereHas('rezervari', function (Builder $query) use ($request) {
+                                $pasageri = Pasager::where('nume', $value)->whereHas('rezervari', function (Builder $query) use ($request) {
                                     $query->whereDate('data_cursa', '=', $request->data_intoarcere);
                                 })->pluck('nume')->all();
                                 if (stripos($value, 'Andrei Dima test') === false) {
@@ -827,7 +852,7 @@ class RezervareController extends Controller
                     'copii.nume.*' => ['required', 'max:100',
                         function ($attribute, $value, $fail) use ($request) {
                             if (!empty($request->data_plecare)){
-                                $pasageri = Pasager::whereHas('rezervari', function (Builder $query) use ($request) {
+                                $pasageri = Pasager::where('nume', $value)->whereHas('rezervari', function (Builder $query) use ($request) {
                                         $query->whereDate('data_cursa', '=', $request->data_plecare);
                                     })->pluck('nume')->all();
                                 if (stripos($value, 'Andrei Dima test') === false) {
@@ -840,7 +865,7 @@ class RezervareController extends Controller
                         },
                         function ($attribute, $value, $fail) use ($request) {
                             if (!empty($request->data_intoarcere)) {
-                                $pasageri = Pasager::whereHas('rezervari', function (Builder $query) use ($request) {
+                                $pasageri = Pasager::where('nume', $value)->whereHas('rezervari', function (Builder $query) use ($request) {
                                     $query->whereDate('data_cursa', '=', $request->data_intoarcere);
                                 })->pluck('nume')->all();
                                 if (stripos($value, 'Andrei Dima test') === false) {
@@ -960,7 +985,9 @@ class RezervareController extends Controller
      */
     public function adaugaRezervareNoua(Request $request)
     {
-        $rezervare = $request->session()->forget('rezervare');
+        if(!empty($request->session()->get('rezervare'))){
+            $rezervare = $request->session()->forget('rezervare');
+        }
 
         return redirect('/adauga-rezervare-pasul-1');
     }
@@ -976,7 +1003,13 @@ class RezervareController extends Controller
      */
     public function adaugaRezervarePasul1(Request $request)
     {
-        $rezervare = $request->session()->get('rezervare');
+        // $rezervare = $request->session()->get('rezervare');
+        if(empty($request->session()->get('rezervare'))){
+            $rezervare = new Rezervare();
+        }else{
+            $rezervare = $request->session()->get('rezervare');
+        }
+
         $tarife = \App\Models\Tarif::first();
         return view('rezervari.guest-create/adauga-rezervare-pasul-1', compact('rezervare', 'tarife'));
     }
@@ -1082,7 +1115,7 @@ class RezervareController extends Controller
                         'nullable', 'max:100',
                         function ($attribute, $value, $fail) use ($request_verificare_duplicate) {
                             if (!empty($request_verificare_duplicate->data_plecare)) {
-                                $pasageri = Pasager::whereHas('rezervari', function (Builder $query) use ($request_verificare_duplicate) {
+                                $pasageri = Pasager::where('nume', $value)->whereHas('rezervari', function (Builder $query) use ($request_verificare_duplicate) {
                                     $query->whereDate('data_cursa', '=', $request_verificare_duplicate->data_plecare);
                                 })->pluck('nume')->all();
                                 if (stripos($value, 'Andrei Dima test') === false) {
@@ -1095,7 +1128,7 @@ class RezervareController extends Controller
                         },
                         function ($attribute, $value, $fail) use ($request_verificare_duplicate) {
                             if (!empty($request_verificare_duplicate->data_intoarcere)) {
-                                $pasageri = Pasager::whereHas('rezervari', function (Builder $query) use ($request_verificare_duplicate) {
+                                $pasageri = Pasager::where('nume', $value)->whereHas('rezervari', function (Builder $query) use ($request_verificare_duplicate) {
                                     $query->whereDate('data_cursa', '=', $request_verificare_duplicate->data_intoarcere);
                                 })->pluck('nume')->all();
                                 if (stripos($value, 'Andrei Dima test') === false) {
@@ -1111,7 +1144,7 @@ class RezervareController extends Controller
                         'nullable', 'max:100',
                         function ($attribute, $value, $fail) use ($request_verificare_duplicate) {
                             if (!empty($request_verificare_duplicate->data_plecare)) {
-                                $pasageri = Pasager::whereHas('rezervari', function (Builder $query) use ($request_verificare_duplicate) {
+                                $pasageri = Pasager::where('nume', $value)->whereHas('rezervari', function (Builder $query) use ($request_verificare_duplicate) {
                                     $query->whereDate('data_cursa', '=', $request_verificare_duplicate->data_plecare);
                                 })->pluck('nume')->all();
                                 if (stripos($value, 'Andrei Dima test') === false) {
@@ -1124,7 +1157,7 @@ class RezervareController extends Controller
                         },
                         function ($attribute, $value, $fail) use ($request_verificare_duplicate) {
                             if (!empty($request_verificare_duplicate->data_intoarcere)) {
-                                $pasageri = Pasager::whereHas('rezervari', function (Builder $query) use ($request_verificare_duplicate) {
+                                $pasageri = Pasager::where('nume', $value)->whereHas('rezervari', function (Builder $query) use ($request_verificare_duplicate) {
                                     $query->whereDate('data_cursa', '=', $request_verificare_duplicate->data_intoarcere);
                                 })->pluck('nume')->all();
                                 if (stripos($value, 'Andrei Dima test') === false) {
@@ -1326,9 +1359,9 @@ class RezervareController extends Controller
                 } else {
                     if ($rezervare_tur->email){
                         $mail = \Mail::to($rezervare_tur->email)
-                            ->bcc('adima@validsoftware.ro');
+                            ->bcc('andrei.dima@usm.ro');
                     } else {
-                        $mail = \Mail::to('adima@validsoftware.ro');
+                        $mail = \Mail::to('andrei.dima@usm.ro');
                     }
                     $mail->send(new RezervareFinalizata($rezervare_tur));
                 }
@@ -1365,7 +1398,7 @@ class RezervareController extends Controller
         // }
         // $mesaj .= 'O zi placuta va dorim!';
 
-        $mesaj = 'Rezervarea dumneavoastra a fost inregistrata cu succes in sistem. Veti fi contactat cu minim 12 ore inainte de plecare. Cu stima, MRW Transport +40761329420!';
+        $mesaj = 'Rezervarea dumneavoastra a fost inregistrata cu succes in sistem. Veti fi contactat cu minim 12 ore inainte de plecare. Cu stima, MRW Transport  +40791881888!';
 
         /**
          * Trimitere SMS
@@ -1507,18 +1540,19 @@ class RezervareController extends Controller
 
             $rezervare->update();
 
+            // return redirect('chitanta-descarca/' . $rezervare->cheie_unica . '/export-html');
             return redirect()->away('rawbt:url:https://rezervari.transportcorsica.ro/chitanta-descarca/' . $rezervare->cheie_unica . '/export-html');
         } else {
             $request->validate(
                 [
                     'colete_kg' => 'nullable|numeric',
-                    'colete_volum' => 'nullable|numeric',
+                    'colete_numar' => 'nullable|numeric',
                     'pret' => 'required|numeric|integer|max:99999',
                 ]
             );
 
             $rezervare->colete_kg = $request->colete_kg;
-            $rezervare->colete_volum = $request->colete_volum;
+            $rezervare->colete_numar = $request->colete_numar;
             $rezervare->pret_total = $request->pret;
 
             // Calcularea preturilor in lei
@@ -1527,7 +1561,8 @@ class RezervareController extends Controller
 
             $rezervare->update();
 
-            return redirect('chitanta-descarca/' . $rezervare->cheie_unica . '/export-html');
+            // return redirect('chitanta-descarca/' . $rezervare->cheie_unica . '/export-html');
+            return redirect()->away('rawbt:url:https://rezervari.transportcorsica.ro/chitanta-descarca/' . $rezervare->cheie_unica . '/export-html');
         }
 
 
@@ -1544,30 +1579,43 @@ class RezervareController extends Controller
     {
         $rezervare = Rezervare::where('cheie_unica', $cheie_unica)->first();
 
-        if ($rezervare->nr_adulti){
-            if ($request->view_type === 'export-html') {
-                return view('chitante.export.chitanta', compact('rezervare'));
-            } elseif ($request->view_type === 'export-pdf') {
-                    $pdf = \PDF::loadView('chitante.export.chitanta', compact('rezervare'))
-                        ->setPaper([0,0,384,500]);
-                        // ->setPaper('a5', 'portrait');
-                    return $pdf->stream();
-                    // return $pdf->download('Chitanta.pdf');
+        // Daca exista rezervare retur, cea la oferta, pana in 14 zile, se afiseaza si ea pe bilet
+        $rezervare_retur = null;
+        if (!is_null($rezervare->retur)){
+            $rezervare_retur = Rezervare::find($rezervare->retur);
+            if ( \Carbon\Carbon::parse($rezervare->data_cursa)->diffInDays(\Carbon\Carbon::parse($rezervare_retur->data_cursa)) > 15 ){
+                $rezervare_retur = null;
             }
+        }
 
-            return view('chitante.export.chitanta', compact('rezervare'));
+        // if ($rezervare->nr_adulti){
+        //     if ($request->view_type === 'export-html') {
+        //         return view('chitante.export.chitanta', compact('rezervare'));
+        //     } elseif ($request->view_type === 'export-pdf') {
+        //             $pdf = \PDF::loadView('chitante.export.chitanta', compact('rezervare'))
+        //                 ->setPaper([0,0,384,500]);
+        //             return $pdf->stream();
+        //     }
+        //     return view('chitante.export.chitanta', compact('rezervare'));
+        // } else {
+        //     if ($request->view_type === 'export-html') {
+        //         return view('chitante.export.awb_colete', compact('rezervare'));
+        //     } elseif ($request->view_type === 'export-pdf') {
+        //             $pdf = \PDF::loadView('chitante.export.awb_colete', compact('rezervare'))
+        //                 ->setPaper('a4', 'portrait');
+        //             return $pdf->download('AWB.pdf');
+        //     }
+        //     return view('chitante.export.awb_colete', compact('rezervare'));
+        // }
 
-        } else {
-            if ($request->view_type === 'export-html') {
-                return view('chitante.export.awb_colete', compact('rezervare'));
-            } elseif ($request->view_type === 'export-pdf') {
-                    $pdf = \PDF::loadView('chitante.export.awb_colete', compact('rezervare'))
-                        ->setPaper('a4', 'portrait');
-                    // return $pdf->stream();
-                    return $pdf->download('AWB.pdf');
-            }
-
-            return view('chitante.export.awb_colete', compact('rezervare'));
+        if ($request->view_type === 'export-html') {
+            return view('chitante.export.chitanta', compact('rezervare', 'rezervare_retur'));
+        } elseif ($request->view_type === 'export-pdf') {
+            $pdf = \PDF::loadView('chitante.export.chitanta', compact('rezervare', 'rezervare_retur'))
+                ->setPaper([0,0,384,500]);
+                // ->setPaper('a5', 'portrait');
+            return $pdf->stream();
+            // return $pdf->download('Chitanta.pdf');
         }
 
     }
@@ -1646,6 +1694,7 @@ class RezervareController extends Controller
         // Stergere din datele care nu trebuie sa se duplice, si actualizarea celor care trebuie sa fie diferite
         $rezervare_tur->oras_plecare_sofer = NULL;
         $rezervare_tur->oras_sosire_sofer = NULL;
+        $rezervare_tur->data_cursa = \Carbon\Carbon::now();
         $rezervare_tur->curs_bnr_euro = $curs_bnr_euro->valoare;
         $rezervare_tur->valoare_lei_tva = ($rezervare_tur->pret_total * $rezervare_tur->curs_bnr_euro) * 0.19;
         $rezervare_tur->valoare_lei = ($rezervare_tur->pret_total * $rezervare_tur->curs_bnr_euro) - $rezervare_tur->valoare_lei_tva;
@@ -1658,6 +1707,7 @@ class RezervareController extends Controller
         if (isset($rezervare_retur)) {
             $rezervare_retur->oras_plecare_sofer = NULL;
             $rezervare_retur->oras_sosire_sofer = NULL;
+            $rezervare_retur->data_cursa = \Carbon\Carbon::now();
             $rezervare_retur->curs_bnr_euro = $curs_bnr_euro->valoare;
             $rezervare_retur->valoare_lei_tva = ($rezervare_retur->pret_total * $rezervare_retur->curs_bnr_euro) * 0.19;
             $rezervare_retur->valoare_lei = ($rezervare_retur->pret_total * $rezervare_retur->curs_bnr_euro) - $rezervare_retur->valoare_lei_tva;
