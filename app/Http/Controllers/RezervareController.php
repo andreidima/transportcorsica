@@ -623,7 +623,31 @@ class RezervareController extends Controller
      */
     protected function validateRequest(Request $request, $rezervari = null, $rezervare_tur = null, $rezervare_retur = null)
     {
-        // dd($rezervare_tur, $rezervare_retur);
+        // Inainte de validare, se scot diacriticele de la nume, data nastere, localitate nastere
+        if ($request->tip_calatorie === "Calatori") {
+            // Referitor la diacritice, puteti face conversia unui string cu diacritice intr-unul fara diacritice, in mod automatizat cu aceasta functie PHP:
+            $transliterator = \Transliterator::createFromRules(':: Any-Latin; :: Latin-ASCII; :: NFD; :: [:Nonspacing Mark:] Remove; :: NFC;', \Transliterator::FORWARD);
+
+            $adulti = $request->adulti;
+            $copii = $request->copii;
+
+            for ($i = 1; $i <= $request->nr_adulti; $i++) {
+                $adulti['nume'][$i] = $transliterator->transliterate($adulti['nume'][$i]);
+                $adulti['data_nastere'][$i] = $transliterator->transliterate($adulti['data_nastere'][$i]);
+                $adulti['localitate_nastere'][$i] = $transliterator->transliterate($adulti['localitate_nastere'][$i]);
+            }
+            for ($i = 1; $i <= $request->nr_copii; $i++) {
+                $copii['nume'][$i] = $transliterator->transliterate($copii['nume'][$i]);
+                $copii['data_nastere'][$i] = $transliterator->transliterate($copii['data_nastere'][$i]);
+                $copii['localitate_nastere'][$i] = $transliterator->transliterate($copii['localitate_nastere'][$i]);
+            }
+            $request->merge([
+                'adulti' => $adulti,
+                'copii' => $copii,
+            ]);
+            // dd($adulti, $request);
+        }
+
         if (Auth::check()) {
             return request()->validate(
                 [
