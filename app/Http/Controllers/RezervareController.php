@@ -90,7 +90,9 @@ class RezervareController extends Controller
             ->orderBy('rezervari.created_at', 'desc')
             ->simplePaginate(25);
 
-        return view('rezervari.index', compact('rezervari', 'search_nume', 'search_data', 'search_bilet_numar'));
+        $clienti_neseriosi = \App\Models\ClientNeserios::pluck('nume')->all();
+
+        return view('rezervari.index', compact('rezervari', 'search_nume', 'search_data', 'search_bilet_numar', 'clienti_neseriosi'));
     }
 
     /**
