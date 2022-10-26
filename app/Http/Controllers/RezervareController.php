@@ -608,11 +608,18 @@ class RezervareController extends Controller
                     ->orderBy('oras')
                     ->get();
                 break;
+            case 'tarife':
+                // dd($request->data_plecare, $request->data_intoarcere, $request->diferenta_date);
+                $tarife = \App\Models\Tarif::whereDate('de_la_data', '<', $request->data_plecare)->whereDate('pana_la_data', '>', $request->data_plecare)->first();
+                $pret_adult = $tarife->adult;
+                // $pret_adult = 77;
+                break;
             default:
                 break;
         }
         return response()->json([
             'raspuns' => $raspuns,
+            'pret_adult' => $pret_adult,
         ]);
     }
 

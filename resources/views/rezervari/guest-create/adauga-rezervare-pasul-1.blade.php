@@ -493,7 +493,7 @@
                                             </label>
                                         </div>
                                         <div class="form-group col-lg-6 d-flex align-items-center">
-                                            <label for="pret_copil" class="col-form-label mb-0 mr-2">Preț copil (1-12 ani) (inclus Navă): </label>
+                                            <label for="pret_copil" class="col-form-label mb-0 mr-2">Preț copil (0-12 ani) (inclus Navă): </label>
                                             <div class="px-0">
                                                 <input
                                                     type="text"
@@ -525,7 +525,7 @@
                                             </label>
                                         </div>
                                         <div class="form-group col-lg-6 d-flex align-items-center">
-                                            <label for="pret_copil_tur_retur" class="col-form-label mb-0 mr-2">Preț copil tur retur (1-12 ani) (inclus Navă): </label>
+                                            <label for="pret_copil_tur_retur" class="col-form-label mb-0 mr-2">Preț copil tur retur (0-12 ani) (inclus Navă): </label>
                                             <div class="px-0">
                                                 <input
                                                     type="text"

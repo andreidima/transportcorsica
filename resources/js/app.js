@@ -143,7 +143,8 @@ if (document.querySelector('#adauga-rezervare')) {
                 this.data_intoarcere_veche = '';
             },
             data1: function () {
-                this.getPretTotal()
+                this.getPretTotal();
+                this.getTarife();
             },
             data2: function () {
                 this.getPretTotal()
@@ -314,6 +315,32 @@ if (document.querySelector('#adauga-rezervare')) {
             //         this.pret_adult = 200;
             //     }
             // },
+            getTarife() {
+                console.log('asd');
+                if (this.data1 && this.data2) {
+                    dt1 = new Date(this.data1)
+                    dt2 = new Date(this.data2)
+                    this.diferenta_date = Math.floor((Date.UTC(dt2.getFullYear(), dt2.getMonth(), dt2.getDate()) - Date.UTC(dt1.getFullYear(), dt1.getMonth(), dt1.getDate())) / (1000 * 60 * 60 * 24))
+                }
+
+                axios.get('/orase_rezervari', {
+                    params: {
+                        request: 'tarife',
+                        data_plecare: this.data1,
+                        data_intoarcere: this.data2,
+                        diferenta_date: this.diferenta_date,
+                    }
+                })
+                    .then(function (response) {
+                        app1.pret_adult= response.data.pret_adult;
+                        // app1.pret_copil= response.data.pret_copil;
+                        // app1.pret_adult_tur_retur= response.data.pret_adult_tur_retur;
+                        // app1.pret_copil_tur_retur= response.data.pret_copil_tur_retur;
+                        // app1.pret_colete_kg= response.data.pret_colete_kg;
+                    });
+
+
+            },
             getPretTotal() {
 
                 this.pret_total_tur = 0;
