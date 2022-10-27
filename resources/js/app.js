@@ -172,7 +172,16 @@ if (document.querySelector('#adauga-rezervare')) {
             pret_adult: function () {
                 this.getPretTotal()
             },
+            pret_copil: function () {
+                this.getPretTotal()
+            },
             pret_adult_tur_retur: function () {
+                this.getPretTotal()
+            },
+            pret_copil_tur_retur: function () {
+                this.getPretTotal()
+            },
+            pret_colete_kg: function () {
                 this.getPretTotal()
             }
         },
