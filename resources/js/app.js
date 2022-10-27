@@ -116,6 +116,11 @@ if (document.querySelector('#adauga-rezervare')) {
             pret_adult_tur_retur: '',
             pret_copil_tur_retur: '',
             pret_colete_kg: '',
+
+            preturi_modificate_la_data_string_de_afisat: '',
+            pret_adult_retur: '',
+            pret_copil_retur: '',
+
             pret_colete_volum: '',
             pret_animal_mic: 0,
             pret_animal_mare: 0,
@@ -348,6 +353,10 @@ if (document.querySelector('#adauga-rezervare')) {
                         app1.pret_adult_tur_retur= response.data.pret_adult_tur_retur;
                         app1.pret_copil_tur_retur= response.data.pret_copil_tur_retur;
                         app1.pret_colete_kg= response.data.pret_colete_kg;
+
+                        app1.preturi_modificate_la_data_string_de_afisat = response.data.preturi_modificate_la_data_string_de_afisat;
+                        app1.pret_adult_retur = response.data.pret_adult_retur;
+                        app1.pret_copil_retur = response.data.pret_copil_retur;
                     });
 
             },

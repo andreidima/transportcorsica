@@ -537,6 +537,41 @@
                                         <div class="form-group col-lg-12 border-left border-warning" style="border-width:5px !important">
                                             Prețurile tur retur sunt cu discount, dar se aplică doar dacă între tur și retur nu este o diferență mai mare de 14 zile.
                                         </div>
+                                        <div v-if="preturi_modificate_la_data_string_de_afisat" class="form-group col-lg-12 pb-0 mb-0 border-left border-warning" style="background-color:rgb(173, 204, 0);">
+                                            Prețurile se modifică începând cu data de @{{preturi_modificate_la_data_string_de_afisat}}. Astfel, prețurile retur vor fi:
+                                        </div>
+                                        <div v-if="preturi_modificate_la_data_string_de_afisat" class="form-group col-lg-6 d-flex" style="background-color:rgb(173, 204, 0);">
+                                            <label for="pret_adult_retur" class="col-form-label mb-0 mr-2">Preț adult retur:</label>
+                                            <div class="px-0">
+                                                <input
+                                                    type="text"
+                                                    class="form-control form-control-sm"
+                                                    style="width:50px"
+                                                    name="pret_adult_retur"
+                                                    v-model="pret_adult_retur"
+                                                    required
+                                                    disabled>
+                                            </div>
+                                            <label id="" class="col-form-label pl-1 align-bottom">
+                                                Euro
+                                            </label>
+                                        </div>
+                                        <div v-if="preturi_modificate_la_data_string_de_afisat" class="form-group col-lg-6 d-flex align-items-center" style="background-color:rgb(173, 204, 0);">
+                                            <label for="pret_copil_retur" class="col-form-label mb-0 mr-2">Preț copil retur (0-12 ani) (inclus Navă): </label>
+                                            <div class="px-0">
+                                                <input
+                                                    type="text"
+                                                    class="form-control form-control-sm"
+                                                    style="width:50px"
+                                                    name="pret_copil_retur"
+                                                    v-model="pret_copil_retur"
+                                                    required
+                                                    disabled>
+                                            </div>
+                                            <label id="" class="col-form-label pl-1 align-bottom">
+                                                Euro
+                                            </label>
+                                        </div>
                                     </div>
                                     <div v-else class="form-row mb-4 px-2 pt-2 d-flex justify-content-center align-items-center border rounded"
                                         style="background-color:lightseagreen; color:white"

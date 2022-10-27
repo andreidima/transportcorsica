@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use DB;
 
+use Carbon\Carbon;
+
 use App\Mail\RezervareFinalizata;
 
 use Illuminate\Support\Arr;
@@ -612,6 +614,11 @@ class RezervareController extends Controller
                 $pret_adult_tur_retur = '';
                 $pret_copil_tur_retur = '';
                 $pret_colete_kg = '';
+
+                $preturi_modificate_la_data_string_de_afisat = '';
+                $pret_adult_retur = '';
+                $pret_copil_retur = '';
+
                 if ($request->data_plecare){
                     $tarife = \App\Models\Tarif::whereDate('de_la_data', '<', $request->data_plecare)->whereDate('pana_la_data', '>', $request->data_plecare)->first();
                     $pret_adult = $tarife->adult;
@@ -620,6 +627,16 @@ class RezervareController extends Controller
                     $pret_copil_tur_retur = $tarife->copil_tur_retur;
                     $pret_colete_kg = $tarife->colete_kg;
                 }
+
+                if (($request->diferenta_date) && ($request->diferenta_date > 15)){
+                    $tarife_retur = \App\Models\Tarif::whereDate('de_la_data', '<', $request->data_intoarcere)->whereDate('pana_la_data', '>', $request->data_intoarcere)->first();
+                    if ($tarife->de_la_data != $tarife_retur->de_la_data) {
+                        $preturi_modificate_la_data_string_de_afisat = Carbon::parse($tarife_retur->de_la_data)->isoFormat('DD.MM.YYYY');
+                        $pret_adult_retur = $tarife_retur->adult;
+                        $pret_copil_retur = $tarife_retur->copil;
+                    }
+                }
+
                 // $pret_adult = 77;
                 return response()->json([
                     'pret_adult' => $pret_adult,
@@ -627,6 +644,10 @@ class RezervareController extends Controller
                     'pret_adult_tur_retur' => $pret_adult_tur_retur,
                     'pret_copil_tur_retur' => $pret_copil_tur_retur,
                     'pret_colete_kg' => $pret_colete_kg,
+
+                    'preturi_modificate_la_data_string_de_afisat' => $preturi_modificate_la_data_string_de_afisat,
+                    'pret_adult_retur' => $pret_adult_retur,
+                    'pret_copil_retur' => $pret_copil_retur,
                 ]);
                 break;
             default:
@@ -1078,18 +1099,25 @@ class RezervareController extends Controller
         if (!Auth::check()) {
             $rezervare->pret_total_tur = 0;
             $rezervare->pret_total_retur = 0;
-            $tarife = \App\Models\Tarif::whereDate('de_la_data', '<', $request->data_plecare)->whereDate('pana_la_data', '>', $request->data_plecare)->first();
+
+            if ($request->data_plecare){
+                $tarife = \App\Models\Tarif::whereDate('de_la_data', '<', $request->data_plecare)->whereDate('pana_la_data', '>', $request->data_plecare)->first();
+            }
+
+            if ($request->data_plecare && $request->data_intoarcere) {
+                $diferenta_date = \Carbon\Carbon::parse($request->data_plecare)->diffInDays(\Carbon\Carbon::parse($request->data_intoarcere));
+                if ($diferenta_date > 15){
+                    $tarife_retur = \App\Models\Tarif::whereDate('de_la_data', '<', $request->data_intoarcere)->whereDate('pana_la_data', '>', $request->data_intoarcere)->first();
+                }
+            }
 
             if ($request->tip_calatorie === "Calatori") {
-                if ($request->data_plecare && $request->data_intoarcere) {
-                    $diferenta_date = \Carbon\Carbon::parse($request->data_plecare)->diffInDays(\Carbon\Carbon::parse($request->data_intoarcere));
-                }
                 if (isset($diferenta_date) && ($diferenta_date < 15)) {
                     $rezervare->pret_total_tur = $rezervare->nr_adulti * $tarife->adult_tur_retur + $rezervare->nr_copii * $tarife->copil_tur_retur;
                 } else {
                     $rezervare->pret_total_tur = $rezervare->nr_adulti * $tarife->adult + $rezervare->nr_copii * $tarife->copil;
                     if ($request->tur_retur === "true"){
-                        $rezervare->pret_total_retur = $rezervare->pret_total_tur;
+                        $rezervare->pret_total_retur = $rezervare->nr_adulti * $tarife_retur->adult + $rezervare->nr_copii * $tarife_retur->copil;
                     }
                 }
             } else if ($request->tip_calatorie === "Colete") {
