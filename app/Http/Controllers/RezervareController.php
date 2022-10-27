@@ -609,17 +609,33 @@ class RezervareController extends Controller
                     ->get();
                 break;
             case 'tarife':
-                // dd($request->data_plecare, $request->data_intoarcere, $request->diferenta_date);
-                $tarife = \App\Models\Tarif::whereDate('de_la_data', '<', $request->data_plecare)->whereDate('pana_la_data', '>', $request->data_plecare)->first();
-                $pret_adult = $tarife->adult;
+                $pret_adult = '';
+                $pret_copil = '';
+                $pret_adult_tur_retur = '';
+                $pret_copil_tur_retur = '';
+                $pret_colete_kg = '';
+                if ($request->data_plecare){
+                    $tarife = \App\Models\Tarif::whereDate('de_la_data', '<', $request->data_plecare)->whereDate('pana_la_data', '>', $request->data_plecare)->first();
+                    $pret_adult = $tarife->adult;
+                    $pret_copil = $tarife->copil;
+                    $pret_adult_tur_retur = $tarife->adult_tur_retur;
+                    $pret_copil_tur_retur = $tarife->copil_tur_retur;
+                    $pret_colete_kg = $tarife->colete_kg;
+                }
                 // $pret_adult = 77;
+                return response()->json([
+                    'pret_adult' => $pret_adult,
+                    'pret_copil' => $pret_copil,
+                    'pret_adult_tur_retur' => $pret_adult_tur_retur,
+                    'pret_copil_tur_retur' => $pret_copil_tur_retur,
+                    'pret_colete_kg' => $pret_colete_kg,
+                ]);
                 break;
             default:
                 break;
         }
         return response()->json([
             'raspuns' => $raspuns,
-            'pret_adult' => $pret_adult,
         ]);
     }
 

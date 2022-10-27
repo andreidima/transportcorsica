@@ -105,12 +105,18 @@ if (document.querySelector('#adauga-rezervare')) {
             colete_kg: ((typeof coleteKgVechi !== 'undefined') ? coleteKgVechi : ''),
             colete_volum: ((typeof coleteVolumVechi !== 'undefined') ? coleteVolumVechi : ''),
 
-            pret_adult: ((typeof pretAdult !== 'undefined') ? pretAdult : ''),
-            pret_copil: ((typeof pretCopil !== 'undefined') ? pretCopil : ''),
-            pret_adult_tur_retur: ((typeof pretAdultTurRetur !== 'undefined') ? pretAdultTurRetur : ''),
-            pret_copil_tur_retur: ((typeof pretCopilTurRetur !== 'undefined') ? pretCopilTurRetur : ''),
-            pret_colete_kg: ((typeof pretColeteKg !== 'undefined') ? pretColeteKg : ''),
-            pret_colete_volum: ((typeof pretColeteKg !== 'undefined') ? (pretColeteKg * 166) : '') ,
+            // pret_adult: ((typeof pretAdult !== 'undefined') ? pretAdult : ''),
+            // pret_copil: ((typeof pretCopil !== 'undefined') ? pretCopil : ''),
+            // pret_adult_tur_retur: ((typeof pretAdultTurRetur !== 'undefined') ? pretAdultTurRetur : ''),
+            // pret_copil_tur_retur: ((typeof pretCopilTurRetur !== 'undefined') ? pretCopilTurRetur : ''),
+            // pret_colete_kg: ((typeof pretColeteKg !== 'undefined') ? pretColeteKg : ''),
+            // pret_colete_volum: ((typeof pretColeteKg !== 'undefined') ? (pretColeteKg * 166) : ''),
+            pret_adult: '',
+            pret_copil: '',
+            pret_adult_tur_retur: '',
+            pret_copil_tur_retur: '',
+            pret_colete_kg: '',
+            pret_colete_volum: '',
             pret_animal_mic: 0,
             pret_animal_mare: 0,
             pret_adult_cu_reducere_10_procente: 0,
@@ -143,25 +149,15 @@ if (document.querySelector('#adauga-rezervare')) {
                 this.data_intoarcere_veche = '';
             },
             data1: function () {
-                this.getPretTotal();
                 this.getTarife();
+                this.getPretTotal();
             },
             data2: function () {
-                this.getPretTotal()
+                this.getTarife();
+                this.getPretTotal();
             },
             tur_retur: function () {
                 if (this.tur_retur == false) {
-                    // if (this.traseu == "Romania-Corsica") {
-                    //     this.data2 = '';
-                    //     this.tur_retur_test = 1
-                    // }
-                    // else if (this.traseu == "Corsica-Romania") {
-                    //     this.data2 = '';
-                    //     this.tur_retur_test = 2
-                    // } else {
-                    //     this.tur_retur_test = 3;
-
-                    // }
                     this.data2 = '';
                     this.diferenta_date = '';
                 }
@@ -173,6 +169,12 @@ if (document.querySelector('#adauga-rezervare')) {
             colete_volum: function () {
                 this.getPretTotal()
             },
+            pret_adult: function () {
+                this.getPretTotal()
+            },
+            pret_adult_tur_retur: function () {
+                this.getPretTotal()
+            }
         },
 
         created: function () {
@@ -316,7 +318,7 @@ if (document.querySelector('#adauga-rezervare')) {
             //     }
             // },
             getTarife() {
-                console.log('asd');
+                // console.log('asd');
                 if (this.data1 && this.data2) {
                     dt1 = new Date(this.data1)
                     dt2 = new Date(this.data2)
@@ -333,16 +335,14 @@ if (document.querySelector('#adauga-rezervare')) {
                 })
                     .then(function (response) {
                         app1.pret_adult= response.data.pret_adult;
-                        // app1.pret_copil= response.data.pret_copil;
-                        // app1.pret_adult_tur_retur= response.data.pret_adult_tur_retur;
-                        // app1.pret_copil_tur_retur= response.data.pret_copil_tur_retur;
-                        // app1.pret_colete_kg= response.data.pret_colete_kg;
+                        app1.pret_copil= response.data.pret_copil;
+                        app1.pret_adult_tur_retur= response.data.pret_adult_tur_retur;
+                        app1.pret_copil_tur_retur= response.data.pret_copil_tur_retur;
+                        app1.pret_colete_kg= response.data.pret_colete_kg;
                     });
-
 
             },
             getPretTotal() {
-
                 this.pret_total_tur = 0;
                 this.pret_total_retur = 0;
 

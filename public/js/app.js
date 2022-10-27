@@ -94952,12 +94952,18 @@ if (document.querySelector('#adauga-rezervare')) {
       nr_copii: typeof nrCopiiVechi !== 'undefined' ? nrCopiiVechi : '',
       colete_kg: typeof coleteKgVechi !== 'undefined' ? coleteKgVechi : '',
       colete_volum: typeof coleteVolumVechi !== 'undefined' ? coleteVolumVechi : '',
-      pret_adult: typeof pretAdult !== 'undefined' ? pretAdult : '',
-      pret_copil: typeof pretCopil !== 'undefined' ? pretCopil : '',
-      pret_adult_tur_retur: typeof pretAdultTurRetur !== 'undefined' ? pretAdultTurRetur : '',
-      pret_copil_tur_retur: typeof pretCopilTurRetur !== 'undefined' ? pretCopilTurRetur : '',
-      pret_colete_kg: typeof pretColeteKg !== 'undefined' ? pretColeteKg : '',
-      pret_colete_volum: typeof pretColeteKg !== 'undefined' ? pretColeteKg * 166 : '',
+      // pret_adult: ((typeof pretAdult !== 'undefined') ? pretAdult : ''),
+      // pret_copil: ((typeof pretCopil !== 'undefined') ? pretCopil : ''),
+      // pret_adult_tur_retur: ((typeof pretAdultTurRetur !== 'undefined') ? pretAdultTurRetur : ''),
+      // pret_copil_tur_retur: ((typeof pretCopilTurRetur !== 'undefined') ? pretCopilTurRetur : ''),
+      // pret_colete_kg: ((typeof pretColeteKg !== 'undefined') ? pretColeteKg : ''),
+      // pret_colete_volum: ((typeof pretColeteKg !== 'undefined') ? (pretColeteKg * 166) : ''),
+      pret_adult: '',
+      pret_copil: '',
+      pret_adult_tur_retur: '',
+      pret_copil_tur_retur: '',
+      pret_colete_kg: '',
+      pret_colete_volum: '',
       pret_animal_mic: 0,
       pret_animal_mare: 0,
       pret_adult_cu_reducere_10_procente: 0,
@@ -94984,24 +94990,15 @@ if (document.querySelector('#adauga-rezervare')) {
         this.data_intoarcere_veche = '';
       },
       data1: function data1() {
-        this.getPretTotal();
         this.getTarife();
+        this.getPretTotal();
       },
       data2: function data2() {
+        this.getTarife();
         this.getPretTotal();
       },
       tur_retur: function tur_retur() {
         if (this.tur_retur == false) {
-          // if (this.traseu == "Romania-Corsica") {
-          //     this.data2 = '';
-          //     this.tur_retur_test = 1
-          // }
-          // else if (this.traseu == "Corsica-Romania") {
-          //     this.data2 = '';
-          //     this.tur_retur_test = 2
-          // } else {
-          //     this.tur_retur_test = 3;
-          // }
           this.data2 = '';
           this.diferenta_date = '';
         }
@@ -95012,6 +95009,12 @@ if (document.querySelector('#adauga-rezervare')) {
         this.getPretTotal();
       },
       colete_volum: function colete_volum() {
+        this.getPretTotal();
+      },
+      pret_adult: function pret_adult() {
+        this.getPretTotal();
+      },
+      pret_adult_tur_retur: function pret_adult_tur_retur() {
         this.getPretTotal();
       }
     },
@@ -95136,8 +95139,7 @@ if (document.querySelector('#adauga-rezervare')) {
       //     }
       // },
       getTarife: function getTarife() {
-        console.log('asd');
-
+        // console.log('asd');
         if (this.data1 && this.data2) {
           dt1 = new Date(this.data1);
           dt2 = new Date(this.data2);
@@ -95152,10 +95154,11 @@ if (document.querySelector('#adauga-rezervare')) {
             diferenta_date: this.diferenta_date
           }
         }).then(function (response) {
-          _app.pret_adult = response.data.pret_adult; // app1.pret_copil= response.data.pret_copil;
-          // app1.pret_adult_tur_retur= response.data.pret_adult_tur_retur;
-          // app1.pret_copil_tur_retur= response.data.pret_copil_tur_retur;
-          // app1.pret_colete_kg= response.data.pret_colete_kg;
+          _app.pret_adult = response.data.pret_adult;
+          _app.pret_copil = response.data.pret_copil;
+          _app.pret_adult_tur_retur = response.data.pret_adult_tur_retur;
+          _app.pret_copil_tur_retur = response.data.pret_copil_tur_retur;
+          _app.pret_colete_kg = response.data.pret_colete_kg;
         });
       },
       getPretTotal: function getPretTotal() {
@@ -95654,8 +95657,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! E:\laragon\www\transportcorsica\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! E:\laragon\www\transportcorsica\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\laragon\www\transport-corsica\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\laragon\www\transport-corsica\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
