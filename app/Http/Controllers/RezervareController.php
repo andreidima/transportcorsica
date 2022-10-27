@@ -205,15 +205,13 @@ class RezervareController extends Controller
             $rezervare->sediul = $rezervare->factura->sediul;
         }
 
-        $tarife = \App\Models\Tarif::first();
-
         // Se foloseste acelasi formular ca si la adaugare, asa ca este necesara aceasta variabila pentru diferentiere
         $tip_operatie = "modificare";
 
         // salvarea ultimului URL, pentru intoarcerea la Rapoarte daca de acolo s-a initiat modificarea
         $last_url = url()->previous();
 
-        return view('rezervari.guest-create/adauga-rezervare-pasul-1', compact('rezervare', 'tarife', 'tip_operatie', 'last_url'));
+        return view('rezervari.guest-create/adauga-rezervare-pasul-1', compact('rezervare', 'tip_operatie', 'last_url'));
     }
 
     /**
@@ -1057,8 +1055,7 @@ class RezervareController extends Controller
             $rezervare = $request->session()->get('rezervare');
         }
 
-        $tarife = \App\Models\Tarif::first();
-        return view('rezervari.guest-create/adauga-rezervare-pasul-1', compact('rezervare', 'tarife'));
+        return view('rezervari.guest-create/adauga-rezervare-pasul-1', compact('rezervare'));
     }
 
     /**
@@ -1081,7 +1078,7 @@ class RezervareController extends Controller
         if (!Auth::check()) {
             $rezervare->pret_total_tur = 0;
             $rezervare->pret_total_retur = 0;
-            $tarife = \App\Models\Tarif::first();
+            $tarife = \App\Models\Tarif::whereDate('de_la_data', '<', $request->data_plecare)->whereDate('pana_la_data', '>', $request->data_plecare)->first();
 
             if ($request->tip_calatorie === "Calatori") {
                 if ($request->data_plecare && $request->data_intoarcere) {

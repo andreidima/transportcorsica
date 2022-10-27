@@ -470,12 +470,6 @@
                                         <div class="form-group col-lg-12 mb-2 d-flex justify-content-center border-bottom">
                                                 <h5 class="mb-1">Prețuri:</h5>
                                         </div>
-                                        {{-- <script type="application/javascript">
-                                            pretAdult={!! json_encode($tarife->adult ?? '') !!}
-                                            pretCopil={!! json_encode($tarife->copil ?? '') !!}
-                                            pretAdultTurRetur={!! json_encode($tarife->adult_tur_retur ?? '') !!}
-                                            pretCopilTurRetur={!! json_encode($tarife->copil_tur_retur ?? '') !!}
-                                        </script> --}}
                                         <div class="form-group col-lg-6 d-flex">
                                             <label for="pret_adult" class="col-form-label mb-0 mr-2">Preț adult: </label>
                                             <div class="px-0">
@@ -550,9 +544,6 @@
                                         <div class="form-group col-lg-12 mb-2 d-flex justify-content-center border-bottom">
                                                 <h5 class="mb-1">Prețuri:</h5>
                                         </div>
-                                        <script type="application/javascript">
-                                            // pretColeteKg={!! json_encode($tarife->colete_kg ?? '') !!}
-                                        </script>
                                         <div class="form-group col-lg-6 d-flex">
                                             <label for="pret_colete_kg" class="col-form-label mb-0 mr-2">Preț kg: </label>
                                             <div class="px-0">
