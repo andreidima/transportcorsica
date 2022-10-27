@@ -95205,7 +95205,13 @@ if (document.querySelector('#adauga-rezervare')) {
             }
 
             if (this.tur_retur == true) {
-              this.pret_total_retur = this.pret_total_tur;
+              if (this.hasOnlyDigits(this.nr_adulti) && this.nr_adulti > 0) {
+                this.pret_total_retur = this.pret_total_retur + this.pret_adult_retur * this.nr_adulti;
+              }
+
+              if (this.hasOnlyDigits(this.nr_copii) && this.nr_copii > 0) {
+                this.pret_total_retur = this.pret_total_retur + this.pret_copil_retur * this.nr_copii;
+              }
             }
           }
         } else if (this.tip_calatorie == "Colete") {
