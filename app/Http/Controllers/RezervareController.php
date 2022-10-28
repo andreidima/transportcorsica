@@ -620,7 +620,7 @@ class RezervareController extends Controller
                 $pret_copil_retur = '';
 
                 if ($request->data_plecare){
-                    $tarife = \App\Models\Tarif::whereDate('de_la_data', '<', $request->data_plecare)->whereDate('pana_la_data', '>', $request->data_plecare)->first();
+                    $tarife = \App\Models\Tarif::whereDate('de_la_data', '<', $request->data_plecare)->whereDate('pana_la_data', '>', $request->data_plecare)->first() ?? \App\Models\Tarif::latest()->first();
                     $pret_adult = $tarife->adult;
                     $pret_copil = $tarife->copil;
                     $pret_adult_tur_retur = $tarife->adult_tur_retur;
@@ -629,7 +629,7 @@ class RezervareController extends Controller
                 }
 
                 if (($request->diferenta_date) && ($request->diferenta_date > 15)){
-                    $tarife_retur = \App\Models\Tarif::whereDate('de_la_data', '<', $request->data_intoarcere)->whereDate('pana_la_data', '>', $request->data_intoarcere)->first();
+                    $tarife_retur = \App\Models\Tarif::whereDate('de_la_data', '<', $request->data_intoarcere)->whereDate('pana_la_data', '>', $request->data_intoarcere)->first() ?? \App\Models\Tarif::latest()->first();
                     $pret_adult_retur = $tarife_retur->adult;
                     $pret_copil_retur = $tarife_retur->copil;
                     if ($tarife->de_la_data != $tarife_retur->de_la_data) {
@@ -1101,13 +1101,13 @@ class RezervareController extends Controller
             $rezervare->pret_total_retur = 0;
 
             if ($request->data_plecare){
-                $tarife = \App\Models\Tarif::whereDate('de_la_data', '<', $request->data_plecare)->whereDate('pana_la_data', '>', $request->data_plecare)->first();
+                $tarife = \App\Models\Tarif::whereDate('de_la_data', '<', $request->data_plecare)->whereDate('pana_la_data', '>', $request->data_plecare)->first() ?? \App\Models\Tarif::latest()->first();
             }
 
             if ($request->data_plecare && $request->data_intoarcere) {
                 $diferenta_date = \Carbon\Carbon::parse($request->data_plecare)->diffInDays(\Carbon\Carbon::parse($request->data_intoarcere));
                 if ($diferenta_date > 15){
-                    $tarife_retur = \App\Models\Tarif::whereDate('de_la_data', '<', $request->data_intoarcere)->whereDate('pana_la_data', '>', $request->data_intoarcere)->first();
+                    $tarife_retur = \App\Models\Tarif::whereDate('de_la_data', '<', $request->data_intoarcere)->whereDate('pana_la_data', '>', $request->data_intoarcere)->first() ?? \App\Models\Tarif::latest()->first();
                 }
             }
 
