@@ -188,6 +188,12 @@ if (document.querySelector('#adauga-rezervare')) {
             },
             pret_colete_kg: function () {
                 this.getPretTotal()
+            },
+            pret_adult_retur: function () {
+                this.getPretTotal()
+            },
+            pret_copil_retur: function () {
+                this.getPretTotal()
             }
         },
 

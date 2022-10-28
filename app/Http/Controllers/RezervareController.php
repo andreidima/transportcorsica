@@ -630,10 +630,10 @@ class RezervareController extends Controller
 
                 if (($request->diferenta_date) && ($request->diferenta_date > 15)){
                     $tarife_retur = \App\Models\Tarif::whereDate('de_la_data', '<', $request->data_intoarcere)->whereDate('pana_la_data', '>', $request->data_intoarcere)->first();
+                    $pret_adult_retur = $tarife_retur->adult;
+                    $pret_copil_retur = $tarife_retur->copil;
                     if ($tarife->de_la_data != $tarife_retur->de_la_data) {
                         $preturi_modificate_la_data_string_de_afisat = Carbon::parse($tarife_retur->de_la_data)->isoFormat('DD.MM.YYYY');
-                        $pret_adult_retur = $tarife_retur->adult;
-                        $pret_copil_retur = $tarife_retur->copil;
                     }
                 }
 
