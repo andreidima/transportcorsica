@@ -80,6 +80,16 @@
                                 </div>
                             </li>
                     @endif
+                    @if (auth()->user()->role == 'superadmin')
+                            <li class="nav-item active mr-4 dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Superadmin
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('tarife.index') }}">Tarife</a>
+                                </div>
+                            </li>
+                    @endif
                         </ul>
 
                         <!-- Right Side Of Navbar -->

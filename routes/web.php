@@ -14,6 +14,7 @@ use App\Http\Controllers\Test;
 use App\Http\Controllers\MasinaController;
 use App\Http\Controllers\SoferController;
 use App\Http\Controllers\CronJobTrimitereController;
+use App\Http\Controllers\TarifController;
 
 /*
 |--------------------------------------------------------------------------
@@ -97,4 +98,8 @@ Route::middleware(['role:administrator,sofer'])->group(function () {
     Route::get('/test', function () {
         return phpinfo();
     });
+});
+
+Route::middleware(['role:superadmin'])->group(function () {
+    Route::resource('tarife', TarifController::class,  ['parameters' => ['tarife' => 'tarif']]);
 });
