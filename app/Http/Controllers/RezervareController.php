@@ -359,6 +359,10 @@ class RezervareController extends Controller
             $rezervare_tur->save();
             isset($rezervare_retur) ? $rezervare_retur->delete() : '';
 
+            if (auth()->user()){
+
+            }
+
             //Trimitere sms
             // $this->trimiteSms($rezervare_tur);
         } else {
