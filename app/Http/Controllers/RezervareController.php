@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Rezervare;
+use App\Models\RezervareIstoric;
 use App\Models\Oras;
 use App\Models\Pasager;
 use App\Models\Factura;
@@ -360,7 +361,11 @@ class RezervareController extends Controller
             isset($rezervare_retur) ? $rezervare_retur->delete() : '';
 
             if (auth()->user()){
+                $rezervare_istoric = RezervareIstoric::where();
 
+$flight->name = 'Paris to London';
+
+$flight->save();
             }
 
             //Trimitere sms
