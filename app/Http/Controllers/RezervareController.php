@@ -1670,7 +1670,7 @@ class RezervareController extends Controller
             $rezervare->update();
 
             // Salvare in istoric
-            if (isset($clone_rezervare)) {
+            if (isset($rezervare)) {
                 $rezervare_istoric = new RezervareIstoric;
                 $rezervare_istoric->fill($rezervare->attributesToArray());
                 $rezervare_istoric->operatie = 'Emitere Bilet';
@@ -1700,7 +1700,7 @@ class RezervareController extends Controller
             $rezervare->update();
 
             // Salvare in istoric
-            if (isset($clone_rezervare)) {
+            if (isset($rezervare)) {
                 $rezervare_istoric = new RezervareIstoric;
                 $rezervare_istoric->fill($rezervare->attributesToArray());
                 $rezervare_istoric->operatie = 'Emitere Bilet';
