@@ -1669,6 +1669,15 @@ class RezervareController extends Controller
 
             $rezervare->update();
 
+            // Salvare in istoric
+            if (isset($clone_rezervare)) {
+                $rezervare_istoric = new RezervareIstoric;
+                $rezervare_istoric->fill($rezervare->attributesToArray());
+                $rezervare_istoric->operatie = 'Emitere Bilet';
+                $rezervare_istoric->operatie_user_id = auth()->user()->id ?? '';
+                $rezervare_istoric->save();
+            }
+
             // return redirect('chitanta-descarca/' . $rezervare->cheie_unica . '/export-html');
             return redirect()->away('rawbt:url:https://rezervari.transportcorsica.ro/chitanta-descarca/' . $rezervare->cheie_unica . '/export-html');
         } else {
@@ -1689,6 +1698,15 @@ class RezervareController extends Controller
             $rezervare->valoare_lei = ($rezervare->pret_total * $rezervare->curs_bnr_euro) - $rezervare->valoare_lei_tva;
 
             $rezervare->update();
+
+            // Salvare in istoric
+            if (isset($clone_rezervare)) {
+                $rezervare_istoric = new RezervareIstoric;
+                $rezervare_istoric->fill($rezervare->attributesToArray());
+                $rezervare_istoric->operatie = 'Emitere Bilet';
+                $rezervare_istoric->operatie_user_id = auth()->user()->id ?? '';
+                $rezervare_istoric->save();
+            }
 
             // return redirect('chitanta-descarca/' . $rezervare->cheie_unica . '/export-html');
             return redirect()->away('rawbt:url:https://rezervari.transportcorsica.ro/chitanta-descarca/' . $rezervare->cheie_unica . '/export-html');
