@@ -358,15 +358,15 @@ class RezervareController extends Controller
             //Inserarea rezervarii in baza de date
             $rezervare_tur->retur = null;
             $rezervare_tur->save();
+
+            // Salvare in istoric
+            $rezervare_istoric = new RezervareIstoric;
+            $rezervare_istoric->fill($rezervare_tur->attributesToArray());
+            $rezervare_istoric->operatie = 'Modificare';
+            $rezervare_istoric->operatie_user_id = auth()->user()->id ?? '';
+            $rezervare_istoric->save();
+
             isset($rezervare_retur) ? $rezervare_retur->delete() : '';
-
-            if (auth()->user()){
-                $rezervare_istoric = RezervareIstoric::where();
-
-$flight->name = 'Paris to London';
-
-$flight->save();
-            }
 
             //Trimitere sms
             // $this->trimiteSms($rezervare_tur);
@@ -383,6 +383,18 @@ $flight->save();
             $rezervare_tur->update();
             $rezervare_retur->tur = $rezervare_tur->id;
             $rezervare_retur->update();
+
+            // Salvare in istoric
+            $rezervare_istoric = new RezervareIstoric;
+            $rezervare_istoric->fill($rezervare_tur->attributesToArray());
+            $rezervare_istoric->operatie = 'Modificare';
+            $rezervare_istoric->operatie_user_id = auth()->user()->id ?? '';
+            $rezervare_istoric->save();
+            $rezervare_istoric = new RezervareIstoric;
+            $rezervare_istoric->fill($rezervare_retur->attributesToArray());
+            $rezervare_istoric->operatie = 'Modificare';
+            $rezervare_istoric->operatie_user_id = auth()->user()->id ?? '';
+            $rezervare_istoric->save();
 
             //Trimitere sms
             // $this->trimiteSms($rezervare_tur);
@@ -493,11 +505,25 @@ $flight->save();
                 $rezervare->pasageri_relation()->detach();
                 $rezervare->delete();
 
+                // Salvare in istoric
+                $rezervare_istoric = new RezervareIstoric;
+                $rezervare_istoric->fill($rezervare->attributesToArray());
+                $rezervare_istoric->operatie = 'Stergere';
+                $rezervare_istoric->operatie_user_id = auth()->user()->id ?? '';
+                $rezervare_istoric->save();
+
                 if ($rezervare->retur){
                     $rezervare_retur = Rezervare::find($rezervare->retur);
                     if($rezervare_retur){
                         $rezervare_retur->pasageri_relation()->detach();
                         $rezervare_retur->delete();
+
+                        // Salvare in istoric
+                        $rezervare_istoric = new RezervareIstoric;
+                        $rezervare_istoric->fill($rezervare_retur->attributesToArray());
+                        $rezervare_istoric->operatie = 'Stergere';
+                        $rezervare_istoric->operatie_user_id = auth()->user()->id ?? '';
+                        $rezervare_istoric->save();
                     }
                 }
                 // elseif ($rezervare->tur){
@@ -528,6 +554,13 @@ $flight->save();
 
                     $rezervare->pasageri_relation()->detach();
                     $rezervare->delete();
+
+                    // Salvare in istoric
+                    $rezervare_istoric = new RezervareIstoric;
+                    $rezervare_istoric->fill($rezervare->attributesToArray());
+                    $rezervare_istoric->operatie = 'Stergere';
+                    $rezervare_istoric->operatie_user_id = auth()->user()->id ?? '';
+                    $rezervare_istoric->save();
 
                     return back()->with('status', 'Rezervarea a fost ștearsă cu succes!');
                 } else {
@@ -1308,6 +1341,7 @@ $flight->save();
         if ($rezervare->tur_retur === 'false') {
             //Inserarea rezervarii in baza de date
             $rezervare_tur->save();
+
             $rezervare_retur = null;
 
             $request->session()->put('rezervare_tur', $rezervare_tur);
@@ -1400,11 +1434,25 @@ $flight->save();
         $rezervare_tur->valoare_lei = ($rezervare_tur->pret_total * $rezervare_tur->curs_bnr_euro) - $rezervare_tur->valoare_lei_tva;
         $rezervare_tur->update();
 
+        // Salvare in istoric
+        $rezervare_istoric = new RezervareIstoric;
+        $rezervare_istoric->fill($rezervare_tur->attributesToArray());
+        $rezervare_istoric->operatie = 'Adaugare';
+        $rezervare_istoric->operatie_user_id = auth()->user()->id ?? '';
+        $rezervare_istoric->save();
+
         if ($rezervare->tur_retur !== 'false') {
             $rezervare_retur->curs_bnr_euro = $curs_bnr_euro->valoare;
             $rezervare_retur->valoare_lei_tva = ($rezervare_retur->pret_total * $rezervare_retur->curs_bnr_euro) * 0.19;
             $rezervare_retur->valoare_lei = ($rezervare_retur->pret_total * $rezervare_retur->curs_bnr_euro) - $rezervare_retur->valoare_lei_tva;
             $rezervare_retur->update();
+
+            // Salvare in istoric
+            $rezervare_istoric = new RezervareIstoric;
+            $rezervare_istoric->fill($rezervare_retur->attributesToArray());
+            $rezervare_istoric->operatie = 'Adaugare';
+            $rezervare_istoric->operatie_user_id = auth()->user()->id ?? '';
+            $rezervare_istoric->save();
         }
 
         // Salvare Factura
@@ -1819,6 +1867,23 @@ $flight->save();
             $clone_rezervare_retur->tur = $clone_rezervare->id;
             $clone_rezervare_retur->update();
         }
+
+        // Salvare in istoric
+        if (isset($clone_rezervare)) {
+            $rezervare_istoric = new RezervareIstoric;
+            $rezervare_istoric->fill($clone_rezervare->attributesToArray());
+            $rezervare_istoric->operatie = 'Adaugare';
+            $rezervare_istoric->operatie_user_id = auth()->user()->id ?? '';
+            $rezervare_istoric->save();
+        }
+        if (isset($clone_rezervare_retur)) {
+            $rezervare_istoric = new RezervareIstoric;
+            $rezervare_istoric->fill($clone_rezervare_retur->attributesToArray());
+            $rezervare_istoric->operatie = 'Adaugare';
+            $rezervare_istoric->operatie_user_id = auth()->user()->id ?? '';
+            $rezervare_istoric->save();
+        }
+
         // dd($rezervare_tur->pasageri_relation, $rezervare_retur, $clone_rezervare, $clone_rezervare_retur);
         // salvare pasageri si atasare la rezervari
         // if ($rezervare_tur->pasageri_relation->exists()){
