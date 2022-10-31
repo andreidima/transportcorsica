@@ -363,7 +363,7 @@ class RezervareController extends Controller
             $rezervare_istoric = new RezervareIstoric;
             $rezervare_istoric->fill($rezervare_tur->attributesToArray());
             $rezervare_istoric->operatie = 'Modificare';
-            $rezervare_istoric->operatie_user_id = auth()->user()->id ?? '';
+            $rezervare_istoric->operatie_user_id = auth()->user()->id ?? null;
             $rezervare_istoric->save();
 
             isset($rezervare_retur) ? $rezervare_retur->delete() : '';
@@ -388,12 +388,12 @@ class RezervareController extends Controller
             $rezervare_istoric = new RezervareIstoric;
             $rezervare_istoric->fill($rezervare_tur->attributesToArray());
             $rezervare_istoric->operatie = 'Modificare';
-            $rezervare_istoric->operatie_user_id = auth()->user()->id ?? '';
+            $rezervare_istoric->operatie_user_id = auth()->user()->id ?? null;
             $rezervare_istoric->save();
             $rezervare_istoric = new RezervareIstoric;
             $rezervare_istoric->fill($rezervare_retur->attributesToArray());
             $rezervare_istoric->operatie = 'Modificare';
-            $rezervare_istoric->operatie_user_id = auth()->user()->id ?? '';
+            $rezervare_istoric->operatie_user_id = auth()->user()->id ?? null;
             $rezervare_istoric->save();
 
             //Trimitere sms
@@ -509,7 +509,7 @@ class RezervareController extends Controller
                 $rezervare_istoric = new RezervareIstoric;
                 $rezervare_istoric->fill($rezervare->attributesToArray());
                 $rezervare_istoric->operatie = 'Stergere';
-                $rezervare_istoric->operatie_user_id = auth()->user()->id ?? '';
+                $rezervare_istoric->operatie_user_id = auth()->user()->id ?? null;
                 $rezervare_istoric->save();
 
                 if ($rezervare->retur){
@@ -522,7 +522,7 @@ class RezervareController extends Controller
                         $rezervare_istoric = new RezervareIstoric;
                         $rezervare_istoric->fill($rezervare_retur->attributesToArray());
                         $rezervare_istoric->operatie = 'Stergere';
-                        $rezervare_istoric->operatie_user_id = auth()->user()->id ?? '';
+                        $rezervare_istoric->operatie_user_id = auth()->user()->id ?? null;
                         $rezervare_istoric->save();
                     }
                 }
@@ -559,7 +559,7 @@ class RezervareController extends Controller
                     $rezervare_istoric = new RezervareIstoric;
                     $rezervare_istoric->fill($rezervare->attributesToArray());
                     $rezervare_istoric->operatie = 'Stergere';
-                    $rezervare_istoric->operatie_user_id = auth()->user()->id ?? '';
+                    $rezervare_istoric->operatie_user_id = auth()->user()->id ?? null;
                     $rezervare_istoric->save();
 
                     return back()->with('status', 'Rezervarea a fost ștearsă cu succes!');
@@ -1438,7 +1438,7 @@ class RezervareController extends Controller
         $rezervare_istoric = new RezervareIstoric;
         $rezervare_istoric->fill($rezervare_tur->attributesToArray());
         $rezervare_istoric->operatie = 'Adaugare';
-        $rezervare_istoric->operatie_user_id = auth()->user()->id ?? '';
+        $rezervare_istoric->operatie_user_id = auth()->user()->id ?? null;
         $rezervare_istoric->save();
 
         if ($rezervare->tur_retur !== 'false') {
@@ -1451,7 +1451,7 @@ class RezervareController extends Controller
             $rezervare_istoric = new RezervareIstoric;
             $rezervare_istoric->fill($rezervare_retur->attributesToArray());
             $rezervare_istoric->operatie = 'Adaugare';
-            $rezervare_istoric->operatie_user_id = auth()->user()->id ?? '';
+            $rezervare_istoric->operatie_user_id = auth()->user()->id ?? null;
             $rezervare_istoric->save();
         }
 
@@ -1674,7 +1674,7 @@ class RezervareController extends Controller
                 $rezervare_istoric = new RezervareIstoric;
                 $rezervare_istoric->fill($rezervare->attributesToArray());
                 $rezervare_istoric->operatie = 'Emitere Bilet';
-                $rezervare_istoric->operatie_user_id = auth()->user()->id ?? '';
+                $rezervare_istoric->operatie_user_id = auth()->user()->id ?? null;
                 $rezervare_istoric->save();
             }
 
@@ -1704,7 +1704,7 @@ class RezervareController extends Controller
                 $rezervare_istoric = new RezervareIstoric;
                 $rezervare_istoric->fill($rezervare->attributesToArray());
                 $rezervare_istoric->operatie = 'Emitere Bilet';
-                $rezervare_istoric->operatie_user_id = auth()->user()->id ?? '';
+                $rezervare_istoric->operatie_user_id = auth()->user()->id ?? null;
                 $rezervare_istoric->save();
             }
 
@@ -1891,14 +1891,14 @@ class RezervareController extends Controller
             $rezervare_istoric = new RezervareIstoric;
             $rezervare_istoric->fill($clone_rezervare->attributesToArray());
             $rezervare_istoric->operatie = 'Adaugare';
-            $rezervare_istoric->operatie_user_id = auth()->user()->id ?? '';
+            $rezervare_istoric->operatie_user_id = auth()->user()->id ?? null;
             $rezervare_istoric->save();
         }
         if (isset($clone_rezervare_retur)) {
             $rezervare_istoric = new RezervareIstoric;
             $rezervare_istoric->fill($clone_rezervare_retur->attributesToArray());
             $rezervare_istoric->operatie = 'Adaugare';
-            $rezervare_istoric->operatie_user_id = auth()->user()->id ?? '';
+            $rezervare_istoric->operatie_user_id = auth()->user()->id ?? null;
             $rezervare_istoric->save();
         }
 
