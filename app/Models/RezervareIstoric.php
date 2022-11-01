@@ -9,6 +9,8 @@ class RezervareIstoric extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+
     protected $table = 'rezervari_istoric';
     protected $guarded = [];
 
