@@ -368,7 +368,7 @@ class RezervareController extends Controller
 
             // Salvare in istoric
             $rezervare_istoric = new RezervareIstoric;
-            $rezervare_istoric->fill($rezervare_tur->attributesToArray());
+            $rezervare_istoric->fill($rezervare_tur->makeHidden(['created_at', 'updated_at'])->attributesToArray());
             $rezervare_istoric->operatie = 'Modificare';
             $rezervare_istoric->operatie_user_id = auth()->user()->id ?? null;
             $rezervare_istoric->save();
@@ -395,12 +395,12 @@ class RezervareController extends Controller
 
             // Salvare in istoric
             $rezervare_istoric = new RezervareIstoric;
-            $rezervare_istoric->fill($rezervare_tur->attributesToArray());
+            $rezervare_istoric->fill($rezervare_tur->makeHidden(['created_at', 'updated_at'])->attributesToArray());
             $rezervare_istoric->operatie = 'Modificare';
             $rezervare_istoric->operatie_user_id = auth()->user()->id ?? null;
             $rezervare_istoric->save();
             $rezervare_istoric = new RezervareIstoric;
-            $rezervare_istoric->fill($rezervare_retur->attributesToArray());
+            $rezervare_istoric->fill($rezervare_retur->makeHidden(['created_at', 'updated_at'])->attributesToArray());
             $rezervare_istoric->operatie = 'Modificare';
             $rezervare_istoric->operatie_user_id = auth()->user()->id ?? null;
             $rezervare_istoric->save();
@@ -531,7 +531,7 @@ class RezervareController extends Controller
 
                 // Salvare in istoric
                 $rezervare_istoric = new RezervareIstoric;
-                $rezervare_istoric->fill($rezervare->attributesToArray());
+                $rezervare_istoric->fill($rezervare->makeHidden(['created_at', 'updated_at'])->attributesToArray());
                 $rezervare_istoric->operatie = 'Stergere';
                 $rezervare_istoric->operatie_user_id = auth()->user()->id ?? null;
                 $rezervare_istoric->save();
@@ -544,7 +544,7 @@ class RezervareController extends Controller
 
                         // Salvare in istoric
                         $rezervare_istoric = new RezervareIstoric;
-                        $rezervare_istoric->fill($rezervare_retur->attributesToArray());
+                        $rezervare_istoric->fill($rezervare_retur->makeHidden(['created_at', 'updated_at'])->attributesToArray());
                         $rezervare_istoric->operatie = 'Stergere';
                         $rezervare_istoric->operatie_user_id = auth()->user()->id ?? null;
                         $rezervare_istoric->save();
@@ -581,7 +581,7 @@ class RezervareController extends Controller
 
                     // Salvare in istoric
                     $rezervare_istoric = new RezervareIstoric;
-                    $rezervare_istoric->fill($rezervare->attributesToArray());
+                    $rezervare_istoric->fill($rezervare->makeHidden(['created_at', 'updated_at'])->attributesToArray());
                     $rezervare_istoric->operatie = 'Stergere';
                     $rezervare_istoric->operatie_user_id = auth()->user()->id ?? null;
                     $rezervare_istoric->save();
@@ -1464,7 +1464,7 @@ class RezervareController extends Controller
 
         // Salvare in istoric
         $rezervare_istoric = new RezervareIstoric;
-        $rezervare_istoric->fill($rezervare_tur->attributesToArray());
+        $rezervare_istoric->fill($rezervare_tur->makeHidden(['created_at', 'updated_at'])->attributesToArray());
         $rezervare_istoric->operatie = 'Adaugare';
         $rezervare_istoric->operatie_user_id = auth()->user()->id ?? null;
         $rezervare_istoric->save();
@@ -1477,7 +1477,7 @@ class RezervareController extends Controller
 
             // Salvare in istoric
             $rezervare_istoric = new RezervareIstoric;
-            $rezervare_istoric->fill($rezervare_retur->attributesToArray());
+            $rezervare_istoric->fill($rezervare_retur->makeHidden(['created_at', 'updated_at'])->attributesToArray());
             $rezervare_istoric->operatie = 'Adaugare';
             $rezervare_istoric->operatie_user_id = auth()->user()->id ?? null;
             $rezervare_istoric->save();
@@ -1699,7 +1699,7 @@ class RezervareController extends Controller
             // Salvare in istoric
             if (isset($rezervare)) {
                 $rezervare_istoric = new RezervareIstoric;
-                $rezervare_istoric->fill($rezervare->attributesToArray());
+                $rezervare_istoric->fill($rezervare->makeHidden(['created_at', 'updated_at'])->attributesToArray());
                 $rezervare_istoric->operatie = 'Emitere Bilet';
                 $rezervare_istoric->operatie_user_id = auth()->user()->id ?? null;
                 $rezervare_istoric->save();
@@ -1729,7 +1729,7 @@ class RezervareController extends Controller
             // Salvare in istoric
             if (isset($rezervare)) {
                 $rezervare_istoric = new RezervareIstoric;
-                $rezervare_istoric->fill($rezervare->attributesToArray());
+                $rezervare_istoric->fill($rezervare->makeHidden(['created_at', 'updated_at'])->attributesToArray());
                 $rezervare_istoric->operatie = 'Emitere Bilet';
                 $rezervare_istoric->operatie_user_id = auth()->user()->id ?? null;
                 $rezervare_istoric->save();
@@ -1918,14 +1918,14 @@ class RezervareController extends Controller
         // Salvare in istoric
         if (isset($clone_rezervare)) {
             $rezervare_istoric = new RezervareIstoric;
-            $rezervare_istoric->fill($clone_rezervare->attributesToArray());
+            $rezervare_istoric->fill($clone_rezervare->makeHidden(['created_at', 'updated_at'])->attributesToArray());
             $rezervare_istoric->operatie = 'Adaugare prin duplicare';
             $rezervare_istoric->operatie_user_id = auth()->user()->id ?? null;
             $rezervare_istoric->save();
         }
         if (isset($clone_rezervare_retur)) {
             $rezervare_istoric = new RezervareIstoric;
-            $rezervare_istoric->fill($clone_rezervare_retur->attributesToArray());
+            $rezervare_istoric->fill($clone_rezervare_retur->makeHidden(['created_at', 'updated_at'])->attributesToArray());
             $rezervare_istoric->operatie = 'Adaugare prin duplicare';
             $rezervare_istoric->operatie_user_id = auth()->user()->id ?? null;
             $rezervare_istoric->save();
