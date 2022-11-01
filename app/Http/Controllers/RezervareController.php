@@ -226,8 +226,10 @@ class RezervareController extends Controller
      */
     public function update(Request $request, Rezervare $rezervare)
     {
-        // dd($request, $rezervare);
         $this->authorize('update', $rezervare);
+
+        // Se salveaza variabila daca trebuie trimis SMS (sms_trimis), caci mai tarziu se suprascrie variabila $rezervare si nu se mai stie
+        $sms_trimis = $rezervare->sms_trimis;
 
         $rezervare_tur = (!$rezervare->tur) ? $rezervare : Rezervare::find($rezervare->tur);
         if (!$rezervare_retur = Rezervare::find($rezervare->retur)){
@@ -357,6 +359,11 @@ class RezervareController extends Controller
         if ($request->tur_retur === 'false') {
             //Inserarea rezervarii in baza de date
             $rezervare_tur->retur = null;
+
+            // Urmeaza sa se trimit mai jos in functie Sms-ul
+            // Variabila este necesara, pentru ca pentru Rezervarile ce se duplica, se trimite sms din update, si sa nu se trimita inca odata pentru cele pentru care s-a trimis la creare
+            $rezervare_tur->sms_trimis = 1;
+
             $rezervare_tur->save();
 
             // Salvare in istoric
@@ -367,10 +374,12 @@ class RezervareController extends Controller
             $rezervare_istoric->save();
 
             isset($rezervare_retur) ? $rezervare_retur->delete() : '';
-
-            //Trimitere sms
-            // $this->trimiteSms($rezervare_tur);
         } else {
+            // Urmeaza sa se trimit mai jos Sms-ul
+            // Variabila este necesara, pentru ca pentru Rezervarile ce se duplica, se trimite sms din update, si sa nu se trimita inca odata pentru cele pentru care s-a trimis la creare
+            $rezervare_tur->sms_trimis = 1;
+            $rezervare_retur->sms_trimis = 1;
+
             //Inserarea rezervarilor in baza de date
             $rezervare_tur->save();
             $rezervare_retur->save();
@@ -395,10 +404,6 @@ class RezervareController extends Controller
             $rezervare_istoric->operatie = 'Modificare';
             $rezervare_istoric->operatie_user_id = auth()->user()->id ?? null;
             $rezervare_istoric->save();
-
-            //Trimitere sms
-            // $this->trimiteSms($rezervare_tur);
-            // $this->trimiteSms($rezervare_retur);
         }
 
         // salvare pasageri si atasare la rezervari
@@ -460,6 +465,25 @@ class RezervareController extends Controller
 
                     $rezervare_tur->factura()->save($factura);
                 }
+            }
+        }
+
+        /**
+         * Trimitere SMS
+         * De aici(din update) se trimite doar pentru rezervarile duplicate, pentru care nu se trimite sms la duplicare, pentru ca sunt date vechi, ci acum dupa ce sunt actualizate
+         */
+        if ($sms_trimis === 0){
+            $mesaj = 'Rezervarea dumneavoastra a fost inregistrata cu succes in sistem. Veti fi contactat cu minim 12 ore inainte de plecare. Cu stima, MRW Transport  +40791881888!';
+            if (stripos($rezervare_tur->pasageri_relation->first()->nume ?? '', 'Andrei Dima test') !== false) {
+                if (stripos($rezervare_tur->pasageri_relation->first()->nume ?? '', 'fara sms') !== false) {
+                    // ...
+                } else {
+                    // Trait continand functie cu argumentele: categorie(string), subcategorie(string), referinta_id(integer), telefoane(array), mesaj(string)
+                    $this->trimiteSms('rezervari', null, $rezervare_tur->id, [$rezervare_tur->telefon], $mesaj);
+                }
+            } else {
+                // Trait continand functie cu argumentele: categorie(string), subcategorie(string), referinta_id(integer), telefoane(array), mesaj(string)
+                $this->trimiteSms('rezervari', null, $rezervare_tur->id, [$rezervare_tur->telefon], $mesaj);
             }
         }
 
@@ -1336,7 +1360,11 @@ class RezervareController extends Controller
 
         $rezervare_tur->cheie_unica = uniqid('tur');
         $rezervare_retur->cheie_unica = uniqid('retur');
-        // dd($rezervare);
+
+        // Urmeaza sa se trimit mai jos in functie Sms-ul
+        // Variabila este necesara, pentru ca pentru Rezervarile ce se duplica, se trimite sms din update, si sa nu se trimita inca odata pentru cele pentru care s-a trimis deja de aici
+        $rezervare_tur->sms_trimis = 1;
+        $rezervare_retur->sms_trimis = 1;
 
         if ($rezervare->tur_retur === 'false') {
             //Inserarea rezervarii in baza de date
@@ -1527,11 +1555,10 @@ class RezervareController extends Controller
         // }
         // $mesaj .= 'O zi placuta va dorim!';
 
-        $mesaj = 'Rezervarea dumneavoastra a fost inregistrata cu succes in sistem. Veti fi contactat cu minim 12 ore inainte de plecare. Cu stima, MRW Transport  +40791881888!';
-
         /**
          * Trimitere SMS
          */
+        $mesaj = 'Rezervarea dumneavoastra a fost inregistrata cu succes in sistem. Veti fi contactat cu minim 12 ore inainte de plecare. Cu stima, MRW Transport  +40791881888!';
         if (stripos($rezervare_tur->pasageri_relation->first()->nume ?? '', 'Andrei Dima test') !== false) {
             if (stripos($rezervare_tur->pasageri_relation->first()->nume ?? '', 'fara sms') !== false) {
                 // ...
@@ -1850,6 +1877,7 @@ class RezervareController extends Controller
         $rezervare_tur->lista_plecare = Oras::find($rezervare_tur->oras_plecare)->traseu ?? null;
         $rezervare_tur->lista_sosire = Oras::find($rezervare_tur->oras_sosire)->traseu ?? null;
         $rezervare_tur->plata_efectuata = NULL;
+        $rezervare_tur->sms_trimis = 0;
         $rezervare_tur->user_id = auth()->user()->id;
         if (isset($rezervare_retur)) {
             $rezervare_retur->oras_plecare_sofer = NULL;
@@ -1863,6 +1891,7 @@ class RezervareController extends Controller
             $rezervare_retur->lista_plecare = Oras::find($rezervare_retur->oras_plecare)->traseu ?? null;
             $rezervare_retur->lista_sosire = Oras::find($rezervare_retur->oras_sosire)->traseu ?? null;
             $rezervare_retur->plata_efectuata = NULL;
+            $rezervare_tur->sms_trimis = 0;
             $rezervare_retur->user_id = auth()->user()->id;
         }
 
@@ -1890,14 +1919,14 @@ class RezervareController extends Controller
         if (isset($clone_rezervare)) {
             $rezervare_istoric = new RezervareIstoric;
             $rezervare_istoric->fill($clone_rezervare->attributesToArray());
-            $rezervare_istoric->operatie = 'Adaugare';
+            $rezervare_istoric->operatie = 'Adaugare prin duplicare';
             $rezervare_istoric->operatie_user_id = auth()->user()->id ?? null;
             $rezervare_istoric->save();
         }
         if (isset($clone_rezervare_retur)) {
             $rezervare_istoric = new RezervareIstoric;
             $rezervare_istoric->fill($clone_rezervare_retur->attributesToArray());
-            $rezervare_istoric->operatie = 'Adaugare';
+            $rezervare_istoric->operatie = 'Adaugare prin duplicare';
             $rezervare_istoric->operatie_user_id = auth()->user()->id ?? null;
             $rezervare_istoric->save();
         }
