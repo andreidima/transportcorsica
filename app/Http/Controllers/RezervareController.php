@@ -289,6 +289,7 @@ class RezervareController extends Controller
             $rezervare_retur->serie_document = $request->serie_document;
             $rezervare_retur->cnp = $request->cnp;
             $rezervare_retur->acord_newsletter = $request->acord_newsletter;
+            $rezervare_retur->user_id = $rezervare_tur->user_id;
             $rezervare_retur->updated_at = \Carbon\Carbon::now();
         }
 
@@ -469,10 +470,46 @@ class RezervareController extends Controller
         }
 
         /**
-         * Trimitere SMS
-         * De aici(din update) se trimite doar pentru rezervarile duplicate, pentru care nu se trimite sms la duplicare, pentru ca sunt date vechi, ci acum dupa ce sunt actualizate
-         */
+         * Trimitere Email si SMS
+         * De aici(din update) se trimite doar pentru rezervarile duplicate, pentru care nu se trimit la duplicare, pentru ca sunt date vechi, ci acum dupa ce sunt actualizate
+        */
         if ($sms_trimis === 0){
+
+            // Trimitere email
+            if (!Auth::check()) {
+                if (stripos($rezervare_tur->pasageri_relation_adulti->first()->nume ?? '', 'Andrei Dima test') !== false) {
+                    // dd('da');
+                    if (stripos($rezervare->nume, 'fara email') !== false) {
+                        // nu se trimite email
+                    } else {
+                        if ($rezervare_tur->email){
+                            $mail = \Mail::to($rezervare_tur->email)
+                                ->bcc('andrei.dima@usm.ro');
+                        } else {
+                            $mail = \Mail::to('andrei.dima@usm.ro');
+                        }
+                        $mail->send(new RezervareFinalizata($rezervare_tur));
+                    }
+                } else {
+                    if ($rezervare_tur->email && $rezervare_tur->colete_email_destinatar) {
+                        $mail = \Mail::to([$rezervare_tur->email, $rezervare_tur->colete_email_destinatar])
+                            ->bcc('rezervari@transportcorsica.ro');
+                    } else if ($rezervare_tur->email){
+                        $mail = \Mail::to($rezervare_tur->email)
+                            ->bcc('rezervari@transportcorsica.ro');
+                    } else if ($rezervare_tur->colete_email_destinatar){
+                        $mail = \Mail::to($rezervare_tur->colete_email_destinatar)
+                            ->bcc('rezervari@transportcorsica.ro');
+                    } else {
+                        $mail = \Mail::to('rezervari@transportcorsica.ro');
+                    }
+                    $mail->send(new RezervareFinalizata($rezervare_tur));
+                }
+            }
+
+            /**
+             * Trimitere SMS
+             */
             $mesaj = 'Rezervarea dumneavoastra a fost inregistrata cu succes in sistem. Veti fi contactat cu minim 12 ore inainte de plecare. Cu stima, MRW Transport  +40791881888!';
             if (stripos($rezervare_tur->pasageri_relation->first()->nume ?? '', 'Andrei Dima test') !== false) {
                 if (stripos($rezervare_tur->pasageri_relation->first()->nume ?? '', 'fara sms') !== false) {
