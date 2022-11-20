@@ -62,15 +62,14 @@
             {{-- Rezervari pasageri --}}
             @isset($rezervari->first()->nr_adulti)
 
-            <div style="
-
+            {{-- <div style="
                 width:680px;
                 min-height:600px;
                 padding: 0px;
                 margin:0px 0px;
                     -moz-border-radius: 10px;
                     -webkit-border-radius: 10px;
-                    border-radius: 10px;">
+                    border-radius: 10px;"> --}}
                 <table>
                     <tr style="background-color:darkcyan; color:white">
                         <td colspan="3" style="border-width:0px; padding:0rem;">
@@ -219,7 +218,7 @@
 
             {{-- Rezervari colete --}}
             @else
-            <div style="
+            {{-- <div style="
 
                 width:680px;
                 min-height:600px;
@@ -227,7 +226,7 @@
                 margin:0px 0px;
                     -moz-border-radius: 10px;
                     -webkit-border-radius: 10px;
-                    border-radius: 10px;">
+                    border-radius: 10px;"> --}}
                 <table>
                     <tr style="background-color:darkcyan; color:white">
                         <td colspan="3" style="border-width:0px; padding:0rem;">
@@ -349,7 +348,7 @@
 
 
                 </table>
-            </div>
+            {{-- </div> --}}
             @endisset
 
 
@@ -359,14 +358,14 @@
             @isset($rezervari->first()->nr_adulti)
 
 
-            <div style="border:dashed #999;
+            {{-- <div style="border:dashed #999;
                 width:690px;
                 min-height:600px;
                 padding: 15px 10px 15px 10px;
                 margin:0px 0px;
                     -moz-border-radius: 10px;
                     -webkit-border-radius: 10px;
-                    border-radius: 10px;">
+                    border-radius: 10px;"> --}}
                 <table style="">
                     <tr style="">
                         <td colspan="3" style="border-width:0px; padding:0rem; width:30%">
@@ -487,11 +486,11 @@
                     </tr>
 
                 </table>
-            </div>
+            {{-- </div> --}}
 
             {{-- Rezervari colete --}}
             @else
-            <div style="
+            {{-- <div style="
 
                 width:680px;
                 min-height:600px;
@@ -499,7 +498,7 @@
                 margin:0px 0px;
                     -moz-border-radius: 10px;
                     -webkit-border-radius: 10px;
-                    border-radius: 10px;">
+                    border-radius: 10px;"> --}}
                 <table>
                     <tr style="background-color:darkcyan; color:white">
                         <td colspan="3" style="border-width:0px; padding:0rem;">
@@ -621,7 +620,7 @@
 
 
                 </table>
-            </div>
+            {{-- </div> --}}
             @endisset
         @break
     @endswitch
