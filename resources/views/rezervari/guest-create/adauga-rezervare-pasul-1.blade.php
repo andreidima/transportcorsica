@@ -322,7 +322,7 @@
                                                     format="DD-MM-YYYY"
                                                     {{-- not-before-date="{{ \Carbon\Carbon::today() }}" --}}
                                                     not-before-date="{{ auth()->check() ? \Carbon\Carbon::today()->subYear() : \Carbon\Carbon::today() }}"
-                                                    :doar-ziua="2"
+                                                    :doar-ziua="3"
                                                     @dataplecare="dataPlecareTrimisa"
                                                     {{-- v-on:dataplecare="dataPlecareTrimisa" --}}
                                                     {{-- {{ is_null($rezervare->bilet_numar) ? '' : 'disabled' }} --}}
@@ -339,7 +339,7 @@
                                                     format="DD-MM-YYYY"
                                                     {{-- not-before-date="{{ \Carbon\Carbon::today() }}" --}}
                                                     not-before-date="{{ auth()->check() ? \Carbon\Carbon::today()->subYear() : \Carbon\Carbon::today() }}"
-                                                    :doar-ziua="5"
+                                                    :doar-ziua="6"
                                                     @dataintoarcere="dataIntoarcereTrimisa"
                                                     {{-- v-on:dataplecare="dataPlecareTrimisa" --}}
                                                     {{-- {{ is_null($rezervare->bilet_numar) ? '' : 'disabled' }} --}}
@@ -378,7 +378,7 @@
                                                     format="DD-MM-YYYY"
                                                     {{-- not-before-date="{{ \Carbon\Carbon::today() }}" --}}
                                                     not-before-date="{{ auth()->check() ? \Carbon\Carbon::today()->subYear() : \Carbon\Carbon::today() }}"
-                                                    :doar-ziua="5"
+                                                    :doar-ziua="6"
                                                     @dataintoarcere="dataIntoarcereTrimisa"
                                                     {{-- {{ is_null($rezervare->bilet_numar) ? '' : 'disabled' }} --}}
                                                 ></vue2-datepicker-intoarcere>
@@ -394,7 +394,7 @@
                                                     format="DD-MM-YYYY"
                                                     {{-- not-before-date="{{ \Carbon\Carbon::today() }}" --}}
                                                     not-before-date="{{ auth()->check() ? \Carbon\Carbon::today()->subYear() : \Carbon\Carbon::today() }}"
-                                                    :doar-ziua="2"
+                                                    :doar-ziua="3"
                                                     @dataplecare="dataPlecareTrimisa"
                                                     {{-- {{ is_null($rezervare->bilet_numar) ? '' : 'disabled' }} --}}
                                                 ></vue2-datepicker-plecare>
