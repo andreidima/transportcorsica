@@ -29,8 +29,8 @@
                                 value-type="YYYY-MM-DD"
                                 format="DD-MM-YYYY"
                                 {{-- not-before-date="{{ \Carbon\Carbon::today() }}" --}}
-                                :doar-ziua-a="3"
-                                :doar-ziua-b="6"
+                                {{-- :doar-ziua-a="2"
+                                :doar-ziua-b="5" --}}
                             ></vue2-datepicker>
                         </div>
                     {{-- </div>
