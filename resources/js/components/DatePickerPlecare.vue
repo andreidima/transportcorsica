@@ -59,11 +59,21 @@ export default {
           notBefore.setHours(0, 0, 0, 0);
 
           // selectare doar o zi din saptamana
-          if (typeof this.doarZiua !== 'undefined'){
+        //   if (typeof this.doarZiua !== 'undefined'){
+        //     const dateDay = date.getDay()
+        //     return ((date.getTime() < notBefore.getTime())
+        //       || (dateDay !== this.doarZiua));
+        //   }
+
+          // selectare doar miercurea pana pe 09.01.2023, iar dupa selectare doar martea
             const dateDay = date.getDay()
-            return ((date.getTime() < notBefore.getTime())
-              || (dateDay !== this.doarZiua));
-          }
+            const dataLaCareSeSchimbaZiuaDinSaptamana = new Date("2023-01-09");
+            return (
+                (date.getTime() < notBefore.getTime())
+                || ((date.getTime() < dataLaCareSeSchimbaZiuaDinSaptamana.getTime()) && (dateDay !== 3))
+                || ((date.getTime() > dataLaCareSeSchimbaZiuaDinSaptamana.getTime()) && (dateDay !== 2))
+                );
+
 
           return (date.getTime() < notBefore.getTime());
         }
