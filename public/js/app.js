@@ -2081,7 +2081,8 @@ __webpack_require__.r(__webpack_exports__);
 
         var dateDay = date.getDay();
         var dataLaCareSeSchimbaZiuaDinSaptamana = new Date("2023-01-09");
-        return date.getTime() < _notBefore.getTime() || date.getTime() < dataLaCareSeSchimbaZiuaDinSaptamana.getTime() && dateDay !== 6 || date.getTime() > dataLaCareSeSchimbaZiuaDinSaptamana.getTime() && dateDay !== 5;
+        var dataLaCareSeSchimbaInapoiZiuaDinSaptamana = new Date("2023-03-30");
+        return date.getTime() < _notBefore.getTime() || (date.getTime() < dataLaCareSeSchimbaZiuaDinSaptamana.getTime() || date.getTime() > dataLaCareSeSchimbaInapoiZiuaDinSaptamana.getTime()) && dateDay !== 6 || date.getTime() > dataLaCareSeSchimbaZiuaDinSaptamana.getTime() && date.getTime() < dataLaCareSeSchimbaInapoiZiuaDinSaptamana.getTime() && dateDay !== 5;
         return date.getTime() < _notBefore.getTime();
       } // selectare date doar pana la un moment dat
 
@@ -2193,7 +2194,8 @@ __webpack_require__.r(__webpack_exports__);
 
         var dateDay = date.getDay();
         var dataLaCareSeSchimbaZiuaDinSaptamana = new Date("2023-01-09");
-        return date.getTime() < _notBefore.getTime() || date.getTime() < dataLaCareSeSchimbaZiuaDinSaptamana.getTime() && dateDay !== 3 || date.getTime() > dataLaCareSeSchimbaZiuaDinSaptamana.getTime() && dateDay !== 2;
+        var dataLaCareSeSchimbaInapoiZiuaDinSaptamana = new Date("2023-03-31");
+        return date.getTime() < _notBefore.getTime() || (date.getTime() < dataLaCareSeSchimbaZiuaDinSaptamana.getTime() || date.getTime() > dataLaCareSeSchimbaInapoiZiuaDinSaptamana.getTime()) && dateDay !== 3 || date.getTime() > dataLaCareSeSchimbaZiuaDinSaptamana.getTime() && date.getTime() < dataLaCareSeSchimbaInapoiZiuaDinSaptamana.getTime() && dateDay !== 2;
         return date.getTime() < _notBefore.getTime();
       } // selectare date doar pana la un moment dat
 
