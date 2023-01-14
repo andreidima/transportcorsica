@@ -24,31 +24,56 @@ class RaportController extends Controller
         if (\Request::get('search_data')){
             $search_data = \Request::get('search_data');
         } else {
+            // Cand erau cursele miercuri si sambata
+            // switch (\Carbon\Carbon::today()->dayOfWeek){
+            //     case 0:
+            //         $search_data = \Carbon\Carbon::today()->addDays(3);
+            //         break;
+            //     case 1:
+            //         $search_data = \Carbon\Carbon::today()->addDays(2);
+            //         break;
+            //     case 2:
+            //         $search_data = \Carbon\Carbon::today()->addDays(1);
+            //         break;
+            //     case 3:
+            //         $search_data = \Carbon\Carbon::today();
+            //         break;
+            //     case 4:
+            //         $search_data = \Carbon\Carbon::today()->addDays(2);
+            //         break;
+            //     case 5:
+            //         $search_data = \Carbon\Carbon::today()->addDays(1);
+            //         break;
+            //     case 6:
+            //         $search_data = \Carbon\Carbon::today();
+            //         break;
+            // }
+
+            // Cand sunt cursele marti si vineri
             switch (\Carbon\Carbon::today()->dayOfWeek){
                 case 0:
-                    $search_data = \Carbon\Carbon::today()->addDays(3);
+                    $search_data = \Carbon\Carbon::today()->addDays(2);
                     break;
                 case 1:
-                    $search_data = \Carbon\Carbon::today()->addDays(2);
+                    $search_data = \Carbon\Carbon::today()->addDays(1);
                     break;
                 case 2:
-                    $search_data = \Carbon\Carbon::today()->addDays(1);
+                    $search_data = \Carbon\Carbon::today()->addDays(0);
                     break;
                 case 3:
-                    $search_data = \Carbon\Carbon::today();
-                    break;
-                case 4:
                     $search_data = \Carbon\Carbon::today()->addDays(2);
                     break;
-                case 5:
+                case 4:
                     $search_data = \Carbon\Carbon::today()->addDays(1);
                     break;
+                case 5:
+                    $search_data = \Carbon\Carbon::today()->addDays(0);
+                    break;
                 case 6:
-                    $search_data = \Carbon\Carbon::today();
+                    $search_data = \Carbon\Carbon::today()->addDays(3);
                     break;
             }
         }
-        // $search_data = \Request::get('search_data') ? \Request::get('search_data') : \Carbon\Carbon::today();
 
         $rezervari = Rezervare::
             join('orase as orase_plecare', 'rezervari.oras_plecare', '=', 'orase_plecare.id')
