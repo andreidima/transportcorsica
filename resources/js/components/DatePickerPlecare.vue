@@ -65,10 +65,10 @@ export default {
         //       || (dateDay !== this.doarZiua));
         //   }
 
-          // selectare doar miercurea pana pe 09.01.2023, iar dupa selectare doar martea
+          // selectare doar miercurea pana pe 27.02.2023, iar dupa selectare doar martea
             const dateDay = date.getDay()
             const dataLaCareSeSchimbaZiuaDinSaptamana = new Date("2023-01-09");
-            const dataLaCareSeSchimbaInapoiZiuaDinSaptamana = new Date("2023-03-31");
+            const dataLaCareSeSchimbaInapoiZiuaDinSaptamana = new Date("2023-03-27");
             return (
                 (date.getTime() < notBefore.getTime())
                 || (
