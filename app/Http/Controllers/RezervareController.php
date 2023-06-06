@@ -1219,6 +1219,12 @@ class RezervareController extends Controller
                     $rezervare->pret_total_tur = $rezervare->nr_adulti * $tarife->adult_tur_retur + $rezervare->nr_copii * $tarife->copil_tur_retur;
                 } else {
                     $rezervare->pret_total_tur = $rezervare->nr_adulti * $tarife->adult + $rezervare->nr_copii * $tarife->copil;
+
+                    // Promotie cu bilet nava 30 Euro doar luna iunie 2023
+                    if (($rezervare->bilet_nava === "1") && (\Carbon\Carbon::parse($request->data_plecare)->lessThan(Carbon::create(2023, 7, 1, 00, 00, 00)))){
+                        $rezervare->pret_total_tur += $rezervare->nr_adulti * 30;
+                    }
+
                     if ($request->tur_retur === "true"){
                         $rezervare->pret_total_retur = $rezervare->nr_adulti * $tarife_retur->adult + $rezervare->nr_copii * $tarife_retur->copil;
                     }

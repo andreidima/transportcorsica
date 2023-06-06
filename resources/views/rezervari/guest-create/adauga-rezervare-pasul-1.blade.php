@@ -423,18 +423,21 @@
                                         style="background-color:lightseagreen; color:white"
                                     >
                                         <div class="form-group col-lg-12 mb-2 d-flex justify-content-center border-bottom">
-                                                <h5 class="mb-1">Bilet la navă:</h5>
+                                                <h5 class="mb-1">Bilet la navă: {{ $rezervare->bilet_nava }}</h5>
                                         </div>
                                         <div class="form-group col-lg-12 justify-content-center text-center" style="">
+                                            <script type="application/javascript">
+                                                biletNava={!! json_encode(old('bilet_nava', ($rezervare->bilet_nava ?? ''))) !!}
+                                            </script>
                                             <div class="form-check form-check-inline mr-4 {{ $errors->has('bilet_nava') ? 'is-invalid' : '' }}">
-                                                <input class="form-check-input" type="radio" name="bilet_nava" id="bilet_nava1" value="1"
+                                                <input class="form-check-input" type="radio" name="bilet_nava" id="bilet_nava1" value="1" v-model="biletNava"
                                                 {{ old('bilet_nava', ($rezervare->bilet_nava ?? '')) == "1" ? 'checked' : '' }}>
                                                 <label class="form-check-label" for="bilet_nava1">
                                                     Doresc bilet la navă
                                                 </label>
                                             </div>
                                             <div class="form-check form-check-inline {{ $errors->has('bilet_nava') ? 'is-invalid' : '' }}">
-                                                <input class="form-check-input" type="radio" name="bilet_nava" id="bilet_nava2" value="0"
+                                                <input class="form-check-input" type="radio" name="bilet_nava" id="bilet_nava2" value="0" v-model="biletNava"
                                                     {{ old('bilet_nava', ($rezervare->bilet_nava ?? '')) == "0" ? 'checked' : '' }}
                                                 data-toggle="modal" data-target="#nuDorescBiletLaNava"
                                                 >

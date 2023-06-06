@@ -147,6 +147,7 @@ if (document.querySelector('#adauga-rezervare')) {
             sediul: ((typeof sediulVechi !== 'undefined') ? sediulVechi : ''),
             cumparatori: '',
 
+            biletNava: biletNava,
         },
         watch: {
             traseu: function () {
@@ -193,6 +194,9 @@ if (document.querySelector('#adauga-rezervare')) {
                 this.getPretTotal()
             },
             pret_copil_retur: function () {
+                this.getPretTotal()
+            },
+            biletNava: function () {
                 this.getPretTotal()
             }
         },
@@ -387,6 +391,12 @@ if (document.querySelector('#adauga-rezervare')) {
                     } else {
                         if (this.hasOnlyDigits(this.nr_adulti) && (this.nr_adulti > 0)) {
                             this.pret_total_tur = this.pret_total_tur + this.pret_adult * this.nr_adulti
+
+                            // Promotie cu bilet nava 30 Euro doar luna iunie 2023
+                            if ((this.biletNava === "1") && ((new Date(this.data1)) < (new Date("2023-07-01")))){
+                                this.pret_total_tur = this.pret_total_tur + 30 * this.nr_adulti
+                            }
+
                         }
                         if (this.hasOnlyDigits(this.nr_copii) && (this.nr_copii > 0)) {
                             this.pret_total_tur = this.pret_total_tur + this.pret_copil * this.nr_copii
