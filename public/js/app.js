@@ -2076,12 +2076,12 @@ __webpack_require__.r(__webpack_exports__);
         //     return ((date.getTime() < notBefore.getTime())
         //       || (dateDay !== this.doarZiua));
         //   }
-        // selectare doar sambata pana pe 27.02.2023, iar dupa selectare doar vinerea
+        // selectare doar vinerea incepand cu 06.11.2023, vom vedea daca se va mai intoarce programul la intoarceri sambata
 
 
         var dateDay = date.getDay();
-        var dataLaCareSeSchimbaZiuaDinSaptamana = new Date("2023-01-09");
-        var dataLaCareSeSchimbaInapoiZiuaDinSaptamana = new Date("2023-03-27");
+        var dataLaCareSeSchimbaZiuaDinSaptamana = new Date("2023-11-06");
+        var dataLaCareSeSchimbaInapoiZiuaDinSaptamana = new Date("2100-01-01");
         return date.getTime() < _notBefore.getTime() || (date.getTime() < dataLaCareSeSchimbaZiuaDinSaptamana.getTime() || date.getTime() > dataLaCareSeSchimbaInapoiZiuaDinSaptamana.getTime()) && dateDay !== 6 || date.getTime() > dataLaCareSeSchimbaZiuaDinSaptamana.getTime() && date.getTime() < dataLaCareSeSchimbaInapoiZiuaDinSaptamana.getTime() && dateDay !== 5;
         return date.getTime() < _notBefore.getTime();
       } // selectare date doar pana la un moment dat
@@ -2189,12 +2189,12 @@ __webpack_require__.r(__webpack_exports__);
         //     return ((date.getTime() < notBefore.getTime())
         //       || (dateDay !== this.doarZiua));
         //   }
-        // selectare doar miercurea pana pe 27.02.2023, iar dupa selectare doar martea
+        // selectare doar martea incepand cu 06.11.2023, vom vedea daca se va mai intoarce programul la plecari miercurea
 
 
         var dateDay = date.getDay();
-        var dataLaCareSeSchimbaZiuaDinSaptamana = new Date("2023-01-09");
-        var dataLaCareSeSchimbaInapoiZiuaDinSaptamana = new Date("2023-03-27");
+        var dataLaCareSeSchimbaZiuaDinSaptamana = new Date("2023-11-06");
+        var dataLaCareSeSchimbaInapoiZiuaDinSaptamana = new Date("2100-01-01");
         return date.getTime() < _notBefore.getTime() || (date.getTime() < dataLaCareSeSchimbaZiuaDinSaptamana.getTime() || date.getTime() > dataLaCareSeSchimbaInapoiZiuaDinSaptamana.getTime()) && dateDay !== 3 || date.getTime() > dataLaCareSeSchimbaZiuaDinSaptamana.getTime() && date.getTime() < dataLaCareSeSchimbaInapoiZiuaDinSaptamana.getTime() && dateDay !== 2;
         return date.getTime() < _notBefore.getTime();
       } // selectare date doar pana la un moment dat

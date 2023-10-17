@@ -65,10 +65,10 @@ export default {
         //       || (dateDay !== this.doarZiua));
         //   }
 
-          // selectare doar miercurea pana pe 27.02.2023, iar dupa selectare doar martea
+          // selectare doar martea incepand cu 06.11.2023, vom vedea daca se va mai intoarce programul la plecari miercurea
             const dateDay = date.getDay()
-            const dataLaCareSeSchimbaZiuaDinSaptamana = new Date("2023-01-09");
-            const dataLaCareSeSchimbaInapoiZiuaDinSaptamana = new Date("2023-03-27");
+            const dataLaCareSeSchimbaZiuaDinSaptamana = new Date("2023-11-06");
+            const dataLaCareSeSchimbaInapoiZiuaDinSaptamana = new Date("2100-01-01");
             return (
                 (date.getTime() < notBefore.getTime())
                 || (
