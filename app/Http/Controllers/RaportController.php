@@ -25,54 +25,54 @@ class RaportController extends Controller
             $search_data = \Request::get('search_data');
         } else {
             // Cand sunt cursele miercuri si sambata
-            switch (\Carbon\Carbon::today()->dayOfWeek){
-                case 0:
-                    $search_data = \Carbon\Carbon::today()->addDays(3);
-                    break;
-                case 1:
-                    $search_data = \Carbon\Carbon::today()->addDays(2);
-                    break;
-                case 2:
-                    $search_data = \Carbon\Carbon::today()->addDays(1);
-                    break;
-                case 3:
-                    $search_data = \Carbon\Carbon::today();
-                    break;
-                case 4:
-                    $search_data = \Carbon\Carbon::today()->addDays(2);
-                    break;
-                case 5:
-                    $search_data = \Carbon\Carbon::today()->addDays(1);
-                    break;
-                case 6:
-                    $search_data = \Carbon\Carbon::today();
-                    break;
-            }
-
-            // Cand sunt cursele marti si vineri
             // switch (\Carbon\Carbon::today()->dayOfWeek){
             //     case 0:
-            //         $search_data = \Carbon\Carbon::today()->addDays(2);
-            //         break;
-            //     case 1:
-            //         $search_data = \Carbon\Carbon::today()->addDays(1);
-            //         break;
-            //     case 2:
-            //         $search_data = \Carbon\Carbon::today()->addDays(0);
-            //         break;
-            //     case 3:
-            //         $search_data = \Carbon\Carbon::today()->addDays(2);
-            //         break;
-            //     case 4:
-            //         $search_data = \Carbon\Carbon::today()->addDays(1);
-            //         break;
-            //     case 5:
-            //         $search_data = \Carbon\Carbon::today()->addDays(0);
-            //         break;
-            //     case 6:
             //         $search_data = \Carbon\Carbon::today()->addDays(3);
             //         break;
+            //     case 1:
+            //         $search_data = \Carbon\Carbon::today()->addDays(2);
+            //         break;
+            //     case 2:
+            //         $search_data = \Carbon\Carbon::today()->addDays(1);
+            //         break;
+            //     case 3:
+            //         $search_data = \Carbon\Carbon::today();
+            //         break;
+            //     case 4:
+            //         $search_data = \Carbon\Carbon::today()->addDays(2);
+            //         break;
+            //     case 5:
+            //         $search_data = \Carbon\Carbon::today()->addDays(1);
+            //         break;
+            //     case 6:
+            //         $search_data = \Carbon\Carbon::today();
+            //         break;
             // }
+
+            // Cand sunt cursele marti si vineri
+            switch (\Carbon\Carbon::today()->dayOfWeek){
+                case 0:
+                    $search_data = \Carbon\Carbon::today()->addDays(2);
+                    break;
+                case 1:
+                    $search_data = \Carbon\Carbon::today()->addDays(1);
+                    break;
+                case 2:
+                    $search_data = \Carbon\Carbon::today()->addDays(0);
+                    break;
+                case 3:
+                    $search_data = \Carbon\Carbon::today()->addDays(2);
+                    break;
+                case 4:
+                    $search_data = \Carbon\Carbon::today()->addDays(1);
+                    break;
+                case 5:
+                    $search_data = \Carbon\Carbon::today()->addDays(0);
+                    break;
+                case 6:
+                    $search_data = \Carbon\Carbon::today()->addDays(3);
+                    break;
+            }
         }
 
         $rezervari = Rezervare::
