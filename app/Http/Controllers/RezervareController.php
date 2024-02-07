@@ -1480,29 +1480,29 @@ class RezervareController extends Controller
         $curs_bnr_euro = \App\Models\Variabila::where('nume', 'curs_bnr_euro')->first();
         if (\Carbon\Carbon::now()->hour >= 14) {
             if (\Carbon\Carbon::parse($curs_bnr_euro->updated_at) < (\Carbon\Carbon::today()->hour(14))){
-                $xml=simplexml_load_file("https://www.bnr.ro/nbrfxrates.xml") or die("Error: Cannot create object");
-                foreach($xml->Body->Cube->children() as $curs_bnr) {
-                    if ((string) $curs_bnr['currency'] === 'EUR'){
-                        $curs_bnr_euro->valoare = $curs_bnr[0];
-                        $curs_bnr_euro->save();
+                if ($xml=simplexml_load_file("https://www.bnr.ro/nbrfxrates.xml")) {
+                    foreach($xml->Body->Cube->children() as $curs_bnr) {
+                        if ((string) $curs_bnr['currency'] === 'EUR'){
+                            $curs_bnr_euro->valoare = $curs_bnr[0];
+                            $curs_bnr_euro->save();
+                        }
                     }
                 }
             }
-            // Dupa actualizarea cursului euro, variabila $curs_bnr_euro se transforma intr-o variabila de tip simpleXML, ce va da eroare mai departe in aplicatie, motiv pentru care necesita reinitializare
-            $curs_bnr_euro = \App\Models\Variabila::where('nume', 'curs_bnr_euro')->first();
         } else {
             if (\Carbon\Carbon::parse($curs_bnr_euro->updated_at) < (\Carbon\Carbon::yesterday()->hour(14))){
-                $xml=simplexml_load_file("https://www.bnr.ro/nbrfxrates.xml") or die("Error: Cannot create object");
-                foreach($xml->Body->Cube->children() as $curs_bnr) {
-                    if ((string) $curs_bnr['currency'] === 'EUR'){
-                        $curs_bnr_euro->valoare = $curs_bnr;
-                        $curs_bnr_euro->save();
+                if ($xml=simplexml_load_file("https://www.bnr.ro/nbrfxrates.xml")){
+                    foreach($xml->Body->Cube->children() as $curs_bnr) {
+                        if ((string) $curs_bnr['currency'] === 'EUR'){
+                            $curs_bnr_euro->valoare = $curs_bnr;
+                            $curs_bnr_euro->save();
+                        }
                     }
                 }
             }
-            // Dupa actualizarea cursului euro, variabila $curs_bnr_euro se transforma intr-o variabila de tip simpleXML, ce va da eroare mai departe in aplicatie, motiv pentru care necesita reinitializare
-            $curs_bnr_euro = \App\Models\Variabila::where('nume', 'curs_bnr_euro')->first();
         }
+        // Dupa actualizarea cursului euro, variabila $curs_bnr_euro se transforma intr-o variabila de tip simpleXML, ce va da eroare mai departe in aplicatie, motiv pentru care necesita reinitializare
+        $curs_bnr_euro = \App\Models\Variabila::where('nume', 'curs_bnr_euro')->first();
 
         // Salvarea preturilor in lei in tabelul de rezervari, pentru a emite chitante
         $rezervare_tur->curs_bnr_euro = $curs_bnr_euro->valoare;
@@ -1889,29 +1889,29 @@ class RezervareController extends Controller
         $curs_bnr_euro = \App\Models\Variabila::where('nume', 'curs_bnr_euro')->first();
         if (\Carbon\Carbon::now()->hour >= 14) {
             if (\Carbon\Carbon::parse($curs_bnr_euro->updated_at) < (\Carbon\Carbon::today()->hour(14))) {
-                $xml = simplexml_load_file("https://www.bnr.ro/nbrfxrates.xml") or die("Error: Cannot create object");
-                foreach ($xml->Body->Cube->children() as $curs_bnr) {
-                    if ((string) $curs_bnr['currency'] === 'EUR') {
-                        $curs_bnr_euro->valoare = $curs_bnr[0];
-                        $curs_bnr_euro->save();
+                if ($xml = simplexml_load_file("https://www.bnr.ro/nbrfxrates.xml")) {
+                    foreach ($xml->Body->Cube->children() as $curs_bnr) {
+                        if ((string) $curs_bnr['currency'] === 'EUR') {
+                            $curs_bnr_euro->valoare = $curs_bnr[0];
+                            $curs_bnr_euro->save();
+                        }
                     }
                 }
             }
-            // Dupa actualizarea cursului euro, variabila $curs_bnr_euro se transforma intr-o variabila de tip simpleXML, ce va da eroare mai departe in aplicatie, motiv pentru care necesita reinitializare
-            $curs_bnr_euro = \App\Models\Variabila::where('nume', 'curs_bnr_euro')->first();
         } else {
             if (\Carbon\Carbon::parse($curs_bnr_euro->updated_at) < (\Carbon\Carbon::yesterday()->hour(14))) {
-                $xml = simplexml_load_file("https://www.bnr.ro/nbrfxrates.xml") or die("Error: Cannot create object");
-                foreach ($xml->Body->Cube->children() as $curs_bnr) {
-                    if ((string) $curs_bnr['currency'] === 'EUR') {
-                        $curs_bnr_euro->valoare = $curs_bnr;
-                        $curs_bnr_euro->save();
+                if ($xml = simplexml_load_file("https://www.bnr.ro/nbrfxrates.xml")) {
+                    foreach ($xml->Body->Cube->children() as $curs_bnr) {
+                        if ((string) $curs_bnr['currency'] === 'EUR') {
+                            $curs_bnr_euro->valoare = $curs_bnr;
+                            $curs_bnr_euro->save();
+                        }
                     }
                 }
             }
-            // Dupa actualizarea cursului euro, variabila $curs_bnr_euro se transforma intr-o variabila de tip simpleXML, ce va da eroare mai departe in aplicatie, motiv pentru care necesita reinitializare
-            $curs_bnr_euro = \App\Models\Variabila::where('nume', 'curs_bnr_euro')->first();
         }
+        // Dupa actualizarea cursului euro, variabila $curs_bnr_euro se transforma intr-o variabila de tip simpleXML, ce va da eroare mai departe in aplicatie, motiv pentru care necesita reinitializare
+        $curs_bnr_euro = \App\Models\Variabila::where('nume', 'curs_bnr_euro')->first();
 
         // Stergere din datele care nu trebuie sa se duplice, si actualizarea celor care trebuie sa fie diferite
         $rezervare_tur->oras_plecare_sofer = NULL;
