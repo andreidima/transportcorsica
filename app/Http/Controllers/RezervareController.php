@@ -1480,7 +1480,8 @@ class RezervareController extends Controller
         $curs_bnr_euro = \App\Models\Variabila::where('nume', 'curs_bnr_euro')->first();
         if (\Carbon\Carbon::now()->hour >= 14) {
             if (\Carbon\Carbon::parse($curs_bnr_euro->updated_at) < (\Carbon\Carbon::today()->hour(14))){
-                if ($xml=simplexml_load_file("https://www.bnr.ro/nbrfxrates.xml")) {
+                // @ operator if you want silence the warning, or disable display_errors
+                if ($xml = @simplexml_load_file("https://www.bnr.ro/nbrfxrates.xml")) {
                     foreach($xml->Body->Cube->children() as $curs_bnr) {
                         if ((string) $curs_bnr['currency'] === 'EUR'){
                             $curs_bnr_euro->valoare = $curs_bnr[0];
@@ -1491,7 +1492,8 @@ class RezervareController extends Controller
             }
         } else {
             if (\Carbon\Carbon::parse($curs_bnr_euro->updated_at) < (\Carbon\Carbon::yesterday()->hour(14))){
-                if ($xml=simplexml_load_file("https://www.bnr.ro/nbrfxrates.xml")){
+                // @ operator if you want silence the warning, or disable display_errors
+                if ($xml = @simplexml_load_file("https://www.bnr.ro/nbrfxrates.xml")){
                     foreach($xml->Body->Cube->children() as $curs_bnr) {
                         if ((string) $curs_bnr['currency'] === 'EUR'){
                             $curs_bnr_euro->valoare = $curs_bnr;
@@ -1889,7 +1891,8 @@ class RezervareController extends Controller
         $curs_bnr_euro = \App\Models\Variabila::where('nume', 'curs_bnr_euro')->first();
         if (\Carbon\Carbon::now()->hour >= 14) {
             if (\Carbon\Carbon::parse($curs_bnr_euro->updated_at) < (\Carbon\Carbon::today()->hour(14))) {
-                if ($xml = simplexml_load_file("https://www.bnr.ro/nbrfxrates.xml")) {
+                // @ operator if you want silence the warning, or disable display_errors
+                if ($xml = @simplexml_load_file("https://www.bnr.ro/nbrfxrates.xml1")) {
                     foreach ($xml->Body->Cube->children() as $curs_bnr) {
                         if ((string) $curs_bnr['currency'] === 'EUR') {
                             $curs_bnr_euro->valoare = $curs_bnr[0];
@@ -1900,7 +1903,8 @@ class RezervareController extends Controller
             }
         } else {
             if (\Carbon\Carbon::parse($curs_bnr_euro->updated_at) < (\Carbon\Carbon::yesterday()->hour(14))) {
-                if ($xml = simplexml_load_file("https://www.bnr.ro/nbrfxrates.xml")) {
+                // @ operator if you want silence the warning, or disable display_errors
+                if ($xml = @simplexml_load_file("https://www.bnr.ro/nbrfxrates.xml1")) {
                     foreach ($xml->Body->Cube->children() as $curs_bnr) {
                         if ((string) $curs_bnr['currency'] === 'EUR') {
                             $curs_bnr_euro->valoare = $curs_bnr;
