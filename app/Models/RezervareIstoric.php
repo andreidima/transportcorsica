@@ -18,4 +18,24 @@ class RezervareIstoric extends Model
     {
         return "/rezervari-istoric/{$this->id}";
     }
+
+    public function oras_plecare_nume()
+    {
+        return $this->belongsTo('App\Models\Oras', 'oras_plecare');
+    }
+
+    public function oras_sosire_nume()
+    {
+        return $this->belongsTo('App\Models\Oras', 'oras_sosire');
+    }
+
+    public function pasageri_relation()
+    {
+        return $this->belongsToMany('App\Models\PasagerIstoric', 'pasageri_rezervari_istoric', 'rezervare_id', 'pasager_id')->where('pasageri_istoric.operatie', 'Stergere');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User', 'operatie_user_id');
+    }
 }

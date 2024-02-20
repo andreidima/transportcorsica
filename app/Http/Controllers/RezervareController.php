@@ -2012,5 +2012,4 @@ class RezervareController extends Controller
         $telefoane = [$telefon1, $telefon2];
         $this->trimiteSms('rezervari', null, '2', $telefoane, 'Salutare tuturor');
     }
-
 }

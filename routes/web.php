@@ -15,6 +15,7 @@ use App\Http\Controllers\MasinaController;
 use App\Http\Controllers\SoferController;
 use App\Http\Controllers\CronJobTrimitereController;
 use App\Http\Controllers\TarifController;
+use App\Http\Controllers\RezervareIstoricController;
 
 /*
 |--------------------------------------------------------------------------
@@ -79,21 +80,25 @@ Route::middleware(['role:administrator,sofer'])->group(function () {
     Route::get('rezervari/{rezervare}/duplica', [RezervareController::class, 'duplicaRezervare']);
     Route::post('rezervari/{rezervare}/pasageri-neseriosi', [RezervareController::class, 'insereazaPasageriNeseriosi'])->name('insereaza-pasageri-neseriosi');
 
-    Route::resource('clienti-neseriosi', ClientNeseriosController::class,  ['parameters' => ['clienti-neseriosi' => 'client_neserios']]);
+    Route::group(['middleware' => 'role:administrator,superadmin'], function () {
+        Route::resource('clienti-neseriosi', ClientNeseriosController::class,  ['parameters' => ['clienti-neseriosi' => 'client_neserios']]);
 
-    Route::resource('mesaje-trimise-sms', MesajTrimisSmsController::class,  ['parameters' => ['mesaje_trimise_sms' => 'mesaj_trimis_sms']]);
+        Route::resource('mesaje-trimise-sms', MesajTrimisSmsController::class,  ['parameters' => ['mesaje_trimise_sms' => 'mesaj_trimis_sms']]);
 
-    Route::resource('facturi', FacturaController::class,  ['parameters' => ['facturi' => 'factura']])
-        ->only(['index', 'destroy']);
-    Route::any('/facturi/{factura}/anuleaza', [FacturaController::class, 'anuleaza']);
-    Route::get('/facturi/{factura}/export/{view_type}', [FacturaController::class, 'exportPDF']);
+        Route::resource('facturi', FacturaController::class,  ['parameters' => ['facturi' => 'factura']])
+            ->only(['index', 'destroy']);
+        Route::any('/facturi/{factura}/anuleaza', [FacturaController::class, 'anuleaza']);
+        Route::get('/facturi/{factura}/export/{view_type}', [FacturaController::class, 'exportPDF']);
 
-    // Autocomplete firme pentru facturi
-    Route::get('vuejs/autocomplete', [VueJSController::class, 'autocomplete']);
-    Route::get('vuejs/autocomplete/search', [VueJSController::class, 'autocompleteSearch']);
+        // Autocomplete firme pentru facturi
+        Route::get('vuejs/autocomplete', [VueJSController::class, 'autocomplete']);
+        Route::get('vuejs/autocomplete/search', [VueJSController::class, 'autocompleteSearch']);
 
-    Route::resource('masini', MasinaController::class,  ['parameters' => ['masini' => 'masina']]);
-    Route::resource('soferi', SoferController::class,  ['parameters' => ['soferi' => 'sofer']]);
+        Route::resource('masini', MasinaController::class,  ['parameters' => ['masini' => 'masina']]);
+        Route::resource('soferi', SoferController::class,  ['parameters' => ['soferi' => 'sofer']]);
+
+        Route::get('rezervari-istoric/rezervari-sterse-sau-pasageri-stersi', [RezervareIstoricController::class, 'rezervariSterseSauPasageriStersi']);
+    });
 
     Route::get('/test', function () {
         return phpinfo();
