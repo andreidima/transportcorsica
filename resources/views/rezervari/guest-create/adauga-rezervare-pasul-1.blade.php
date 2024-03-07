@@ -1247,7 +1247,7 @@
                                 @endauth
                                     <div v-if="tip_calatorie === 'Calatori'" class="form-row px-2 py-2 justify-content-between">
                                         <div class="form-group col-lg-12 border-left border-info" style="border-width:5px !important">
-                                            * În prețul biletului aveți inclus 50 kg ptr bagajul dvs. Excedentul se tarifează cu 1,5 Euro / kg.
+                                            * În prețul biletului aveți inclus 60 kg ptr bagajul dvs. Excedentul se tarifează cu 1 Euro / kg.
                                             {{-- * IN PRETUL BILETULUI AVETI INCLUS 40 KG PTR BAGAJUL DVS , CE DEPASESTE SE TAXEAZA CU 1 EURO / KG !!! --}}
                                         </div>
                                     </div>
