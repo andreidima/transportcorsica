@@ -121,6 +121,10 @@
                                                     Localitate domiciliu: {{ $rezervare->adulti['localitate_domiciliu'][$i] }} --}}
                                                     <br>
                                                     Sex: {{ $rezervare->adulti['sex'][$i] ?? ''}}
+                                                    <br>
+                                                    Act de identitate: {{ $rezervare->adulti['document'][$i] ?? ''}}
+                                                    <br>
+                                                    Număr act de identitate: {{ $rezervare->adulti['document_nr'][$i] ?? ''}}
                                                 </div>
                                             @endfor
                                             @for ($i = 1 ; $i <= $rezervare->nr_copii ; $i++)
@@ -136,6 +140,10 @@
                                                     Localitate domiciliu: {{ $rezervare->copii['localitate_domiciliu'][$i] }} --}}
                                                     <br>
                                                     Sex: {{ $rezervare->copii['sex'][$i] ?? ''}}
+                                                    <br>
+                                                    Act de identitate: {{ $rezervare->copii['document'][$i] ?? ''}}
+                                                    <br>
+                                                    Număr act de identitate: {{ $rezervare->copii['document_nr'][$i] ?? ''}}
                                                 </div>
                                             @endfor
                                         </div>

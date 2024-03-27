@@ -94934,16 +94934,25 @@ if (document.querySelector('#adauga-rezervare')) {
       adulti_data_nastere: typeof adultiDataNastereVechi !== 'undefined' ? adultiDataNastereVechi : '',
       adulti_localitate_nastere: typeof adultiLocalitateNastereVechi !== 'undefined' ? adultiLocalitateNastereVechi : '',
       adulti_sex: typeof adultiSexVechi !== 'undefined' ? adultiSexVechi : '',
+      adulti_document: typeof adultiDocumentVechi !== 'undefined' ? adultiDocumentVechi : '',
+      adulti_document_nr: typeof adultiDocumentNrVechi !== 'undefined' ? adultiDocumentNrVechi : '',
       copii_nume: typeof copiiNumeVechi !== 'undefined' ? copiiNumeVechi : '',
       copii_data_nastere: typeof copiiDataNastereVechi !== 'undefined' ? copiiDataNastereVechi : '',
       copii_localitate_nastere: typeof copiiLocalitateNastereVechi !== 'undefined' ? copiiLocalitateNastereVechi : '',
       copii_sex: typeof copiiSexVechi !== 'undefined' ? copiiSexVechi : '',
+      copii_document: typeof copiiDocumentVechi !== 'undefined' ? copiiDocumentVechi : '',
+      copii_document_nr: typeof copiiDocumentNrVechi !== 'undefined' ? copiiDocumentNrVechi : '',
       // buletin: buletinVechi,
       // localitate_domiciliu: localitateDomiciliuVechi,
       tipuri_sex: [{
         nume: 'M'
       }, {
         nume: 'F'
+      }],
+      tipuri_documente: [{
+        nume: 'Carte de identitate'
+      }, {
+        nume: 'Pasaport'
       }],
       tip_calatorie: typeof tipCalatorieVeche !== 'undefined' ? tipCalatorieVeche : '',
       traseu: typeof traseuVechi !== 'undefined' ? traseuVechi : '',
@@ -95268,6 +95277,8 @@ if (document.querySelector('#adauga-rezervare')) {
         this.$delete(this.adulti_localitate_nastere, adult); // this.$delete(this.localitate_domiciliu, adult);
 
         this.$delete(this.adulti_sex, adult);
+        this.$delete(this.adulti_document, adult);
+        this.$delete(this.adulti_document_nr, adult);
         this.nr_adulti--;
         this.getPretTotal();
       },
@@ -95279,6 +95290,8 @@ if (document.querySelector('#adauga-rezervare')) {
         this.$delete(this.copii_localitate_nastere, copil); // this.$delete(this.localitate_domiciliu, copil);
 
         this.$delete(this.copii_sex, copil);
+        this.$delete(this.copii_document, copil);
+        this.$delete(this.copii_document_nr, copil);
         this.nr_copii--;
         this.getPretTotal();
       },
@@ -95706,8 +95719,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! E:\laragon\www\transportcorsica\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! E:\laragon\www\transportcorsica\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\laragon\www\transportcorsica\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\laragon\www\transportcorsica\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

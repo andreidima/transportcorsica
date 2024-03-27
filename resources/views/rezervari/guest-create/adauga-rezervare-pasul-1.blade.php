@@ -720,11 +720,14 @@
                                                     adultiDataNastereVechi={!! json_encode(\Illuminate\Support\Arr::flatten(old('adulti.data_nastere', ($rezervare->adulti['data_nastere'] ?? [])))) !!}
                                                     adultiLocalitateNastereVechi={!! json_encode(\Illuminate\Support\Arr::flatten(old('adulti.localitate_nastere', ($rezervare->adulti['localitate_nastere'] ?? [])))) !!}
                                                     adultiSexVechi={!! json_encode(\Illuminate\Support\Arr::flatten(old('adulti.sex', ($rezervare->adulti['sex'] ?? [])))) !!}
+                                                    adultiDocumentVechi={!! json_encode(\Illuminate\Support\Arr::flatten(old('adulti.document', ($rezervare->adulti['document'] ?? [])))) !!}
+                                                    adultiDocumentNrVechi={!! json_encode(\Illuminate\Support\Arr::flatten(old('adulti.document_nr', ($rezervare->adulti['document_nr'] ?? [])))) !!}
 
                                                     copiiNumeVechi={!! json_encode(\Illuminate\Support\Arr::flatten(old('copii.nume', ($rezervare->copii['nume'] ?? [])))) !!}
                                                     copiiDataNastereVechi={!! json_encode(\Illuminate\Support\Arr::flatten(old('copii.data_nastere', ($rezervare->copii['data_nastere'] ?? [])))) !!}
                                                     copiiLocalitateNastereVechi={!! json_encode(\Illuminate\Support\Arr::flatten(old('copii.localitate_nastere', ($rezervare->copii['localitate_nastere'] ?? [])))) !!}
-                                                    copiiSexVechi={!! json_encode(\Illuminate\Support\Arr::flatten(old('copii.sex', ($rezervare->copii['sex'] ?? [])))) !!}
+                                                    copiiDocumentVechi={!! json_encode(\Illuminate\Support\Arr::flatten(old('copii.document', ($rezervare->copii['document'] ?? [])))) !!}
+                                                    copiiDocumentNrVechi={!! json_encode(\Illuminate\Support\Arr::flatten(old('copii.document_nr', ($rezervare->copii['document_nr'] ?? [])))) !!}
 
                                                     // buletinVechi={!! json_encode(\Illuminate\Support\Arr::flatten(old('pasageri.buletin', ($rezervare->pasageri['buletin'] ?? [])))) !!}
                                                     // localitateNastereVechi={!! json_encode(\Illuminate\Support\Arr::flatten(old('pasageri.localitate_nastere', ($rezervare->pasageri['localitate_nastere'] ?? [])))) !!}
@@ -771,7 +774,7 @@
                                                                         v-model="adulti_data_nastere[adult-1]">
                                                                 </div>
                                                                 <div class="form-group col-lg-3">
-                                                                    <label for="adulti_licalitate_nastere" class="col-form-label col-form-label-sm mb-0 py-0 mr-2">Localitate naștere:</label>
+                                                                    <label for="adulti_localitate_nastere" class="col-form-label col-form-label-sm mb-0 py-0 mr-2">Localitate naștere:</label>
                                                                     <input type="text"
                                                                         class="form-control form-control-sm"
                                                                         :name="'adulti[localitate_nastere][' + adult + ']'"
@@ -799,6 +802,28 @@
                                                                         :name="'pasageri[localitate_domiciliu][' + adult + ']'"
                                                                         v-model="localitate_domiciliu[adult-1]">
                                                                 </div> --}}
+                                                                <div class="form-group col-lg-3">
+                                                                    <label for="adulti_document" class="col-form-label col-form-label-sm mb-0 py-0 mr-2">Act de identitate:</label>
+                                                                    <select class="custom-select-sm custom-select"
+                                                                        :name="'adulti[document][' + adult + ']'"
+                                                                        v-model="adulti_document[adult-1]">
+                                                                        >
+                                                                        <option disabled value="">Selectează o opțiune</option>
+                                                                        <option
+                                                                            v-for='tip_document in tipuri_documente'
+                                                                            :value='tip_document.nume'
+                                                                            >
+                                                                                @{{tip_document.nume}}
+                                                                        </option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="form-group col-lg-3">
+                                                                    <label for="adulti_document_nr" class="col-form-label col-form-label-sm mb-0 py-0 mr-2">Număr act identitate:</label>
+                                                                    <input type="text"
+                                                                        class="form-control form-control-sm"
+                                                                        :name="'adulti[document_nr][' + adult + ']'"
+                                                                        v-model="adulti_document_nr[adult-1]">
+                                                                </div>
                                                                 <div class="col-lg-3">
                                                                 </div>
                                                             </div>
@@ -860,6 +885,28 @@
                                                                                 @{{tip_sex.nume}}
                                                                         </option>
                                                                     </select>
+                                                                </div>
+                                                                <div class="form-group col-lg-3">
+                                                                    <label for="copii_document" class="col-form-label col-form-label-sm mb-0 py-0 mr-2">Act de identitate:</label>
+                                                                    <select class="custom-select-sm custom-select"
+                                                                        :name="'copii[document][' + copil + ']'"
+                                                                        v-model="copii_document[copil-1]">
+                                                                        >
+                                                                        <option disabled value="">Selectează o opțiune</option>
+                                                                        <option
+                                                                            v-for='tip_document in tipuri_documente'
+                                                                            :value='tip_document.nume'
+                                                                            >
+                                                                                @{{tip_document.nume}}
+                                                                        </option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="form-group col-lg-3">
+                                                                    <label for="copii_document_nr" class="col-form-label col-form-label-sm mb-0 py-0 mr-2">Număr act identitate:</label>
+                                                                    <input type="text"
+                                                                        class="form-control form-control-sm"
+                                                                        :name="'copii[document_nr][' + copil + ']'"
+                                                                        v-model="copii_document_nr[copil-1]">
                                                                 </div>
                                                                 <div class="col-lg-3">
                                                                 </div>

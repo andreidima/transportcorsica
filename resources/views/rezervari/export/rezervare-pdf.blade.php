@@ -299,6 +299,12 @@
                                 {{ $pasager->sex }}
                             </td>
                             <td style="border: solid 1px gray">
+                                {{ $pasager->document }}
+                            </td>
+                            <td style="border: solid 1px gray">
+                                {{ $pasager->document_nr }}
+                            </td>
+                            <td style="border: solid 1px gray">
                                 {{ $pasager->categorie }}
                             </td>
                         </tr>

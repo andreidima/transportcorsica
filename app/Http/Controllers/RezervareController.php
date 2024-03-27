@@ -168,6 +168,9 @@ class RezervareController extends Controller
             'localitate_nastere' => [],
             // 'localitate_domiciliu' => []
             'sex' => [],
+            'document' => [],
+            'document_nr' => [],
+
         ];
         $i = 1;
         foreach ($rezervare->pasageri_relation_adulti as $adult){
@@ -177,6 +180,8 @@ class RezervareController extends Controller
             $adulti['localitate_nastere'] = Arr::add($adulti['localitate_nastere'], $i, $adult->localitate_nastere);
             // $adulti['localitate_domiciliu'] = Arr::add($adulti['localitate_domiciliu'], $i, $adult->localitate_domiciliu);
             $adulti['sex'] = Arr::add($adulti['sex'], $i, $adult->sex);
+            $adulti['document'] = Arr::add($adulti['document'], $i, $adult->document);
+            $adulti['document_nr'] = Arr::add($adulti['document_nr'], $i, $adult->document_nr);
             $i++;
         }
         $rezervare->adulti = $adulti;
@@ -187,6 +192,8 @@ class RezervareController extends Controller
             'localitate_nastere' => [],
             // 'localitate_domiciliu' => []
             'sex' => [],
+            'document' => [],
+            'document_nr' => [],
         ];
         $i = 1;
         foreach ($rezervare->pasageri_relation_copii as $copil) {
@@ -196,6 +203,8 @@ class RezervareController extends Controller
             $copii['localitate_nastere'] = Arr::add($copii['localitate_nastere'], $i, $copil->localitate_nastere);
             // $copii['localitate_domiciliu'] = Arr::add($copii['localitate_domiciliu'], $i, $copil->localitate_domiciliu);
             $copii['sex'] = Arr::add($copii['sex'], $i, $copil->sex);
+            $copii['document'] = Arr::add($copii['document'], $i, $copil->document);
+            $copii['document_nr'] = Arr::add($copii['document_nr'], $i, $copil->document_nr);
             $i++;
         }
         $rezervare->copii = $copii;
@@ -417,6 +426,8 @@ class RezervareController extends Controller
                 $pasager->localitate_nastere = $request->adulti['localitate_nastere'][$i];
                 // $pasager->localitate_domiciliu = $request->adulti['localitate_domiciliu'][$i];
                 $pasager->sex = $request->adulti['sex'][$i] ?? '';
+                $pasager->document = $request->adulti['document'][$i] ?? '';
+                $pasager->document_nr = $request->adulti['document_nr'][$i] ?? '';
                 $pasager->categorie = 'Adult';
                 $pasager->save();
 
@@ -435,6 +446,8 @@ class RezervareController extends Controller
                 $pasager->localitate_nastere = $request->copii['localitate_nastere'][$i];
                 // $pasager->localitate_domiciliu = $request->copii['localitate_domiciliu'][$i];
                 $pasager->sex = $request->copii['sex'][$i] ?? '';
+                $pasager->document = $request->copii['document'][$i] ?? '';
+                $pasager->document_nr = $request->copii['document_nr'][$i] ?? '';
                 $pasager->categorie = 'Copil';
                 $pasager->save();
 
@@ -780,11 +793,13 @@ class RezervareController extends Controller
                 $adulti['nume'][$i] = $transliterator->transliterate($adulti['nume'][$i]);
                 $adulti['data_nastere'][$i] = $transliterator->transliterate($adulti['data_nastere'][$i]);
                 $adulti['localitate_nastere'][$i] = $transliterator->transliterate($adulti['localitate_nastere'][$i]);
+                $adulti['document_nr'][$i] = $transliterator->transliterate($adulti['document_nr'][$i]);
             }
             for ($i = 1; $i <= $request->nr_copii; $i++) {
                 $copii['nume'][$i] = $transliterator->transliterate($copii['nume'][$i]);
                 $copii['data_nastere'][$i] = $transliterator->transliterate($copii['data_nastere'][$i]);
                 $copii['localitate_nastere'][$i] = $transliterator->transliterate($copii['localitate_nastere'][$i]);
+                $copii['document_nr'][$i] = $transliterator->transliterate($copii['document_nr'][$i]);
             }
             $request->merge([
                 'adulti' => $adulti,
@@ -853,6 +868,8 @@ class RezervareController extends Controller
                     'adulti.localitate_nastere.*' => ['nullable', 'max:100'],
                     // 'adulti.localitate_domiciliu.*' => ['nullable', 'max:100'],
                     'adulti.sex.*' => ['nullable', 'max:100'],
+                    'adulti.document.*' => ['nullable', 'max:100'],
+                    'adulti.document_nr.*' => ['nullable', 'max:100'],
                     'copii.nume.*' => [
                         'nullable', 'max:100',
                         function ($attribute, $value, $fail) use ($request, $rezervare_tur) {
@@ -899,6 +916,8 @@ class RezervareController extends Controller
                     'copii.localitate_nastere.*' => ['nullable', 'max:100'],
                     // 'copii.localitate_domiciliu.*' => ['nullable', 'max:100'],
                     'copii.sex.*' => ['nullable', 'max:100'],
+                    'copii.document.*' => ['nullable', 'max:100'],
+                    'copii.document_nr.*' => ['nullable', 'max:100'],
                     'colete_numar' => ['nullable', 'numeric'],
                     'colete_kg' => ['nullable', 'numeric'],
                     'colete_volum' => ['nullable', 'numeric'],
@@ -1018,6 +1037,8 @@ class RezervareController extends Controller
                     'adulti.localitate_nastere.*' => ['required', 'max:100'],
                     // 'adulti.localitate_domiciliu.*' => ['nullable', 'max:100'],
                     'adulti.sex.*' => ['nullable', 'max:100'],
+                    'adulti.document.*' => ['nullable', 'max:100'],
+                    'adulti.document_nr.*' => ['nullable', 'max:100'],
                     'copii.nume.*' => ['required', 'max:100',
                         function ($attribute, $value, $fail) use ($request) {
                             if (!empty($request->data_plecare)){
@@ -1051,6 +1072,8 @@ class RezervareController extends Controller
                     'copii.localitate_nastere.*' => ['required', 'max:100'],
                     // 'copii.localitate_domiciliu.*' => ['nullable', 'max:100'],
                     'copii.sex.*' => ['nullable', 'max:100'],
+                    'copii.document.*' => ['nullable', 'max:100'],
+                    'copii.document_nr.*' => ['nullable', 'max:100'],
                     'colete_numar' => ['required_if:tip_calatorie,Colete', 'numeric'],
                     'colete_kg' => ['nullable', 'required_if:tip_calatorie,Colete', 'numeric'],
                     'colete_volum' => ['nullable', 'numeric'],
@@ -1190,6 +1213,7 @@ class RezervareController extends Controller
      */
     public function postAdaugaRezervarePasul1(Request $request)
     {
+        // dd($request);
         if(empty($request->session()->get('rezervare'))){
             $rezervare = new Rezervare();
         }else{
@@ -1446,6 +1470,8 @@ class RezervareController extends Controller
                 $pasager->localitate_nastere = $rezervare->adulti['localitate_nastere'][$i];
                 // $pasager->localitate_domiciliu = $rezervare->adulti['localitate_domiciliu'][$i];
                 $pasager->sex = $rezervare->adulti['sex'][$i] ?? '';
+                $pasager->document = $rezervare->adulti['document'][$i] ?? '';
+                $pasager->document_nr = $rezervare->adulti['document_nr'][$i] ?? '';
                 $pasager->categorie = 'Adult';
                 $pasager->save();
 
@@ -1464,6 +1490,8 @@ class RezervareController extends Controller
                 $pasager->localitate_nastere = $rezervare->copii['localitate_nastere'][$i];
                 // $pasager->localitate_domiciliu = $rezervare->copii['localitate_domiciliu'][$i];
                 $pasager->sex = $rezervare->copii['sex'][$i] ?? '';
+                $pasager->document = $rezervare->copii['document'][$i] ?? '';
+                $pasager->document_nr = $rezervare->copii['document_nr'][$i] ?? '';
                 $pasager->categorie = 'Copil';
                 $pasager->save();
 

@@ -134,6 +134,10 @@
                                                     Localitate domiciliu: {{ $pasager->localitate_domiciliu }} --}}
                                                     <br>
                                                     Sex: {{ $pasager->sex }}
+                                                    <br>
+                                                    Act de identitate: {{ $pasager->document }}
+                                                    <br>
+                                                    Nr. act de identitate: {{ $pasager->document_nr }}
                                                 </div>
                                             @endforeach
                                         </div>

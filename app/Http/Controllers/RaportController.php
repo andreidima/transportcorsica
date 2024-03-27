@@ -337,7 +337,9 @@ class RaportController extends Controller
                 // $sheet->setCellValue('F1', 'Localitate domiciliu');
                 $sheet->setCellValue('E1', 'Sex');
                 $sheet->setCellValue('F1', 'Cetatenie');
-                $sheet->setCellValue('G1', 'Categorie');
+                // $sheet->setCellValue('G1', 'Categorie');
+                $sheet->setCellValue('G1', 'Act de identitate');
+                $sheet->setCellValue('H1', 'Numarul actului de identitate');
 
                 // dd($rezervari, $rezervari->where('bilet_nava', 1));
 
@@ -363,6 +365,8 @@ class RaportController extends Controller
                     $sheet->setCellValue('E' . ($nr_celula), $pasager->sex);
                     $sheet->setCellValue('F' . ($nr_celula), 'Romana');
                     // $sheet->setCellValue('G' . ($nr_celula), $pasager->categorie);
+                    $sheet->setCellValue('G' . ($nr_celula), $pasager->document);
+                    $sheet->setCellValue('H' . ($nr_celula), $pasager->document_nr);
                     $nr_celula++;
                     }
                 }
@@ -523,6 +527,8 @@ class RaportController extends Controller
                 $sheet->setCellValue('E1', 'Sex');
                 $sheet->setCellValue('F1', 'Cetatenie');
                 $sheet->setCellValue('G1', 'Categorie');
+                $sheet->setCellValue('H1', 'Act de identitate');
+                $sheet->setCellValue('I1', 'Numarul actului de identitate');
 
                 // dd($rezervari, $rezervari->where('bilet_nava', 1));
 
@@ -551,6 +557,8 @@ class RaportController extends Controller
                         if ($pasager->categorie === "Copil"){
                             $sheet->getStyle('G' . ($nr_celula))->getFont()->getColor()->setARGB(\PhpOffice\PhpSpreadsheet\Style\Color::COLOR_RED);
                         }
+                    $sheet->setCellValue('H' . ($nr_celula), $pasager->document);
+                    $sheet->setCellValue('I' . ($nr_celula), $pasager->document_nr);
                     $nr_celula++;
                     }
                 }
