@@ -275,6 +275,12 @@
                                 Sex
                             </td>
                             <td style="border: solid 1px gray">
+                                Act de identitate
+                            </td>
+                            <td style="border: solid 1px gray">
+                                Număr act identitate
+                            </td>
+                            <td style="border: solid 1px gray">
                                 Categorie
                             </td>
                         </tr>
