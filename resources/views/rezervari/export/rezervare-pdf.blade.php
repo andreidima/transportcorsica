@@ -222,7 +222,7 @@
 
             <table style="margin-bottom:20px">
                 <tr style="text-align:center; font-weight:bold;">
-                    <td colspan="5" style="border-width:0px; padding:0rem;">
+                    <td colspan="7" style="border-width:0px; padding:0rem;">
                         <h3 style="background-color:#e7d790; color:black; margin:10px 0px 5px 0px; padding:5px 0px">
                         Călătorie | Tarif
                         </h3>
@@ -230,7 +230,7 @@
                 </tr>
                     @if ($rezervare_tur->nr_adulti > 0)
                         <tr>
-                            <td colspan="5" style="text-align: center">
+                            <td colspan="7" style="text-align: center">
                                 <span style="margin-right:50px">
                                     Pasageri: <b>{{ $rezervare_tur->nr_adulti + $rezervare_tur->nr_copii }}</b>
                                 </span>
