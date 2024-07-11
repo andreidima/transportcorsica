@@ -108,7 +108,6 @@ class FacturaController extends Controller
 
         $facturaDescriere .= "Preț în EURO: " . round($factura->valoare_euro) . " EURO. ";
         $facturaDescriere .= "Curs valutar BNR la data rezervării biletului de călătorie (" . Carbon::parse($factura->rezervare->created_at)->isoFormat('DD.MM.YYYY') . "): 1 EURO = " . $factura->curs_bnr_euro;
-// dd($facturaDescriere);
 
         // URL-ul API-ului
         $url = "https://ws.smartbill.ro/SBORO/api/invoice";
@@ -151,11 +150,11 @@ class FacturaController extends Controller
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             "accept: application/json",
-            "authorization: Basic b2ZmaWNlQHRyYW5zcG9ydGNvcnNpY2Eucm86MDAzfGJlNzJlY2FkNmMwMDRmMjEzMDI5MjRhNjAwODRhNzMy",
+            "authorization: " . \Config::get('variabile.smartbillCurlAuthorization'),
             "content-type: application/json"
         ]);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-
+// dd(curl_getinfo($ch));
         // Executarea cererii și captarea răspunsului
         $response = curl_exec($ch);
 
