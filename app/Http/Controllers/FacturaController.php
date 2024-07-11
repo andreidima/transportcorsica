@@ -121,6 +121,7 @@ class FacturaController extends Controller
                 "vatCode" => $factura->cif,
                 "isTaxPayer" => true,
                 "address" => $factura->sediul,
+                "county" => $factura->judet,
                 "country" => "Romania",
                 "saveToDb" => false
             ],

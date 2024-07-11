@@ -218,6 +218,8 @@
                                         <br>
                                         CIF: {{ $rezervare_tur->factura->cif }}
                                         <br>
+                                        Județul: {{ $rezervare_tur->factura->judet }}
+                                        <br>
                                         Sediul: {{ $rezervare_tur->factura->sediul }}
                                     </div>
                                 @endif

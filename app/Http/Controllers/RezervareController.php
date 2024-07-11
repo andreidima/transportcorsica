@@ -214,6 +214,7 @@ class RezervareController extends Controller
             $rezervare->cumparator = $rezervare->factura->cumparator;
             $rezervare->nr_reg_com = $rezervare->factura->nr_reg_com;
             $rezervare->cif = $rezervare->factura->cif;
+            $rezervare->judet = $rezervare->factura->judet;
             $rezervare->sediul = $rezervare->factura->sediul;
         }
 
@@ -466,6 +467,7 @@ class RezervareController extends Controller
                     $factura->cumparator = $request->cumparator;
                     $factura->nr_reg_com = $request->nr_reg_com;
                     $factura->cif = $request->cif;
+                    $factura->judet = $request->judet;
                     $factura->sediul = $request->sediul;
                     $factura->seria = Factura::select('seria')->latest()->first()->seria ?? 'MRW88';
                     $factura->numar = (Factura::select('numar')->latest()->first()->numar ?? 0) + 1;
@@ -970,6 +972,7 @@ class RezervareController extends Controller
                     'cumparator' => ['nullable', 'max:100'],
                     'nr_reg_com' => ['nullable', 'max:100'],
                     'cif' => ['nullable', 'max:100'],
+                    'judet' => ['nullable', 'max:100'],
                     'sediul' => ['nullable', 'max:100'],
                     'cnp' => ['nullable', 'max:100'],
                     'acord_de_confidentialitate' => ['nullable'],
@@ -1127,6 +1130,7 @@ class RezervareController extends Controller
                     'cumparator' => ['nullable', 'max:100'],
                     'nr_reg_com' => ['nullable', 'max:100'],
                     'cif' => ['nullable', 'max:100'],
+                    'judet' => ['nullable', 'max:100'],
                     'sediul' => ['nullable', 'max:100'],
                     'acord_de_confidentialitate' => ['required'],
                     'termeni_si_conditii' => ['required'],
@@ -1399,6 +1403,7 @@ class RezervareController extends Controller
             $rezervare_unset->cumparator,
             $rezervare_unset->nr_reg_com,
             $rezervare_unset->cif,
+            $rezervare_unset->judet,
             $rezervare_unset->sediul,
             $rezervare_unset->acord_de_confidentialitate,
             $rezervare_unset->termeni_si_conditii
@@ -1567,6 +1572,7 @@ class RezervareController extends Controller
             $factura->cumparator = $rezervare->cumparator;
             $factura->nr_reg_com = $rezervare->nr_reg_com;
             $factura->cif = $rezervare->cif;
+            $factura->judet = $rezervare->judet;
             $factura->sediul = $rezervare->sediul;
             $factura->seria = Factura::select('seria')->latest()->first()->seria ?? 'MRW88';
             $factura->numar = (Factura::select('numar')->latest()->first()->numar ?? 0) + 1;

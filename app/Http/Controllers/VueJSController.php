@@ -26,7 +26,7 @@ class VueJSController extends Controller
     public function autocompleteSearch(Request $request)
     {
         $cumparator = $request->cumparator;
-        $data = Factura::select('cumparator', 'nr_reg_com', 'cif', 'sediul')->groupBy('cumparator')->where('cumparator','like','%'.$cumparator.'%')->get();
+        $data = Factura::select('cumparator', 'nr_reg_com', 'cif', 'judet', 'sediul')->groupBy('cumparator')->where('cumparator','like','%'.$cumparator.'%')->get();
 
         return response()->json($data);
     }

@@ -91,6 +91,7 @@
                             <b>{{ $factura->cumparator }}</b> <br>
                             Nr. Reg. com.: {{ $factura->nr_reg_com }} <br>
                             CIF: {{ $factura->cif }} <br>
+                            Județ: {{ $factura->judet }} <br>
                             Sediul: {{ $factura->sediul }} <br>
                     </td>
                 </tr>

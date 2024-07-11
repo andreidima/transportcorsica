@@ -1210,6 +1210,7 @@
                                                         cumparatorVechi={!! json_encode(old('cumparator', ($rezervare->cumparator ?? ''))) !!}
                                                         nr_reg_comVechi={!! json_encode(old('nr_reg_com', ($rezervare->nr_reg_com ?? ''))) !!}
                                                         cifVechi={!! json_encode(old('cif', ($rezervare->cif ?? ''))) !!}
+                                                        judetVechi={!! json_encode(old('judet', ($rezervare->judet ?? ''))) !!}
                                                         sediulVechi={!! json_encode(old('sediul', ($rezervare->sediul ?? ''))) !!}
                                                     </script>
                                 @auth
@@ -1223,7 +1224,7 @@
                                         <div class="form-group col-lg-12 mb-2">
                                                 <span>*Completați aceste câmpuri doar dacă doriți factură.</h5>
                                         </div>
-                                        <div class="form-group col-lg-3 mb-2">
+                                        <div class="form-group col-lg-4 mb-2">
                                             <div class="panel panel-default">
                                                 <div class="panel-body">
                                                     <label for="cumparator" class="mb-0">Cumpărător:</label>
@@ -1246,6 +1247,7 @@
                                                                         cumparator = client.cumparator;
                                                                         nr_reg_com = client.nr_reg_com;
                                                                         cif = client.cif;
+                                                                        judet = client.judet;
                                                                         sediul = client.sediul;
                                                                         cumparatori = ''
                                                                     ">
@@ -1257,7 +1259,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="form-group col-lg-3 mb-2">
+                                        <div class="form-group col-lg-4 mb-2">
                                             <label for="nr_reg_com" class="mb-0">Nr. Reg. Com.:</label>
                                             <input
                                                 type="text"
@@ -1268,7 +1270,7 @@
                                                 value="{{ old('nr_reg_com', ($rezervare->nr_reg_com ?? '')) }}"
                                                 required>
                                         </div>
-                                        <div class="form-group col-lg-3 mb-2">
+                                        <div class="form-group col-lg-4 mb-2">
                                             <label for="cif" class="mb-0">CIF:</label>
                                             <input
                                                 type="text"
@@ -1279,7 +1281,18 @@
                                                 value="{{ old('cif', ($rezervare->cif ?? '')) }}"
                                                 required>
                                         </div>
-                                        <div class="form-group col-lg-3 mb-2">
+                                        <div class="form-group col-lg-4 mb-2">
+                                            <label for="judet" class="mb-0">Județul:</label>
+                                            <input
+                                                type="text"
+                                                v-model="judet"
+                                                class="form-control form-control-sm {{ $errors->has('judet') ? 'is-invalid' : '' }}"
+                                                name="judet"
+                                                placeholder=""
+                                                value="{{ old('judet', ($rezervare->judet ?? '')) }}"
+                                                required>
+                                        </div>
+                                        <div class="form-group col-lg-8 mb-2">
                                             <label for="sediul" class="mb-0">Sediul:</label>
                                             <input
                                                 type="text"

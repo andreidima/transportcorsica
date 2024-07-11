@@ -235,6 +235,8 @@
                                         <br>
                                         CIF: {{ $rezervare->cif }}
                                         <br>
+                                        Județul: {{ $rezervare->judet }}
+                                        <br>
                                         Sediul: {{ $rezervare->sediul }}
                                     </div>
                                 @endif

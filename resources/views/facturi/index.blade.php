@@ -46,7 +46,7 @@
                             <th>Cumpărător</th>
                             <th>Nr. Reg. Com.</th>
                             <th>CIF</th>
-                            <th>Sediul</th>
+                            <th>Sediul, Județ</th>
                             <th>Data</th>
                             <th class="text-center">PDF</th>
                             <th class="text-right">Acțiuni</th>
@@ -88,7 +88,7 @@
                                     {{ $factura->cif }}
                                 </td>
                                 <td>
-                                    {{ $factura->sediul }}
+                                    {{ $factura->sediul }}, {{ $factura->judet }}
                                 </td>
                                 <td>
                                     {{ \Carbon\Carbon::parse($factura->created_at)->isoFormat('DD.MM.YYYY') ?? ''}}

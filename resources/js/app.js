@@ -153,6 +153,7 @@ if (document.querySelector('#adauga-rezervare')) {
             cumparator: ((typeof cumparatorVechi !== 'undefined') ? cumparatorVechi : ''),
             nr_reg_com: ((typeof nr_reg_comVechi !== 'undefined') ? nr_reg_comVechi : ''),
             cif: ((typeof cifVechi !== 'undefined') ? cifVechi : ''),
+            judet: ((typeof judetVechi !== 'undefined') ? judetVechi : ''),
             sediul: ((typeof sediulVechi !== 'undefined') ? sediulVechi : ''),
             cumparatori: '',
 
