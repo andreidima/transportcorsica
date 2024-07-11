@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Factura;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class FacturaController extends Controller
 {
@@ -82,5 +83,68 @@ class FacturaController extends Controller
                     ->setPaper('a4', 'portrait');
                 return $pdf->download('Factura ' . $factura->cumparator . ' - ' . \Carbon\Carbon::parse($factura->created_at)->isoFormat('DD.MM.YYYY') . '.pdf');
         }
+    }
+
+    public function trimiteInSmartbill(Request $request, Factura $factura = null)
+    {
+        // URL-ul API-ului
+        $url = "https://ws.smartbill.ro/SBORO/api/invoice";
+
+        // Datele pentru body-ul cererii
+        $data = json_encode([
+            "companyVatCode" => "RO35059906",
+            "seriesName" => "MRW88",
+            "client" => [
+                "name" => $factura->cumparator,
+                "vatCode" => $factura->cif,
+                "isTaxPayer" => true,
+                "address" => $factura->sediul,
+                "country" => "Romania",
+                "saveToDb" => false
+            ],
+            "issueDate" => Carbon::parse($factura->created_at)->isoFormat('YYYY-MM-DD'),
+            "products" => [
+                [
+                    "code" => "10",
+                    "name" => "Servicii transport international persoane",
+                    "productDescription" => "Bilet nr. MRW881234 <br><br> - client Ion Vasile",
+                    "measuringUnitName" => "buc",
+                    "currency" => "RON",
+                    "quantity" => 1,
+                    "price" => $factura->valoare_lei + $factura->valoare_lei_tva,
+                    "isTaxIncluded" => false,
+                    "taxName" => "SDD",
+                    "taxPercentage" => 0,
+                    "saveToDb" => false
+                ]
+            ]
+        ]);
+// dd($data);
+        // Inițializarea sesiunii cURL
+        $ch = curl_init($url);
+
+        // Setarea opțiunilor cURL
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            "accept: application/json",
+            "authorization: Basic b2ZmaWNlQHRyYW5zcG9ydGNvcnNpY2Eucm86MDAzfGJlNzJlY2FkNmMwMDRmMjEzMDI5MjRhNjAwODRhNzMy",
+            "content-type: application/json"
+        ]);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+
+        // Executarea cererii și captarea răspunsului
+        $response = curl_exec($ch);
+
+        // Verificarea erorilor
+        if (curl_errno($ch)) {
+            echo 'Eroare cURL: ' . curl_error($ch);
+        } else {
+            // Procesarea răspunsului
+            echo 'Răspuns: ' . $response;
+        }
+
+        // Închiderea sesiunii cURL
+        curl_close($ch);
     }
 }

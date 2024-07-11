@@ -89,6 +89,7 @@ Route::middleware(['role:administrator,sofer'])->group(function () {
             ->only(['index', 'destroy']);
         Route::any('/facturi/{factura}/anuleaza', [FacturaController::class, 'anuleaza']);
         Route::get('/facturi/{factura}/export/{view_type}', [FacturaController::class, 'exportPDF']);
+        Route::get('/facturi/{factura}/trimite-in-smartbill', [FacturaController::class, 'trimiteInSmartbill']);
 
         // Autocomplete firme pentru facturi
         Route::get('vuejs/autocomplete', [VueJSController::class, 'autocomplete']);

@@ -49,7 +49,7 @@
                             <th>Sediul</th>
                             <th>Data</th>
                             <th class="text-center">PDF</th>
-                            <th class="text-center">Acțiuni</th>
+                            <th class="text-right">Acțiuni</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -100,6 +100,11 @@
                                 </td>
                                 <td class="text-right">
                                     <div class="justify-content-end">
+                                        <a href="/facturi/{{ $factura->id }}/trimite-in-smartbill">
+                                            <span class="badge badge-success">
+                                                Trimite Smartbill
+                                            </span>
+                                        </a>
                                         @if($factura->anulata === 1)
                                             Anulată
                                         @elseif($factura->anulare_factura_id_originala !== null)
