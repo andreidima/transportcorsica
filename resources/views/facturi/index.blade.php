@@ -101,8 +101,8 @@
                                 <td class="text-right">
                                     <div class="justify-content-end">
                                         <a href="/facturi/{{ $factura->id }}/trimite-in-smartbill">
-                                            <span class="badge badge-success">
-                                                Trimite Smartbill
+                                            <span class="badge badge-success" title="În paranteză se afișează de câte ori factura a fost trimisă în Smartbill.">
+                                                Trimite Smartbill ({{ $factura->nr_trimiteri_in_smartbill }})
                                             </span>
                                         </a>
                                         @if($factura->anulata === 1)

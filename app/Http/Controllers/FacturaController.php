@@ -171,6 +171,10 @@ class FacturaController extends Controller
             // Închiderea sesiunii cURL
             curl_close($ch);
 
+            // Save in database that the invoice was sent to Smartbill
+            $factura->nr_trimiteri_in_smartbill ++;
+            $factura->save();
+
             // Return back to page
             return back()->with('status', 'Factura „' . $factura->seria . $factura->numar . '” a fost trimisă în Smartbill cu succes!');
         }
