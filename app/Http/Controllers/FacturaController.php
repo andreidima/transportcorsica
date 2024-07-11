@@ -136,18 +136,24 @@ class FacturaController extends Controller
         // Executarea cererii și captarea răspunsului
         $response = curl_exec($ch);
 
-        // Închiderea sesiunii cURL
-        curl_close($ch);
-
         // Verificarea erorilor
         if (curl_errno($ch)) {
-            echo 'Eroare cURL: ' . curl_error($ch);
+            'Eroare cURL: ' . curl_error($ch);
+
+            // Închiderea sesiunii cURL
+            curl_close($ch);
         } else {
             // Procesarea răspunsului
             echo 'Răspuns: ' . $response;
+
+            // Închiderea sesiunii cURL
+            curl_close($ch);
+
+            // Return back to page
+            return back()->with('status', 'Factura „' . $factura->seria . $factura->numar . '” a fost trimisă în Smartbill cu succes!');
         }
 
-
-        // return back()->with('status', 'Factura „' . $factura->seria . $factura->numar . '” a fost trimisă în Smartbill cu succes!');
+        // Închiderea sesiunii cURL
+        // curl_close($ch);
     }
 }
