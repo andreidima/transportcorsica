@@ -144,7 +144,7 @@ class FacturaController extends Controller
             curl_close($ch);
         } else {
             // Procesarea răspunsului
-            echo 'Răspuns: ' . $response;
+            // echo 'Răspuns: ' . $response;
 
             // Închiderea sesiunii cURL
             curl_close($ch);
