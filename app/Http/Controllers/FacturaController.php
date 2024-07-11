@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Factura;
+use App\Models\Rezervare;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -87,6 +88,28 @@ class FacturaController extends Controller
 
     public function trimiteInSmartbill(Request $request, Factura $factura = null)
     {
+        $facturaDescriere = "Bilet de călătorie: " . ($factura->rezervare->bilet_serie ?? '') . ($factura->rezervare->bilet_numar ?? '') . " | Dată transport: " . Carbon::parse($factura->rezervare->data_cursa)->isoFormat('DD.MM.YYYY') . '. '
+            . (
+                $rezervare_retur = Rezervare::find($factura->rezervare->retur)
+                ?
+                "Bilet de călătorie: " . ($rezervare_retur->bilet_serie ?? '') . ($rezervare_retur->bilet_numar ?? '') . ' ' . " | Dată transport: " . Carbon::parse($rezervare_retur->data_cursa)->isoFormat('DD.MM.YYYY')
+                :
+                ''
+            );
+
+        $facturaDescriere .= "Pasageri: ";
+        if ($factura->rezervare->nr_adulti){
+            foreach ($factura->rezervare->pasageri_relation as $pasager) {
+                $facturaDescriere .= $pasager->nume . ', ';
+            }
+            $facturaDescriere = substr_replace($facturaDescriere, '', -2); // delete the last comma and space
+            $facturaDescriere .= ". ";
+        }
+
+        $facturaDescriere .= "Preț în EURO: " . round($factura->valoare_euro) . " EURO. ";
+        $facturaDescriere .= "Curs valutar BNR la data rezervării biletului de călătorie (" . Carbon::parse($factura->rezervare->created_at)->isoFormat('DD.MM.YYYY') . "): 1 EURO = " . $factura->curs_bnr_euro;
+// dd($facturaDescriere);
+
         // URL-ul API-ului
         $url = "https://ws.smartbill.ro/SBORO/api/invoice";
 
@@ -107,7 +130,7 @@ class FacturaController extends Controller
                 [
                     "code" => "10",
                     "name" => "Servicii transport international persoane",
-                    "productDescription" => "Bilet nr. MRW881234 <br><br> - client Ion Vasile",
+                    "productDescription" => $facturaDescriere,
                     "measuringUnitName" => "buc",
                     "currency" => "RON",
                     "quantity" => 1,
