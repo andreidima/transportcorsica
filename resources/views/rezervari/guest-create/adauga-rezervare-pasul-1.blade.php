@@ -284,9 +284,9 @@
                                                 <h5 class="mb-1">Plecare în călătorie:</h5>
                                         </div>
                                         <div class="form-group col-lg-12 border-left border-primary" style="border-width:5px !important">
-                                            Plecarile din România au loc săptămânal, miercurea, la ora 21:00, din Focșani.
+                                            Plecările din România au loc săptămânal, marțea, la ora 21:00, din Focșani.
                                             <br>
-                                            Plecarile din Corsica au loc săptămânal, sâmbăta, în funcție de plecările navelor și de locația dumneavoastră .
+                                            Plecările din Corsica au loc săptămânal, vinerea, în funcție de plecările navelor și de locația dumneavoastră .
                                         </div>
                                         <div class="form-group col-lg-12 border-left border-warning" style="border-width:5px !important">
                                             Pentru informații complete, vă rugăm să citiți

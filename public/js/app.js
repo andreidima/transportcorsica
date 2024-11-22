@@ -2082,7 +2082,17 @@ __webpack_require__.r(__webpack_exports__);
         var dateDay = date.getDay();
         var dataLaCareSeSchimbaZiuaDinSaptamana = new Date("2023-11-06");
         var dataLaCareSeSchimbaInapoiZiuaDinSaptamana = new Date("2100-01-01");
-        return date.getTime() < _notBefore.getTime() || (date.getTime() < dataLaCareSeSchimbaZiuaDinSaptamana.getTime() || date.getTime() > dataLaCareSeSchimbaInapoiZiuaDinSaptamana.getTime()) && dateDay !== 6 || date.getTime() > dataLaCareSeSchimbaZiuaDinSaptamana.getTime() && date.getTime() < dataLaCareSeSchimbaInapoiZiuaDinSaptamana.getTime() && dateDay !== 5;
+        var zileSpecificeBlocate = ['2024.12.27', '2025.01.03', '2025.01.10'];
+        zileSpecificeBlocate = zileSpecificeBlocate.map(function (element) {
+          // Se formateaza toate elementele venite din MySQL la formatul DateString
+          return new Date(element).toDateString();
+        });
+        var zileSpecificeDeblocate = ['2025.01.06', '2025.01.12'];
+        zileSpecificeDeblocate = zileSpecificeDeblocate.map(function (element) {
+          // Se formateaza toate elementele venite din MySQL la formatul DateString
+          return new Date(element).toDateString();
+        });
+        return date.getTime() < _notBefore.getTime() || (date.getTime() < dataLaCareSeSchimbaZiuaDinSaptamana.getTime() || date.getTime() > dataLaCareSeSchimbaInapoiZiuaDinSaptamana.getTime()) && dateDay !== 6 || date.getTime() > dataLaCareSeSchimbaZiuaDinSaptamana.getTime() && date.getTime() < dataLaCareSeSchimbaInapoiZiuaDinSaptamana.getTime() && dateDay !== 5 && !zileSpecificeDeblocate.includes(date.toDateString()) || (zileSpecificeBlocate.includes(date.toDateString()) ? date : '');
         return date.getTime() < _notBefore.getTime();
       } // selectare date doar pana la un moment dat
 
@@ -2195,7 +2205,17 @@ __webpack_require__.r(__webpack_exports__);
         var dateDay = date.getDay();
         var dataLaCareSeSchimbaZiuaDinSaptamana = new Date("2023-11-06");
         var dataLaCareSeSchimbaInapoiZiuaDinSaptamana = new Date("2100-01-01");
-        return date.getTime() < _notBefore.getTime() || (date.getTime() < dataLaCareSeSchimbaZiuaDinSaptamana.getTime() || date.getTime() > dataLaCareSeSchimbaInapoiZiuaDinSaptamana.getTime()) && dateDay !== 3 || date.getTime() > dataLaCareSeSchimbaZiuaDinSaptamana.getTime() && date.getTime() < dataLaCareSeSchimbaInapoiZiuaDinSaptamana.getTime() && dateDay !== 2;
+        var zileSpecificeBlocate = ['2024.12.24', '2024.12.31', '2025.01.07'];
+        zileSpecificeBlocate = zileSpecificeBlocate.map(function (element) {
+          // Se formateaza toate elementele venite din MySQL la formatul DateString
+          return new Date(element).toDateString();
+        });
+        var zileSpecificeDeblocate = ['2025.01.03', '2025.01.09'];
+        zileSpecificeDeblocate = zileSpecificeDeblocate.map(function (element) {
+          // Se formateaza toate elementele venite din MySQL la formatul DateString
+          return new Date(element).toDateString();
+        });
+        return date.getTime() < _notBefore.getTime() || (date.getTime() < dataLaCareSeSchimbaZiuaDinSaptamana.getTime() || date.getTime() > dataLaCareSeSchimbaInapoiZiuaDinSaptamana.getTime()) && dateDay !== 3 || date.getTime() > dataLaCareSeSchimbaZiuaDinSaptamana.getTime() && date.getTime() < dataLaCareSeSchimbaInapoiZiuaDinSaptamana.getTime() && dateDay !== 2 && !zileSpecificeDeblocate.includes(date.toDateString()) || (zileSpecificeBlocate.includes(date.toDateString()) ? date : '');
         return date.getTime() < _notBefore.getTime();
       } // selectare date doar pana la un moment dat
 

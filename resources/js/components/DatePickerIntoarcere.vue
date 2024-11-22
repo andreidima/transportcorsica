@@ -71,6 +71,17 @@ export default {
             const dateDay = date.getDay()
             const dataLaCareSeSchimbaZiuaDinSaptamana = new Date("2023-11-06");
             const dataLaCareSeSchimbaInapoiZiuaDinSaptamana = new Date("2100-01-01");
+
+            var zileSpecificeBlocate = ['2024.12.27', '2025.01.03', '2025.01.10'];
+            zileSpecificeBlocate = zileSpecificeBlocate.map(element => { // Se formateaza toate elementele venite din MySQL la formatul DateString
+                return new Date(element).toDateString();
+            });
+
+            var zileSpecificeDeblocate = ['2025.01.06', '2025.01.12'];
+            zileSpecificeDeblocate = zileSpecificeDeblocate.map(element => { // Se formateaza toate elementele venite din MySQL la formatul DateString
+                return new Date(element).toDateString();
+            });
+
             return (
                 (date.getTime() < notBefore.getTime())
                 || (
@@ -86,7 +97,9 @@ export default {
                             && (date.getTime() < dataLaCareSeSchimbaInapoiZiuaDinSaptamana.getTime())
                         )
                         && (dateDay !== 5)
+                        && (!zileSpecificeDeblocate.includes(date.toDateString()))
                     )
+                || (zileSpecificeBlocate.includes(date.toDateString()) ? date : '')
                 );
 
 
